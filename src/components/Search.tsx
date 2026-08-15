@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { CONVERSIONS } from '@/lib/conversions';
 import { TOOLS } from '@/lib/site';
 
@@ -29,6 +30,7 @@ export default function Search({ placeholder = 'Search 100+ conversions and tool
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const entries = useMemo<Entry[]>(() => {
     const fromTools: Entry[] = TOOLS.map((t) => ({
@@ -91,6 +93,15 @@ export default function Search({ placeholder = 'Search 100+ conversions and tool
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
+          onKeyDown={(e) => {
+            // Enter goes to the full results page. The dropdown shows eight;
+            // a search with forty matches needs somewhere to put the rest.
+            if (e.key === 'Enter' && query.trim()) {
+              setOpen(false);
+              router.push(`/search/?q=${encodeURIComponent(query.trim())}`);
+            }
+            if (e.key === 'Escape') setOpen(false);
+          }}
           placeholder={placeholder}
           aria-label="Search conversions and tools"
           className="w-full rounded-xl border border-line bg-surface py-3 pl-10 pr-4 text-sm shadow-sm outline-none transition-colors placeholder:text-ink-faint focus:border-accent"

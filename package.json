@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "status": "node --experimental-strip-types scripts/status.mjs"
+    "status": "node --experimental-strip-types scripts/status.mjs",
+    "llms": "node --experimental-strip-types scripts/llms.mjs",
+    "prebuild": "npm run status && npm run llms"
   },
   "dependencies": {
     "heic-to": "^1.5.2",

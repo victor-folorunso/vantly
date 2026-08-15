@@ -30,6 +30,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1,
     },
+    // The index of everything. Included because it is the one page that links
+    // to all the others, which is the path a crawler can actually walk.
+    {
+      url: `${SITE.url}/all`,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${SITE.url}/suggest`,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
     ...[...slugs].map((slug) => ({
       url: `${SITE.url}/${slug}`,
       changeFrequency: 'monthly' as const,

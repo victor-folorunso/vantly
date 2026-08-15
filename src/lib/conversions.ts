@@ -181,8 +181,27 @@ export function conversionTitle(c: Conversion): string {
   return `Convert ${c.from.label} to ${c.to.label}`;
 }
 
+/**
+ * "a" or "an", chosen by how the word is said rather than how it is spelled.
+ *
+ * The descriptions are generated, so a plain "a" produced "a AVIF image", "a
+ * icon file" and "a HTML page" across a dozen pages at once. Initialisms are
+ * the reason a vowel test on the first letter is not enough: AVIF is said
+ * "ay-vif" and takes an, while a word like "unit" starts with a vowel and does
+ * not.
+ */
+export function article(word: string): 'a' | 'an' {
+  const first = word.trim().charAt(0).toUpperCase();
+  const rest = word.trim().charAt(1);
+  // A leading capital followed by another capital reads as an initialism, said
+  // letter by letter, so the sound of the letter decides it.
+  const isInitialism = rest === rest?.toUpperCase() && /[A-Z]/.test(rest ?? '');
+  if (isInitialism) return 'AEFHILMNORSX'.includes(first) ? 'an' : 'a';
+  return 'AEIOU'.includes(first) ? 'an' : 'a';
+}
+
 export function conversionDescription(c: Conversion): string {
-  return `Convert a ${c.from.long} to ${c.to.label} in your browser. No upload, no watermark, no sign up, and no limit on how many you can do.`;
+  return `Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label} in your browser. No upload, no watermark, no sign up, and no limit on how many you can do.`;
 }
 
 /** Everything that shares a source or a target, for the related links block. */

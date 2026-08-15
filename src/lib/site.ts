@@ -150,6 +150,51 @@ export const TOOLS: Tool[] = [
     live: false,
   },
 
+  {
+    slug: 'docx-viewer',
+    name: 'DOCX viewer',
+    category: 'PDF',
+    blurb: 'Open a Word document without Word.',
+    title: 'Open a DOCX file online without Word',
+    description:
+      'View Word documents in your browser. No Office licence, no account, no upload. Formatting, tables and images are kept.',
+    promise: 'It opens the file. No trial, no sign in, no upload.',
+    live: false,
+  },
+  {
+    slug: 'pptx-viewer',
+    name: 'PPTX viewer',
+    category: 'PDF',
+    blurb: 'Open a PowerPoint deck without PowerPoint.',
+    title: 'Open a PPTX file online without PowerPoint',
+    description:
+      'View PowerPoint presentations in your browser. Step through the slides, read the notes, and keep the file on your own machine.',
+    promise: 'The whole deck, not the first three slides.',
+    live: false,
+  },
+  {
+    slug: 'xlsx-viewer',
+    name: 'XLSX viewer',
+    category: 'Data',
+    blurb: 'Open a spreadsheet without Excel.',
+    title: 'Open an XLSX file online without Excel',
+    description:
+      'View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered, with nothing uploaded.',
+    promise: 'Every row and every sheet, not a preview of the first one.',
+    live: false,
+  },
+  {
+    slug: 'epub-viewer',
+    name: 'EPUB reader',
+    category: 'Text',
+    blurb: 'Read an ebook without installing a reader.',
+    title: 'Open and read an EPUB file online',
+    description:
+      'Read EPUB ebooks in your browser. Change the text size, jump between chapters, and keep the file on your machine.',
+    promise: 'No library account and no upload to read your own book.',
+    live: false,
+  },
+
   // ── Data ───────────────────────────────────────────────────────────────────
   {
     slug: 'csv-viewer',

@@ -1,0 +1,48 @@
+# Vantly
+
+> Small tools that do one thing, without asking for anything.
+
+Free file tools that run entirely in the visitor's browser. Files are never
+uploaded, so there is no account, no watermark, no file size limit, and no
+cap on how many conversions can be done. This is possible because the work
+costs the operator nothing: the browser does the decoding and encoding.
+
+## What works today
+
+- [SVG to PNG](https://vantly.xyz/svg-to-png): Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap, no watermark, no sign up. Runs in your browser, so the file never leaves your machine.
+- [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit, no sign up. Runs in your browser.
+- [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
+- [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.
+- [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
+- [JPG to WebP](https://vantly.xyz/jpg-to-webp): Convert a JPEG photo to WebP in the browser, in bulk.
+- [PNG to JPG](https://vantly.xyz/png-to-jpg): Convert a PNG image to JPG in the browser, in bulk.
+- [PNG to WebP](https://vantly.xyz/png-to-webp): Convert a PNG image to WebP in the browser, in bulk.
+- [WebP to JPG](https://vantly.xyz/webp-to-jpg): Convert a WebP image to JPG in the browser, in bulk.
+- [WebP to PNG](https://vantly.xyz/webp-to-png): Convert a WebP image to PNG in the browser, in bulk.
+- [AVIF to JPG](https://vantly.xyz/avif-to-jpg): Convert an AVIF image to JPG in the browser, in bulk.
+- [AVIF to PNG](https://vantly.xyz/avif-to-png): Convert an AVIF image to PNG in the browser, in bulk.
+- [AVIF to WebP](https://vantly.xyz/avif-to-webp): Convert an AVIF image to WebP in the browser, in bulk.
+- [GIF to JPG](https://vantly.xyz/gif-to-jpg): Convert a GIF image to JPG in the browser, in bulk.
+- [GIF to PNG](https://vantly.xyz/gif-to-png): Convert a GIF image to PNG in the browser, in bulk.
+- [GIF to WebP](https://vantly.xyz/gif-to-webp): Convert a GIF image to WebP in the browser, in bulk.
+- [BMP to JPG](https://vantly.xyz/bmp-to-jpg): Convert a bitmap image to JPG in the browser, in bulk.
+- [BMP to PNG](https://vantly.xyz/bmp-to-png): Convert a bitmap image to PNG in the browser, in bulk.
+- [BMP to WebP](https://vantly.xyz/bmp-to-webp): Convert a bitmap image to WebP in the browser, in bulk.
+- [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert an iPhone HEIC photo to JPG in the browser, in bulk.
+- [HEIC to WebP](https://vantly.xyz/heic-to-webp): Convert an iPhone HEIC photo to WebP in the browser, in bulk.
+- [SVG to PNG](https://vantly.xyz/svg-to-png): Convert an SVG vector to PNG in the browser, in bulk.
+
+## Known limits
+
+- Image encoding is limited to PNG, JPEG and WebP, because those are the only
+  formats a browser canvas can write. AVIF, BMP and TIFF can be read but not
+  yet written.
+- Only the first frame of an animated GIF is converted.
+- Images are never enlarged when resizing, since scaling up cannot add detail
+  that was not captured.
+- PDF, Office and audio or video conversion are planned but not built. Pages
+  exist for them and say so.
+
+## Index
+
+- [Everything, including what is not built yet](https://vantly.xyz/all)

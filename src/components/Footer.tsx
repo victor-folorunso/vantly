@@ -61,7 +61,15 @@ export default function Footer() {
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
           <p className="text-sm text-ink-faint">
             Everything runs in your browser. Files are not uploaded and nothing is
-            stored.
+            stored.{' '}
+            <Link href="/all" className="underline underline-offset-4 hover:text-ink">
+              See everything
+            </Link>{' '}
+            or{' '}
+            <Link href="/suggest" className="underline underline-offset-4 hover:text-ink">
+              suggest something missing
+            </Link>
+            .
           </p>
           <p className="text-sm text-ink-faint">
             © {new Date().getFullYear()} {SITE.name}
