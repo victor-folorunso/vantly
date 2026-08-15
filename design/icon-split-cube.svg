@@ -1,0 +1,22 @@
+<!--
+  Reserve option: the split cube.
+
+  Kept because it was the one that held its shape at every size, including 16px,
+  where most marks collapse. Its outline is a hexagon rather than another
+  rounded square, so it stands out in a tab strip full of them.
+
+  Not in use. The generated render is being tried first. If that turns out badly
+  in real browsers, this is the fallback and needs no further design work: point
+  scripts/make-icons.mjs at this path and regenerate.
+
+  Colours are the site's own: --accent for the left face, a lighter tint on top,
+  a darker one on the right. The seams are the page background, not white, so
+  the mark sits on the site rather than on a card.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
+  <path d="M50 10 L88 32 L50 54 L12 32 Z" fill="#e0873f"/>
+  <path d="M12 32 L50 54 L50 94 L12 72 Z" fill="#b4530a"/>
+  <path d="M88 32 L88 72 L50 94 L50 54 Z" fill="#8f4108"/>
+  <path d="M12 32 L50 54 L88 32" stroke="#faf9f7" stroke-width="2.5" fill="none"/>
+  <path d="M50 54 L50 94" stroke="#faf9f7" stroke-width="2.5" fill="none"/>
+</svg>

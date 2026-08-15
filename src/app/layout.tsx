@@ -32,7 +32,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
       { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
     ],
@@ -85,32 +84,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="h-[3px] w-full bg-accent" />
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-5">
             <Link href="/" className="flex shrink-0 basis-40 items-center gap-2.5">
-              {/* The mark rather than an <img>, so it inherits colour and stays
-                  sharp at any zoom without a second request. */}
-              <svg viewBox="0 0 100 100" className="size-7" aria-hidden="true">
-                <mask id="brand">
-                  <rect width="100" height="100" fill="#fff" />
-                  <rect x="15" y="15" width="40" height="40" rx="6" />
-                  <rect x="45" y="45" width="40" height="40" rx="6" />
-                  <rect
-                    x="45"
-                    y="45"
-                    width="40"
-                    height="40"
-                    rx="6"
-                    fill="none"
-                    stroke="#fff"
-                    strokeWidth="11"
-                  />
-                </mask>
-                <rect
-                  width="100"
-                  height="100"
-                  rx="24"
-                  className="fill-[var(--accent)]"
-                  mask="url(#brand)"
-                />
-              </svg>
+              {/* The icon is a raster render now, so it is an img rather than
+                  inline SVG. Fixed dimensions to keep it out of the layout
+                  shift, and 192 as the source so it stays crisp on a retina
+                  screen at 28 logical pixels. */}
+              <img
+                src="/icon-192.png"
+                alt=""
+                width={28}
+                height={28}
+                className="size-7 rounded-md"
+              />
               <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
             </Link>
             <div className="hidden flex-1 justify-center sm:flex">

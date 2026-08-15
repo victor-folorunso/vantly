@@ -1,20 +1,20 @@
 /**
- * The Vantly mark, and every size derived from it.
+ * The icon set, built from the generated cube render.
  *
- * Two blocks offset on a diagonal, with a constant channel between them. No
- * letter. It reads as one thing passing through and coming out somewhere else,
- * which is what most of the site does, and it survives being 16 pixels wide
- * because it is two solid masses rather than a stroke.
+ * The source is a photographic render with soft shading, which is not what a
+ * favicon wants: shrunk to 32 the tool faces fade and at 16 it is a brown
+ * smudge. It is being tried anyway to see how it actually behaves in a browser,
+ * which is the only way to settle it.
  *
- * The channel is carved by stroking the lower block in the mask's own white,
- * so the gap is exactly one width everywhere. The earlier version drew two
- * hand plotted polygons and the gap came out 2 units at the ends and 16 in the
- * middle, which looked like a mistake rather than a decision.
+ * Two things soften the landing. The crop is found by scanning for pixels
+ * darker than the ground rather than guessed, so the cube is centred and the
+ * same every run. And the small sizes get sharpened after downscaling, which
+ * recovers some of the edge definition that averaging throws away.
  *
- * Rasterised with sharp rather than a headless browser. Every PNG comes from
- * this one path, so the favicon and the app icon cannot drift apart.
+ * design/icon-split-cube.svg is the fallback if this reads badly. Point SOURCE
+ * at it and rerun.
  *
- * Run: node --experimental-strip-types scripts/make-icons.mjs
+ * Run: npm run icons
  */
 
 import sharp from 'sharp';
@@ -24,64 +24,37 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const pub = join(root, 'public');
+const SOURCE = join(root, 'Gemini_Generated_Image_tm3v7atm3v7atm3v.jpg');
 
-const ACCENT = '#b4530a';
+/** Square crop centred on the subject, found rather than hard coded. */
+async function cropToSubject(file) {
+  const { data, info } = await sharp(file).greyscale().raw().toBuffer({ resolveWithObject: true });
+  const at = (x, y) => data[y * info.width + x];
+  const threshold = at(5, 5) - 25;
 
-/** Block geometry, in the 100 unit box. */
-/*
-  Tuned for 16px, not for the 512 that looks good in a folder.
-  
-  The first cut used 33 unit blocks with a 7 unit channel inside a 100 unit box.
-  At a 16 pixel favicon that is roughly five pixels of block, one of gap, five
-  of block, and the whole thing closes into a single blob. Bigger blocks and a
-  proportionally wider channel keep three distinct features at the only size
-  most people ever see.
-*/
-const A = { x: 15, y: 15, w: 40, h: 40 }; // upper left
-const B = { x: 45, y: 45, w: 40, h: 40 }; // lower right
-const GAP = 11; // channel width, carved as a stroke
-const R = 6; // corner radius on the blocks
-
-/** `fg` is what the blocks are cut out of, so pass a mask colour or a paint. */
-function mark({ tile = true, color = ACCENT } = {}) {
-  const blocks = `
-    <rect x="${A.x}" y="${A.y}" width="${A.w}" height="${A.h}" rx="${R}"/>
-    <rect x="${B.x}" y="${B.y}" width="${B.w}" height="${B.h}" rx="${R}"/>`;
-
-  if (tile) {
-    // Knocked out of a solid tile: blocks are holes, and the channel is
-    // re-filled so the two never touch.
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <mask id="v">
-      <rect width="100" height="100" fill="#fff"/>
-      <g fill="#000">${blocks}</g>
-      <rect x="${B.x}" y="${B.y}" width="${B.w}" height="${B.h}" rx="${R}"
-            fill="none" stroke="#fff" stroke-width="${GAP}"/>
-    </mask>
-  </defs>
-  <rect width="100" height="100" rx="24" fill="${color}" mask="url(#v)"/>
-</svg>`;
+  let minX = info.width, maxX = 0, minY = info.height, maxY = 0;
+  for (let y = 0; y < info.height; y++) {
+    for (let x = 0; x < info.width; x++) {
+      if (at(x, y) < threshold) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
   }
 
-  // Bare mark, for anywhere the tile would fight the surface behind it.
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <mask id="c">
-      <rect width="100" height="100" fill="#fff"/>
-      <rect x="${B.x}" y="${B.y}" width="${B.w}" height="${B.h}" rx="${R}"
-            fill="none" stroke="#000" stroke-width="${GAP}"/>
-    </mask>
-  </defs>
-  <g fill="currentColor" mask="url(#c)">${blocks}</g>
-</svg>`;
+  const w = maxX - minX;
+  const h = maxY - minY;
+  const side = Math.round(Math.max(w, h) * 1.18);
+  const left = Math.max(0, Math.round(minX + w / 2 - side / 2));
+  const top = Math.max(0, Math.round(minY + h / 2 - side / 2));
+  const size = Math.min(side, info.height - top, info.width - left);
+  return sharp(file).extract({ left, top, width: size, height: size });
 }
 
-const tileSvg = mark();
-const monoSvg = mark({ tile: false });
-
-writeFileSync(join(pub, 'icon.svg'), tileSvg + '\n');
-writeFileSync(join(pub, 'icon-mono.svg'), monoSvg + '\n');
+const square = await cropToSubject(SOURCE);
+const master = await square.resize(1024, 1024).png().toBuffer();
 
 const SIZES = [
   ['favicon-16.png', 16],
@@ -91,13 +64,29 @@ const SIZES = [
   ['icon-512.png', 512],
 ];
 
-const buf = Buffer.from(tileSvg);
 for (const [name, size] of SIZES) {
-  await sharp(buf, { density: 512 })
-    .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .png()
-    .toFile(join(pub, name));
+  let pipe = sharp(master).resize(size, size, { kernel: 'lanczos3' });
+  // Downscaling averages edges away. A little sharpening at the sizes where
+  // that hurts most buys back some definition.
+  if (size <= 48) pipe = pipe.sharpen({ sigma: 0.6 });
+  await pipe.png().toFile(join(pub, name));
   console.log('wrote', name, `${size}px`);
 }
 
-console.log('wrote icon.svg and icon-mono.svg');
+/* The SVG favicon has to go: browsers prefer it over every PNG, and there is no
+   vector of a shaded render. Leaving it would mean shipping the old mark. */
+writeFileSync(
+  join(pub, 'icon.svg'),
+  `<!-- Removed. The icon is a raster render; see scripts/make-icons.mjs.\n` +
+    `     A vector fallback is kept at design/icon-split-cube.svg. -->\n`,
+  'utf8',
+);
+
+/* Social card, where the detail is the point and nothing is shrunk. */
+await sharp({
+  create: { width: 1200, height: 630, channels: 4, background: '#faf9f7' },
+})
+  .composite([{ input: await sharp(master).resize(520, 520).png().toBuffer(), left: 340, top: 55 }])
+  .png()
+  .toFile(join(pub, 'og.png'));
+console.log('wrote og.png 1200x630');
