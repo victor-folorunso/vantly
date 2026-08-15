@@ -114,8 +114,37 @@ const RULES: { from: string; to: string[] }[] = [
   { from: 'ogg', to: ['mp3', 'wav'] },
 ];
 
-/** Conversions that are actually implemented, by slug. */
-export const LIVE_CONVERSIONS = new Set(['heic-to-jpg', 'heic-to-webp', 'svg-to-png']);
+/**
+ * Raster pairs a canvas can do, which is fewer than it looks.
+ *
+ * Decoding is generous: the browser reads PNG, JPEG, WebP, GIF, BMP and AVIF.
+ * Writing is not. Chromium encodes only PNG, JPEG and WebP, and asking toBlob
+ * for anything else does not fail, it silently returns a PNG. Verified in a
+ * real browser rather than assumed, because the failure mode is PNG data inside
+ * a file named .avif, which opens correctly everywhere and is wrong in a way
+ * nobody would ever report.
+ */
+export const CANVAS_SOURCES = ['png', 'jpg', 'webp', 'gif', 'bmp', 'avif'] as const;
+export const CANVAS_TARGETS = ['png', 'jpg', 'webp'] as const;
+
+export type EncodableTarget = (typeof CANVAS_TARGETS)[number];
+
+export function canvasHandles(c: { from: Format; to: Format }): boolean {
+  return (
+    (CANVAS_SOURCES as readonly string[]).includes(c.from.id) &&
+    (CANVAS_TARGETS as readonly string[]).includes(c.to.id) &&
+    c.from.id !== c.to.id
+  );
+}
+
+/**
+ * Conversions that are actually implemented.
+ *
+ * The three named here have their own hand written route. Everything the canvas
+ * handles is added below and served by the catch-all, so a new raster pair
+ * needs no new file.
+ */
+const HAND_BUILT = ['heic-to-jpg', 'heic-to-webp', 'svg-to-png'];
 
 function build(): Conversion[] {
   const seen = new Set<string>();
@@ -132,7 +161,12 @@ function build(): Conversion[] {
       // the icon block. First writer wins and the duplicate is dropped.
       if (seen.has(slug)) continue;
       seen.add(slug);
-      out.push({ slug, from, to, live: LIVE_CONVERSIONS.has(slug) });
+      out.push({
+        slug,
+        from,
+        to,
+        live: HAND_BUILT.includes(slug) || canvasHandles({ from, to }),
+      });
     }
   }
 

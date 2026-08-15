@@ -8,7 +8,11 @@ import {
   conversionTitle,
   conversionDescription,
   relatedConversions,
+  canvasHandles,
+  type Conversion,
+  type EncodableTarget,
 } from '@/lib/conversions';
+import ImageConvert from '@/components/ImageConvert';
 
 /**
  * Everything that does not have its own folder yet: unbuilt tools and every
@@ -29,7 +33,9 @@ type Params = { params: Promise<{ slug: string }> };
 export function generateStaticParams() {
   return [
     ...SOON_TOOLS.map((t) => ({ slug: t.slug })),
-    ...CONVERSIONS.filter((c) => !c.live).map((c) => ({ slug: c.slug })),
+    // Canvas pairs are live and still belong here: they are served by this file
+    // rather than by a folder of their own, so a new raster pair costs nothing.
+    ...CONVERSIONS.filter((c) => !c.live || canvasHandles(c)).map((c) => ({ slug: c.slug })),
   ];
 }
 
@@ -40,11 +46,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
   if (conversion) {
+    const working = canvasHandles(conversion);
     return {
-      title: `${conversionTitle(conversion)} — coming soon`,
+      title: working ? conversionTitle(conversion) : `${conversionTitle(conversion)} — coming soon`,
       description: conversionDescription(conversion),
       alternates: { canonical: `${SITE.url}/${slug}` },
-      robots: { index: false, follow: true },
+      // A page that works belongs in the index. One that does not stays out,
+      // because ranking for "convert avif to bmp" and then not doing it teaches
+      // the visitor and the search engine the same thing.
+      robots: { index: working, follow: true },
     };
   }
 
@@ -66,6 +76,58 @@ export default async function Page({ params }: Params) {
   const { slug } = await params;
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
+
+  if (conversion && canvasHandles(conversion)) {
+    const related = relatedConversions(conversion, 14);
+    return (
+      <div className="mx-auto w-full max-w-6xl px-5 py-12">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: conversionTitle(conversion),
+              applicationCategory: 'MultimediaApplication',
+              operatingSystem: 'Any, runs in a web browser',
+              url: `${SITE.url}/${slug}`,
+              description: conversionDescription(conversion),
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            }),
+          }}
+        />
+        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
+          {conversionTitle(conversion)}
+        </h1>
+        <p className="mt-3 max-w-2xl text-ink-soft">
+          Convert as many {conversion.from.label} files as you like at once. It
+          runs in your browser, so nothing is uploaded and there is no limit on
+          how many you can do.
+        </p>
+
+        <div className="mt-10">
+          <ImageConvert
+            target={conversion.to.id as EncodableTarget}
+            accept={[conversion.from.id, conversion.from.id === 'jpg' ? 'jpeg' : conversion.from.id]}
+            sourceLabel={conversion.from.label}
+          />
+        </div>
+
+        <ConversionNotes conversion={conversion} />
+
+        {related.length > 0 && (
+          <Related
+            heading={`Other ${conversion.from.label} conversions`}
+            items={related.map((c) => ({
+              slug: c.slug,
+              label: `${c.from.label} to ${c.to.label}`,
+            }))}
+          />
+        )}
+      </div>
+    );
+  }
+
   if (conversion && !conversion.live) {
     const related = relatedConversions(conversion, 14);
     return (
@@ -162,6 +224,63 @@ function Shell({
 
       {children}
     </div>
+  );
+}
+
+/**
+ * The honest paragraph about what this particular pair costs you.
+ *
+ * Written from the formats rather than kept as prose per page, because fifteen
+ * hand written explanations is fifteen chances to say something that stops
+ * being true. Both of these are things a person genuinely gets wrong: that PNG
+ * makes a photo smaller, and that going back to a lossless format repairs what
+ * a lossy one threw away.
+ */
+function ConversionNotes({ conversion }: { conversion: Conversion }) {
+  const from = conversion.from.id;
+  const to = conversion.to.id;
+  const LOSSY = ['jpg', 'webp', 'avif'];
+  const notes: string[] = [];
+
+  if (to === 'png' && LOSSY.includes(from)) {
+    notes.push(
+      `PNG is lossless, so nothing more is thrown away here. It does not undo what ${conversion.from.label} already discarded, though, and the file will usually come out larger rather than smaller.`,
+    );
+  }
+  if (to === 'jpg' && from === 'png') {
+    notes.push(
+      'JPG has no transparency. Anything see through in the original is filled with white, because leaving it alone would come out black.',
+    );
+  }
+  if (to === 'webp') {
+    notes.push(
+      `WebP is typically 25 to 35 percent smaller than ${conversion.from.label} at the same visible quality, and every current browser reads it. Older desktop software sometimes will not.`,
+    );
+  }
+  if (from === 'gif') {
+    notes.push(
+      'Only the first frame of an animated GIF is converted. Still images come through whole.',
+    );
+  }
+  if (LOSSY.includes(from) && LOSSY.includes(to)) {
+    notes.push(
+      'Both formats are lossy, so this is a second round of compression on top of the first. At 90 percent quality that is rarely visible, but converting back and forth repeatedly will show.',
+    );
+  }
+
+  if (!notes.length) return null;
+
+  return (
+    <section className="mt-14 max-w-2xl">
+      <h2 className="text-xl font-semibold tracking-tight">What to expect</h2>
+      <ul className="mt-4 space-y-3">
+        {notes.map((n) => (
+          <li key={n} className="leading-relaxed text-ink-soft">
+            {n}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
