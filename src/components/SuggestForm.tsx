@@ -148,9 +148,7 @@ export default function SuggestForm() {
 
       <p className="mt-3 text-xs leading-relaxed text-ink-faint">
         This opens GitHub with the message already written, so you only have to
-        press submit. It needs a GitHub account, which is the honest downside of
-        not running a server. Everything sent this way is public, so leave
-        personal details out.
+        press submit.
       </p>
     </div>
   );

@@ -30,7 +30,7 @@ export default function BackLink() {
   }, [pathname]);
 
   const slug = pathname.split('/').filter(Boolean)[0];
-  if (!slug || slug === 'all' || slug === 'search') return null;
+  if (!slug || slug === 'search') return null;
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
   const tool = toolBySlug(slug);

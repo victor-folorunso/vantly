@@ -43,7 +43,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Everything here</h1>
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Toolbox</h1>
 
       {/* Jump links, because this page is long by design and scrolling to
           Generators past ten other sections is not navigation. */}
@@ -74,9 +74,6 @@ export default function Page() {
               <h2 className="text-base font-semibold tracking-tight">
                 <Rule />
                 {category}
-                <span className="ml-2 text-xs font-normal tabular-nums text-ink-faint">
-                  {inCat.length}
-                </span>
               </h2>
               <ul className="mt-2.5 grid gap-x-6 gap-y-0.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {inCat.map((t) => (
@@ -101,9 +98,6 @@ export default function Page() {
         <h2 className="text-base font-semibold tracking-tight">
           <Rule />
           Conversions
-          <span className="ml-2 text-xs font-normal tabular-nums text-ink-faint">
-            {CONVERSIONS.length}
-          </span>
         </h2>
 
         {/* One block per source format. The source is stated once as a heading

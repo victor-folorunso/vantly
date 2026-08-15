@@ -83,8 +83,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <header className="sticky top-0 z-30 border-b border-line bg-ground/85 backdrop-blur">
           <div className="h-[3px] w-full bg-accent" />
-          <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-5">
-            <Link href="/" className="flex shrink-0 items-center gap-2.5">
+          <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-5">
+            <Link href="/" className="flex shrink-0 basis-40 items-center gap-2.5">
               {/* The mark rather than an <img>, so it inherits colour and stays
                   sharp at any zoom without a second request. */}
               <svg viewBox="0 0 100 100" className="size-7" aria-hidden="true">
@@ -113,14 +113,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </svg>
               <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
             </Link>
-            <div className="ml-auto hidden w-full max-w-xs sm:block">
-              <Search placeholder="Search tools…" />
+            <div className="hidden flex-1 justify-center sm:flex">
+              <div className="w-full max-w-sm">
+                <Search placeholder="Search tools…" />
+              </div>
             </div>
+            {/* A toolbox rather than the words. It survives a narrow screen,
+                and the title carries the name for anyone who needs it. */}
             <Link
               href="/all"
-              className="shrink-0 text-sm text-ink-soft transition-colors hover:text-ink"
+              title="Toolbox"
+              className="flex shrink-0 basis-40 items-center justify-end gap-2"
             >
-              All tools
+              <span className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft transition-colors hover:border-accent hover:text-accent">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-[18px]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" />
+                  <rect x="3" y="7" width="18" height="12" rx="2" />
+                  <path d="M3 12h18" />
+                  <path d="M10 12v2h4v-2" />
+                </svg>
+                Toolbox
+              </span>
             </Link>
           </div>
           <div className="mx-auto w-full max-w-6xl px-5 pb-3 sm:hidden">

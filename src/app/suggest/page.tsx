@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import SuggestForm from '@/components/SuggestForm';
-import { SITE, TOOLS } from '@/lib/site';
-import { CONVERSIONS } from '@/lib/conversions';
+import { SITE } from '@/lib/site';
 
 const title = 'Suggest a tool or conversion';
 const description =
@@ -16,12 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  const planned = [
-    ...TOOLS.filter((t) => !t.live).map((t) => ({ href: `/${t.slug}`, label: t.name })),
-  ].slice(0, 14);
-  const soonCount =
-    TOOLS.filter((t) => !t.live).length + CONVERSIONS.filter((c) => !c.live).length;
-
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-12">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -34,29 +26,6 @@ export default function Page() {
 
       <SuggestForm />
 
-      <section className="mt-14">
-        <h2 className="text-xl font-semibold tracking-tight">Already on the list</h2>
-        <p className="mt-2 leading-relaxed text-ink-soft">
-          Ask for one of these and it moves up.
-        </p>
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {planned.map((p) => (
-            <li key={p.href}>
-              <Link
-                href={p.href}
-                className="inline-block rounded-lg border border-dashed border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:border-accent hover:text-accent"
-              >
-                {p.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 text-sm">
-          <Link href="/all" className="text-accent underline underline-offset-4">
-            See everything, built or not
-          </Link>
-        </p>
-      </section>
 
       <section className="mt-14 rounded-2xl border border-line bg-surface p-6">
         <h2 className="text-xl font-semibold tracking-tight">Or build it yourself</h2>
