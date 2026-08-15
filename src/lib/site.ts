@@ -19,7 +19,19 @@ export const SITE = {
   tagline: 'Open, convert and change files in your browser, without asking for anything.',
 } as const;
 
-export const CATEGORIES = ['Images', 'PDF', 'Data', 'Text', 'Media'] as const;
+export const CATEGORIES = [
+  'Images',
+  'Documents',
+  'Data',
+  'Text',
+  'Media',
+  'Developer',
+  'Security',
+  'Calculators',
+  'Generators',
+  'Design',
+  'Web',
+] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 export type Tool = {
@@ -100,7 +112,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'pdf-reader',
     name: 'PDF reader',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Open a PDF and read it. No plugin, no download, no account.',
     title: 'Open and read a PDF online',
     description:
@@ -111,7 +123,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'merge-pdf',
     name: 'Merge PDF',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Join several PDFs into one, in the order you choose.',
     title: 'Merge PDF files into one',
     description:
@@ -122,7 +134,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'split-pdf',
     name: 'Split PDF',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Pull out the pages you need and leave the rest.',
     title: 'Split a PDF or extract pages',
     description:
@@ -133,7 +145,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'compress-pdf',
     name: 'Compress PDF',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Shrink a PDF that is too big to email.',
     title: 'Compress a PDF to a smaller size',
     description:
@@ -144,7 +156,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'images-to-pdf',
     name: 'Images to PDF',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Turn a pile of photos or scans into one PDF.',
     title: 'Convert images to a single PDF',
     description:
@@ -156,7 +168,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'docx-viewer',
     name: 'DOCX viewer',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Open a Word document without Word.',
     title: 'Open a DOCX file online without Word',
     description:
@@ -167,7 +179,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'pptx-viewer',
     name: 'PPTX viewer',
-    category: 'PDF',
+    category: 'Documents',
     blurb: 'Open a PowerPoint deck without PowerPoint.',
     title: 'Open a PPTX file online without PowerPoint',
     description:
@@ -221,30 +233,8 @@ export const TOOLS: Tool[] = [
     promise: 'No row cap and no sign up to download the result.',
     live: false,
   },
-  {
-    slug: 'json-formatter',
-    name: 'JSON formatter',
-    category: 'Data',
-    blurb: 'Make unreadable JSON readable. Spot the error.',
-    title: 'Format and validate JSON',
-    description:
-      'Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than just saying it is invalid.',
-    promise: 'It tells you where the error is, not just that there is one.',
-    live: false,
-  },
 
   // ── Text ───────────────────────────────────────────────────────────────────
-  {
-    slug: 'diff-checker',
-    name: 'Diff checker',
-    category: 'Text',
-    blurb: 'Compare two pieces of text and see exactly what changed.',
-    title: 'Compare two texts and see the differences',
-    description:
-      'Find the differences between two blocks of text or two files, line by line or word by word. Runs in your browser.',
-    promise: 'No character limit on what you can paste in.',
-    live: false,
-  },
   {
     slug: 'base64',
     name: 'Base64 encoder',
@@ -264,7 +254,7 @@ export const TOOLS: Tool[] = [
     title: 'URL encode and decode',
     description:
       'Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.',
-    live: false,
+    live: true,
   },
   {
     slug: 'markdown-preview',
@@ -308,6 +298,368 @@ export const TOOLS: Tool[] = [
     title: 'Shift subtitle timing in an SRT file',
     description:
       'Move every subtitle in an SRT file forward or back by a set number of seconds. Runs in your browser.',
+    live: false,
+  },
+
+  // ── Developer ───────────────────────
+  {
+    slug: 'json-formatter',
+    name: 'JSON formatter',
+    category: 'Developer',
+    blurb: 'Make unreadable JSON readable, and find the error.',
+    title: 'Format and validate JSON online',
+    description:
+      'Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.',
+    promise: 'It tells you where the error is, not just that there is one.',
+    live: false,
+  },
+  {
+    slug: 'xml-formatter',
+    name: 'XML formatter',
+    category: 'Developer',
+    blurb: 'Indent and tidy XML so you can read it.',
+    title: 'Format and beautify XML online',
+    description:
+      'Format, indent and validate XML in your browser. No upload and no size limit.',
+    live: false,
+  },
+  {
+    slug: 'html-formatter',
+    name: 'HTML formatter',
+    category: 'Developer',
+    blurb: 'Tidy up minified or messy HTML.',
+    title: 'Format and beautify HTML online',
+    description:
+      'Indent and clean HTML in your browser, or minify it back down.',
+    live: false,
+  },
+  {
+    slug: 'css-formatter',
+    name: 'CSS formatter',
+    category: 'Developer',
+    blurb: 'Beautify or minify a stylesheet.',
+    title: 'Format, beautify and minify CSS online',
+    description:
+      'Tidy CSS for reading or strip it down for shipping, in your browser.',
+    live: false,
+  },
+  {
+    slug: 'js-formatter',
+    name: 'JavaScript formatter',
+    category: 'Developer',
+    blurb: 'Beautify or minify JavaScript.',
+    title: 'Format, beautify and minify JavaScript online',
+    description:
+      'Indent JavaScript for reading or minify it for shipping. Runs in your browser.',
+    live: false,
+  },
+  {
+    slug: 'regex-tester',
+    name: 'Regex tester',
+    category: 'Developer',
+    blurb: 'Write a pattern and watch it match, live.',
+    title: 'Test and debug a regular expression online',
+    description:
+      'Build regular expressions with live highlighting, capture groups and a plain English explanation of what each part does.',
+    promise: 'It explains the pattern, not only whether it matched.',
+    live: false,
+  },
+  {
+    slug: 'crontab-generator',
+    name: 'Crontab generator',
+    category: 'Developer',
+    blurb: 'Build a cron schedule without guessing the syntax.',
+    title: 'Cron expression generator and explainer',
+    description:
+      'Build and read cron schedules in plain English, with the next run times shown so you can check it does what you meant.',
+    promise: 'It shows the next five times it will actually run.',
+    live: false,
+  },
+  {
+    slug: 'diff-checker',
+    name: 'Diff checker',
+    category: 'Developer',
+    blurb: 'Compare two texts and see exactly what changed.',
+    title: 'Compare two texts and see the differences',
+    description:
+      'Find what changed between two pieces of text or code, highlighted line by line and word by word.',
+    promise: 'No length limit and no account to see the result.',
+    live: false,
+  },
+
+  // ── Text ────────────────────────────
+  {
+    slug: 'case-converter',
+    name: 'Case converter',
+    category: 'Text',
+    blurb: 'UPPERCASE, camelCase, snake_case, slugs, all of it.',
+    title: 'Convert text case online',
+    description:
+      'Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.',
+    live: true,
+  },
+  {
+    slug: 'word-counter',
+    name: 'Word counter',
+    category: 'Text',
+    blurb: 'Words, characters, sentences and reading time as you type.',
+    title: 'Word and character counter',
+    description:
+      'Count words, characters, sentences and paragraphs as you type, with an estimated reading time.',
+    live: true,
+  },
+  {
+    slug: 'lorem-ipsum-generator',
+    name: 'Lorem ipsum generator',
+    category: 'Text',
+    blurb: 'Placeholder text, as much or as little as you need.',
+    title: 'Lorem ipsum placeholder text generator',
+    description:
+      'Generate placeholder text by words, sentences or paragraphs, as plain text or wrapped in HTML.',
+    live: false,
+  },
+  {
+    slug: 'text-cleaner',
+    name: 'Text cleaner',
+    category: 'Text',
+    blurb: 'Sort lines, remove duplicates, strip HTML.',
+    title: 'Sort lines, remove duplicates and strip HTML tags',
+    description:
+      'Clean up a list or a block of text: sort it, remove duplicate or empty lines, strip HTML tags, trim whitespace.',
+    live: true,
+  },
+
+  // ── Security ───────────────────────
+  {
+    slug: 'hash-generator',
+    name: 'Hash generator',
+    category: 'Security',
+    blurb: 'SHA-256 and friends, for text or a file.',
+    title: 'Generate SHA-256, SHA-1 and SHA-512 hashes',
+    description:
+      'Hash text or a file using the cryptography built into your browser. Nothing is uploaded, which matters more here than anywhere else on the site.',
+    promise: 'The file never leaves your machine, which is the entire point of checking a hash.',
+    live: false,
+  },
+  {
+    slug: 'password-generator',
+    name: 'Password generator',
+    category: 'Security',
+    blurb: 'Strong passwords, generated on your machine.',
+    title: 'Generate a strong random password',
+    description:
+      'Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.',
+    promise: 'Generated in your browser and never sent anywhere.',
+    live: true,
+  },
+  {
+    slug: 'base64-encoder',
+    name: 'Base64 encoder',
+    category: 'Security',
+    blurb: 'Encode or decode Base64, text or files.',
+    title: 'Base64 encode and decode online',
+    description:
+      'Convert text or a file to Base64 and back, including data URIs. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'url-encoder',
+    name: 'URL encoder',
+    category: 'Security',
+    blurb: 'Escape or unescape a URL or query string.',
+    title: 'URL encode and decode online',
+    description:
+      'Percent-encode text for safe use in a URL, or decode one you have been given.',
+    live: false,
+  },
+
+  // ── Calculators ────────────────────
+  {
+    slug: 'unit-converter',
+    name: 'Unit converter',
+    category: 'Calculators',
+    blurb: 'Length, weight, temperature, area, speed, data.',
+    title: 'Convert units of measurement',
+    description:
+      'Convert between metric and imperial units for length, weight, temperature, area, volume, speed and digital storage.',
+    live: false,
+  },
+  {
+    slug: 'percentage-calculator',
+    name: 'Percentage calculator',
+    category: 'Calculators',
+    blurb: 'The three percentage questions people actually ask.',
+    title: 'Percentage calculator',
+    description:
+      'Work out what percent of a number, what percentage one number is of another, and percentage increase or decrease.',
+    live: false,
+  },
+  {
+    slug: 'tip-calculator',
+    name: 'Tip and bill splitter',
+    category: 'Calculators',
+    blurb: 'Split a bill and work out the tip.',
+    title: 'Tip calculator and bill splitter',
+    description:
+      'Add a tip, split a bill between any number of people, and round the result sensibly.',
+    live: false,
+  },
+  {
+    slug: 'compound-interest-calculator',
+    name: 'Compound interest',
+    category: 'Calculators',
+    blurb: 'See what regular saving actually grows into.',
+    title: 'Compound interest calculator',
+    description:
+      'Project savings growth over time with regular contributions, showing the total, the contributions and the interest separately.',
+    live: false,
+  },
+  {
+    slug: 'loan-calculator',
+    name: 'Loan calculator',
+    category: 'Calculators',
+    blurb: 'Monthly payment, total interest, full schedule.',
+    title: 'Loan and mortgage repayment calculator',
+    description:
+      'Work out monthly repayments, total interest and a full amortisation schedule for a loan or a mortgage.',
+    live: false,
+  },
+  {
+    slug: 'date-calculator',
+    name: 'Date calculator',
+    category: 'Calculators',
+    blurb: 'Days between two dates, or add time to one.',
+    title: 'Date difference and duration calculator',
+    description:
+      'Count the days, weeks or months between two dates, or add and subtract time from a date.',
+    live: false,
+  },
+
+  // ── Generators ───────────────────
+  {
+    slug: 'uuid-generator',
+    name: 'UUID generator',
+    category: 'Generators',
+    blurb: 'Version 4 UUIDs, as many as you need.',
+    title: 'Generate UUID v4 identifiers',
+    description:
+      'Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.',
+    live: true,
+  },
+  {
+    slug: 'qr-code-generator',
+    name: 'QR code generator',
+    category: 'Generators',
+    blurb: 'A QR code for a link, text or Wi-Fi.',
+    title: 'Create a QR code online',
+    description:
+      'Generate a QR code for a URL, plain text, a phone number or Wi-Fi credentials, and download it as PNG or SVG.',
+    promise: 'No tracking redirect in the middle. The code points where you said.',
+    live: false,
+  },
+  {
+    slug: 'random-picker',
+    name: 'Random picker',
+    category: 'Generators',
+    blurb: 'Pick a winner from a list, fairly.',
+    title: 'Random name and choice picker',
+    description:
+      'Paste a list and pick one at random, or shuffle the whole thing. Uses real randomness rather than Math.random.',
+    live: false,
+  },
+  {
+    slug: 'barcode-generator',
+    name: 'Barcode generator',
+    category: 'Generators',
+    blurb: 'Standard retail and inventory barcodes.',
+    title: 'Generate a barcode online',
+    description:
+      'Create EAN, UPC and Code 128 barcodes and download them as PNG or SVG.',
+    live: false,
+  },
+
+  // ── Design ──────────────────────
+  {
+    slug: 'color-converter',
+    name: 'Colour converter',
+    category: 'Design',
+    blurb: 'HEX, RGB, HSL and CMYK, all at once.',
+    title: 'Convert colours between HEX, RGB, HSL and CMYK',
+    description:
+      'Pick a colour and read it in every format at once, with a copy button for each.',
+    live: false,
+  },
+  {
+    slug: 'contrast-checker',
+    name: 'Contrast checker',
+    category: 'Design',
+    blurb: 'Check text is readable, to WCAG.',
+    title: 'Colour contrast checker for WCAG AA and AAA',
+    description:
+      'Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.',
+    promise: 'It shows the failing case rather than only a pass or a fail.',
+    live: false,
+  },
+  {
+    slug: 'gradient-generator',
+    name: 'Gradient generator',
+    category: 'Design',
+    blurb: 'Build a CSS gradient and copy the code.',
+    title: 'CSS gradient generator',
+    description:
+      'Build linear and radial CSS gradients visually and copy the code out.',
+    live: false,
+  },
+  {
+    slug: 'shadow-generator',
+    name: 'Box shadow generator',
+    category: 'Design',
+    blurb: 'Design a CSS shadow by eye.',
+    title: 'CSS box shadow generator',
+    description:
+      'Build a CSS box shadow with a live preview, including multiple layered shadows.',
+    live: false,
+  },
+  {
+    slug: 'svg-optimizer',
+    name: 'SVG optimiser',
+    category: 'Design',
+    blurb: 'Strip the junk out of an exported SVG.',
+    title: 'Optimise and minify SVG files',
+    description:
+      'Remove editor metadata and shrink SVG files, with a before and after preview so you can see nothing broke.',
+    live: false,
+  },
+
+  // ── Web ─────────────────────────
+  {
+    slug: 'utm-builder',
+    name: 'UTM link builder',
+    category: 'Web',
+    blurb: 'Build a tracked campaign URL correctly.',
+    title: 'UTM campaign URL builder',
+    description:
+      'Build Google Analytics campaign URLs with the right parameter names, and keep a list of the ones you have made.',
+    live: false,
+  },
+  {
+    slug: 'robots-txt-generator',
+    name: 'Robots.txt generator',
+    category: 'Web',
+    blurb: 'Write a robots.txt without getting it wrong.',
+    title: 'Robots.txt generator',
+    description:
+      'Build a robots.txt with the rules you actually want, including whether AI crawlers are allowed.',
+    live: false,
+  },
+  {
+    slug: 'meta-tag-generator',
+    name: 'Meta tag generator',
+    category: 'Web',
+    blurb: 'Title, description and social cards, previewed.',
+    title: 'Meta tag and Open Graph generator',
+    description:
+      'Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.',
     live: false,
   },
 ];
