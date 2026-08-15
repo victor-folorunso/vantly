@@ -17,9 +17,12 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Case converter](https://vantly.xyz/case-converter): Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.
 - [Word counter](https://vantly.xyz/word-counter): Count words, characters, sentences and paragraphs as you type, with an estimated reading time.
 - [Text cleaner](https://vantly.xyz/text-cleaner): Clean up a list or a block of text: sort it, remove duplicate or empty lines, strip HTML tags, trim whitespace.
+- [Hash generator](https://vantly.xyz/hash-generator): Hash text or a file using the cryptography built into your browser. Nothing is uploaded, which matters more here than anywhere else on the site.
 - [Password generator](https://vantly.xyz/password-generator): Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.
 - [Base64 encoder](https://vantly.xyz/base64-encoder): Convert text or a file to Base64 and back, including data URIs. Runs in your browser.
 - [UUID generator](https://vantly.xyz/uuid-generator): Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.
+- [Colour converter](https://vantly.xyz/color-converter): Pick a colour and read it in every format at once, with a copy button for each.
+- [Contrast checker](https://vantly.xyz/contrast-checker): Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
 - [JPG to WebP](https://vantly.xyz/jpg-to-webp): Convert a JPEG photo to WebP in the browser, in bulk.
 - [PNG to JPG](https://vantly.xyz/png-to-jpg): Convert a PNG image to JPG in the browser, in bulk.

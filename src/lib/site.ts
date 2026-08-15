@@ -439,7 +439,7 @@ export const TOOLS: Tool[] = [
     description:
       'Hash text or a file using the cryptography built into your browser. Nothing is uploaded, which matters more here than anywhere else on the site.',
     promise: 'The file never leaves your machine, which is the entire point of checking a hash.',
-    live: false,
+    live: true,
   },
   {
     slug: 'password-generator',
@@ -587,7 +587,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert colours between HEX, RGB, HSL and CMYK',
     description:
       'Pick a colour and read it in every format at once, with a copy button for each.',
-    live: false,
+    live: true,
   },
   {
     slug: 'contrast-checker',
@@ -598,7 +598,7 @@ export const TOOLS: Tool[] = [
     description:
       'Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.',
     promise: 'It shows the failing case rather than only a pass or a fail.',
-    live: false,
+    live: true,
   },
   {
     slug: 'gradient-generator',
