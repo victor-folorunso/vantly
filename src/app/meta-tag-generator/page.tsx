@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why 60 and 160 characters?",
-    "a": "Those are roughly where Google truncates a title and a description. It measures pixels rather than characters, so it is a guide and not a rule, but going well past them means the end of your sentence is replaced by an ellipsis."
+    "a": "Those are roughly where Google truncates a title and a description."
   },
   {
     "q": "Does the description affect ranking?",
-    "a": "Not directly. It affects whether someone clicks, which is the thing you actually wanted. Google also rewrites it fairly often when it thinks the page answers the query differently."
+    "a": "Not directly."
   },
   {
     "q": "What size should the share image be?",
-    "a": "1200 by 630 pixels. That fits the large card on X, LinkedIn and Facebook without cropping anything important."
+    "a": "1200 by 630 pixels."
   },
   {
     "q": "Why is the Twitter card set to summary_large_image?",
-    "a": "Because the default renders a small square thumbnail beside the text, which wastes the picture. The tool only sets it when you have actually supplied an image."
+    "a": "Because the default renders a small square thumbnail beside the text, which wastes the picture."
   }
 ];
 

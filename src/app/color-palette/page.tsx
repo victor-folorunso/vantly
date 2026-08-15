@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: 'How are the colours chosen from an image?',
-    a: 'By median cut, the standard quantisation algorithm, using the same MIT licensed library Color Thief is built on. The image is scaled down first, because a twelve megapixel photo has far more pixels than the answer needs, and near-white pixels are skipped since they otherwise dominate every palette taken from a product photo.',
+    a: 'By median cut, the standard quantisation algorithm, using the same MIT licensed library Color Thief is built on.',
   },
   {
     q: 'Why does Shades come first rather than a wheel of harmonies?',
-    a: 'Because it is the one a real design system needs. One hue at nine lightness steps is what actually goes into a config file. Complementary and triadic are useful for setting a mood, but you cannot build an interface out of five unrelated hues.',
+    a: 'Because it is the one a real design system needs.',
   },
   {
     q: 'Can I get the palette as code?',
-    a: 'Yes, and that is the point. Hex, CSS custom properties, a Tailwind colour scale, SCSS variables or JSON. Copying six hex codes one at a time and retyping them into a config is the tedious part, so the tool does that part.',
+    a: 'Yes, and that is the point.',
   },
   {
     q: 'Is my image uploaded?',
-    a: 'No. It is read and analysed inside your browser and never sent anywhere.',
+    a: 'No.',
   },
 ];
 
@@ -65,8 +65,7 @@ export default function Page() {
           Build a colour palette
         </h1>
         <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          Pull the colours out of an image, or grow a full set from one you
-          already have. Copy the result as code rather than one swatch at a time.
+          Pull the colours out of an image, or grow a full set from one you already have.
         </p>
 
         <div className="mt-10">

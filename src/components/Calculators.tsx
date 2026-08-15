@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
  */
 
 function money(n: number, currency = ''): string {
-  if (!Number.isFinite(n)) return '—';
+  if (!Number.isFinite(n)) return '';
   return (
     currency +
     n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -85,7 +85,7 @@ export function PercentageCalculator() {
           <Field label="Of" value={b} onChange={setB} />
         </div>
         <p className="mt-4 text-2xl font-semibold tabular-nums">
-          {Number.isFinite((n(a) / 100) * n(b)) ? money((n(a) / 100) * n(b)) : '—'}
+          {Number.isFinite((n(a) / 100) * n(b)) ? money((n(a) / 100) * n(b)) : ''}
         </p>
       </div>
 
@@ -96,7 +96,7 @@ export function PercentageCalculator() {
           <Field label="Of" value={d} onChange={setD} />
         </div>
         <p className="mt-4 text-2xl font-semibold tabular-nums">
-          {Number.isFinite((n(c) / n(d)) * 100) ? `${((n(c) / n(d)) * 100).toFixed(2)}%` : '—'}
+          {Number.isFinite((n(c) / n(d)) * 100) ? `${((n(c) / n(d)) * 100).toFixed(2)}%` : ''}
         </p>
       </div>
 
@@ -107,7 +107,7 @@ export function PercentageCalculator() {
           <Field label="To" value={f} onChange={setF} />
         </div>
         <p className="mt-4 text-2xl font-semibold tabular-nums">
-          {Number.isFinite(change) ? `${change > 0 ? '+' : ''}${change.toFixed(2)}%` : '—'}
+          {Number.isFinite(change) ? `${change > 0 ? '+' : ''}${change.toFixed(2)}%` : ''}
         </p>
         {/* The asymmetry nobody expects, and the reason "we cut it back by the
             same percentage" is wrong. */}
@@ -256,7 +256,7 @@ export function LoanCalculator() {
           <Row label="Of which interest" value={money(interest)} />
           <Row
             label="Interest as a share of what you borrowed"
-            value={P ? `${((interest / P) * 100).toFixed(0)}%` : '—'}
+            value={P ? `${((interest / P) * 100).toFixed(0)}%` : ''}
           />
           <p className="mt-4 text-xs leading-relaxed text-ink-faint">
             The monthly payment is not the amount divided by the months. Early

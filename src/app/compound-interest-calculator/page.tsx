@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why split contributions from growth?",
-    "a": "Because a single final number tells you nothing about whether to believe it. Early on almost all of the balance is money you put in. The point at which growth overtakes contributions is the thing worth seeing, and it usually arrives later than people expect."
+    "a": "Because a single final number tells you nothing about whether to believe it."
   },
   {
     "q": "Is a fixed annual return realistic?",
-    "a": "No, and no calculator that shows one is realistic. Real returns arrive unevenly, and the order matters: a bad year early does more damage than a bad year late. Treat this as a shape rather than a forecast."
+    "a": "No, and no calculator that shows one is realistic."
   },
   {
     "q": "Does it account for inflation, fees or tax?",
-    "a": "No, and all three are real. A 7 percent return with 3 percent inflation is about 4 percent in what the money will actually buy. Fees come off before you see anything."
+    "a": "No, and all three are real."
   }
 ];
 

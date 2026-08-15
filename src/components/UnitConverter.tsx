@@ -239,7 +239,7 @@ export default function UnitConverter() {
             To
           </label>
           <output className="mt-2 block w-full truncate rounded-lg border border-line bg-surface-alt px-3 py-2.5 text-lg tabular-nums">
-            {Number.isNaN(result) ? '—' : pretty(result)}
+            {Number.isNaN(result) ? '' : pretty(result)}
           </output>
           <select
             value={toId}

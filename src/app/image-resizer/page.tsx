@@ -14,13 +14,13 @@ export const metadata: Metadata = {
 
 const FAQ = [
   { q: 'Why can I only set the longest edge?',
-    a: 'Because it is what people actually mean. Setting width and height separately produces a stretched image the moment they do not match the original ratio, and nothing warns you it happened. Fitting the longest edge keeps the picture correct and still gets it under whatever limit you are working to.' },
+    a: 'Because it is what people actually mean.' },
   { q: 'Can I make an image bigger?',
-    a: 'No, and that is deliberate. Scaling up cannot add detail that was never captured. It gives you a larger, blurrier file. If you need more resolution the answer is a better original, not a bigger copy.' },
+    a: 'No, and that is deliberate.' },
   { q: 'Does resizing lose quality?',
-    a: 'Scaling down is generally clean. What costs quality is the re-encoding afterwards, which is why the quality slider is there. PNG is lossless if you would rather not lose anything at all.' },
+    a: 'Scaling down is generally clean.' },
   { q: 'Are my images uploaded?',
-    a: 'No. Everything happens inside your browser, so the files never leave your computer.' },
+    a: 'No.' },
 ];
 
 export default function Page() {

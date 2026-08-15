@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why is my file not uploaded?",
-    "a": "Because the usual reason to hash a file is to check nobody tampered with it, and sending it to a stranger to find out rather defeats the exercise. Your browser reads the bytes locally and does the maths itself."
+    "a": "Because the usual reason to hash a file is to check nobody tampered with it, and sending it to a stranger to find out rather defeats the exercise."
   },
   {
     "q": "Why is MD5 not offered?",
-    "a": "MD5 is broken. Two different files can be made to produce the same MD5 deliberately, so it proves nothing about tampering. It is still fine as a rough checksum against accidental corruption, but putting it in a list beside SHA-256 implies they are alternatives, and they are not."
+    "a": "MD5 is broken."
   },
   {
     "q": "My hash does not match the one on the download page.",
-    "a": "Check the algorithm first. Download pages often publish SHA-256 without labelling it, and comparing it against SHA-1 will never match. If the algorithm is right and it still differs, do not use the file."
+    "a": "Check the algorithm first."
   },
   {
     "q": "Is there a file size limit?",
-    "a": "No, though very large files take a moment because the whole thing has to be read. There is a progress bar so you can tell it is working."
+    "a": "No, though very large files take a moment because the whole thing has to be read."
   }
 ];
 
@@ -62,7 +62,9 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Generate a hash</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">SHA-256 and friends, for text or a whole file. Read on your machine, never uploaded.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          SHA-256 and friends, for text or a whole file.
+        </p>
 
         <div className="mt-10">
           <HashGenerator />

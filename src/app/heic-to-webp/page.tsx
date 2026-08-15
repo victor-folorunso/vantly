@@ -25,15 +25,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: 'Why WebP rather than JPG?',
-    a: 'WebP files are meaningfully smaller at the same visible quality, which matters if the photos are going on a website. Every current browser reads them. Choose JPG instead if the file has to open in older software or go to a printing service.',
+    a: 'WebP files are meaningfully smaller at the same visible quality, which matters if the photos are going on a website.',
   },
   {
     q: 'How many photos can I convert at once?',
-    a: 'There is no limit. Drop the whole camera roll. They convert one after another so the page stays responsive, and the finished set comes back as a single zip.',
+    a: 'There is no limit.',
   },
   {
     q: 'Are my photos uploaded anywhere?',
-    a: 'No. The conversion runs inside your browser, so the photos never leave your computer. That matters more here than with most file types, because these are personal photos.',
+    a: 'No.',
   },
 ];
 

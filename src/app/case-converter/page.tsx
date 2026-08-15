@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "What is the difference between title case and sentence case?",
-    "a": "Title case capitalises every word, the way a headline does. Sentence case capitalises only the first word of each sentence, and it looks for full stops rather than just the start of the box, so a paragraph comes out correctly."
+    "a": "Title case capitalises every word, the way a headline does."
   },
   {
     "q": "Why does camelCase handle my existing camelCase correctly?",
-    "a": "The splitter looks for the hump between a lowercase letter and an uppercase one, so getHTTPResponse is read as three words rather than one. Converting between programming cases repeatedly does not degrade the text."
+    "a": "The splitter looks for the hump between a lowercase letter and an uppercase one, so getHTTPResponse is read as three words rather than one."
   },
   {
     "q": "Is there a length limit?",
-    "a": "No. It runs in your browser, so the only limit is your own machine."
+    "a": "No."
   }
 ];
 

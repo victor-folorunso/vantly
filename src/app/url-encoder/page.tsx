@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Which of the two encode options do I want?",
-    "a": "If you are encoding one value to drop into a query string, use the first. If you have a whole URL with slashes and question marks that should stay as they are, use the second. Using the wrong one is the commonest reason a link breaks."
+    "a": "If you are encoding one value to drop into a query string, use the first."
   },
   {
     "q": "Why did decoding fail?",
-    "a": "A stray percent sign that is not followed by two hex digits is invalid, and the browser refuses rather than guessing. Usually it means the text was encoded twice, or truncated."
+    "a": "A stray percent sign that is not followed by two hex digits is invalid, and the browser refuses rather than guessing."
   }
 ];
 

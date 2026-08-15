@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why is the payment not the amount divided by the months?",
-    "a": "Because interest is charged on what is still owed, and that changes every month. The payment is fixed but its composition is not: early on it is mostly interest, and only later is it mostly repaying what you borrowed."
+    "a": "Because interest is charged on what is still owed, and that changes every month."
   },
   {
     "q": "Why does paying extra early save so much more than paying extra later?",
-    "a": "Because every pound off the balance early removes the interest that pound would have generated for the rest of the term. The same payment in the final year removes almost no future interest, because there is almost none left to remove."
+    "a": "Because every pound off the balance early removes the interest that pound would have generated for the rest of the term."
   },
   {
     "q": "Does this include fees, insurance or tax?",
-    "a": "No. It is the pure loan repayment. Arrangement fees, buildings insurance and property tax are real and are not in this number, so treat it as a floor rather than the actual monthly cost."
+    "a": "No."
   },
   {
     "q": "Is my data sent anywhere?",
-    "a": "No. It is all worked out in your browser, which matters given what people put into a mortgage calculator."
+    "a": "No."
   }
 ];
 

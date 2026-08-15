@@ -145,11 +145,7 @@ export default function FilePicker() {
               <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
             </svg>
           </div>
-          <p className="mt-5 text-xl font-medium tracking-tight">Drop your files to begin</p>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink-soft">
-            As many as you like. We will show you what each one can turn into,
-            and nothing is uploaded.
-          </p>
+          <p className="mt-5 text-xl font-medium tracking-tight">Drop your files</p>
           <button
             onClick={() => inputRef.current?.click()}
             className="mt-6 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform hover:scale-[1.02] active:scale-100"

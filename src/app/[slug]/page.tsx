@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (conversion) {
     const working = canvasHandles(conversion);
     return {
-      title: working ? conversionTitle(conversion) : `${conversionTitle(conversion)} — coming soon`,
+      title: conversionTitle(conversion),
       description: conversionDescription(conversion),
       alternates: { canonical: `${SITE.url}/${slug}` },
       // A page that works belongs in the index. One that does not stays out,
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const tool = toolBySlug(slug);
   if (!tool) return {};
   return {
-    title: `${tool.name} — coming soon`,
+    title: tool.name,
     description: tool.description,
     alternates: { canonical: `${SITE.url}/${slug}` },
     // Out of the index until it works. Ranking for "compress pdf" and then not
@@ -99,11 +99,6 @@ export default async function Page({ params }: Params) {
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
           {conversionTitle(conversion)}
         </h1>
-        <p className="mt-3 max-w-2xl text-ink-soft">
-          Convert as many {conversion.from.label} files as you like at once. It
-          runs in your browser, so nothing is uploaded and there is no limit on
-          how many you can do.
-        </p>
 
         <div className="mt-10">
           <ImageConvert
@@ -155,7 +150,7 @@ export default async function Page({ params }: Params) {
   const siblings = SOON_TOOLS.filter((t) => t.category === tool.category && t.slug !== tool.slug);
 
   return (
-    <Shell eyebrow={tool.category} heading={tool.name} blurb={tool.description} promise={tool.promise}>
+    <Shell eyebrow={tool.category} heading={tool.name} blurb={tool.description}>
       {siblings.length > 0 && (
         <Related
           heading={`Also planned in ${tool.category}`}
@@ -170,13 +165,11 @@ function Shell({
   eyebrow,
   heading,
   blurb,
-  promise,
   children,
 }: {
   eyebrow: string;
   heading: string;
   blurb: string;
-  promise?: string;
   children?: React.ReactNode;
 }) {
   return (
@@ -237,28 +230,20 @@ function ConversionNotes({ conversion }: { conversion: Conversion }) {
 
   if (to === 'png' && LOSSY.includes(from)) {
     notes.push(
-      `PNG is lossless, so nothing more is thrown away here. It does not undo what ${conversion.from.label} already discarded, though, and the file will usually come out larger rather than smaller.`,
+      `PNG is lossless, but it cannot recover what ${conversion.from.label} already discarded, and the file will usually be larger.`,
     );
   }
   if (to === 'jpg' && from === 'png') {
-    notes.push(
-      'JPG has no transparency. Anything see through in the original is filled with white, because leaving it alone would come out black.',
-    );
+    notes.push('JPG has no transparency. Transparent areas become white.');
   }
   if (to === 'webp') {
-    notes.push(
-      `WebP is typically 25 to 35 percent smaller than ${conversion.from.label} at the same visible quality, and every current browser reads it. Older desktop software sometimes will not.`,
-    );
+    notes.push(`WebP is usually 25 to 35 percent smaller than ${conversion.from.label} at the same quality.`);
   }
   if (from === 'gif') {
-    notes.push(
-      'Only the first frame of an animated GIF is converted. Still images come through whole.',
-    );
+    notes.push('Only the first frame of an animated GIF is converted.');
   }
   if (LOSSY.includes(from) && LOSSY.includes(to)) {
-    notes.push(
-      'Both formats are lossy, so this is a second round of compression on top of the first. At 90 percent quality that is rarely visible, but converting back and forth repeatedly will show.',
-    );
+    notes.push('Both formats are lossy, so this compresses again on top of the first pass.');
   }
 
   if (!notes.length) return null;

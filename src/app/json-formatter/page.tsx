@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why does it tell me the line and column for JSON?",
-    "a": "Because \"Unexpected token\" on its own is useless in a four thousand line file. The position is pulled out of the parser error and turned into a line and column, which is the whole reason to use this rather than pressing prettify in an editor."
+    "a": "Because \"Unexpected token\" on its own is useless in a four thousand line file."
   },
   {
     "q": "Is my code uploaded?",
-    "a": "No. It is formatted in your browser, which matters if what you are pasting is a config file or an API response with real data in it."
+    "a": "No."
   },
   {
     "q": "What does minify actually do here?",
-    "a": "It removes whitespace and nothing else. It will not rename variables or drop unused code, because those need to understand the program and belong in a build step. A minifier that changes behaviour is worse than no minifier."
+    "a": "It removes whitespace and nothing else."
   },
   {
     "q": "Is there a size limit?",
-    "a": "No. Very large files take a moment to format because the work happens on your machine, but nothing is capped."
+    "a": "No."
   }
 ];
 
@@ -62,7 +62,9 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Format and validate code</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">JSON, HTML, XML, CSS and JavaScript. Beautify to read it, minify to ship it, and get told exactly where the error is.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          JSON, HTML, XML, CSS and JavaScript.
+        </p>
 
         <div className="mt-10">
           <CodeFormatter initial="json" />

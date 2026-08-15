@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why do other Base64 tools break on emoji?",
-    "a": "Because btoa, the browser function most of them call directly, only accepts Latin-1. Anything outside it throws. This encodes the text to UTF-8 bytes first, which is what people mean when they say Base64 encode a string."
+    "a": "Because btoa, the browser function most of them call directly, only accepts Latin-1."
   },
   {
     "q": "Is Base64 encryption?",
-    "a": "No, and this matters. It is an encoding, fully reversible by anyone, with no key involved. It makes binary data safe to put in text, it does not hide anything."
+    "a": "No, and this matters."
   },
   {
     "q": "Can I encode a file?",
-    "a": "Not yet on this page. It is on the list."
+    "a": "Not yet on this page."
   }
 ];
 
@@ -58,7 +58,9 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Base64 encode and decode</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Convert text to Base64 and back. Handles accents and emoji, which most encoders do not.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          Convert text to Base64 and back.
+        </p>
 
         <div className="mt-10">
           <TextTool preset="base64" outputLabel="Result" />

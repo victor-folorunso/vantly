@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Should the tip be worked out before or after tax?",
-    "a": "Custom says before, on the food and drink rather than on the tax. In practice most people tip on the total because it is easier. The difference is small on a small bill and not small on a large one."
+    "a": "Custom says before, on the food and drink rather than on the tax."
   },
   {
     "q": "What is a normal tip?",
-    "a": "It depends entirely on where you are, which is why there is no default pretending otherwise. Around 15 to 20 percent is usual in the United States. In much of Europe service is included and rounding up is enough. In Japan tipping can be taken as rude."
+    "a": "It depends entirely on where you are, which is why there is no default pretending otherwise."
   },
   {
     "q": "Why does it tell me the split does not divide evenly?",
-    "a": "Because it usually does not, and the person paying ends up quietly covering the difference. Better to know it is a penny than to argue about it."
+    "a": "Because it usually does not, and the person paying ends up quietly covering the difference."
   }
 ];
 

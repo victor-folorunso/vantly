@@ -29,23 +29,23 @@ const schema = {
 const FAQ = [
   {
     q: 'Why will my iPhone photos not open on Windows?',
-    a: 'iPhones have saved photos as HEIC since iOS 11 in 2017. It is a better format than JPG, smaller for the same quality, but Windows needs a codec pack that is not installed by default, and plenty of websites and older programs still will not accept it.',
+    a: 'iPhones have saved photos as HEIC since iOS 11 in 2017.',
   },
   {
     q: 'How many photos can I convert at once?',
-    a: 'There is no limit. Drop the whole camera roll if you like. They convert one after another so the page stays responsive, and you can download the finished set as a single zip.',
+    a: 'There is no limit.',
   },
   {
     q: 'Are my photos uploaded to a server?',
-    a: 'No. The conversion runs inside your browser, so the photos never leave your computer. That matters more here than with most file types, because these are personal photos.',
+    a: 'No.',
   },
   {
     q: 'Should I pick JPG or WebP?',
-    a: 'JPG if anything at all needs to open it, including old software and printing services. WebP if it is for the web, since the files are meaningfully smaller at the same quality and every current browser reads them.',
+    a: 'JPG if anything at all needs to open it, including old software and printing services.',
   },
   {
     q: 'Can I stop my iPhone making HEIC files in the first place?',
-    a: 'Yes. Settings, then Camera, then Formats, then choose Most Compatible. New photos will be JPG. It uses more storage, and it does nothing to the photos you have already taken.',
+    a: 'Yes. Settings, Camera, Formats, Most Compatible. New photos will be JPG.',
   },
 ];
 

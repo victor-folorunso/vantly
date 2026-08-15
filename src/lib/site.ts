@@ -44,11 +44,6 @@ export type Tool = {
   /** The <title> and h1. Written for what somebody actually types in. */
   title: string;
   description: string;
-  /**
-   * What the finished tool will refuse to do to you. Shown on the coming soon
-   * page, because it is the only thing worth saying before a tool exists.
-   */
-  promise?: string;
   /** False until the route exists. Keeps the sitemap free of 404s. */
   live: boolean;
 };
@@ -83,7 +78,6 @@ export const TOOLS: Tool[] = [
     title: 'Remove image background free, full resolution, no watermark',
     description:
       'Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark, no account and no upload.',
-    promise: 'Full resolution, not a 612 pixel preview you have to pay to unlock.',
     live: true,
   },
   {
@@ -94,7 +88,6 @@ export const TOOLS: Tool[] = [
     title: 'Enhance a photo online, free and without upload',
     description:
       'Correct exposure, contrast, colour and sharpness with auto levels, and drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.',
-    promise: 'Real corrections to the pixels you have. No invented detail and no watermark.',
     live: true,
   },
   {
@@ -105,7 +98,6 @@ export const TOOLS: Tool[] = [
     title: 'Compress images without losing quality',
     description:
       'Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.',
-    promise: 'No watermark on the result, and no cap on how many you can do.',
     live: true,
   },
   {
@@ -116,7 +108,6 @@ export const TOOLS: Tool[] = [
     title: 'Resize images in bulk, keeping the aspect ratio',
     description:
       'Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.',
-    promise: 'Any pixel value you type, not only the presets.',
     live: true,
   },
   {
@@ -127,7 +118,6 @@ export const TOOLS: Tool[] = [
     title: 'Favicon and app icon generator',
     description:
       'Generate every favicon and app icon size from a single image, with the HTML to paste in. Runs in your browser.',
-    promise: 'The full set and the markup, without an account.',
     live: false,
   },
 
@@ -140,7 +130,6 @@ export const TOOLS: Tool[] = [
     title: 'Open and read a PDF online',
     description:
       'Read any PDF in your browser. Search the text, jump between pages, and nothing is uploaded anywhere.',
-    promise: 'It opens the file and shows it to you. That is the whole tool.',
     live: false,
   },
   {
@@ -151,7 +140,6 @@ export const TOOLS: Tool[] = [
     title: 'Merge PDF files into one',
     description:
       'Combine multiple PDFs into a single file. Drag to reorder, remove pages you do not want, and keep everything on your own machine.',
-    promise: 'No two-files-per-day limit.',
     live: false,
   },
   {
@@ -162,7 +150,6 @@ export const TOOLS: Tool[] = [
     title: 'Split a PDF or extract pages',
     description:
       'Split a PDF into separate files or extract a page range. Runs in your browser with no upload.',
-    promise: 'Any page range, not just the first ten.',
     live: false,
   },
   {
@@ -173,7 +160,6 @@ export const TOOLS: Tool[] = [
     title: 'Compress a PDF to a smaller size',
     description:
       'Reduce PDF file size in your browser. Choose how hard to compress and see the result before you save it.',
-    promise: 'No file size ceiling on the free version.',
     live: false,
   },
   {
@@ -184,7 +170,6 @@ export const TOOLS: Tool[] = [
     title: 'Convert images to a single PDF',
     description:
       'Combine JPG, PNG and HEIC images into one PDF. Reorder them, choose the page size, and nothing leaves your computer.',
-    promise: 'As many images as you like, in the order you put them.',
     live: false,
   },
 
@@ -196,7 +181,6 @@ export const TOOLS: Tool[] = [
     title: 'Open a DOCX file online without Word',
     description:
       'View Word documents in your browser. No Office licence, no account, no upload. Formatting, tables and images are kept.',
-    promise: 'It opens the file. No trial, no sign in, no upload.',
     live: false,
   },
   {
@@ -207,7 +191,6 @@ export const TOOLS: Tool[] = [
     title: 'Open a PPTX file online without PowerPoint',
     description:
       'View PowerPoint presentations in your browser. Step through the slides, read the notes, and keep the file on your own machine.',
-    promise: 'The whole deck, not the first three slides.',
     live: false,
   },
   {
@@ -218,7 +201,6 @@ export const TOOLS: Tool[] = [
     title: 'Open an XLSX file online without Excel',
     description:
       'View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered, with nothing uploaded.',
-    promise: 'Every row and every sheet, not a preview of the first one.',
     live: false,
   },
   {
@@ -229,7 +211,6 @@ export const TOOLS: Tool[] = [
     title: 'Open and read an EPUB file online',
     description:
       'Read EPUB ebooks in your browser. Change the text size, jump between chapters, and keep the file on your machine.',
-    promise: 'No library account and no upload to read your own book.',
     live: false,
   },
 
@@ -242,7 +223,6 @@ export const TOOLS: Tool[] = [
     title: 'Open and filter a large CSV file',
     description:
       'View, sort and filter CSV files too large for a spreadsheet. Handles hundreds of thousands of rows in your browser, with no row limit and no upload.',
-    promise: 'Every row, not the first thousand.',
     live: false,
   },
   {
@@ -253,7 +233,6 @@ export const TOOLS: Tool[] = [
     title: 'Convert CSV to JSON and back',
     description:
       'Convert CSV to JSON or JSON to CSV in your browser. Choose the delimiter, handle quoted fields, and keep the file on your machine.',
-    promise: 'No row cap and no sign up to download the result.',
     live: false,
   },
 
@@ -266,7 +245,6 @@ export const TOOLS: Tool[] = [
     title: 'Base64 encode and decode',
     description:
       'Encode text or files to Base64 and decode them back, including data URIs for images. Runs in your browser.',
-    promise: 'Files as well as text, with no size limit.',
     live: false,
   },
   {
@@ -299,7 +277,6 @@ export const TOOLS: Tool[] = [
     title: 'Trim an MP3 or audio file',
     description:
       'Cut and trim audio in your browser. Drag the handles, hear the result, export it. No upload queue and no watermark.',
-    promise: 'No upload wait, because the file never goes anywhere.',
     live: false,
   },
   {
@@ -310,7 +287,6 @@ export const TOOLS: Tool[] = [
     title: 'Compress a video file',
     description:
       'Reduce video file size in your browser. Choose the quality, watch the size estimate, and keep the file on your machine.',
-    promise: 'No watermark burned into the result.',
     live: false,
   },
   {
@@ -333,7 +309,6 @@ export const TOOLS: Tool[] = [
     title: 'Format and validate JSON online',
     description:
       'Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.',
-    promise: 'It tells you where the error is, not just that there is one.',
     live: true,
   },
   {
@@ -384,7 +359,6 @@ export const TOOLS: Tool[] = [
     title: 'Test and debug a regular expression online',
     description:
       'Build regular expressions with live highlighting, capture groups and a plain English explanation of what each part does.',
-    promise: 'It explains the pattern, not only whether it matched.',
     live: false,
   },
   {
@@ -395,7 +369,6 @@ export const TOOLS: Tool[] = [
     title: 'Cron expression generator and explainer',
     description:
       'Build and read cron schedules in plain English, with the next run times shown so you can check it does what you meant.',
-    promise: 'It shows the next five times it will actually run.',
     live: false,
   },
   {
@@ -406,7 +379,6 @@ export const TOOLS: Tool[] = [
     title: 'Compare two texts and see the differences',
     description:
       'Find what changed between two pieces of text or code, highlighted line by line and word by word.',
-    promise: 'No length limit and no account to see the result.',
     live: true,
   },
 
@@ -461,7 +433,6 @@ export const TOOLS: Tool[] = [
     title: 'Generate SHA-256, SHA-1 and SHA-512 hashes',
     description:
       'Hash text or a file using the cryptography built into your browser. Nothing is uploaded, which matters more here than anywhere else on the site.',
-    promise: 'The file never leaves your machine, which is the entire point of checking a hash.',
     live: true,
   },
   {
@@ -472,7 +443,6 @@ export const TOOLS: Tool[] = [
     title: 'Generate a strong random password',
     description:
       'Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.',
-    promise: 'Generated in your browser and never sent anywhere.',
     live: true,
   },
   {
@@ -577,7 +547,6 @@ export const TOOLS: Tool[] = [
     title: 'Create a QR code online',
     description:
       'Generate a QR code for a URL, plain text, a phone number or Wi-Fi credentials, and download it as PNG or SVG.',
-    promise: 'No tracking redirect in the middle. The code points where you said.',
     live: false,
   },
   {
@@ -610,7 +579,6 @@ export const TOOLS: Tool[] = [
     title: 'Colour palette generator and extractor',
     description:
       'Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.',
-    promise: 'The palette comes out as code, not as six hex codes you copy one at a time.',
     live: true,
   },
   {
@@ -631,7 +599,6 @@ export const TOOLS: Tool[] = [
     title: 'Colour contrast checker for WCAG AA and AAA',
     description:
       'Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.',
-    promise: 'It shows the failing case rather than only a pass or a fail.',
     live: true,
   },
   {

@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Are these safe to use as database keys?",
-    "a": "Yes. Version 4 UUIDs carry 122 random bits, which is enough that a collision is not something you need to plan for."
+    "a": "Yes."
   },
   {
     "q": "Are they generated on a server?",
-    "a": "No. Your browser generates them with crypto.randomUUID, so nothing is transmitted and the same list is not sitting in somebody else logs."
+    "a": "No."
   },
   {
     "q": "Why no version 1?",
-    "a": "Version 1 embeds a timestamp and the machine MAC address, which leaks information and is rarely what people actually want. If you need sortable ids, UUID v7 is the better answer and it is on the list."
+    "a": "Version 1 embeds a timestamp and the machine MAC address, which leaks information and is rarely what people actually want."
   }
 ];
 

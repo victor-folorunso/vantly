@@ -255,7 +255,7 @@ export function ContrastChecker() {
       <div className="rounded-xl border border-line bg-surface p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Ratio</p>
         <p className="mt-1 text-4xl font-semibold tabular-nums">
-          {ratio ? ratio.toFixed(2) : '—'}
+          {ratio ? ratio.toFixed(2) : ''}
           <span className="text-xl text-ink-faint">:1</span>
         </p>
 
@@ -267,7 +267,7 @@ export function ContrastChecker() {
               <li key={t.label} className="flex items-center justify-between gap-3 text-sm">
                 <span className="text-ink-soft">{t.label}</span>
                 <span className={`shrink-0 tabular-nums ${pass ? 'text-ink' : 'text-accent'}`}>
-                  {ratio === null ? '—' : pass ? 'Passes' : `${short.toFixed(2)} short`}
+                  {ratio === null ? '' : pass ? 'Passes' : `${short.toFixed(2)} short`}
                 </span>
               </li>
             );

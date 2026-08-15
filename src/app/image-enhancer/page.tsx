@@ -14,23 +14,23 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: 'Does this use AI to add detail?',
-    a: 'No, and that is deliberate. Every change is a real operation on the pixels already in your photo: stretching the tonal range, sharpening edges, shifting colour. Nothing is invented. Tools that promise to recover detail from a blurry photo are generating plausible texture that was never there, which is fine for a wallpaper and misleading for anything you need to be true.',
+    a: 'No, and that is deliberate.',
   },
   {
     q: 'What does auto levels actually do?',
-    a: 'It finds the darkest and lightest tones actually present and stretches them to reach true black and true white. A photo shot through haze, or a scan, uses only the middle of the range and looks flat. This is usually the single change that makes the biggest difference, which is why it is on by default.',
+    a: 'It finds the darkest and lightest tones actually present and stretches them to reach true black and true white.',
   },
   {
     q: 'Why is my blurry photo still blurry?',
-    a: 'Sharpening increases the contrast at edges that exist. It cannot recover focus, because the information was never recorded. Turning sharpness up far enough produces halos around edges rather than a sharper picture.',
+    a: 'Sharpening increases the contrast at edges that exist.',
   },
   {
     q: 'Is my photo uploaded?',
-    a: 'No. It is read, adjusted and saved entirely inside your browser.',
+    a: 'No.',
   },
   {
     q: 'Why is the download a PNG?',
-    a: 'PNG is lossless, so re-saving does not add compression damage on top of whatever the original already carried. If you want a smaller file afterwards, run it through the compressor.',
+    a: 'PNG is lossless, so re-saving does not add compression damage on top of whatever the original already carried.',
   },
 ];
 
@@ -69,8 +69,7 @@ export default function Page() {
           Enhance a photo
         </h1>
         <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          Fix a flat or dull picture, and drag the handle to see exactly what
-          changed. Everything happens in your browser.
+          Fix a flat or dull picture, and drag the handle to see exactly what changed.
         </p>
 
         <div className="mt-10">

@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why does capitalisation matter?",
-    "a": "Analytics treats Email and email as two different mediums. Mix them and one campaign turns into several rows, each looking like it underperformed. Nothing errors and nobody notices until someone tries to total it up weeks later."
+    "a": "Analytics treats Email and email as two different mediums."
   },
   {
     "q": "Which parameters do I actually need?",
-    "a": "Source and medium. Without those the visit gets filed as direct traffic and the link may as well not have been tagged. Campaign is worth adding. Term and content only matter if you are splitting one campaign across several ads."
+    "a": "Source and medium."
   },
   {
     "q": "Can I put the parameters after the hash?",
-    "a": "No. Anything after # never leaves the browser, so analytics cannot see it. If your URL already has a fragment, the parameters go before it."
+    "a": "No. Anything after # never leaves the browser, so analytics cannot see it."
   },
   {
     "q": "Do these work with tools other than Google Analytics?",
-    "a": "Yes. UTM parameters are a plain convention rather than a Google feature, and every serious analytics tool reads them."
+    "a": "Yes."
   }
 ];
 

@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "What do AA and AAA mean?",
-    "a": "They are levels in the Web Content Accessibility Guidelines. AA needs a ratio of 4.5 to 1 for normal text and is what most legislation and company standards require. AAA needs 7 to 1 and is stricter than most designs manage for body text."
+    "a": "They are levels in the Web Content Accessibility Guidelines."
   },
   {
     "q": "What counts as large text?",
-    "a": "From 18.66px if it is bold, or 24px otherwise. Larger text is legible at a lower contrast, which is why it gets its own lower threshold."
+    "a": "From 18.66px if it is bold, or 24px otherwise."
   },
   {
     "q": "Why show how far short I am rather than just fail?",
-    "a": "Because a fail on its own leaves you guessing. Being 0.3 short is usually one step of lightness away, and being 2 short means rethinking the pair. Those need different responses."
+    "a": "Because a fail on its own leaves you guessing."
   },
   {
     "q": "Does this cover everything about accessible colour?",
-    "a": "No. It checks contrast, which is the part with a number attached. It cannot tell you whether you are relying on colour alone to carry meaning, which is a separate and equally common failure."
+    "a": "No."
   }
 ];
 

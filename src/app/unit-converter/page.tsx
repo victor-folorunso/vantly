@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Are the conversions exact?",
-    "a": "The factors are the defined ones rather than rounded approximations. An inch is exactly 25.4 millimetres and a pound is exactly 0.45359237 kilograms, because those are definitions rather than measurements. What you see is limited only by how many decimal places are worth showing."
+    "a": "The factors are the defined ones rather than rounded approximations."
   },
   {
     "q": "Why are there two kinds of kilobyte?",
-    "a": "Because there genuinely are. Storage manufacturers use 1000 bytes and most operating systems count 1024, which is why a new 1TB drive shows up as about 931GB. Both are listed so you can see which one you are being quoted."
+    "a": "Because there genuinely are."
   },
   {
     "q": "Why are US and UK pints different?",
-    "a": "They just are, and by a lot: a UK pint is about 20 percent larger. The same applies to gallons and fluid ounces, so recipes that cross the Atlantic go wrong quietly. Both are listed separately for that reason."
+    "a": "They just are, and by a lot: a UK pint is about 20 percent larger."
   },
   {
     "q": "Why does temperature work differently?",
-    "a": "Because Fahrenheit has an offset as well as a scale, so it cannot be converted by multiplying alone. Treating it like the other units is the classic bug in converters, and it produces answers that look plausible and are wrong."
+    "a": "Because Fahrenheit has an offset as well as a scale, so it cannot be converted by multiplying alone."
   }
 ];
 
@@ -62,7 +62,9 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Convert units</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Length, weight, temperature, area, volume, speed and data. Every other unit shown at the same time.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          Length, weight, temperature, area, volume, speed and data.
+        </p>
 
         <div className="mt-10">
           <UnitConverter />

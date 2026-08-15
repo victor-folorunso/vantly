@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Can I paste a colour in rather than pick one?",
-    "a": "Yes. Hex with or without the hash, three digit shorthand, rgb() and hsl() are all understood, in either comma or space separated form."
+    "a": "Yes."
   },
   {
     "q": "Is the CMYK accurate for printing?",
-    "a": "It is the standard conversion, which is what any screen based tool can honestly give you. Matching a specific printing press needs that press colour profile, so treat this as a starting point rather than a final answer."
+    "a": "It is the standard conversion, which is what any screen based tool can honestly give you."
   },
   {
     "q": "What is HSL useful for?",
-    "a": "Adjusting a colour rather than describing it. Keeping the hue and changing only the lightness gives you a matching lighter or darker shade, which is much harder to do by eye in hex."
+    "a": "Adjusting a colour rather than describing it."
   }
 ];
 

@@ -14,23 +14,23 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "What does Disallow: / do?",
-    "a": "It asks every crawler to ignore the entire site. That is correct for a staging server and catastrophic on a live one, and it is the most common reason a site disappears from search overnight. It usually arrives by being copied from staging to production."
+    "a": "It asks every crawler to ignore the entire site."
   },
   {
     "q": "Is robots.txt a security measure?",
-    "a": "No, and treating it as one is a mistake. It is a polite request that well behaved crawlers honour and everything else ignores. The file is public, so listing a secret path in it advertises that path to anyone who looks."
+    "a": "No, and treating it as one is a mistake."
   },
   {
     "q": "Does it stop a page appearing in Google?",
-    "a": "Not reliably. Blocking a URL stops it being crawled, but it can still be listed if other sites link to it. To keep a page out of results properly, let it be crawled and serve a noindex tag."
+    "a": "Not reliably."
   },
   {
     "q": "Should I block AI crawlers?",
-    "a": "It depends what you want. Blocking them keeps your content out of training data, and also keeps you out of AI answers, which is increasingly how people find things. The tool offers both without pushing you either way."
+    "a": "Blocking keeps you out of the training data and out of AI answers, which is increasingly how people find things."
   },
   {
     "q": "Where does the file go?",
-    "a": "At the root of the domain, so example.com/robots.txt. In a subfolder it does nothing at all."
+    "a": "At the root of the domain, so example.com/robots.txt."
   }
 ];
 

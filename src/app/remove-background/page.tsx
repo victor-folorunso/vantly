@@ -14,27 +14,27 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: 'What kind of images does this work on?',
-    a: 'Anything with a flat, even background: a logo, a product photographed on white, a screenshot, a scanned signature, a graphic. For those it is exact and instant. A person photographed against a busy room is a different problem and this will not do it well.',
+    a: 'Anything with a flat, even background: a logo, a product photographed on white, a screenshot, a scanned signature, a graphic.',
   },
   {
     q: 'Why is there no resolution limit?',
-    a: 'Because there is no cost to recover. The work happens on your machine, so there is no server time to pay for and no reason to hold the full size version back. Tools that give you a 612 by 408 preview and charge for the real one are describing their business model, not a technical limit.',
+    a: 'Because there is no cost to recover.',
   },
   {
     q: 'The white inside my subject stayed. Is that a bug?',
-    a: 'No, that is deliberate. The removal spreads inward from the edges of the image rather than deleting every matching pixel, so white eyes, white text and white gaps inside the subject survive. Deleting every white pixel is the commonest failure of simple background removal and it is very hard to undo.',
+    a: 'No, that is deliberate.',
   },
   {
     q: 'Parts of my subject are disappearing.',
-    a: 'Lower the tolerance. It controls how different a pixel can be from the background and still count as background, so a high value starts eating anything pale. If the background is uneven you may need to raise it instead and accept a rougher edge.',
+    a: 'Lower the tolerance.',
   },
   {
     q: 'Why is the download a PNG?',
-    a: 'JPG cannot store transparency. Saving a cutout as JPG fills the transparent area back in, usually with black or white, which undoes the entire operation.',
+    a: 'JPG cannot store transparency.',
   },
   {
     q: 'Will there be an AI version for photos?',
-    a: 'Probably. It is genuinely possible in the browser, since the models are around 45MB rather than gigabytes. The hold-up is licensing: the best known model is released for non-commercial use only, and building on it and finding out later would be worse than waiting. A permissively licensed one is being looked for.',
+    a: 'Probably.',
   },
 ];
 
@@ -73,8 +73,7 @@ export default function Page() {
           Remove an image background
         </h1>
         <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          For logos, product shots and anything on a flat background. Full
-          resolution, no watermark, no account, and nothing is uploaded.
+          For logos, product shots and anything on a flat background.
         </p>
 
         <div className="mt-10">

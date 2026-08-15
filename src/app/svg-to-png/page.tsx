@@ -34,19 +34,19 @@ const schema = {
 const FAQ = [
   {
     q: 'Is there a resolution limit?',
-    a: 'No. You can export at 8K, and the quality is identical at every size because an SVG is mathematics rather than pixels. Most converters cap the free export at a few hundred pixels and charge for anything sharper. There is no cost reason for that, because your own browser does the rendering.',
+    a: 'No.',
   },
   {
     q: 'Are my files uploaded anywhere?',
-    a: 'No. The conversion happens inside your browser using the Canvas API, so the file never leaves your computer. You can watch it work with your network disconnected.',
+    a: 'No.',
   },
   {
     q: 'Why does my SVG look wrong after converting?',
-    a: 'Usually a font. An SVG that names a font your browser does not have will render with a substitute. Converting text to outlines in your design tool before exporting the SVG fixes it permanently.',
+    a: 'Usually a font.',
   },
   {
     q: 'Can I keep the transparent background?',
-    a: 'Yes, and it is on by default. Turn it off if you want a white background baked in, which some older software needs.',
+    a: 'Yes, and it is on by default.',
   },
 ];
 

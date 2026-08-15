@@ -14,13 +14,13 @@ export const metadata: Metadata = {
 
 const FAQ = [
   { q: 'How much smaller will my images get?',
-    a: 'It depends on the picture, but a photo saved as WebP at 75 percent quality is usually 60 to 80 percent smaller than the JPG it came from, and most people cannot tell them apart. Screenshots and flat graphics compress even harder.' },
+    a: 'It depends on the picture, but a photo saved as WebP at 75 percent quality is usually 60 to 80 percent smaller than the JPG it came from, and most people cannot tell them apart.' },
   { q: 'Does compressing damage the image?',
-    a: 'JPG and WebP are lossy, so information is discarded every time you save. At 90 percent that is invisible. At 50 percent you will see softening around detailed edges. What you cannot do is get it back by saving at a higher quality afterwards, because it was already thrown away.' },
+    a: 'JPG and WebP are lossy, so information is discarded every time you save.' },
   { q: 'Which format should I choose?',
-    a: 'WebP if it is going on a website, since it is meaningfully smaller at the same quality and every current browser reads it. JPG if it has to open in older software. PNG only for graphics with transparency or sharp text, where it is lossless and usually larger.' },
+    a: 'WebP if it is going on a website, since it is meaningfully smaller at the same quality and every current browser reads it.' },
   { q: 'Are my images uploaded?',
-    a: 'No. Everything happens inside your browser, so the files never leave your computer and there is nothing for us to store or delete.' },
+    a: 'No.' },
 ];
 
 export default function Page() {

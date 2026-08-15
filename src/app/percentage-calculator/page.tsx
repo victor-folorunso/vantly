@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Why is a 20 percent rise not undone by a 20 percent fall?",
-    "a": "Because the second percentage is taken from a bigger number. 100 rising by 20 percent is 120, and 120 falling by 20 percent is 96, not 100. To get back you need a fall of 16.67 percent. This is the single most common percentage mistake, so the tool shows the return trip explicitly."
+    "a": "Because the second percentage is taken from a bigger number."
   },
   {
     "q": "What is the difference between percent and percentage points?",
-    "a": "If a rate goes from 4 percent to 6 percent, that is a rise of 2 percentage points, but a rise of 50 percent. Both are correct and they mean very different things, which is why the distinction gets abused in headlines."
+    "a": "If a rate goes from 4 percent to 6 percent, that is a rise of 2 percentage points, but a rise of 50 percent."
   },
   {
     "q": "How do I take a percentage off a price?",
-    "a": "Use the first box: work out what the discount is worth, then subtract. Or use the third box in reverse, since going from the old price to the new one gives you the discount as a negative percentage."
+    "a": "Use the first box: work out what the discount is worth, then subtract."
   }
 ];
 

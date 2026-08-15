@@ -14,19 +14,19 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "How does it decide what changed?",
-    "a": "With the Myers diff algorithm, the same one git uses, through the BSD licensed jsdiff library. A naive line by line comparison marks everything after a single inserted line as changed, which is useless on exactly the files people want to compare."
+    "a": "With the Myers diff algorithm, the same one git uses, through the BSD licensed jsdiff library."
   },
   {
     "q": "What do the ignore options do?",
-    "a": "Ignore case treats upper and lower case as the same. Ignore spaces trims each line before comparing, which removes the noise when only indentation moved. Both change what counts as a difference rather than hiding differences that are there."
+    "a": "Ignore case treats upper and lower case as the same."
   },
   {
     "q": "Is there a length limit?",
-    "a": "No, and nothing is uploaded. Comparing two long documents happens entirely on your machine."
+    "a": "No, and nothing is uploaded."
   },
   {
     "q": "Can it compare files rather than pasted text?",
-    "a": "Not yet. It is on the list."
+    "a": "Not yet."
   }
 ];
 

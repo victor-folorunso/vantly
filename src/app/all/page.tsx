@@ -33,9 +33,8 @@ export default function Page() {
     <div className="mx-auto w-full max-w-6xl px-5 py-12">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Everything here</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-        Grouped by what you are starting from. Anything greyed out is not built
-        yet.
-      </p>
+          Grouped by what you are starting from.
+        </p>
 
       <section className="mt-12">
         <h2 className="text-2xl font-semibold tracking-tight">Tools</h2>

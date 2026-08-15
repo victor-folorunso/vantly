@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "Does sorting understand accents and other alphabets?",
-    "a": "Yes. It sorts the way your language does rather than by raw character code, so an accented letter files next to its plain form instead of at the end."
+    "a": "Yes."
   },
   {
     "q": "Does removing duplicates keep the first or the last one?",
@@ -54,7 +54,9 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Clean up text</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Sort a list, remove duplicates, strip HTML, tidy whitespace. The small jobs that are annoying by hand.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          Sort a list, remove duplicates, strip HTML, tidy whitespace.
+        </p>
 
         <div className="mt-10">
           <TextTool preset="clean" outputLabel="Result" />

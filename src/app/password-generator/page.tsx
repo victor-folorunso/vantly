@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "How is this different from other password generators?",
-    "a": "Two ways that matter. It uses the browser cryptographic random source rather than Math.random, which is predictable and unsuitable, and it generates in the page rather than on a server. A password that travelled over the network has been seen by whoever served it."
+    "a": "It never leaves your browser, and the randomness comes from crypto.getRandomValues rather than Math.random."
   },
   {
     "q": "What does the entropy number mean?",
-    "a": "It is how many bits of genuine randomness the password carries, worked out from its length and the size of the character set. Above 80 bits is strong for anything ordinary. It is a more honest measure than a coloured bar, which mostly guesses at whether a human chose the word."
+    "a": "It is how many bits of genuine randomness the password carries, worked out from its length and the size of the character set."
   },
   {
     "q": "Should I turn off symbols?",
-    "a": "Only if something refuses to accept them. Length does more for strength than variety does, so a longer password with fewer character types beats a short one with everything switched on."
+    "a": "Only if something refuses to accept them."
   }
 ];
 

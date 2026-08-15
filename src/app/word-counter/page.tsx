@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     "q": "How is reading time worked out?",
-    "a": "At 238 words per minute for silent reading and 140 for reading aloud, which are the figures the usual meta-analyses land on. They are averages, so treat them as a guide rather than a promise."
+    "a": "At 238 words per minute for silent reading and 140 for reading aloud, which are the figures the usual meta-analyses land on."
   },
   {
     "q": "Do emoji count as one character or two?",
-    "a": "One. An emoji is stored as two UTF-16 units, so a naive count reports two, which is wrong to anybody looking at the screen. This counts what you can see."
+    "a": "One."
   },
   {
     "q": "Is my text sent anywhere?",
-    "a": "No. It never leaves the page, which is worth knowing if you are pasting something unpublished."
+    "a": "No."
   }
 ];
 
@@ -58,7 +58,9 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Count words and characters</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Live counts as you type, including reading time. Useful for anything with a limit attached to it.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          Live counts as you type, including reading time.
+        </p>
 
         <div className="mt-10">
           <WordCounter />
