@@ -76,6 +76,17 @@ export const TOOLS: Tool[] = [
     live: true,
   },
   {
+    slug: 'remove-background',
+    name: 'Background remover',
+    category: 'Images',
+    blurb: 'Cut a logo or product out of its background, at full size.',
+    title: 'Remove image background free, full resolution, no watermark',
+    description:
+      'Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark, no account and no upload.',
+    promise: 'Full resolution, not a 612 pixel preview you have to pay to unlock.',
+    live: true,
+  },
+  {
     slug: 'image-enhancer',
     name: 'Image enhancer',
     category: 'Images',
