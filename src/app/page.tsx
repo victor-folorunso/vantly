@@ -1,18 +1,49 @@
 import Link from 'next/link';
 import FilePicker from '@/components/FilePicker';
-import { LIVE_TOOLS, TOOLS, byCategory, SITE } from '@/lib/site';
+import { TOOLS, CATEGORIES, SITE } from '@/lib/site';
 import { CONVERSIONS } from '@/lib/conversions';
 
+/**
+ * Short on purpose.
+ *
+ * Two earlier versions were too long. The first listed every category in full
+ * with a running commentary on what was finished. The second cut the commentary
+ * but still gave eleven categories a row of cards each, which came to four
+ * thousand pixels of scrolling before the footer.
+ *
+ * Cards are expensive: each one costs a title, a sentence and padding. So only
+ * a handful of tools get one, and everything else is a text link in a dense
+ * column, which is how a site with a hundred and sixty pages stays navigable.
+ *
+ * Nothing announces what is or is not built. Unfinished things are grey.
+ */
+
+/** Shown as cards. Deliberately short, and ordered by what people arrive for. */
+const FEATURED = [
+  'remove-background',
+  'image-compressor',
+  'heic-to-jpg',
+  'image-enhancer',
+  'json-formatter',
+  'password-generator',
+];
+
 export default function Home() {
-  const groups = byCategory(TOOLS);
-  const liveConversions = CONVERSIONS.filter((c) => c.live).length;
-  const readyNow = CONVERSIONS.filter((c) => c.live).slice(0, 9);
+  const featured = FEATURED.map((slug) => TOOLS.find((t) => t.slug === slug)).filter(
+    (t): t is NonNullable<typeof t> => Boolean(t),
+  );
+
+  const columns = CATEGORIES.map((category) => ({
+    category,
+    tools: [...TOOLS.filter((t) => t.category === category)].sort(
+      (a, b) => Number(b.live) - Number(a.live),
+    ),
+  })).filter((c) => c.tools.length > 0);
+
+  const someConversions = CONVERSIONS.filter((c) => c.live).slice(0, 10);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5">
-      {/* The picker is the product, so it has to be on screen without scrolling.
-          A hero big enough to push it under the fold is a hero working against
-          the page it introduces. */}
       <section className="pt-10 pb-10 sm:pt-14">
         <div className="max-w-3xl">
           <h1 className="text-3xl font-semibold leading-[1.1] tracking-tight sm:text-[2.75rem]">
@@ -20,110 +51,104 @@ export default function Home() {
             <span className="text-ink-soft">Open it, convert it, or change it.</span>
           </h1>
           <p className="mt-4 max-w-xl leading-relaxed text-ink-soft">
-            Viewers, converters and editors, {CONVERSIONS.length + TOOLS.length} of
-            them. No account, no watermark, and no export capped at a size that
-            makes the result useless.
+            Viewers, converters, editors and a pile of small utilities. No
+            account, no watermark, and nothing capped at a size that makes the
+            result useless.
           </p>
         </div>
 
-        {/* Two columns on desktop because the picker alone left the right half
-            of the screen empty. The panel beside it is not decoration: it is
-            the shortest path to the pages that work, and it puts real links
-            above the fold where both readers and crawlers find them first. */}
-        <div className="mt-7 grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <div className="mt-7 max-w-3xl">
           <FilePicker />
-
-          <aside className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              Ready to use
-            </h2>
-            <ul className="mt-3 space-y-1">
-              {readyNow.map((c) => (
-                <li key={c.slug}>
-                  <Link
-                    href={`/${c.slug}`}
-                    className="group flex items-baseline justify-between gap-3 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-surface-alt"
-                  >
-                    <span className="truncate">
-                      {c.from.label} to {c.to.label}
-                    </span>
-                    {/* No trailing format label here. It restated the target
-                        that the link text already ends with, so every row read
-                        "JPG to PNG ... PNG". */}
-                    <span className="shrink-0 text-xs text-ink-faint opacity-0 transition-opacity group-hover:opacity-100">
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 border-t border-line pt-3 text-xs leading-relaxed text-ink-faint tabular-nums">
-              {liveConversions + LIVE_TOOLS.length} of {CONVERSIONS.length + TOOLS.length} ready
-              today. The rest have a page and a plan, not a date.
-            </p>
-          </aside>
         </div>
       </section>
 
-      <section id="tools" className="scroll-mt-24 py-10">
-        <h2 className="text-2xl font-semibold tracking-tight">Tools</h2>
-        <p className="mt-2 max-w-2xl text-ink-soft">
-          The ones that are not simply turning one format into another.
-        </p>
+      <section className="border-t border-line py-8">
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {featured.map((t) => (
+            <li key={t.slug}>
+              <Link
+                href={`/${t.slug}`}
+                className="block h-full rounded-xl border border-line bg-surface p-4 transition-colors hover:border-accent"
+              >
+                <span className="font-medium">{t.name}</span>
+                <span className="mt-1 block text-sm leading-relaxed text-ink-soft">
+                  {t.blurb}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        {groups.map((group) => (
-          <div key={group.category} className="mt-10">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              {group.category}
-            </h3>
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {group.tools.map((t) => (
-                <li key={t.slug}>
-                  <Link
-                    href={`/${t.slug}`}
-                    className={`block h-full rounded-xl border p-5 transition-all ${
-                      t.live
-                        ? 'border-line bg-surface shadow-sm hover:border-accent hover:shadow-md'
-                        : 'border-dashed border-line hover:border-ink-faint'
-                    }`}
-                  >
-                    <span className="flex items-baseline justify-between gap-2">
-                      <span
-                        className={`text-lg font-medium ${t.live ? '' : 'text-ink-faint'}`}
-                      >
-                        {t.name}
-                      </span>
-                      {!t.live && (
-                        <span className="shrink-0 text-[10px] uppercase tracking-wider text-ink-faint">
-                          Soon
-                        </span>
-                      )}
-                    </span>
-                    <span
-                      className={`mt-1.5 block text-sm leading-relaxed ${
+      <section className="border-t border-line py-8">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-lg font-semibold tracking-tight">Everything else</h2>
+          <Link href="/all" className="shrink-0 text-sm text-accent underline underline-offset-4">
+            Full list
+          </Link>
+        </div>
+
+        <div className="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-3 lg:grid-cols-4">
+          {columns.map((col) => (
+            <div key={col.category}>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                <Link href={`/all#${col.category.toLowerCase()}`} className="hover:text-ink">
+                  {col.category}
+                </Link>
+              </h3>
+              <ul className="mt-2 space-y-0.5">
+                {col.tools.map((t) => (
+                  <li key={t.slug}>
+                    <Link
+                      href={`/${t.slug}`}
+                      className={`block truncate py-0.5 text-sm transition-colors hover:text-accent ${
                         t.live ? 'text-ink-soft' : 'text-ink-faint'
                       }`}
                     >
-                      {t.blurb}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+                      {t.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </section>
 
-      <section className="max-w-2xl py-16">
-        <h2 className="text-2xl font-semibold tracking-tight">Why these are free</h2>
-        <p className="mt-4 leading-relaxed text-ink-soft">
-          Most of these cost nothing to run. The work happens on your computer,
-          in your browser, using capabilities it already has. When a site caps
-          your export at 500 pixels and asks for {'$'}15 a month for the sharp
-          one, that limit is a business decision rather than a technical one.
+      <section className="border-t border-line py-8">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-lg font-semibold tracking-tight">Convert a file</h2>
+          <Link
+            href="/all#conversions"
+            className="shrink-0 text-sm text-accent underline underline-offset-4"
+          >
+            All {CONVERSIONS.length}
+          </Link>
+        </div>
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {someConversions.map((c) => (
+            <li key={c.slug}>
+              <Link
+                href={`/${c.slug}`}
+                className="inline-block rounded-lg border border-line bg-surface px-3 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent"
+              >
+                {c.from.label} to {c.to.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="max-w-2xl border-t border-line py-10">
+        <h2 className="text-lg font-semibold tracking-tight">Why these are free</h2>
+        <p className="mt-3 leading-relaxed text-ink-soft">
+          Most of them cost us nothing to run, because your browser does the
+          work. So when another site hands you a 612 pixel preview and wants{' '}
+          {'$'}15 a month for the real one, that cap isn&rsquo;t technical. They
+          just decided to charge you there.
         </p>
-        <p className="mt-4 leading-relaxed text-ink-soft">
-          {SITE.name} does not have the cost, so it does not have the cap.
+        <p className="mt-3 leading-relaxed text-ink-soft">
+          {SITE.name} has nothing to recover, so there&rsquo;s nothing to cap.
         </p>
       </section>
     </div>

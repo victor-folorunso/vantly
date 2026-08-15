@@ -187,28 +187,21 @@ function Shell({
       </h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{blurb}</p>
 
-      <div className="mt-8 max-w-2xl rounded-xl border border-line bg-surface p-6 shadow-sm">
-        <p className="font-medium">Not built yet.</p>
-        <p className="mt-2 leading-relaxed text-ink-soft">
-          This one is on the list rather than finished. When it lands it will
-          work the way everything else here does: in your browser, with nothing
-          uploaded, no account, and no export you have to pay to unlock.
-        </p>
-        {promise && (
-          <p className="mt-4 border-l-2 border-accent pl-4 leading-relaxed text-ink-soft">
-            {promise}
-          </p>
-        )}
-      </div>
+      <p className="mt-6 max-w-2xl text-sm text-ink-faint">Not built yet.</p>
 
       {/* Somebody who landed here wanted something done, so what works goes
           above what is merely planned. */}
       <section className="mt-14 max-w-2xl">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-          Ready now
+          In the meantime
         </h2>
         <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-          {LIVE_TOOLS.map((t) => (
+          {/* Same category first, then whatever else works. Four is enough to
+              be useful without turning this into a second home page. */}
+          {[...LIVE_TOOLS]
+            .sort((x, y) => Number(y.category === eyebrow) - Number(x.category === eyebrow))
+            .slice(0, 4)
+            .map((t) => (
             <li key={t.slug}>
               <Link
                 href={`/${t.slug}`}

@@ -16,7 +16,7 @@ import { CONVERSIONS, FORMATS } from '@/lib/conversions';
  */
 
 const title = 'Every conversion and tool';
-const description = `All ${CONVERSIONS.length + TOOLS.length} viewers, converters and editors, grouped by what you are starting from. Everything runs in your browser with no upload and no account.`;
+const description = `Every tool on Vantly: viewers, converters, editors, calculators and generators, grouped by what you are working with.`;
 
 export const metadata: Metadata = {
   title,
@@ -33,10 +33,8 @@ export default function Page() {
     <div className="mx-auto w-full max-w-6xl px-5 py-12">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Everything here</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-        {CONVERSIONS.length} conversions and {TOOLS.length} tools.{' '}
-        <span className="tabular-nums">{liveCount}</span> work today. The rest have
-        a page and a plan rather than a date, and are marked so you do not waste a
-        click.
+        Grouped by what you are starting from. Anything greyed out is not built
+        yet.
       </p>
 
       <section className="mt-12">
@@ -45,7 +43,7 @@ export default function Page() {
           const inCat = TOOLS.filter((t) => t.category === category);
           if (!inCat.length) return null;
           return (
-            <div key={category} className="mt-8">
+            <div key={category} id={category.toLowerCase()} className="mt-8 scroll-mt-24">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
                 {category}
               </h3>
@@ -61,7 +59,6 @@ export default function Page() {
                       }`}
                     >
                       {t.name}
-                      {!t.live && <span className="ml-1.5 text-[10px] uppercase">soon</span>}
                     </Link>
                   </li>
                 ))}
@@ -71,7 +68,7 @@ export default function Page() {
         })}
       </section>
 
-      <section className="mt-16">
+      <section id="conversions" className="mt-16 scroll-mt-24">
         <h2 className="text-2xl font-semibold tracking-tight">Conversions</h2>
         {kinds.map((kind) => {
           const sources = FORMATS.filter(
@@ -99,7 +96,6 @@ export default function Page() {
                               }`}
                             >
                               {c.from.label} to {c.to.label}
-                              {!c.live && <span className="ml-1.5 text-[10px] uppercase">soon</span>}
                             </Link>
                           </li>
                         ))}

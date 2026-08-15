@@ -79,7 +79,7 @@ export default function Search({ placeholder = 'Search 100+ conversions and tool
           stroke="currentColor"
           strokeWidth="1.8"
           strokeLinecap="round"
-          className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-ink-faint"
+          className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-ink-faint"
           aria-hidden="true"
         >
           <circle cx="11" cy="11" r="7" />
@@ -104,7 +104,7 @@ export default function Search({ placeholder = 'Search 100+ conversions and tool
           }}
           placeholder={placeholder}
           aria-label="Search conversions and tools"
-          className="w-full rounded-xl border border-line bg-surface py-3 pl-10 pr-4 text-sm shadow-sm outline-none transition-colors placeholder:text-ink-faint focus:border-accent"
+          className="w-full rounded-lg border border-line bg-surface py-2 pl-9 pr-3 text-sm outline-none transition-colors placeholder:text-ink-faint focus:border-accent"
         />
       </div>
 
@@ -124,16 +124,12 @@ export default function Search({ placeholder = 'Search 100+ conversions and tool
                     className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-surface-alt"
                   >
                     <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium">{r.label}</span>
+                      <span className={`block truncate text-sm font-medium ${r.live ? '' : 'text-ink-faint'}`}>
+                        {r.label}
+                      </span>
                       <span className="block text-xs text-ink-faint">{r.hint}</span>
                     </span>
-                    <span
-                      className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                        r.live ? 'bg-accent-soft text-accent' : 'text-ink-faint'
-                      }`}
-                    >
-                      {r.live ? 'Ready' : 'Soon'}
-                    </span>
+
                   </Link>
                 </li>
               ))}

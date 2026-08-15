@@ -37,8 +37,7 @@ export default function Page() {
       <section className="mt-14">
         <h2 className="text-xl font-semibold tracking-tight">Already on the list</h2>
         <p className="mt-2 leading-relaxed text-ink-soft">
-          {soonCount} things have a page and a plan but are not built yet. Asking
-          for one of these is still useful, since it moves it up the order.
+          Ask for one of these and it moves up.
         </p>
         <ul className="mt-4 flex flex-wrap gap-2">
           {planned.map((p) => (

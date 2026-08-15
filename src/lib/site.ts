@@ -515,7 +515,7 @@ export const TOOLS: Tool[] = [
     title: 'Percentage calculator',
     description:
       'Work out what percent of a number, what percentage one number is of another, and percentage increase or decrease.',
-    live: false,
+    live: true,
   },
   {
     slug: 'tip-calculator',
@@ -525,7 +525,7 @@ export const TOOLS: Tool[] = [
     title: 'Tip calculator and bill splitter',
     description:
       'Add a tip, split a bill between any number of people, and round the result sensibly.',
-    live: false,
+    live: true,
   },
   {
     slug: 'compound-interest-calculator',
@@ -535,7 +535,7 @@ export const TOOLS: Tool[] = [
     title: 'Compound interest calculator',
     description:
       'Project savings growth over time with regular contributions, showing the total, the contributions and the interest separately.',
-    live: false,
+    live: true,
   },
   {
     slug: 'loan-calculator',
@@ -545,7 +545,7 @@ export const TOOLS: Tool[] = [
     title: 'Loan and mortgage repayment calculator',
     description:
       'Work out monthly repayments, total interest and a full amortisation schedule for a loan or a mortgage.',
-    live: false,
+    live: true,
   },
   {
     slug: 'date-calculator',

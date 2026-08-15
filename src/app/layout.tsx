@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Search from '@/components/Search';
+import BackLink from '@/components/BackLink';
 import { SITE } from '@/lib/site';
 import './globals.css';
 
@@ -88,11 +89,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
               {SITE.name}
             </Link>
-            <div className="hidden min-w-0 flex-1 sm:block">
-              <Search placeholder="Search conversions and tools…" />
+            <div className="ml-auto hidden w-full max-w-xs sm:block">
+              <Search placeholder="Search tools…" />
             </div>
             <Link
-              href="/#tools"
+              href="/all"
               className="shrink-0 text-sm text-ink-soft transition-colors hover:text-ink"
             >
               All tools
@@ -102,6 +103,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Search placeholder="Search…" />
           </div>
         </header>
+
+        <BackLink />
 
         <main className="flex-1">{children}</main>
 

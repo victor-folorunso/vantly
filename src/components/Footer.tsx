@@ -2,89 +2,136 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SITE } from '@/lib/site';
-import { CONVERSIONS, relatedConversions, CONVERSION_BY_SLUG, type Conversion } from '@/lib/conversions';
+import { SITE, TOOLS, CATEGORIES } from '@/lib/site';
+import { CONVERSIONS, CONVERSION_BY_SLUG, relatedConversions } from '@/lib/conversions';
 
 /**
- * The footer is a crawl surface, not decoration.
+ * The footer has to say what the site is, and it has to be crawlable.
  *
- * A hundred conversion pages are worth nothing if the only way to reach them is
- * a search box, which a crawler cannot type into. So every page links onward,
- * and which links appear depends on where the reader is.
+ * The old one listed only conversions, which made a multi tool site look like a
+ * file converter with a long menu. Conversion is one category out of eleven.
  *
- * The home page carries the widest set, since it is the page most likely to be
- * found first and is the shortest path to everything else. A conversion page
- * carries its own neighbours instead, because a reader who wanted PNG to WebP
- * is far more likely to want PNG to AVIF next than they are to want MP3 to WAV.
+ * A conversion page still gets its neighbours first. Somebody who wanted PNG to
+ * WebP probably wants PNG to AVIF next, not a hash generator.
  */
 
-/** How many links the home page shows before it stops being a footer. */
-const HOME_LIMIT = 48;
-
-function pickForHome(): Conversion[] {
-  // Live first so the working tools are never buried, then the rest in their
-  // declared order, which groups by source format naturally.
-  return [...CONVERSIONS].sort((a, b) => Number(b.live) - Number(a.live)).slice(0, HOME_LIMIT);
-}
+const PER_CATEGORY = 4;
 
 export default function Footer() {
-  // The footer sits in the root layout, which never sees the route params, so
-  // the slug comes from the path instead of being threaded through every page.
-  const slug = usePathname().split('/').filter(Boolean)[0];
-  const current = slug ? CONVERSION_BY_SLUG.get(slug) : undefined;
-  const links = current ? relatedConversions(current, 16) : pickForHome();
-  const heading = current ? `More ${current.from.label} conversions` : 'Popular conversions';
+  const pathname = usePathname();
+  const slug = pathname.split('/').filter(Boolean)[0];
+  const conversion = slug ? CONVERSION_BY_SLUG.get(slug) : undefined;
+  // The home page already lists every category above the fold of the footer.
+  // Printing the same columns again directly underneath is just the same list
+  // twice, so there it collapses to the link row.
+  const isHome = pathname === '/';
+
+  const groups = CATEGORIES.map((category) => ({
+    category,
+    // Working ones first, so this reads as a site rather than a wishlist.
+    items: [...TOOLS.filter((t) => t.category === category)]
+      .sort((a, b) => Number(b.live) - Number(a.live))
+      .slice(0, PER_CATEGORY),
+  })).filter((g) => g.items.length > 0);
+
+  const neighbours = conversion ? relatedConversions(conversion, 8) : [];
 
   return (
-    <footer className="mt-24 border-t border-line">
-      <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        {links.length > 0 && (
-          <>
+    <footer className="mt-20 border-t border-line">
+      <div className="mx-auto w-full max-w-6xl px-5 py-10">
+        {neighbours.length > 0 && (
+          <div className="mb-8">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              {heading}
+              More {conversion!.from.label} conversions
             </h2>
-            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3 lg:grid-cols-4">
-              {links.map((c) => (
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {neighbours.map((c) => (
                 <li key={c.slug}>
                   <Link
                     href={`/${c.slug}`}
-                    className="block truncate py-1 text-sm text-ink-soft transition-colors hover:text-accent"
+                    className={`inline-block rounded-lg border border-line px-2.5 py-1 text-sm transition-colors hover:border-accent hover:text-accent ${
+                      c.live ? 'text-ink-soft' : 'text-ink-faint'
+                    }`}
                   >
                     {c.from.label} to {c.to.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </>
+          </div>
         )}
 
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-          <p className="text-sm text-ink-faint">
-            Everything runs in your browser. Files are not uploaded and nothing is
-            stored.{' '}
-            <Link href="/all" className="underline underline-offset-4 hover:text-ink">
-              See everything
-            </Link>{' '}
-            or{' '}
-            <Link href="/suggest" className="underline underline-offset-4 hover:text-ink">
-              suggest something missing
+        {!isHome && (
+        <div className="grid gap-x-8 gap-y-7 sm:grid-cols-3 lg:grid-cols-4">
+          {groups.map((g) => (
+            <div key={g.category}>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                <Link href={`/all#${g.category.toLowerCase()}`} className="hover:text-ink">
+                  {g.category}
+                </Link>
+              </h2>
+              <ul className="mt-2.5 space-y-1">
+                {g.items.map((t) => (
+                  <li key={t.slug}>
+                    <Link
+                      href={`/${t.slug}`}
+                      className={`block truncate py-0.5 text-sm transition-colors hover:text-accent ${
+                        t.live ? 'text-ink-soft' : 'text-ink-faint'
+                      }`}
+                    >
+                      {t.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              <Link href="/all#conversions" className="hover:text-ink">
+                Conversions
+              </Link>
+            </h2>
+            <ul className="mt-2.5 space-y-1">
+              {CONVERSIONS.filter((c) => c.live)
+                .slice(0, PER_CATEGORY)
+                .map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      href={`/${c.slug}`}
+                      className="block truncate py-0.5 text-sm text-ink-soft transition-colors hover:text-accent"
+                    >
+                      {c.from.label} to {c.to.label}
+                    </Link>
+                  </li>
+                ))}
+              <li>
+                <Link href="/all#conversions" className="block py-0.5 text-sm text-accent hover:underline">
+                  All {CONVERSIONS.length}
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        )}
+
+        <div className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-3 text-sm text-ink-faint ${
+          isHome ? '' : 'mt-10 border-t border-line pt-6'
+        }`}>
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <Link href="/all" className="hover:text-ink">
+              All tools
             </Link>
-            .{' '}
-            {/* The repo is public, so anybody can read how a tool works, file a
-                request, or send a fix. Worth a link on every page rather than
-                only on the suggestion form. */}
-            <a
-              href={SITE.repo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-ink"
-            >
-              The code is on GitHub
+            <Link href="/suggest" className="hover:text-ink">
+              Suggest one
+            </Link>
+            <a href={SITE.repo} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
+              GitHub
             </a>
-            .
-          </p>
-          <p className="text-sm text-ink-faint">
-            © {new Date().getFullYear()} {SITE.name}
+            <span>
+              © {new Date().getFullYear()} {SITE.name}
+            </span>
           </p>
         </div>
       </div>

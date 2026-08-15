@@ -79,16 +79,12 @@ export default function SearchResults() {
               className="flex items-center justify-between gap-4 py-3 transition-colors hover:text-accent"
             >
               <span className="min-w-0">
-                <span className="block truncate font-medium">{r.label}</span>
+                <span className={`block truncate font-medium ${r.live ? '' : 'text-ink-faint'}`}>
+                  {r.label}
+                </span>
                 <span className="block truncate text-sm text-ink-faint">{r.hint}</span>
               </span>
-              <span
-                className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                  r.live ? 'bg-accent-soft text-accent' : 'text-ink-faint'
-                }`}
-              >
-                {r.live ? 'Ready' : 'Soon'}
-              </span>
+
             </Link>
           </li>
         ))}

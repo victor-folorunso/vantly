@@ -25,6 +25,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Password generator](https://vantly.xyz/password-generator): Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.
 - [Base64 encoder](https://vantly.xyz/base64-encoder): Convert text or a file to Base64 and back, including data URIs. Runs in your browser.
 - [Unit converter](https://vantly.xyz/unit-converter): Convert between metric and imperial units for length, weight, temperature, area, volume, speed and digital storage.
+- [Percentage calculator](https://vantly.xyz/percentage-calculator): Work out what percent of a number, what percentage one number is of another, and percentage increase or decrease.
+- [Tip and bill splitter](https://vantly.xyz/tip-calculator): Add a tip, split a bill between any number of people, and round the result sensibly.
+- [Compound interest](https://vantly.xyz/compound-interest-calculator): Project savings growth over time with regular contributions, showing the total, the contributions and the interest separately.
+- [Loan calculator](https://vantly.xyz/loan-calculator): Work out monthly repayments, total interest and a full amortisation schedule for a loan or a mortgage.
 - [UUID generator](https://vantly.xyz/uuid-generator): Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.
 - [Colour palette](https://vantly.xyz/color-palette): Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.
 - [Colour converter](https://vantly.xyz/color-converter): Pick a colour and read it in every format at once, with a copy button for each.
