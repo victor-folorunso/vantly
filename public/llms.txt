@@ -33,6 +33,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Colour palette](https://vantly.xyz/color-palette): Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.
 - [Colour converter](https://vantly.xyz/color-converter): Pick a colour and read it in every format at once, with a copy button for each.
 - [Contrast checker](https://vantly.xyz/contrast-checker): Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.
+- [UTM link builder](https://vantly.xyz/utm-builder): Build Google Analytics campaign URLs with the right parameter names, and keep a list of the ones you have made.
+- [Robots.txt generator](https://vantly.xyz/robots-txt-generator): Build a robots.txt with the rules you actually want, including whether AI crawlers are allowed.
+- [Meta tag generator](https://vantly.xyz/meta-tag-generator): Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
 - [JPG to WebP](https://vantly.xyz/jpg-to-webp): Convert a JPEG photo to WebP in the browser, in bulk.
 - [PNG to JPG](https://vantly.xyz/png-to-jpg): Convert a PNG image to JPG in the browser, in bulk.

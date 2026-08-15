@@ -674,7 +674,7 @@ export const TOOLS: Tool[] = [
     title: 'UTM campaign URL builder',
     description:
       'Build Google Analytics campaign URLs with the right parameter names, and keep a list of the ones you have made.',
-    live: false,
+    live: true,
   },
   {
     slug: 'robots-txt-generator',
@@ -684,7 +684,7 @@ export const TOOLS: Tool[] = [
     title: 'Robots.txt generator',
     description:
       'Build a robots.txt with the rules you actually want, including whether AI crawlers are allowed.',
-    live: false,
+    live: true,
   },
   {
     slug: 'meta-tag-generator',
@@ -694,7 +694,7 @@ export const TOOLS: Tool[] = [
     title: 'Meta tag and Open Graph generator',
     description:
       'Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.',
-    live: false,
+    live: true,
   },
 ];
 
