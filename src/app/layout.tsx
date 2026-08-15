@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
+import Search from '@/components/Search';
 import { SITE } from '@/lib/site';
 import './globals.css';
 
@@ -21,33 +23,33 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
-        <header className="border-b border-line">
-          <div className="mx-auto w-full max-w-6xl px-5 h-16 flex items-center justify-between">
-            <Link href="/" className="font-semibold tracking-tight text-lg">
+      <body className="flex min-h-screen flex-col">
+        <header className="sticky top-0 z-30 border-b border-line bg-ground/85 backdrop-blur">
+          <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-5">
+            <Link
+              href="/"
+              className="shrink-0 text-lg font-semibold tracking-tight"
+            >
               {SITE.name}
             </Link>
-            <nav className="text-sm text-ink-soft">
-              <Link href="/#tools" className="hover:text-ink">
-                All tools
-              </Link>
-            </nav>
+            <div className="hidden min-w-0 flex-1 sm:block">
+              <Search placeholder="Search conversions and tools…" />
+            </div>
+            <Link
+              href="/#tools"
+              className="shrink-0 text-sm text-ink-soft transition-colors hover:text-ink"
+            >
+              All tools
+            </Link>
+          </div>
+          <div className="mx-auto w-full max-w-6xl px-5 pb-3 sm:hidden">
+            <Search placeholder="Search…" />
           </div>
         </header>
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-line mt-24">
-          <div className="mx-auto w-full max-w-6xl px-5 py-10 text-sm text-ink-faint">
-            <p>
-              Everything here runs in your browser. Files are not uploaded and
-              nothing is stored.
-            </p>
-            <p className="mt-2">
-              © {new Date().getFullYear()} {SITE.name}
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

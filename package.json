@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "status": "node --experimental-strip-types scripts/status.mjs"
   },
   "dependencies": {
     "heic-to": "^1.5.2",

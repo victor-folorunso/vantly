@@ -44,9 +44,11 @@ function isHeic(file: File): boolean {
   return /\.(heic|heif)$/i.test(file.name) || /image\/hei[cf]/.test(file.type);
 }
 
-export default function HeicConvert() {
+export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?: FormatKey }) {
   const [items, setItems] = useState<Item[]>([]);
-  const [format, setFormat] = useState<FormatKey>('jpeg');
+  // Set by the route, so /heic-to-webp lands on WebP rather than making someone
+  // who searched for it change the setting themselves.
+  const [format, setFormat] = useState<FormatKey>(initialFormat);
   const [quality, setQuality] = useState(0.9);
   const [running, setRunning] = useState(false);
   const [loadingDecoder, setLoadingDecoder] = useState(false);
