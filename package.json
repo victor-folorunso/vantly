@@ -12,7 +12,9 @@
     "prebuild": "npm run status && npm run llms"
   },
   "dependencies": {
+    "diff": "^9.0.0",
     "heic-to": "^1.5.2",
+    "js-beautify": "^2.0.3",
     "jszip": "^3.10.1",
     "next": "16.3.1",
     "quantize": "^1.0.2",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/js-beautify": "^1.14.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

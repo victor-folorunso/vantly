@@ -15,12 +15,15 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
 - [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
+- [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
+- [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
 - [Case converter](https://vantly.xyz/case-converter): Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.
 - [Word counter](https://vantly.xyz/word-counter): Count words, characters, sentences and paragraphs as you type, with an estimated reading time.
 - [Text cleaner](https://vantly.xyz/text-cleaner): Clean up a list or a block of text: sort it, remove duplicate or empty lines, strip HTML tags, trim whitespace.
 - [Hash generator](https://vantly.xyz/hash-generator): Hash text or a file using the cryptography built into your browser. Nothing is uploaded, which matters more here than anywhere else on the site.
 - [Password generator](https://vantly.xyz/password-generator): Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.
 - [Base64 encoder](https://vantly.xyz/base64-encoder): Convert text or a file to Base64 and back, including data URIs. Runs in your browser.
+- [Unit converter](https://vantly.xyz/unit-converter): Convert between metric and imperial units for length, weight, temperature, area, volume, speed and digital storage.
 - [UUID generator](https://vantly.xyz/uuid-generator): Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.
 - [Colour palette](https://vantly.xyz/color-palette): Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.
 - [Colour converter](https://vantly.xyz/color-converter): Pick a colour and read it in every format at once, with a copy button for each.

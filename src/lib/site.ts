@@ -323,7 +323,7 @@ export const TOOLS: Tool[] = [
     description:
       'Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.',
     promise: 'It tells you where the error is, not just that there is one.',
-    live: false,
+    live: true,
   },
   {
     slug: 'xml-formatter',
@@ -396,7 +396,7 @@ export const TOOLS: Tool[] = [
     description:
       'Find what changed between two pieces of text or code, highlighted line by line and word by word.',
     promise: 'No length limit and no account to see the result.',
-    live: false,
+    live: true,
   },
 
   // ── Text ────────────────────────────
@@ -494,7 +494,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert units of measurement',
     description:
       'Convert between metric and imperial units for length, weight, temperature, area, volume, speed and digital storage.',
-    live: false,
+    live: true,
   },
   {
     slug: 'percentage-calculator',
