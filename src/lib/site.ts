@@ -43,7 +43,7 @@ export const TOOLS: Tool[] = [
     title: 'HEIC to JPG and WebP converter',
     description:
       'Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit, no sign up. Runs in your browser.',
-    live: false,
+    live: true,
   },
 ];
 
