@@ -1,6 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
-  <rect width="100" height="100" rx="24" fill="none"/>
-  <path d="M31 40 L50 62 L69 40" fill="none" stroke="#b4530a" stroke-width="11"
-        stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M50 62 L50 27" fill="none" stroke="#b4530a" stroke-width="11" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <mask id="c">
+      <rect width="100" height="100" fill="#fff"/>
+      <rect x="45" y="45" width="40" height="40" rx="6"
+            fill="none" stroke="#000" stroke-width="11"/>
+    </mask>
+  </defs>
+  <g fill="currentColor" mask="url(#c)">
+    <rect x="15" y="15" width="40" height="40" rx="6"/>
+    <rect x="45" y="45" width="40" height="40" rx="6"/></g>
 </svg>

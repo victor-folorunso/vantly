@@ -9,6 +9,7 @@
     "lint": "eslint",
     "status": "node --experimental-strip-types scripts/status.mjs",
     "llms": "node --experimental-strip-types scripts/llms.mjs",
+    "icons": "node --experimental-strip-types scripts/make-icons.mjs",
     "prebuild": "npm run status && npm run llms"
   },
   "dependencies": {
@@ -29,7 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
-    "playwright": "^1.62.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
