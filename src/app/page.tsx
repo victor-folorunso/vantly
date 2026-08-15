@@ -6,6 +6,7 @@ import { CONVERSIONS } from '@/lib/conversions';
 export default function Home() {
   const groups = byCategory(TOOLS);
   const liveConversions = CONVERSIONS.filter((c) => c.live).length;
+  const readyNow = CONVERSIONS.filter((c) => c.live).slice(0, 9);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5">
@@ -25,16 +26,43 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="mt-7 max-w-3xl">
+        {/* Two columns on desktop because the picker alone left the right half
+            of the screen empty. The panel beside it is not decoration: it is
+            the shortest path to the pages that work, and it puts real links
+            above the fold where both readers and crawlers find them first. */}
+        <div className="mt-7 grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           <FilePicker />
-        </div>
 
-        {/* Ready over total, not ready plus planned. The conversion list already
-            contains the live ones, so adding the two together counted them
-            twice and advertised more than exists. */}
-        <p className="mt-4 text-sm text-ink-faint tabular-nums">
-          {liveConversions + LIVE_TOOLS.length} of {CONVERSIONS.length + TOOLS.length} ready today.
-        </p>
+          <aside className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              Ready to use
+            </h2>
+            <ul className="mt-3 space-y-1">
+              {readyNow.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/${c.slug}`}
+                    className="group flex items-baseline justify-between gap-3 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-surface-alt"
+                  >
+                    <span className="truncate">
+                      {c.from.label} to {c.to.label}
+                    </span>
+                    {/* No trailing format label here. It restated the target
+                        that the link text already ends with, so every row read
+                        "JPG to PNG ... PNG". */}
+                    <span className="shrink-0 text-xs text-ink-faint opacity-0 transition-opacity group-hover:opacity-100">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 border-t border-line pt-3 text-xs leading-relaxed text-ink-faint tabular-nums">
+              {liveConversions + LIVE_TOOLS.length} of {CONVERSIONS.length + TOOLS.length} ready
+              today. The rest have a page and a plan, not a date.
+            </p>
+          </aside>
+        </div>
       </section>
 
       <section id="tools" className="scroll-mt-24 py-10">
