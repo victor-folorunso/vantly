@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import FilePicker from '@/components/FilePicker';
-import { LIVE_TOOLS, SOON_TOOLS, TOOLS, byCategory, SITE } from '@/lib/site';
+import { LIVE_TOOLS, TOOLS, byCategory, SITE } from '@/lib/site';
 import { CONVERSIONS } from '@/lib/conversions';
 
 export default function Home() {
@@ -9,26 +9,31 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5">
-      <section className="pt-14 pb-10 sm:pt-20">
+      {/* The picker is the product, so it has to be on screen without scrolling.
+          A hero big enough to push it under the fold is a hero working against
+          the page it introduces. */}
+      <section className="pt-10 pb-10 sm:pt-14">
         <div className="max-w-3xl">
-          <h1 className="text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
-            Start with your file.
-            <br />
+          <h1 className="text-3xl font-semibold leading-[1.1] tracking-tight sm:text-[2.75rem]">
+            Start with your file.{' '}
             <span className="text-ink-soft">We will tell you what it can become.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+          <p className="mt-4 max-w-xl leading-relaxed text-ink-soft">
             Over {CONVERSIONS.length} conversions and a set of small tools. No
             account, no watermark, and no export capped at a size that makes the
             result useless.
           </p>
         </div>
 
-        <div className="mt-10 max-w-3xl">
+        <div className="mt-7 max-w-3xl">
           <FilePicker />
         </div>
 
+        {/* Ready over total, not ready plus planned. The conversion list already
+            contains the live ones, so adding the two together counted them
+            twice and advertised more than exists. */}
         <p className="mt-4 text-sm text-ink-faint tabular-nums">
-          {liveConversions + LIVE_TOOLS.length} ready today, {CONVERSIONS.length + SOON_TOOLS.length} planned.
+          {liveConversions + LIVE_TOOLS.length} of {CONVERSIONS.length + TOOLS.length} ready today.
         </p>
       </section>
 
