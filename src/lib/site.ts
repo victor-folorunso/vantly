@@ -14,10 +14,7 @@ export const SITE = {
   name: 'Vantly',
   repo: 'https://github.com/victor-folorunso/vantly',
   url: 'https://vantly.xyz',
-  // Converting is one of several things here, not the category. Viewers and
-  // editors are coming, and copy that says "converter" everywhere makes the
-  // rest look bolted on later.
-  tagline: 'Open, convert and change files in your browser, without asking for anything.',
+  tagline: 'Free tools that run in your browser. No sign up.',
 } as const;
 
 export const CATEGORIES = [

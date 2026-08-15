@@ -18,6 +18,11 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   output: 'export',
 
+  // The floating dev badge sits over the bottom left of every page, which is
+  // exactly where the drop zones and tool panels are, so it gets in the way of
+  // judging how a page actually looks.
+  devIndicators: false,
+
   // Directory-style URLs, so /png-to-webp is served as /png-to-webp/index.html.
   // Static hosts differ on whether they will serve an extensionless file, and
   // this is the form all of them agree on.
