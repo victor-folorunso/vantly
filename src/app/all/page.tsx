@@ -16,7 +16,7 @@ import { CONVERSIONS, FORMATS } from '@/lib/conversions';
  */
 
 const title = 'Every conversion and tool';
-const description = `All ${CONVERSIONS.length} conversions and ${TOOLS.length} tools, grouped by what you are starting from. Everything runs in your browser with no upload and no account.`;
+const description = `All ${CONVERSIONS.length + TOOLS.length} viewers, converters and editors, grouped by what you are starting from. Everything runs in your browser with no upload and no account.`;
 
 export const metadata: Metadata = {
   title,

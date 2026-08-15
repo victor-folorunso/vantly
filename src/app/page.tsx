@@ -17,12 +17,12 @@ export default function Home() {
         <div className="max-w-3xl">
           <h1 className="text-3xl font-semibold leading-[1.1] tracking-tight sm:text-[2.75rem]">
             Start with your file.{' '}
-            <span className="text-ink-soft">We will tell you what it can become.</span>
+            <span className="text-ink-soft">Open it, convert it, or change it.</span>
           </h1>
           <p className="mt-4 max-w-xl leading-relaxed text-ink-soft">
-            Over {CONVERSIONS.length} conversions and a set of small tools. No
-            account, no watermark, and no export capped at a size that makes the
-            result useless.
+            Viewers, converters and editors, {CONVERSIONS.length + TOOLS.length} of
+            them. No account, no watermark, and no export capped at a size that
+            makes the result useless.
           </p>
         </div>
 

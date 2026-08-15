@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
+  <defs>
+    <mask id="v">
+      <rect width="100" height="100" fill="#fff"/>
+      <path d="M28 26 L50 74 L72 26 L60 26 L50 50 L40 26 Z" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="100" height="100" rx="26" fill="#b4530a" mask="url(#v)"/>
+  
+</svg>

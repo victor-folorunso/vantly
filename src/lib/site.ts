@@ -13,7 +13,10 @@
 export const SITE = {
   name: 'Vantly',
   url: 'https://vantly.xyz',
-  tagline: 'Small tools that do one thing, without asking for anything.',
+  // Converting is one of several things here, not the category. Viewers and
+  // editors are coming, and copy that says "converter" everywhere makes the
+  // rest look bolted on later.
+  tagline: 'Open, convert and change files in your browser, without asking for anything.',
 } as const;
 
 export const CATEGORIES = ['Images', 'PDF', 'Data', 'Text', 'Media'] as const;

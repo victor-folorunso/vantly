@@ -1,6 +1,6 @@
 # Vantly
 
-> Small tools that do one thing, without asking for anything.
+> Open, convert and change files in your browser, without asking for anything.
 
 Free file tools that run entirely in the visitor's browser. Files are never
 uploaded, so there is no account, no watermark, no file size limit, and no
