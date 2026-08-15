@@ -14,6 +14,10 @@ import { CONVERSIONS } from '@/lib/conversions';
   Tools and conversions overlap, since /heic-to-jpg is both, so the slugs are
   deduped before being written out.
 */
+// Static export has no server to answer a request, so this has to be written
+// out at build time rather than generated per request.
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const slugs = new Set<string>([
     ...LIVE_TOOLS.map((t) => t.slug),
