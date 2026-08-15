@@ -68,18 +68,18 @@ export const TOOLS: Tool[] = [
     description:
       'Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.',
     promise: 'No watermark on the result, and no cap on how many you can do.',
-    live: false,
+    live: true,
   },
   {
     slug: 'image-resizer',
     name: 'Image resizer',
     category: 'Images',
-    blurb: 'Resize or crop to exact dimensions, one image or a hundred.',
-    title: 'Resize images to exact dimensions',
+    blurb: 'Scale a hundred images to fit a size, without stretching any.',
+    title: 'Resize images in bulk, keeping the aspect ratio',
     description:
-      'Resize and crop images to any size in your browser. Batch resize, keep or ignore the aspect ratio, export as JPG, PNG or WebP.',
-    promise: 'Exact pixel dimensions, not a preset list you have to fit into.',
-    live: false,
+      'Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.',
+    promise: 'Any pixel value you type, not only the presets.',
+    live: true,
   },
   {
     slug: 'favicon-generator',
