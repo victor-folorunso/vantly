@@ -14,7 +14,7 @@ export const SITE = {
   name: 'Vantly',
   repo: 'https://github.com/victor-folorunso/vantly',
   url: 'https://vantly.xyz',
-  tagline: 'Free tools that run in your browser. No sign up.',
+  tagline: 'Tools you can just use. No account, no watermark, no limits.',
 } as const;
 
 export const CATEGORIES = [

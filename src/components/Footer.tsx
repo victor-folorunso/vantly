@@ -15,16 +15,12 @@ import { CONVERSIONS, CONVERSION_BY_SLUG, relatedConversions } from '@/lib/conve
  * WebP probably wants PNG to AVIF next, not a hash generator.
  */
 
-const PER_CATEGORY = 4;
+const PER_CATEGORY = 3;
 
 export default function Footer() {
   const pathname = usePathname();
   const slug = pathname.split('/').filter(Boolean)[0];
   const conversion = slug ? CONVERSION_BY_SLUG.get(slug) : undefined;
-  // The home page already lists every category above the fold of the footer.
-  // Printing the same columns again directly underneath is just the same list
-  // twice, so there it collapses to the link row.
-  const isHome = pathname === '/';
 
   const groups = CATEGORIES.map((category) => ({
     category,
@@ -37,7 +33,7 @@ export default function Footer() {
   const neighbours = conversion ? relatedConversions(conversion, 8) : [];
 
   return (
-    <footer className="mt-20 border-t border-line">
+    <footer className="mt-16 border-t border-line">
       <div className="mx-auto w-full max-w-6xl px-5 py-10">
         {neighbours.length > 0 && (
           <div className="mb-8">
@@ -61,8 +57,7 @@ export default function Footer() {
           </div>
         )}
 
-        {!isHome && (
-        <div className="grid gap-x-8 gap-y-7 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-x-6 gap-y-6 grid-cols-2 sm:grid-cols-4 lg:grid-cols-6">
           {groups.map((g) => (
             <div key={g.category}>
               <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
@@ -70,7 +65,7 @@ export default function Footer() {
                   {g.category}
                 </Link>
               </h2>
-              <ul className="mt-2.5 space-y-1">
+              <ul className="mt-2 space-y-0.5">
                 {g.items.map((t) => (
                   <li key={t.slug}>
                     <Link
@@ -93,7 +88,7 @@ export default function Footer() {
                 Conversions
               </Link>
             </h2>
-            <ul className="mt-2.5 space-y-1">
+            <ul className="mt-2 space-y-0.5">
               {CONVERSIONS.filter((c) => c.live)
                 .slice(0, PER_CATEGORY)
                 .map((c) => (
@@ -114,17 +109,14 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        )}
 
-        <div className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-3 text-sm text-ink-faint ${
-          isHome ? '' : 'mt-10 border-t border-line pt-6'
-        }`}>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-line pt-5 text-sm text-ink-faint">
           <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <Link href="/all" className="hover:text-ink">
               All tools
             </Link>
             <Link href="/suggest" className="hover:text-ink">
-              Suggest one
+              Suggest a tool
             </Link>
             <a href={SITE.repo} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
               GitHub

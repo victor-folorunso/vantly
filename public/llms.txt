@@ -1,6 +1,6 @@
 # Vantly
 
-> Free tools that run in your browser. No sign up.
+> Tools you can just use. No account, no watermark, no limits.
 
 Free file tools that run entirely in the visitor's browser. Files are never
 uploaded, so there is no account, no watermark, no file size limit, and no

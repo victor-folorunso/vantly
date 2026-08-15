@@ -82,12 +82,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
         />
         <header className="sticky top-0 z-30 border-b border-line bg-ground/85 backdrop-blur">
+          <div className="h-[3px] w-full bg-accent" />
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-5">
-            <Link
-              href="/"
-              className="shrink-0 text-lg font-semibold tracking-tight"
-            >
-              {SITE.name}
+            <Link href="/" className="flex shrink-0 items-center gap-2.5">
+              {/* The mark rather than an <img>, so it inherits colour and stays
+                  sharp at any zoom without a second request. */}
+              <svg viewBox="0 0 100 100" className="size-7" aria-hidden="true">
+                <mask id="brand">
+                  <rect width="100" height="100" fill="#fff" />
+                  <rect x="15" y="15" width="40" height="40" rx="6" />
+                  <rect x="45" y="45" width="40" height="40" rx="6" />
+                  <rect
+                    x="45"
+                    y="45"
+                    width="40"
+                    height="40"
+                    rx="6"
+                    fill="none"
+                    stroke="#fff"
+                    strokeWidth="11"
+                  />
+                </mask>
+                <rect
+                  width="100"
+                  height="100"
+                  rx="24"
+                  className="fill-[var(--accent)]"
+                  mask="url(#brand)"
+                />
+              </svg>
+              <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
             </Link>
             <div className="ml-auto hidden w-full max-w-xs sm:block">
               <Search placeholder="Search tools…" />
