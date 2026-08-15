@@ -69,6 +69,18 @@ export default function Footer() {
             <Link href="/suggest" className="underline underline-offset-4 hover:text-ink">
               suggest something missing
             </Link>
+            .{' '}
+            {/* The repo is public, so anybody can read how a tool works, file a
+                request, or send a fix. Worth a link on every page rather than
+                only on the suggestion form. */}
+            <a
+              href={SITE.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-ink"
+            >
+              The code is on GitHub
+            </a>
             .
           </p>
           <p className="text-sm text-ink-faint">

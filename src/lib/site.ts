@@ -12,6 +12,7 @@
 
 export const SITE = {
   name: 'Vantly',
+  repo: 'https://github.com/victor-folorunso/vantly',
   url: 'https://vantly.xyz',
   // Converting is one of several things here, not the category. Viewers and
   // editors are coming, and copy that says "converter" everywhere makes the
@@ -72,6 +73,17 @@ export const TOOLS: Tool[] = [
     title: 'HEIC to JPG and WebP converter',
     description:
       'Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit, no sign up. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'image-enhancer',
+    name: 'Image enhancer',
+    category: 'Images',
+    blurb: 'Fix a flat or dull photo, with a before and after wipe.',
+    title: 'Enhance a photo online, free and without upload',
+    description:
+      'Correct exposure, contrast, colour and sharpness with auto levels, and drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.',
+    promise: 'Real corrections to the pixels you have. No invented detail and no watermark.',
     live: true,
   },
   {
@@ -579,6 +591,17 @@ export const TOOLS: Tool[] = [
   },
 
   // ── Design ──────────────────────
+  {
+    slug: 'color-palette',
+    name: 'Colour palette',
+    category: 'Design',
+    blurb: 'Pull a palette out of an image, or build one from a colour.',
+    title: 'Colour palette generator and extractor',
+    description:
+      'Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.',
+    promise: 'The palette comes out as code, not as six hex codes you copy one at a time.',
+    live: true,
+  },
   {
     slug: 'color-converter',
     name: 'Colour converter',

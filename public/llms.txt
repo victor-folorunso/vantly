@@ -11,6 +11,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 
 - [SVG to PNG](https://vantly.xyz/svg-to-png): Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap, no watermark, no sign up. Runs in your browser, so the file never leaves your machine.
 - [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit, no sign up. Runs in your browser.
+- [Image enhancer](https://vantly.xyz/image-enhancer): Correct exposure, contrast, colour and sharpness with auto levels, and drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.
 - [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
 - [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
@@ -21,6 +22,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Password generator](https://vantly.xyz/password-generator): Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.
 - [Base64 encoder](https://vantly.xyz/base64-encoder): Convert text or a file to Base64 and back, including data URIs. Runs in your browser.
 - [UUID generator](https://vantly.xyz/uuid-generator): Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.
+- [Colour palette](https://vantly.xyz/color-palette): Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.
 - [Colour converter](https://vantly.xyz/color-converter): Pick a colour and read it in every format at once, with a copy button for each.
 - [Contrast checker](https://vantly.xyz/contrast-checker): Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.

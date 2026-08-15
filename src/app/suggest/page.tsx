@@ -58,6 +58,23 @@ export default function Page() {
           </Link>
         </p>
       </section>
+
+      <section className="mt-14 rounded-2xl border border-line bg-surface p-6">
+        <h2 className="text-xl font-semibold tracking-tight">Or build it yourself</h2>
+        <p className="mt-2 leading-relaxed text-ink-soft">
+          Every tool here is open source and runs in the browser, so there is no
+          backend to set up and no key to get. Adding a conversion is one line in
+          a list. The README explains where everything lives.
+        </p>
+        <a
+          href={SITE.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 inline-block rounded-lg border border-accent px-4 py-2.5 text-sm font-semibold text-accent"
+        >
+          Open the repository
+        </a>
+      </section>
     </div>
   );
 }
