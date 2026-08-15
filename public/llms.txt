@@ -1,6 +1,6 @@
 # Vantly
 
-> Tools you can just use. No account, no watermark, no limits.
+> Everyday tools for everyone.
 
 Free file tools that run entirely in the visitor's browser. Files are never
 uploaded, so there is no account, no watermark, no file size limit, and no
@@ -9,9 +9,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 
 ## What works today
 
-- [SVG to PNG](https://vantly.xyz/svg-to-png): Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap, no watermark, no sign up. Runs in your browser, so the file never leaves your machine.
-- [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit, no sign up. Runs in your browser.
-- [Background remover](https://vantly.xyz/remove-background): Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark, no account and no upload.
+- [SVG to PNG](https://vantly.xyz/svg-to-png): Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap and no watermark. Runs in your browser, so the file never leaves your machine.
+- [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit. Runs in your browser.
+- [Background remover](https://vantly.xyz/remove-background): Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark and no upload.
 - [Image enhancer](https://vantly.xyz/image-enhancer): Correct exposure, contrast, colour and sharpness with auto levels, and drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.
 - [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
 - [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.

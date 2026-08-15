@@ -83,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="sticky top-0 z-30 border-b border-line bg-ground/85 backdrop-blur">
           <div className="h-[3px] w-full bg-accent" />
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-5">
-            <Link href="/" className="flex shrink-0 basis-40 items-center gap-2.5">
+            <Link href="/" className="flex shrink-0 basis-56 items-center gap-2.5">
               {/* The icon is a raster render now, so it is an img rather than
                   inline SVG. Fixed dimensions to keep it out of the layout
                   shift, and 192 as the source so it stays crisp on a retina
@@ -95,7 +95,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 height={28}
                 className="size-7 rounded-md"
               />
-              <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
+              {/* The tagline sits with the wordmark rather than as a page
+                  heading. It belongs to the brand, not to the home page, and
+                  as an h1 above the picker it pushed the actual tool down. */}
+              <span className="flex flex-col leading-tight">
+                <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
+                <span className="hidden text-[11px] text-ink-faint sm:block">{SITE.tagline}</span>
+              </span>
             </Link>
             <div className="hidden flex-1 justify-center sm:flex">
               <div className="w-full max-w-sm">
@@ -107,7 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link
               href="/all"
               title="Toolbox"
-              className="flex shrink-0 basis-40 items-center justify-end gap-2"
+              className="flex shrink-0 basis-56 items-center justify-end gap-2"
             >
               <span className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft transition-colors hover:border-accent hover:text-accent">
                 <svg

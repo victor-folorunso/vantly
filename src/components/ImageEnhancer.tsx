@@ -375,12 +375,6 @@ export default function ImageEnhancer() {
             </a>
           )}
         </div>
-
-        <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-          Nothing here invents detail. Every change is a real operation on the
-          pixels already in your photo, so a blurry picture comes out sharper at
-          the edges but no closer to being in focus.
-        </p>
       </div>
     </div>
   );

@@ -60,13 +60,12 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5">
-      <section className="pt-8 pb-12 sm:pt-12">
-        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-          Everyday tools
-          <span className="block text-accent">for everyone.</span>
-        </h1>
+      <section className="pt-6 pb-12 sm:pt-8">
+        {/* The visible tagline moved to the header, but the page still needs
+            one h1 for search. Hidden rather than duplicated on screen. */}
+        <h1 className="sr-only">Everyday tools for everyone</h1>
 
-        <div className="mt-6">
+        <div>
           <FilePicker />
         </div>
       </section>

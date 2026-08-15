@@ -13,7 +13,7 @@ import { SITE } from '@/lib/site';
 
 const title = 'HEIC to WebP converter';
 const description =
-  'Convert iPhone HEIC photos to WebP in your browser. Smaller files than JPG at the same quality. Bulk conversion, no upload, no watermark, no sign up.';
+  'Convert iPhone HEIC photos to WebP in your browser. Smaller files than JPG at the same quality. Bulk conversion, no upload, no watermark.';
 
 export const metadata: Metadata = {
   title,

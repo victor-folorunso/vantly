@@ -73,7 +73,7 @@ export default function Page() {
           Convert SVG to PNG at any resolution
         </h1>
         <p className="mt-3 text-ink-soft max-w-2xl">
-          Up to 8K, with transparency, no watermark and no sign up. It runs in
+          Up to 8K, with transparency and no watermark. It runs in
           your browser, so the file stays on your machine.
         </p>
 

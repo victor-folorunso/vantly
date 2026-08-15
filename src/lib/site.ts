@@ -14,7 +14,7 @@ export const SITE = {
   name: 'Vantly',
   repo: 'https://github.com/victor-folorunso/vantly',
   url: 'https://vantly.xyz',
-  tagline: 'Tools you can just use. No account, no watermark, no limits.',
+  tagline: 'Everyday tools for everyone.',
 } as const;
 
 export const CATEGORIES = [
@@ -54,7 +54,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Turn a vector file into a sharp PNG at any size, up to 8K.',
     title: 'SVG to PNG converter, up to 8K with transparency',
     description:
-      'Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap, no watermark, no sign up. Runs in your browser, so the file never leaves your machine.',
+      'Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap and no watermark. Runs in your browser, so the file never leaves your machine.',
     live: true,
   },
   {
@@ -64,7 +64,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open iPhone photos anywhere. Convert to JPG or WebP in bulk.',
     title: 'HEIC to JPG and WebP converter',
     description:
-      'Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit, no sign up. Runs in your browser.',
+      'Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit. Runs in your browser.',
     live: true,
   },
   {
@@ -74,7 +74,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Cut a logo or product out of its background, at full size.',
     title: 'Remove image background free, full resolution, no watermark',
     description:
-      'Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark, no account and no upload.',
+      'Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark and no upload.',
     live: true,
   },
   {
@@ -123,7 +123,7 @@ export const TOOLS: Tool[] = [
     slug: 'pdf-reader',
     name: 'PDF reader',
     category: 'Documents',
-    blurb: 'Open a PDF and read it. No plugin, no download, no account.',
+    blurb: 'Open a PDF and read it. No plugin and no download.',
     title: 'Open and read a PDF online',
     description:
       'Read any PDF in your browser. Search the text, jump between pages, and nothing is uploaded anywhere.',
@@ -177,7 +177,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open a Word document without Word.',
     title: 'Open a DOCX file online without Word',
     description:
-      'View Word documents in your browser. No Office licence, no account, no upload. Formatting, tables and images are kept.',
+      'View Word documents in your browser. No Office licence and no upload. Formatting, tables and images are kept.',
     live: false,
   },
   {

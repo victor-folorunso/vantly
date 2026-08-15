@@ -201,7 +201,7 @@ export function article(word: string): 'a' | 'an' {
 }
 
 export function conversionDescription(c: Conversion): string {
-  return `Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label} in your browser. No upload, no watermark, no sign up, and no limit on how many you can do.`;
+  return `Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label} in your browser. No upload, no watermark, and no limit on how many you can do.`;
 }
 
 /** Everything that shares a source or a target, for the related links block. */
