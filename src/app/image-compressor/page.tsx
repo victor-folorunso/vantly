@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import ImageStudio from '@/components/ImageStudio';
 import { SITE } from '@/lib/site';
+import LearnLink from '@/components/LearnLink';
 
 const title = 'Image compressor';
 const description = 'Make images smaller without making them look worse. Bulk compression in your browser, no upload, no watermark, no file size limit.';
@@ -12,16 +13,6 @@ export const metadata: Metadata = {
   openGraph: { title, description, url: `${SITE.url}/image-compressor` },
 };
 
-const FAQ = [
-  { q: 'How much smaller will my images get?',
-    a: 'It depends on the picture, but a photo saved as WebP at 75 percent quality is usually 60 to 80 percent smaller than the JPG it came from, and most people cannot tell them apart.' },
-  { q: 'Does compressing damage the image?',
-    a: 'JPG and WebP are lossy, so information is discarded every time you save.' },
-  { q: 'Which format should I choose?',
-    a: 'WebP if it is going on a website, since it is meaningfully smaller at the same quality and every current browser reads it.' },
-  { q: 'Are my images uploaded?',
-    a: 'No.' },
-];
 
 export default function Page() {
   return (
@@ -29,8 +20,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: title,
@@ -39,17 +29,7 @@ export default function Page() {
               url: `${SITE.url}/image-compressor`,
               description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -61,17 +41,7 @@ export default function Page() {
           <ImageStudio mode="compress" />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="image-compressor" />
       </div>
     </>
   );

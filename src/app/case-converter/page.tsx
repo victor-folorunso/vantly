@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('case-converter')!;
 
@@ -11,20 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/case-converter` },
 };
 
-const FAQ = [
-  {
-    "q": "What is the difference between title case and sentence case?",
-    "a": "Title case capitalises every word, the way a headline does."
-  },
-  {
-    "q": "Why does camelCase handle my existing camelCase correctly?",
-    "a": "The splitter looks for the hump between a lowercase letter and an uppercase one, so getHTTPResponse is read as three words rather than one."
-  },
-  {
-    "q": "Is there a length limit?",
-    "a": "No."
-  }
-];
 
 export default function Page() {
   return (
@@ -32,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -42,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/case-converter`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -64,17 +40,7 @@ export default function Page() {
           <TextTool preset="case" outputLabel="Result" />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="case-converter" />
       </div>
     </>
   );

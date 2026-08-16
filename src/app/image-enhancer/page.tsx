@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import ImageEnhancer from '@/components/ImageEnhancer';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('image-enhancer')!;
 
@@ -11,28 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/image-enhancer` },
 };
 
-const FAQ = [
-  {
-    q: 'Does this use AI to add detail?',
-    a: 'No, and that is deliberate.',
-  },
-  {
-    q: 'What does auto levels actually do?',
-    a: 'It finds the darkest and lightest tones actually present and stretches them to reach true black and true white.',
-  },
-  {
-    q: 'Why is my blurry photo still blurry?',
-    a: 'Sharpening increases the contrast at edges that exist.',
-  },
-  {
-    q: 'Is my photo uploaded?',
-    a: 'No.',
-  },
-  {
-    q: 'Why is the download a PNG?',
-    a: 'PNG is lossless, so re-saving does not add compression damage on top of whatever the original already carried.',
-  },
-];
 
 export default function Page() {
   return (
@@ -40,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -50,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/image-enhancer`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -76,17 +44,7 @@ export default function Page() {
           <ImageEnhancer />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="image-enhancer" />
       </div>
     </>
   );

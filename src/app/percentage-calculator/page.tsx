@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { PercentageCalculator } from '@/components/Calculators';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('percentage-calculator')!;
 
@@ -11,20 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/percentage-calculator` },
 };
 
-const FAQ = [
-  {
-    "q": "Why is a 20 percent rise not undone by a 20 percent fall?",
-    "a": "Because the second percentage is taken from a bigger number."
-  },
-  {
-    "q": "What is the difference between percent and percentage points?",
-    "a": "If a rate goes from 4 percent to 6 percent, that is a rise of 2 percentage points, but a rise of 50 percent."
-  },
-  {
-    "q": "How do I take a percentage off a price?",
-    "a": "Use the first box: work out what the discount is worth, then subtract."
-  }
-];
 
 export default function Page() {
   return (
@@ -32,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -42,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/percentage-calculator`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -64,17 +40,7 @@ export default function Page() {
           <PercentageCalculator />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="percentage-calculator" />
       </div>
     </>
   );

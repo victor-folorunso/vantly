@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('base64-encoder')!;
 
@@ -11,20 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/base64-encoder` },
 };
 
-const FAQ = [
-  {
-    "q": "Why do other Base64 tools break on emoji?",
-    "a": "Because btoa, the browser function most of them call directly, only accepts Latin-1."
-  },
-  {
-    "q": "Is Base64 encryption?",
-    "a": "No, and this matters."
-  },
-  {
-    "q": "Can I encode a file?",
-    "a": "Not yet on this page."
-  }
-];
 
 export default function Page() {
   return (
@@ -32,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -42,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/base64-encoder`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -66,17 +42,7 @@ export default function Page() {
           <TextTool preset="base64" outputLabel="Result" />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="base64-encoder" />
       </div>
     </>
   );

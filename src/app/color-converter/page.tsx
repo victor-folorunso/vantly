@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { ColorConverter } from '@/components/ColorTools';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('color-converter')!;
 
@@ -11,20 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/color-converter` },
 };
 
-const FAQ = [
-  {
-    "q": "Can I paste a colour in rather than pick one?",
-    "a": "Yes."
-  },
-  {
-    "q": "Is the CMYK accurate for printing?",
-    "a": "It is the standard conversion, which is what any screen based tool can honestly give you."
-  },
-  {
-    "q": "What is HSL useful for?",
-    "a": "Adjusting a colour rather than describing it."
-  }
-];
 
 export default function Page() {
   return (
@@ -32,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -42,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/color-converter`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -64,17 +40,7 @@ export default function Page() {
           <ColorConverter />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="color-converter" />
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import SvgToPng from '@/components/SvgToPng';
 import { SITE, TOOLS } from '@/lib/site';
+import LearnLink from '@/components/LearnLink';
 
 const tool = TOOLS.find((t) => t.slug === 'svg-to-png')!;
 
@@ -31,41 +32,14 @@ const schema = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
 };
 
-const FAQ = [
-  {
-    q: 'Is there a resolution limit?',
-    a: 'No.',
-  },
-  {
-    q: 'Are my files uploaded anywhere?',
-    a: 'No.',
-  },
-  {
-    q: 'Why does my SVG look wrong after converting?',
-    a: 'Usually a font.',
-  },
-  {
-    q: 'Can I keep the transparent background?',
-    a: 'Yes, and it is on by default.',
-  },
-];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
 
 export default function Page() {
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([schema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
@@ -81,17 +55,7 @@ export default function Page() {
           <SvgToPng />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 text-ink-soft leading-relaxed">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="svg-to-png" />
       </div>
     </>
   );

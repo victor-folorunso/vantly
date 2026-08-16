@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('url-encoder')!;
 
@@ -11,16 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/url-encoder` },
 };
 
-const FAQ = [
-  {
-    "q": "Which of the two encode options do I want?",
-    "a": "If you are encoding one value to drop into a query string, use the first."
-  },
-  {
-    "q": "Why did decoding fail?",
-    "a": "A stray percent sign that is not followed by two hex digits is invalid, and the browser refuses rather than guessing."
-  }
-];
 
 export default function Page() {
   return (
@@ -28,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -38,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/url-encoder`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -60,17 +40,7 @@ export default function Page() {
           <TextTool preset="url" outputLabel="Result" />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="url-encoder" />
       </div>
     </>
   );

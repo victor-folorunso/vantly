@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import CodeFormatter from '@/components/CodeFormatter';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('json-formatter')!;
 
@@ -11,24 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/json-formatter` },
 };
 
-const FAQ = [
-  {
-    "q": "Why does it tell me the line and column for JSON?",
-    "a": "Because \"Unexpected token\" on its own is useless in a four thousand line file."
-  },
-  {
-    "q": "Is my code uploaded?",
-    "a": "No."
-  },
-  {
-    "q": "What does minify actually do here?",
-    "a": "It removes whitespace and nothing else."
-  },
-  {
-    "q": "Is there a size limit?",
-    "a": "No."
-  }
-];
 
 export default function Page() {
   return (
@@ -36,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -46,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/json-formatter`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -70,17 +42,7 @@ export default function Page() {
           <CodeFormatter initial="json" />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="json-formatter" />
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { LoanCalculator } from '@/components/Calculators';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('loan-calculator')!;
 
@@ -11,24 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/loan-calculator` },
 };
 
-const FAQ = [
-  {
-    "q": "Why is the payment not the amount divided by the months?",
-    "a": "Because interest is charged on what is still owed, and that changes every month."
-  },
-  {
-    "q": "Why does paying extra early save so much more than paying extra later?",
-    "a": "Because every pound off the balance early removes the interest that pound would have generated for the rest of the term."
-  },
-  {
-    "q": "Does this include fees, insurance or tax?",
-    "a": "No."
-  },
-  {
-    "q": "Is my data sent anywhere?",
-    "a": "No."
-  }
-];
 
 export default function Page() {
   return (
@@ -36,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -46,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/loan-calculator`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -68,17 +40,7 @@ export default function Page() {
           <LoanCalculator />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="loan-calculator" />
       </div>
     </>
   );

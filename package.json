@@ -10,13 +10,16 @@
     "status": "node --experimental-strip-types scripts/status.mjs",
     "llms": "node --experimental-strip-types scripts/llms.mjs",
     "icons": "node --experimental-strip-types scripts/make-icons.mjs",
-    "prebuild": "npm run status && npm run llms"
+    "learn:check": "node --experimental-strip-types scripts/check-learn.mjs",
+    "prebuild": "npm run status && npm run llms && npm run learn:check"
   },
   "dependencies": {
     "diff": "^9.0.0",
+    "gray-matter": "^4.0.3",
     "heic-to": "^1.5.2",
     "js-beautify": "^2.0.3",
     "jszip": "^3.10.1",
+    "marked": "^18.0.9",
     "next": "16.3.1",
     "quantize": "^1.0.2",
     "react": "19.2.8",

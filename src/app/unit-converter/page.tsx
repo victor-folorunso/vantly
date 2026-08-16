@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import UnitConverter from '@/components/UnitConverter';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('unit-converter')!;
 
@@ -11,24 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/unit-converter` },
 };
 
-const FAQ = [
-  {
-    "q": "Are the conversions exact?",
-    "a": "The factors are the defined ones rather than rounded approximations."
-  },
-  {
-    "q": "Why are there two kinds of kilobyte?",
-    "a": "Because there genuinely are."
-  },
-  {
-    "q": "Why are US and UK pints different?",
-    "a": "They just are, and by a lot: a UK pint is about 20 percent larger."
-  },
-  {
-    "q": "Why does temperature work differently?",
-    "a": "Because Fahrenheit has an offset as well as a scale, so it cannot be converted by multiplying alone."
-  }
-];
 
 export default function Page() {
   return (
@@ -36,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -46,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/unit-converter`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -70,17 +42,7 @@ export default function Page() {
           <UnitConverter />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="unit-converter" />
       </div>
     </>
   );

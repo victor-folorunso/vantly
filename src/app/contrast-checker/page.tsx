@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { ContrastChecker } from '@/components/ColorTools';
+import LearnLink from '@/components/LearnLink';
 
 const tool = toolBySlug('contrast-checker')!;
 
@@ -11,24 +12,6 @@ export const metadata: Metadata = {
   openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/contrast-checker` },
 };
 
-const FAQ = [
-  {
-    "q": "What do AA and AAA mean?",
-    "a": "They are levels in the Web Content Accessibility Guidelines."
-  },
-  {
-    "q": "What counts as large text?",
-    "a": "From 18.66px if it is bold, or 24px otherwise."
-  },
-  {
-    "q": "Why show how far short I am rather than just fail?",
-    "a": "Because a fail on its own leaves you guessing."
-  },
-  {
-    "q": "Does this cover everything about accessible colour?",
-    "a": "No."
-  }
-];
 
 export default function Page() {
   return (
@@ -36,8 +19,7 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
+          __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
               name: tool.name,
@@ -46,17 +28,7 @@ export default function Page() {
               url: `${SITE.url}/contrast-checker`,
               description: tool.description,
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQ.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            },
-          ]),
+            }),
         }}
       />
 
@@ -68,17 +40,7 @@ export default function Page() {
           <ContrastChecker />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 leading-relaxed text-ink-soft">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="contrast-checker" />
       </div>
     </>
   );

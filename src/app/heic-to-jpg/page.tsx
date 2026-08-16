@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import HeicConvert from '@/components/HeicConvert';
 import { SITE, TOOLS } from '@/lib/site';
+import LearnLink from '@/components/LearnLink';
 
 const tool = TOOLS.find((t) => t.slug === 'heic-to-jpg')!;
 
@@ -26,45 +27,14 @@ const schema = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
 };
 
-const FAQ = [
-  {
-    q: 'Why will my iPhone photos not open on Windows?',
-    a: 'iPhones have saved photos as HEIC since iOS 11 in 2017.',
-  },
-  {
-    q: 'How many photos can I convert at once?',
-    a: 'There is no limit.',
-  },
-  {
-    q: 'Are my photos uploaded to a server?',
-    a: 'No.',
-  },
-  {
-    q: 'Should I pick JPG or WebP?',
-    a: 'JPG if anything at all needs to open it, including old software and printing services.',
-  },
-  {
-    q: 'Can I stop my iPhone making HEIC files in the first place?',
-    a: 'Yes. Settings, Camera, Formats, Most Compatible. New photos will be JPG.',
-  },
-];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
 
 export default function Page() {
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([schema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
@@ -81,17 +51,7 @@ export default function Page() {
           <HeicConvert />
         </div>
 
-        <section className="mt-20 max-w-2xl">
-          <h2 className="text-xl font-semibold tracking-tight">Questions</h2>
-          <dl className="mt-6 space-y-7">
-            {FAQ.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium">{f.q}</dt>
-                <dd className="mt-1.5 text-ink-soft leading-relaxed">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <LearnLink tool="heic-to-jpg" />
       </div>
     </>
   );
