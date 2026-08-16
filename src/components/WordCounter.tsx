@@ -14,13 +14,6 @@ import { countText } from '@/lib/textTools';
  * counting out of curiosity, they are checking something fits.
  */
 
-const LIMITS = [
-  { label: 'X post', max: 280, of: 'characters' as const },
-  { label: 'Meta description', max: 160, of: 'characters' as const },
-  { label: 'Page title', max: 60, of: 'characters' as const },
-  { label: 'SMS', max: 160, of: 'characters' as const },
-];
-
 function minutes(m: number): string {
   if (m === 0) return '0 min';
   if (m < 1) return `${Math.max(1, Math.round(m * 60))} sec`;
@@ -83,24 +76,6 @@ export default function WordCounter() {
           </div>
         </div>
 
-        {/* Most people are here to check something fits, not out of curiosity. */}
-        <div className="rounded-xl border border-line bg-surface p-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Fits in</p>
-          <ul className="mt-2 space-y-1.5">
-            {LIMITS.map((l) => {
-              const used = s.characters;
-              const over = used > l.max;
-              return (
-                <li key={l.label} className="flex items-center justify-between gap-3 text-sm">
-                  <span className="truncate text-ink-soft">{l.label}</span>
-                  <span className={`shrink-0 tabular-nums ${over ? 'text-accent' : 'text-ink-faint'}`}>
-                    {over ? `${used - l.max} over` : `${l.max - used} left`}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
       </div>
     </div>
   );

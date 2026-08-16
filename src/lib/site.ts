@@ -126,7 +126,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open a PDF and read it. No plugin and no download.',
     title: 'Open and read a PDF online',
     description:
-      'Read any PDF in your browser. Search the text, jump between pages, and nothing is uploaded anywhere.',
+      'Read any PDF in your browser. Search the text, jump between pages.',
     live: false,
   },
   {
@@ -136,7 +136,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Join several PDFs into one, in the order you choose.',
     title: 'Merge PDF files into one',
     description:
-      'Combine multiple PDFs into a single file. Drag to reorder, remove pages you do not want, and keep everything on your own machine.',
+      'Combine multiple PDFs into a single file. Drag to reorder and remove the pages you do not want.',
     live: false,
   },
   {
@@ -146,7 +146,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Pull out the pages you need and leave the rest.',
     title: 'Split a PDF or extract pages',
     description:
-      'Split a PDF into separate files or extract a page range. Runs in your browser with no upload.',
+      'Split a PDF into separate files or extract a page range. Runs in your browser.',
     live: false,
   },
   {
@@ -166,7 +166,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Turn a pile of photos or scans into one PDF.',
     title: 'Convert images to a single PDF',
     description:
-      'Combine JPG, PNG and HEIC images into one PDF. Reorder them, choose the page size, and nothing leaves your computer.',
+      'Combine JPG, PNG and HEIC images into one PDF. Reorder them, choose the page size,.',
     live: false,
   },
 
@@ -177,7 +177,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open a Word document without Word.',
     title: 'Open a DOCX file online without Word',
     description:
-      'View Word documents in your browser. No Office licence and no upload. Formatting, tables and images are kept.',
+      'View Word documents in your browser. No Office licence. Formatting, tables and images are kept.',
     live: false,
   },
   {
@@ -187,7 +187,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open a PowerPoint deck without PowerPoint.',
     title: 'Open a PPTX file online without PowerPoint',
     description:
-      'View PowerPoint presentations in your browser. Step through the slides, read the notes, and keep the file on your own machine.',
+      'View PowerPoint presentations in your browser. Step through the slides and read the notes.',
     live: false,
   },
   {
@@ -197,7 +197,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open a spreadsheet without Excel.',
     title: 'Open an XLSX file online without Excel',
     description:
-      'View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered, with nothing uploaded.',
+      'View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.',
     live: false,
   },
   {
@@ -207,7 +207,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Read an ebook without installing a reader.',
     title: 'Open and read an EPUB file online',
     description:
-      'Read EPUB ebooks in your browser. Change the text size, jump between chapters, and keep the file on your machine.',
+      'Read EPUB ebooks in your browser. Change the text size and jump between chapters.',
     live: false,
   },
 
@@ -219,7 +219,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Open a huge CSV that Excel refuses to. Filter and sort it.',
     title: 'Open and filter a large CSV file',
     description:
-      'View, sort and filter CSV files too large for a spreadsheet. Handles hundreds of thousands of rows in your browser, with no row limit and no upload.',
+      'View, sort and filter CSV files too large for a spreadsheet. Handles hundreds of thousands of rows in your browser, with no row limit.',
     live: false,
   },
   {
@@ -229,7 +229,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Convert between CSV and JSON, either direction.',
     title: 'Convert CSV to JSON and back',
     description:
-      'Convert CSV to JSON or JSON to CSV in your browser. Choose the delimiter, handle quoted fields, and keep the file on your machine.',
+      'Convert CSV to JSON or JSON to CSV in your browser. Choose the delimiter and handle quoted fields.',
     live: false,
   },
 
@@ -273,7 +273,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Cut an MP3 down to the part you actually want.',
     title: 'Trim an MP3 or audio file',
     description:
-      'Cut and trim audio in your browser. Drag the handles, hear the result, export it. No upload queue and no watermark.',
+      'Cut and trim audio in your browser. Drag the handles, hear the result, export it.',
     live: false,
   },
   {
@@ -283,7 +283,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Make a video small enough to send.',
     title: 'Compress a video file',
     description:
-      'Reduce video file size in your browser. Choose the quality, watch the size estimate, and keep the file on your machine.',
+      'Reduce video file size in your browser. Choose the quality and watch the size estimate.',
     live: false,
   },
   {
@@ -315,7 +315,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Indent and tidy XML so you can read it.',
     title: 'Format and beautify XML online',
     description:
-      'Format, indent and validate XML in your browser. No upload and no size limit.',
+      'Format, indent and validate XML in your browser.',
     live: false,
   },
   {

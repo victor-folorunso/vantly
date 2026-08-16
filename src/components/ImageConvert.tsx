@@ -54,7 +54,9 @@ export default function ImageConvert({
   sourceLabel: string;
 }) {
   const [items, setItems] = useState<Item[]>([]);
-  const [quality, setQuality] = useState(0.9);
+  // Fixed. See HeicConvert: a quality slider on a converter is a question
+  // the visitor has no way to answer.
+  const quality = 0.92;
   const [running, setRunning] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [zipping, setZipping] = useState(false);
@@ -294,33 +296,6 @@ export default function ImageConvert({
       </div>
 
       <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
-        {lossy ? (
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Quality
-              <span className="tabular-nums text-ink-faint">{Math.round(quality * 100)}%</span>
-            </span>
-            <input
-              type="range"
-              min={0.5}
-              max={1}
-              step={0.05}
-              value={quality}
-              disabled={running}
-              onChange={(e) => setQuality(parseFloat(e.target.value))}
-              className="mt-2 w-full accent-[var(--accent)]"
-            />
-            <span className="mt-2 block text-xs leading-relaxed text-ink-faint">
-              90% is usually indistinguishable from the original at a fraction of
-              the size.
-            </span>
-          </label>
-        ) : (
-          <p className="text-xs leading-relaxed text-ink-faint">
-            PNG is lossless, so there is no quality to set. Every pixel comes out
-            exactly as it went in, transparency included.
-          </p>
-        )}
 
         <button
           onClick={() => void convertAll()}

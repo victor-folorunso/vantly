@@ -68,7 +68,9 @@ function extensionFor(mime: string): string {
 
 export default function ImageStudio({ mode }: { mode: Mode }) {
   const [items, setItems] = useState<Item[]>([]);
-  const [quality, setQuality] = useState(mode === 'compress' ? 0.75 : 0.9);
+  // Resizing keeps a visually lossless default; compressing lets you choose,
+  // because trading quality for size is the entire point of that one.
+  const [quality, setQuality] = useState(mode === 'compress' ? 0.75 : 0.92);
   const [longEdge, setLongEdge] = useState(mode === 'resize' ? 1920 : 0);
   const [output, setOutput] = useState<OutputKey>(mode === 'compress' ? 'webp' : 'keep');
   const [running, setRunning] = useState(false);
@@ -387,7 +389,9 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
             </select>
           </label>
 
-          {output !== 'png' && (
+          {/* Only where it is the actual job. Resizing does not need a
+              quality question; it needs the picture to survive. */}
+          {mode === 'compress' && output !== 'png' && (
             <label className="mt-5 block text-sm">
               <span className="flex justify-between">
                 Quality

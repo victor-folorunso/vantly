@@ -49,7 +49,13 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
   // Set by the route, so /heic-to-webp lands on WebP rather than making someone
   // who searched for it change the setting themselves.
   const [format, setFormat] = useState<FormatKey>(initialFormat);
-  const [quality, setQuality] = useState(0.9);
+  /*
+    Fixed rather than offered. A slider on a photo converter asks a question
+    nobody can answer without seeing both results, and the honest answer is
+    always "as good as it goes without the file being pointlessly huge". 92 is
+    visually indistinguishable from the original on a photograph.
+  */
+  const quality = 0.92;
   const [running, setRunning] = useState(false);
   const [loadingDecoder, setLoadingDecoder] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -288,21 +294,6 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
               ? 'JPG opens everywhere, including old software.'
               : 'WebP files are smaller at the same quality, and every current browser reads them.'}
           </p>
-
-          <label className="mt-5 block text-sm">
-            <span className="flex justify-between">
-              Quality <span className="tabular-nums text-ink-faint">{Math.round(quality * 100)}%</span>
-            </span>
-            <input
-              type="range"
-              min={0.5}
-              max={1}
-              step={0.05}
-              value={quality}
-              onChange={(e) => setQuality(parseFloat(e.target.value))}
-              className="mt-2 w-full accent-[var(--accent)]"
-            />
-          </label>
         </fieldset>
 
         <button
