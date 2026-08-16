@@ -54,7 +54,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Turn a vector file into a sharp PNG at any size, up to 8K.',
     title: 'SVG to PNG converter, up to 8K with transparency',
     description:
-      'Convert SVG to PNG at any resolution, including 4K and 8K, with a transparent background. No resolution cap and no watermark. Runs in your browser, so the file never leaves your machine.',
+      'Convert SVG to PNG at any size, including 4K and 8K, with transparency. No resolution cap, no watermark, and the file stays on your machine.',
     live: true,
   },
   {
@@ -72,7 +72,7 @@ export const TOOLS: Tool[] = [
     name: 'Background remover',
     category: 'Images',
     blurb: 'Cut a logo or product out of its background, at full size.',
-    title: 'Remove image background free, full resolution, no watermark',
+    title: 'Remove image background, full resolution',
     description:
       'Remove the background from a logo, product photo, screenshot or signature in your browser. Full resolution, transparent PNG, no watermark and no upload.',
     live: true,
@@ -84,7 +84,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Fix a flat or dull photo, with a before and after wipe.',
     title: 'Enhance a photo online, free and without upload',
     description:
-      'Correct exposure, contrast, colour and sharpness with auto levels, and drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.',
+      'Fix exposure, contrast, colour and sharpness, then drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.',
     live: true,
   },
   {
@@ -166,7 +166,7 @@ export const TOOLS: Tool[] = [
     blurb: 'Turn a pile of photos or scans into one PDF.',
     title: 'Convert images to a single PDF',
     description:
-      'Combine JPG, PNG and HEIC images into one PDF. Reorder them, choose the page size,.',
+      'Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.',
     live: false,
   },
 

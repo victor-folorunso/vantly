@@ -10,6 +10,7 @@
     "status": "node --experimental-strip-types scripts/status.mjs",
     "llms": "node --experimental-strip-types scripts/llms.mjs",
     "icons": "node --experimental-strip-types scripts/make-icons.mjs",
+    "seo": "node --experimental-strip-types scripts/seo-audit.mjs",
     "learn:check": "node --experimental-strip-types scripts/check-learn.mjs",
     "prebuild": "npm run status && npm run llms && npm run learn:check"
   },

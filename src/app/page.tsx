@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import FilePicker from '@/components/FilePicker';
+import ShuffledTools from '@/components/ShuffledTools';
 import { TOOLS, CATEGORIES } from '@/lib/site';
 
 /**
@@ -22,11 +23,10 @@ const PER_SECTION = 5;
 const FEATURED_CATEGORIES = CATEGORIES.slice(0, 5);
 
 /**
- * A stable pick that still varies as the site grows.
+ * What the server renders, before the browser reshuffles it.
  *
- * Deliberately not shuffled in the browser. Swapping the cards after hydration
- * is the same visible correction that made the Cladior dashboard feel broken,
- * and here it would land on the first thing anybody sees.
+ * Has to be deterministic so the HTML and the first paint agree. The variety
+ * comes from ShuffledTools once the page is interactive.
  */
 function sample<T>(items: T[], count: number, seed: number): T[] {
   if (items.length <= count) return items;
@@ -46,6 +46,7 @@ export default function Home() {
     return {
       category,
       anchor: category.toLowerCase(),
+      all: [...live, ...rest],
       tools: sample([...live, ...rest], PER_SECTION, TOOLS.length + i * 3),
     };
   }).filter((s) => s.tools.length > 0);
@@ -86,29 +87,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <ul className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-              {s.tools.map((t) => (
-                <li key={t.slug}>
-                  <Link
-                    href={`/${t.slug}`}
-                    className={`block h-full rounded-lg border border-line p-3.5 transition-colors ${
-                      t.live ? 'bg-surface hover:border-accent' : 'hover:border-ink-faint'
-                    }`}
-                  >
-                    <span className={`text-sm font-medium ${t.live ? '' : 'text-ink-faint'}`}>
-                      {t.name}
-                    </span>
-                    <span
-                      className={`mt-0.5 block text-sm leading-snug ${
-                        t.live ? 'text-ink-soft' : 'text-ink-faint'
-                      }`}
-                    >
-                      {t.blurb}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <ShuffledTools tools={s.all} count={PER_SECTION} initial={s.tools} />
           </section>
         ))}
       </div>

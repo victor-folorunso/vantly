@@ -20,6 +20,10 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-10">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Learn</h1>
+      <p className="mt-3 max-w-xl leading-relaxed text-ink-soft">
+        Why a file will not open, which format to pick, and what a conversion
+        actually costs you. Written for the question rather than for the tool.
+      </p>
 
       {articles.length === 0 ? (
         <p className="mt-6 text-ink-soft">Nothing written yet.</p>
