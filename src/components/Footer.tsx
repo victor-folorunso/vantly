@@ -101,11 +101,6 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
-              <li>
-                <Link href="/all#conversions" className="block py-0.5 text-sm text-accent hover:underline">
-                  All {CONVERSIONS.length}
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

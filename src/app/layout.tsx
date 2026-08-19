@@ -110,6 +110,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Search placeholder="Search tools…" />
               </div>
             </div>
+            <Link
+              href="/learn"
+              className="shrink-0 text-sm text-ink-soft transition-colors hover:text-accent"
+            >
+              Learn
+            </Link>
+
             {/* A toolbox rather than the words. It survives a narrow screen,
                 and the title carries the name for anyone who needs it. */}
             <Link

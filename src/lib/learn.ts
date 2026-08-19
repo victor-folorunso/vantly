@@ -32,6 +32,8 @@ export type Article = {
   tool: Tool | null;
   html: string;
   minutes: number;
+  /** True while the article is a stub. Excluded from the built site. */
+  draft: boolean;
 };
 
 /**
@@ -65,6 +67,7 @@ function parse(file: string): Article {
     html: marked.parse(content, { async: false }) as string,
     // 220wpm rather than the usual 200. These are short and scanned, not read.
     minutes: Math.max(1, Math.round(words / 220)),
+    draft: data.draft === true || data.draft === 'true',
   };
 }
 
@@ -75,9 +78,16 @@ export function allArticles(): Article[] {
   } catch {
     return [];
   }
-  // Newest first. The date is in the frontmatter rather than the filename so a
-  // rewrite can update it without changing the URL.
-  return files.map(parse).sort((a, b) => b.updated.localeCompare(a.updated));
+  /* Drafts are stubs waiting for a writer. They are excluded here rather than
+     at each call site, so a half written article cannot reach a route, the
+     sitemap, or the Read more link on a tool page by being forgotten in one
+     place. */
+  return files
+    .map(parse)
+    .filter((a) => !a.draft)
+    // Newest first. The date is in the frontmatter rather than the filename, so
+    // a rewrite can update it without changing the URL.
+    .sort((a, b) => b.updated.localeCompare(a.updated));
 }
 
 export function articleBySlug(slug: string): Article | undefined {

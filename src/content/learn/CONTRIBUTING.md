@@ -28,6 +28,19 @@ keywords: [heic, heic file, iphone photo format]
 wrong either 404s the page or points the reader at the wrong tool, and the build
 will refuse it.
 
+There is one more, and it decides whether the article exists yet:
+
+```yaml
+draft: true
+```
+
+A draft is not built, not linked, not in the sitemap and not indexed. Nine
+stubs in this folder are drafts waiting to be written. **Delete that line when
+the article is finished**, and it goes live on the next build.
+
+While it is a draft, `npm run learn:check` only checks the frontmatter. Once the
+line is gone, the length, link and em dash rules all apply.
+
 **Editable fields** are yours entirely.
 
 - `title` is the `<h1>` and the search result headline. Write the question the
@@ -114,6 +127,16 @@ than one never made.
 ```bash
 npm run learn:check
 ```
+
+To start a new article rather than filling an existing stub:
+
+```bash
+npm run learn:new <slug> <tool-slug> "Title as a question"
+```
+
+That writes the locked fields for you, which is the point: a slug that does not
+match its filename makes a page nobody can reach, and a bad tool reference
+points the reader at the wrong tool. Neither one errors at runtime.
 
 It verifies the filename matches `slug`, that `tool` exists, that dates parse,
 that required fields are present, and that no em dash slipped in. It does not

@@ -30,6 +30,7 @@ if (!existsSync(DIR)) {
 
 const files = readdirSync(DIR).filter((f) => f.endsWith('.md') && f !== 'CONTRIBUTING.md');
 const problems = [];
+let drafts = 0;
 
 /** Enough frontmatter parsing for a flat block of scalars and one list. */
 function frontmatter(raw) {
@@ -94,6 +95,15 @@ for (const file of files) {
     problems.push(`${where}: contains an em dash. Use a comma or a full stop.`);
   }
 
+  /* A draft is a stub waiting for a writer. Its locked fields still have to be
+     right, because those are what break routing, but the content rules are
+     meaningless until somebody writes the content. Drafts are excluded from
+     the build, so a wrong one cannot reach anybody. */
+  if (data.draft === 'true' || data.draft === true) {
+    drafts++;
+    continue;
+  }
+
   const words = body.trim().split(/\s+/).filter(Boolean).length;
   if (words < 400) {
     problems.push(`${where}: ${words} words. Under 400 is too thin to rank and drags the rest down.`);
@@ -112,4 +122,8 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(`learn: ${files.length} article${files.length === 1 ? '' : 's'}, all valid.`);
+const written = files.length - drafts;
+console.log(
+  `learn: ${written} article${written === 1 ? '' : 's'} published, ` +
+    `${drafts} draft${drafts === 1 ? '' : 's'} waiting, all valid.`,
+);
