@@ -68,26 +68,6 @@ export const TOOLS: Tool[] = [
     live: true,
   },
   {
-    slug: 'remove-background',
-    name: 'Background remover',
-    category: 'Images',
-    blurb: 'Cut anything out of its background, at full size.',
-    title: 'Remove image background, full resolution',
-    description:
-      'Cut the background out of a photo, logo or product shot. Full resolution, transparent PNG, no watermark and no upload.',
-    live: true,
-  },
-  {
-    slug: 'image-enhancer',
-    name: 'Image enhancer',
-    category: 'Images',
-    blurb: 'Fix a flat or dull photo, with a before and after wipe.',
-    title: 'Enhance a photo online, free and without upload',
-    description:
-      'Fix exposure, contrast, colour and sharpness, then drag a handle across the picture to compare before and after. Runs in your browser with nothing uploaded.',
-    live: true,
-  },
-  {
     slug: 'image-compressor',
     name: 'Image compressor',
     category: 'Images',

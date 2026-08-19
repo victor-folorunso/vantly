@@ -31,14 +31,6 @@ export const TOOL_NOTES: Record<string, string[]> = {
     'Transparency is kept. Save as PNG rather than JPG if the background needs to stay clear, because JPG cannot store it.',
     'Fonts inside an SVG only render correctly if they are embedded or converted to outlines. A missing font falls back and the result looks wrong.',
   ],
-  'remove-background': [
-    'Two modes, because they fail at opposite things. Colour is instant, exact on a flat background, and hopeless on a photograph. Subject uses a model that understands what it is looking at, and costs a 109MB download the first time.',
-    'Use Colour for logos, product shots on white, screenshots and scanned signatures. It is genuinely better than a model there, and there is nothing to wait for.',
-    'Use Subject for people, pets, hair and anything with a busy background. It needs WebGPU, so it is greyed out on browsers that cannot run it.',
-    'The model is BiRefNet, the same one several paid background removers are built on. It is MIT licensed, which is why it is here: the smaller alternative, RMBG, is licensed for non-commercial use only.',
-    'White inside the subject is kept. The fill spreads inward from the edges rather than deleting every matching pixel, so white eyes and white text survive.',
-    'The download is PNG because JPG has no transparency and would fill the background straight back in.',
-  ],
   'image-compressor': [
     'Quality 75 to 85 is the usual sweet spot. Above 90 the file grows fast for a difference you cannot see.',
     'PNG is lossless, so compressing a photo to PNG makes it larger, not smaller. Use JPG or WebP for photographs and keep PNG for graphics and screenshots.',
@@ -48,11 +40,6 @@ export const TOOL_NOTES: Record<string, string[]> = {
     'The aspect ratio is always kept. A free width and height would let you stretch a picture without noticing, which is almost never what anybody wants.',
     'Nothing is ever enlarged. Scaling a small image up invents detail that was never captured and makes the file bigger for a worse picture.',
     'Sizes are set by the longest edge, which is how people actually describe them: make it fit 1920, rather than a pair of exact numbers.',
-  ],
-  'image-enhancer': [
-    'Auto levels stretch the tones that are already in the file. It fixes flat and dull, and it cannot recover detail that was never captured.',
-    'A blown out sky or a black shadow has no information left in it. No amount of correction brings those back.',
-    'Drag the handle across the picture to compare. Small corrections almost always look better than large ones.',
   ],
   'hash-generator': [
     'The usual reason to hash a file is to check it arrived intact. Uploading it to a stranger to find out would defeat the point, so this reads it locally.',

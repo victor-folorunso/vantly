@@ -15,7 +15,6 @@
     "prebuild": "npm run status && npm run llms && npm run learn:check"
   },
   "dependencies": {
-    "@huggingface/transformers": "^4.2.0",
     "diff": "^9.0.0",
     "gray-matter": "^4.0.3",
     "heic-to": "^1.5.2",
