@@ -1,29 +1,29 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { loadSegmenter, isModelCached, checkSupport, SEGMENT_MODEL_MB, type Support } from '@/lib/segment';
 
 /**
- * Background removal by colour, with no model and no download.
+ * Two ways to cut a background out, because they fail at opposite things.
  *
- * The obvious approach is a segmentation model, and it is genuinely feasible in
- * the browser at around 45MB quantised. The problem is licensing: RMBG-1.4 is
- * non-commercial, and this site will eventually carry billing. That is exactly
- * the trap of discovering a licence after building on it, so the model tier
- * waits until a permissive one is confirmed.
+ * **Colour** floods inward from the edges and removes anything close enough to
+ * the edge colour. Exact on a flat background, instant, nothing to download,
+ * and hopeless on a photograph, because it has no idea what a person is.
  *
- * Meanwhile this covers the cases people actually bring most often: a logo, a
- * product shot on white, a screenshot, a scanned signature. All of those have a
- * flat background, and for a flat background a flood fill is not a worse answer
- * than a neural network. It is a better one. It is exact, instant, needs no
- * download, and runs on a phone.
+ * **Subject** runs BiRefNet, the model several commercial background removers
+ * are built on. It understands what it is looking at, and it costs a 109MB
+ * download the first time. Never fetched unless asked for.
  *
- * The fill starts from the edges rather than removing every matching pixel in
- * the image. Otherwise white eyes, white text and any white inside the subject
- * disappear too, which is the single most common failure of naive colour
- * keying.
+ * The licence question that blocked this earlier is settled. RMBG-1.4 is
+ * smaller at 44MB and non-commercial only, so it is out for a site that will
+ * bill. BiRefNet is MIT.
+ *
+ * The colour fill starts at the edges rather than deleting every matching pixel
+ * anywhere. Otherwise white eyes, white text and any white gap inside the
+ * subject go too, which is the commonest failure of naive colour keying.
  */
 
-type Mode = 'auto' | 'pick';
+type Mode = 'auto' | 'pick' | 'subject';
 
 function hexOf(r: number, g: number, b: number) {
   return '#' + [r, g, b].map((n) => n.toString(16).padStart(2, '0')).join('');
@@ -36,6 +36,10 @@ export default function BackgroundRemover() {
   const [mode, setMode] = useState<Mode>('auto');
   const [pickedColor, setPickedColor] = useState<[number, number, number] | null>(null);
   const [outUrl, setOutUrl] = useState<string | null>(null);
+  const [modelProgress, setModelProgress] = useState<number | null>(null);
+  const [modelReady, setModelReady] = useState(false);
+  const [modelError, setModelError] = useState<string | null>(null);
+  const [support, setSupport] = useState<Support | null>(null);
   const [busy, setBusy] = useState(false);
   const [removedPct, setRemovedPct] = useState<number | null>(null);
   const sourceRef = useRef<ImageData | null>(null);
@@ -55,6 +59,71 @@ export default function BackgroundRemover() {
     setFile(f);
     setPickedColor(null);
   }, []);
+
+  /**
+   * The model path. Hands the whole image to BiRefNet and uses the alpha it
+   * returns, rather than deciding anything about colour.
+   */
+  const runSubject = useCallback(async () => {
+    const f = file;
+    if (!f) return;
+    setBusy(true);
+    setModelError(null);
+    try {
+      const segment = await loadSegmenter(setModelProgress);
+      setModelProgress(null);
+      setModelReady(true);
+
+      const url = URL.createObjectURL(f);
+      try {
+        const [result] = await segment(url);
+        const mask = result.mask;
+
+        const src = sourceRef.current!;
+        const { width: w, height: h } = src;
+        const data = new Uint8ClampedArray(src.data);
+
+        /* The mask comes back at the model's own resolution, so it is sampled
+           with nearest neighbour rather than assumed to match. Scaling the
+           image down to the mask instead would hand back a smaller picture
+           than the one that was uploaded, which is the thing every capped
+           competitor already does. */
+        let removed = 0;
+        for (let y = 0; y < h; y++) {
+          const my = Math.min(mask.height - 1, Math.floor((y * mask.height) / h));
+          for (let x = 0; x < w; x++) {
+            const mx = Math.min(mask.width - 1, Math.floor((x * mask.width) / w));
+            const a = mask.data[my * mask.width + mx];
+            data[(y * w + x) * 4 + 3] = a;
+            if (a < 128) removed++;
+          }
+        }
+
+        setRemovedPct(Math.round((removed / (w * h)) * 100));
+
+        const out = document.createElement('canvas');
+        out.width = w;
+        out.height = h;
+        out.getContext('2d')!.putImageData(new ImageData(data, w, h), 0, 0);
+        const blob = await new Promise<Blob | null>((r) => out.toBlob(r, 'image/png'));
+        if (blob) {
+          setOutUrl((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return URL.createObjectURL(blob);
+          });
+        }
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    } catch (e) {
+      setModelProgress(null);
+      setModelError(
+        e instanceof Error ? e.message : 'The model would not load. Colour mode still works.',
+      );
+    } finally {
+      setBusy(false);
+    }
+  }, [file]);
 
   const run = useCallback(async () => {
     const src = sourceRef.current;
@@ -158,8 +227,18 @@ export default function BackgroundRemover() {
   }, [tolerance, feather, mode, pickedColor]);
 
   useEffect(() => {
-    if (sourceRef.current) void run();
-  }, [run, file]);
+    if (!sourceRef.current) return;
+    if (mode === 'subject') void runSubject();
+    else void run();
+  }, [run, runSubject, mode, file]);
+
+  /* Asked once on mount. Without this the only way to discover the browser
+     cannot run the model is to download 109MB and watch it fail, which is what
+     happened the first time. */
+  useEffect(() => {
+    void checkSupport().then(setSupport);
+    void isModelCached().then(setModelReady);
+  }, []);
 
   // Draw the original onto a canvas so a click can sample a colour from it.
   useEffect(() => {
@@ -241,20 +320,60 @@ export default function BackgroundRemover() {
 
       <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
         <div className="flex gap-2">
-          {(['auto', 'pick'] as Mode[]).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
-                m === mode
-                  ? 'border-accent bg-accent-soft text-ink'
-                  : 'border-line text-ink-soft hover:border-ink-faint'
-              }`}
-            >
-              {m === 'auto' ? 'Automatic' : 'Pick a colour'}
-            </button>
-          ))}
+          {(['subject', 'auto', 'pick'] as Mode[]).map((m) => {
+            const blocked = m === 'subject' && support?.ok === false;
+            return (
+              <button
+                key={m}
+                onClick={() => !blocked && setMode(m)}
+                disabled={blocked}
+                title={blocked ? (support as { reason: string }).reason : undefined}
+                className={`flex-1 rounded-lg border px-2.5 py-2 text-sm font-medium transition-colors ${
+                  m === mode
+                    ? 'border-accent bg-accent-soft text-ink'
+                    : 'border-line text-ink-soft hover:border-ink-faint'
+                } ${blocked ? 'cursor-not-allowed opacity-40 hover:border-line' : ''}`}
+              >
+                {m === 'subject' ? 'Subject' : m === 'auto' ? 'Colour' : 'Pick'}
+              </button>
+            );
+          })}
         </div>
+
+        {support?.ok === false && (
+          <p className="mt-3 text-xs leading-relaxed text-ink-faint">
+            Subject mode needs WebGPU. {(support as { reason: string }).reason} Colour
+            mode works everywhere.
+          </p>
+        )}
+
+        {mode === 'subject' && (
+          <div className="mt-3">
+            {modelError ? (
+              <p className="text-xs leading-relaxed text-accent">
+                {modelError} Colour mode still works and needs no download.
+              </p>
+            ) : modelProgress !== null ? (
+              <>
+                <div className="h-1 w-full overflow-hidden rounded-full bg-surface-alt">
+                  <div
+                    className="h-full bg-accent transition-[width]"
+                    style={{ width: `${Math.round(modelProgress * 100)}%` }}
+                  />
+                </div>
+                <p className="mt-1.5 text-xs tabular-nums text-ink-faint">
+                  Downloading the model, {Math.round(modelProgress * 100)}%
+                </p>
+              </>
+            ) : (
+              <p className="text-xs leading-relaxed text-ink-faint">
+                {modelReady
+                  ? 'Works on photographs, hair and anything with a busy background.'
+                  : `Downloads a ${SEGMENT_MODEL_MB}MB model the first time, then it is cached. Colour mode needs no download.`}
+              </p>
+            )}
+          </div>
+        )}
 
         {mode === 'pick' && (
           <p className="mt-3 flex items-center gap-2 text-xs leading-relaxed text-ink-faint">
@@ -272,6 +391,10 @@ export default function BackgroundRemover() {
           </p>
         )}
 
+        {/* Tolerance and softening belong to the colour path. The model has
+            no threshold to tune, and a dead slider is worse than none. */}
+        {mode !== 'subject' && (
+        <>
         <label className="mt-5 block text-sm">
           <span className="flex justify-between">
             Tolerance
@@ -306,6 +429,8 @@ export default function BackgroundRemover() {
             className="mt-1.5 w-full accent-[var(--accent)]"
           />
         </label>
+        </>
+        )}
 
         {outUrl && (
           <a

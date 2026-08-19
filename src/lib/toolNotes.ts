@@ -32,8 +32,10 @@ export const TOOL_NOTES: Record<string, string[]> = {
     'Fonts inside an SVG only render correctly if they are embedded or converted to outlines. A missing font falls back and the result looks wrong.',
   ],
   'remove-background': [
-    'This works by colour, not by recognising objects. It is exact on a flat background, so logos, product shots, screenshots and scanned signatures come out clean.',
-    'A person photographed in a real room is a different problem and this will not do it well. That needs a segmentation model, which is a separate job.',
+    'Two modes, because they fail at opposite things. Colour is instant, exact on a flat background, and hopeless on a photograph. Subject uses a model that understands what it is looking at, and costs a 109MB download the first time.',
+    'Use Colour for logos, product shots on white, screenshots and scanned signatures. It is genuinely better than a model there, and there is nothing to wait for.',
+    'Use Subject for people, pets, hair and anything with a busy background. It needs WebGPU, so it is greyed out on browsers that cannot run it.',
+    'The model is BiRefNet, the same one several paid background removers are built on. It is MIT licensed, which is why it is here: the smaller alternative, RMBG, is licensed for non-commercial use only.',
     'White inside the subject is kept. The fill spreads inward from the edges rather than deleting every matching pixel, so white eyes and white text survive.',
     'The download is PNG because JPG has no transparency and would fill the background straight back in.',
   ],
