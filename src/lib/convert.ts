@@ -11,8 +11,16 @@
  * everything else.
  */
 
-/** Set in .env.local and in the Cloudflare Pages environment. */
-export const CONVERT_URL = process.env.NEXT_PUBLIC_CONVERT_URL ?? '';
+/* The deployed endpoint, as a default rather than a required setting.
+   NEXT_PUBLIC_ values are compiled into the client bundle, so this is public
+   the moment anybody opens the page and there is nothing to keep out of the
+   repo. Hardcoding the default means a fresh clone works, and the Cloudflare
+   build does not need an environment variable somebody has to remember to
+   set. The variable still wins when present, for pointing at a local
+   container. */
+const DEFAULT_CONVERT_URL = 'https://victorfolorunsoofficial--vantly-convert-web.modal.run';
+
+export const CONVERT_URL = process.env.NEXT_PUBLIC_CONVERT_URL || DEFAULT_CONVERT_URL;
 
 /** False when the service is not configured, so pages can say so honestly. */
 export const conversionAvailable = CONVERT_URL.length > 0;

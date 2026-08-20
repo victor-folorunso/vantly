@@ -26,12 +26,25 @@ execution, so an idle endpoint is free.
 import os
 import shutil
 import subprocess
+import time
 import tempfile
 import uuid
 
 import modal
 
 app = modal.App("vantly-convert")
+
+# Rate limiting state, shared across containers so the limit is a real limit
+# rather than one per container. A plain dict would reset every cold start and
+# a busy period would silently run several independent allowances.
+buckets = modal.Dict.from_name("vantly-convert-rate", create_if_missing=True)
+
+# Per IP, per hour. Set well above what a person converting their own files
+# does and well below what a script pointed at the endpoint would want. CORS
+# stops a browser on another origin, but it does nothing about curl, so this
+# is the part that actually protects the bill.
+PER_HOUR = 40
+WINDOW = 3600
 
 # ── The image ────────────────────────────────────────────────────────────────
 #
@@ -96,7 +109,7 @@ MAX_BYTES = 40 * 1024 * 1024
 @modal.concurrent(max_inputs=4)
 @modal.asgi_app()
 def web():
-    from fastapi import FastAPI, File, HTTPException, UploadFile
+    from fastapi import FastAPI, File, HTTPException, Request, UploadFile
     from fastapi.middleware.cors import CORSMiddleware
     from fastapi.responses import Response
 
@@ -117,12 +130,43 @@ def web():
         allow_headers=["*"],
     )
 
+    def allow(ip: str, now: float) -> bool:
+        """A fixed window counter, keyed by IP and window number.
+
+        Fixed window rather than a sliding one because it needs a single read
+        and a single write. The known flaw is that somebody can spend a full
+        allowance either side of a boundary, which is twice the limit for a
+        moment. That is fine here: the point is stopping a script running
+        thousands of conversions, not policing the eightieth.
+        """
+        slot = int(now // WINDOW)
+        key = f"{ip}:{slot}"
+        used = buckets.get(key, 0)
+        if used >= PER_HOUR:
+            return False
+        # Keys accumulate, one per IP per hour. They are a short string and a
+        # small integer, so this is cheap for a long time, but it does grow
+        # and will want clearing if the endpoint ever gets busy.
+        buckets[key] = used + 1
+        return True
+
     @api.get("/health")
     def health():
         return {"ok": True}
 
     @api.post("/convert")
-    async def convert(file: UploadFile = File(...), to: str = "pdf"):
+    async def convert(request: Request, file: UploadFile = File(...), to: str = "pdf"):
+        # Modal sits behind a proxy, so the socket address is the proxy. The
+        # left-most entry in the forwarded chain is the caller.
+        forwarded = request.headers.get("x-forwarded-for", "")
+        ip = forwarded.split(",")[0].strip() or (request.client.host if request.client else "unknown")
+
+        if not allow(ip, time.time()):
+            raise HTTPException(
+                429,
+                f"That is {PER_HOUR} conversions in an hour, which is the limit. Try again later.",
+            )
+
         name = file.filename or "input"
         ext = name.rsplit(".", 1)[-1].lower() if "." in name else ""
 
