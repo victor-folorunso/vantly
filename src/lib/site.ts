@@ -107,7 +107,7 @@ export const TOOLS: Tool[] = [
     title: 'Open and read a PDF online',
     description:
       'Read any PDF in your browser. Search the text, jump between pages.',
-    live: false,
+    live: true,
   },
   {
     slug: 'merge-pdf',
@@ -137,7 +137,7 @@ export const TOOLS: Tool[] = [
     title: 'Compress a PDF to a smaller size',
     description:
       'Reduce PDF file size in your browser. Choose how hard to compress and see the result before you save it.',
-    live: false,
+    live: true,
   },
   {
     slug: 'images-to-pdf',
@@ -1110,7 +1110,7 @@ export const TOOLS: Tool[] = [
     title: 'Sign a PDF',
     description:
       'Draw, type or upload a signature and place it on a PDF.',
-    live: false,
+    live: true,
   },
   {
     slug: 'fill-pdf',
@@ -1120,7 +1120,7 @@ export const TOOLS: Tool[] = [
     title: 'Fill in a PDF form',
     description:
       'Type into a PDF form, tick the boxes and save it, without printing anything.',
-    live: false,
+    live: true,
   },
   {
     slug: 'watermark-pdf',

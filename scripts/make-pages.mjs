@@ -85,6 +85,16 @@ const PAGES = [
     sub: 'Pull the words out of a screenshot, a photo of a page, or a scan.' },
   { slug: 'pdf-ocr', component: 'OcrTool', props: 'mode="pdf"',
     sub: 'For a PDF that is pictures of words, where selecting text does nothing.' },
+
+  // PDF editing, all pdf-lib in the browser.
+  { slug: 'fill-pdf', component: 'PdfForm', props: '',
+    sub: 'Type into the boxes the form already has, then lock the answers in.' },
+  { slug: 'sign-pdf', component: 'PdfSign', props: '',
+    sub: 'Draw your name or upload a picture of it, and place it on the page.' },
+  { slug: 'compress-pdf', component: 'PdfCompress', props: '',
+    sub: 'For the one that is too big to email. Lossless, or much smaller.' },
+  { slug: 'pdf-reader', component: 'PdfViewer', props: '',
+    sub: 'Read a PDF a page at a time, or scroll the whole thing.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

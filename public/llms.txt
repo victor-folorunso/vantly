@@ -14,8 +14,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
 - [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.
 - [Favicon generator](https://vantly.xyz/favicon-generator): Generate every favicon and app icon size from a single image, with the HTML to paste in. Runs in your browser.
+- [PDF reader](https://vantly.xyz/pdf-reader): Read any PDF in your browser. Search the text, jump between pages.
 - [Merge PDF](https://vantly.xyz/merge-pdf): Combine multiple PDFs into a single file. Drag to reorder and remove the pages you do not want.
 - [Split PDF](https://vantly.xyz/split-pdf): Split a PDF into separate files or extract a page range. Runs in your browser.
+- [Compress PDF](https://vantly.xyz/compress-pdf): Reduce PDF file size in your browser. Choose how hard to compress and see the result before you save it.
 - [Images to PDF](https://vantly.xyz/images-to-pdf): Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
@@ -85,6 +87,8 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Merge images](https://vantly.xyz/merge-images): Combine several images into a single picture, side by side or stacked, with the spacing you choose.
 - [Watermark an image](https://vantly.xyz/add-watermark-image): Add text or a logo to your images, positioned and faded how you like, across a whole batch at once.
 - [PDF OCR](https://vantly.xyz/pdf-ocr): Read the text in a scanned PDF and put it back into the file, so it can be searched, selected and copied.
+- [Sign PDF](https://vantly.xyz/sign-pdf): Draw, type or upload a signature and place it on a PDF.
+- [Fill a PDF form](https://vantly.xyz/fill-pdf): Type into a PDF form, tick the boxes and save it, without printing anything.
 - [Watermark a PDF](https://vantly.xyz/watermark-pdf): Add text or an image across the pages of a PDF, angled and faded how you choose.
 - [Unlock PDF](https://vantly.xyz/unlock-pdf): Take the password off a PDF you can already open, so it stops asking every time.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
@@ -128,6 +132,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [SVG to PNG](https://vantly.xyz/svg-to-png): Convert an SVG vector to PNG in the browser, in bulk.
 - [PNG to ICO](https://vantly.xyz/png-to-ico): Convert a PNG image to ICO in the browser, in bulk.
 - [JPG to ICO](https://vantly.xyz/jpg-to-ico): Convert a JPEG photo to ICO in the browser, in bulk.
+- [PDF to JPG](https://vantly.xyz/pdf-to-jpg): Convert a PDF document to JPG in the browser, in bulk.
+- [PDF to PNG](https://vantly.xyz/pdf-to-png): Convert a PDF document to PNG in the browser, in bulk.
+- [PDF to TXT](https://vantly.xyz/pdf-to-txt): Convert a PDF document to TXT in the browser, in bulk.
 - [DOCX to PDF](https://vantly.xyz/docx-to-pdf): Convert a Word document to PDF in the browser, in bulk.
 - [DOCX to TXT](https://vantly.xyz/docx-to-txt): Convert a Word document to TXT in the browser, in bulk.
 - [DOCX to Markdown](https://vantly.xyz/docx-to-md): Convert a Word document to Markdown in the browser, in bulk.

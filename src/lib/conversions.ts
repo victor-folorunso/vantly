@@ -185,7 +185,19 @@ export function docHandles(c: { from: Format; to: Format }): boolean {
  * handles is added below and served by the catch-all, so a new raster pair
  * needs no new file.
  */
-const HAND_BUILT = ['heic-to-jpg', 'heic-to-webp', 'svg-to-png'];
+const HAND_BUILT = [
+  'heic-to-jpg',
+  'heic-to-webp',
+  'svg-to-png',
+  // These five were built as tools first and have had their own page for a
+  // while. They were still counted as unbuilt conversions, which made the
+  // status report claim less was finished than actually was.
+  'pdf-to-jpg',
+  'pdf-to-png',
+  'pdf-to-txt',
+  'png-to-pdf',
+  'jpg-to-pdf',
+];
 
 function build(): Conversion[] {
   const seen = new Set<string>();
