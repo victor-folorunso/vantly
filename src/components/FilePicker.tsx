@@ -129,23 +129,38 @@ export default function FilePicker() {
       }`}
     >
       {rows.length === 0 ? (
-        <div className="flex flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
-          <div className="grid size-14 place-items-center rounded-xl border border-line bg-surface-alt">
+        /*
+          The pattern sits behind the empty state only. Once files are queued
+          this becomes a list, and a texture behind rows of filenames is noise.
+
+          There is no scrim over the whole zone. Veiling the artwork to make one
+          line of text readable wastes the artwork. Instead the icon and the
+          label share a single solid panel, so the pattern stays at full
+          strength everywhere around it and the label sits on its own ground.
+        */
+        <div className="relative isolate flex flex-col items-center justify-center overflow-hidden rounded-2xl px-6 py-16 text-center sm:py-20">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-cover bg-center"
+            style={{ backgroundImage: "image-set(url('/puzzle-bg.webp') type('image/webp'), url('/puzzle-bg.jpg') type('image/jpeg'))" }}
+          />
+
+          <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface px-9 py-7 shadow-sm">
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="1.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="size-6 text-ink-soft"
+              className="size-12 text-accent"
               aria-hidden="true"
             >
               <path d="M12 16V4m0 0L8 8m4-4 4 4" />
               <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
             </svg>
+            <p className="text-xl font-medium tracking-tight">Drop your files</p>
           </div>
-          <p className="mt-5 text-xl font-medium tracking-tight">Drop your files</p>
           <button
             onClick={() => inputRef.current?.click()}
             className="mt-6 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform hover:scale-[1.02] active:scale-100"

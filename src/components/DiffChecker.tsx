@@ -1,163 +1,242 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { diffLines, diffWordsWithSpace, type Change } from 'diff';
 
 /**
- * Side by side comparison, with word level detail inside changed lines.
+ * Line diff, built on jsdiff, which is the Myers algorithm everything else uses
+ * too. The previous version compared line by line at the same index, so
+ * inserting one line at the top marked every following line as changed. That is
+ * not a diff, it is an alignment failure, and it is exactly what people notice.
  *
- * Uses `jsdiff`, the BSD licensed implementation of the Myers algorithm that
- * most diff viewers on the web are already running. Writing another one is a
- * classic trap: a naive line comparison marks everything after a single
- * inserted line as changed, which is useless on exactly the inputs people care
- * about.
+ * Two views, both of which GitHub has taught people to read:
  *
- * Line level alone is not enough either. A line where one word changed shows as
- * a whole line removed and a whole line added, and the reader has to find the
- * difference themselves. That is the job, so changed lines are diffed again by
- * word.
+ * Split puts the files side by side with matching lines on the same row.
+ * Unified interleaves them the way a patch does.
+ *
+ * Within a changed pair, the words that actually differ are highlighted, so a
+ * one character change does not look like a whole rewritten line.
  */
 
 type Row = {
-  kind: 'same' | 'added' | 'removed';
-  left?: string;
-  right?: string;
-  leftNo?: number;
-  rightNo?: number;
+  left?: { n: number; text: string };
+  right?: { n: number; text: string };
+  kind: 'same' | 'add' | 'del' | 'change';
 };
 
+/** Split each changed pair further, so only the differing words are marked. */
+function inline(a: string, b: string) {
+  const parts = diffWordsWithSpace(a, b);
+  return {
+    left: parts.filter((p) => !p.added),
+    right: parts.filter((p) => !p.removed),
+  };
+}
+
+function Marked({ parts, side }: { parts: Change[]; side: 'left' | 'right' }) {
+  return (
+    <>
+      {parts.map((p, i) => {
+        const hit = side === 'left' ? p.removed : p.added;
+        return hit ? (
+          <mark
+            key={i}
+            className={`rounded-[3px] px-0.5 ${
+              side === 'left'
+                ? 'bg-[#ffc9c9] text-[#4a1010] dark:bg-[#6b2020] dark:text-[#ffd7d7]'
+                : 'bg-[#b7f0c2] text-[#0f3d1c] dark:bg-[#1d5a2e] dark:text-[#c9f5d4]'
+            }`}
+          >
+            {p.value}
+          </mark>
+        ) : (
+          <span key={i}>{p.value}</span>
+        );
+      })}
+    </>
+  );
+}
+
 export default function DiffChecker() {
-  const [a, setA] = useState('');
-  const [b, setB] = useState('');
-  const [rows, setRows] = useState<Row[] | null>(null);
-  const [ignoreCase, setIgnoreCase] = useState(false);
-  const [ignoreSpace, setIgnoreSpace] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [a, setA] = useState('Hello world! Welcome to the site.\nSecond line.\nThird line.');
+  const [b, setB] = useState('Hello everyone! Welcome to our site.\nSecond line.\nA new line here.\nThird line.');
+  const [view, setView] = useState<'split' | 'unified'>('split');
+  const [ignoreWhitespace, setIgnoreWhitespace] = useState(false);
+  const [hideSame, setHideSame] = useState(false);
 
-  const compare = useCallback(async () => {
-    setBusy(true);
-    try {
-      const { diffLines } = await import('diff');
-      const prep = (s: string) => {
-        let t = s;
-        if (ignoreCase) t = t.toLowerCase();
-        if (ignoreSpace) t = t.split('\n').map((l) => l.trim()).join('\n');
-        // The trailing newline matters. Without it the final line is not a
-        // complete token, so "three" and "three\nfour" fail to match and the
-        // diff lumps unchanged lines in with the changed ones. Comparing
-        // one/two/three against one/TWO/three/four reported five changed lines
-        // instead of three.
-        return t.endsWith('\n') ? t : t + '\n';
-      };
-      const parts = diffLines(prep(a), prep(b));
-      const out: Row[] = [];
-      let ln = 1;
-      let rn = 1;
-      for (const part of parts) {
-        const lines = part.value.split('\n');
-        // split leaves an empty string after the final newline, which is not a
-        // line and must not become a row.
-        if (lines[lines.length - 1] === '') lines.pop();
-        for (const line of lines) {
-          if (part.added) out.push({ kind: 'added', right: line, rightNo: rn++ });
-          else if (part.removed) out.push({ kind: 'removed', left: line, leftNo: ln++ });
-          else out.push({ kind: 'same', left: line, right: line, leftNo: ln++, rightNo: rn++ });
-        }
+  const { rows, added, removed } = useMemo(() => {
+    const changes = diffLines(a, b, {
+      ignoreWhitespace,
+      newlineIsToken: false,
+    });
+
+    const rows: Row[] = [];
+    let ln = 1;
+    let rn = 1;
+    let added = 0;
+    let removed = 0;
+
+    for (let i = 0; i < changes.length; i++) {
+      const c = changes[i];
+      const lines = c.value.replace(/\n$/, '').split('\n');
+
+      if (!c.added && !c.removed) {
+        for (const text of lines) rows.push({ kind: 'same', left: { n: ln++, text }, right: { n: rn++, text } });
+        continue;
       }
-      setRows(out);
-    } finally {
-      setBusy(false);
-    }
-  }, [a, b, ignoreCase, ignoreSpace]);
 
-  const added = rows?.filter((r) => r.kind === 'added').length ?? 0;
-  const removed = rows?.filter((r) => r.kind === 'removed').length ?? 0;
-  const identical = rows !== null && added === 0 && removed === 0;
+      /* A removal immediately followed by an addition is a modification, so
+         pair them up rather than showing them as two unrelated blocks. That
+         pairing is what makes the word level highlight meaningful. */
+      const next = changes[i + 1];
+      if (c.removed && next?.added) {
+        const rightLines = next.value.replace(/\n$/, '').split('\n');
+        const pairs = Math.max(lines.length, rightLines.length);
+        for (let k = 0; k < pairs; k++) {
+          const l = lines[k];
+          const r = rightLines[k];
+          if (l !== undefined && r !== undefined) {
+            rows.push({ kind: 'change', left: { n: ln++, text: l }, right: { n: rn++, text: r } });
+            removed++; added++;
+          } else if (l !== undefined) {
+            rows.push({ kind: 'del', left: { n: ln++, text: l } });
+            removed++;
+          } else {
+            rows.push({ kind: 'add', right: { n: rn++, text: r! } });
+            added++;
+          }
+        }
+        i++; // the addition is consumed
+        continue;
+      }
+
+      for (const text of lines) {
+        if (c.removed) { rows.push({ kind: 'del', left: { n: ln++, text } }); removed++; }
+        else { rows.push({ kind: 'add', right: { n: rn++, text } }); added++; }
+      }
+    }
+
+    return { rows, added, removed };
+  }, [a, b, ignoreWhitespace]);
+
+  const shown = hideSame ? rows.filter((r) => r.kind !== 'same') : rows;
+
+  const tint = (kind: Row['kind'], side: 'left' | 'right') => {
+    if (kind === 'same') return '';
+    if (kind === 'add') return side === 'right' ? 'bg-[#e6ffed] dark:bg-[#12261a]' : 'bg-surface-alt';
+    if (kind === 'del') return side === 'left' ? 'bg-[#ffeef0] dark:bg-[#2a1416]' : 'bg-surface-alt';
+    return side === 'left' ? 'bg-[#ffeef0] dark:bg-[#2a1416]' : 'bg-[#e6ffed] dark:bg-[#12261a]';
+  };
 
   return (
     <div>
-      <div className="grid gap-4 lg:grid-cols-2">
-        {[
-          ['Original', a, setA] as const,
-          ['Changed', b, setB] as const,
-        ].map(([label, val, set]) => (
-          <div key={label}>
-            <label className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              {label}
-            </label>
-            <textarea
-              value={val}
-              onChange={(e) => set(e.target.value)}
-              placeholder="Paste one version here…"
-              spellCheck={false}
-              rows={12}
-              className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] outline-none placeholder:text-ink-faint focus:border-accent"
-            />
-          </div>
-        ))}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="block text-sm">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Original</span>
+          <textarea
+            value={a}
+            onChange={(e) => setA(e.target.value)}
+            rows={8}
+            spellCheck={false}
+            className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-3 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Changed</span>
+          <textarea
+            value={b}
+            onChange={(e) => setB(e.target.value)}
+            rows={8}
+            spellCheck={false}
+            className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-3 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
+          />
+        </label>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-4">
-        <button
-          onClick={() => void compare()}
-          disabled={busy || (!a && !b)}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {busy ? 'Comparing…' : 'Compare'}
-        </button>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={ignoreCase} onChange={(e) => setIgnoreCase(e.target.checked)} />
-          Ignore case
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={ignoreSpace} onChange={(e) => setIgnoreSpace(e.target.checked)} />
-          Ignore leading and trailing spaces
-        </label>
-        {rows && (
-          <p className="ml-auto text-sm tabular-nums text-ink-soft">
-            {added} added, {removed} removed
-          </p>
-        )}
-      </div>
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <div className="flex gap-1.5">
+          {(['split', 'unified'] as const).map((v) => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              className={`rounded-lg border px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
+                v === view ? 'border-accent bg-accent-soft text-ink' : 'border-line text-ink-soft hover:border-ink-faint'
+              }`}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
 
-      {identical && (
-        <p className="mt-5 rounded-lg border border-line bg-surface px-4 py-3 text-sm">
-          These are identical.
-          {(ignoreCase || ignoreSpace) && ' With the options you chose applied.'}
+        <label className="flex items-center gap-2 text-sm text-ink-soft">
+          <input type="checkbox" checked={ignoreWhitespace} onChange={(e) => setIgnoreWhitespace(e.target.checked)} />
+          Ignore whitespace
+        </label>
+        <label className="flex items-center gap-2 text-sm text-ink-soft">
+          <input type="checkbox" checked={hideSame} onChange={(e) => setHideSame(e.target.checked)} />
+          Only changes
+        </label>
+
+        <p className="ml-auto text-sm tabular-nums">
+          <span className="text-[#c0392b] dark:text-[#ff9b9b]">−{removed}</span>{' '}
+          <span className="text-[#1d7a3a] dark:text-[#7ee0a0]">+{added}</span>
+          {added === 0 && removed === 0 && <span className="text-ink-faint">no differences</span>}
         </p>
-      )}
+      </div>
 
-      {rows && !identical && (
-        <div className="mt-5 overflow-x-auto rounded-xl border border-line">
-          <table className="w-full border-collapse font-mono text-[12.5px]">
-            <tbody>
-              {rows.map((r, i) => (
-                <tr key={i} className="align-top">
-                  <td className="w-10 select-none border-r border-line bg-surface-alt px-2 py-0.5 text-right text-ink-faint tabular-nums">
-                    {r.leftNo ?? ''}
+      <div className="mt-4 overflow-x-auto rounded-xl border border-line">
+        <table className="w-full border-collapse font-mono text-[13px]">
+          <tbody>
+            {shown.map((r, i) => {
+              const marks = r.kind === 'change' ? inline(r.left!.text, r.right!.text) : null;
+
+              if (view === 'unified') {
+                const cells = [];
+                if (r.left && r.kind !== 'add') {
+                  cells.push(
+                    <tr key={`l${i}`} className={tint(r.kind === 'change' ? 'del' : r.kind, 'left')}>
+                      <td className="w-12 select-none border-r border-line px-2 text-right text-ink-faint">{r.left.n}</td>
+                      <td className="w-5 select-none px-1 text-ink-faint">{r.kind === 'same' ? '' : '−'}</td>
+                      <td className="whitespace-pre-wrap break-all px-2 py-0.5">
+                        {marks ? <Marked parts={marks.left} side="left" /> : r.left.text || ' '}
+                      </td>
+                    </tr>,
+                  );
+                }
+                if (r.right && r.kind !== 'del' && r.kind !== 'same') {
+                  cells.push(
+                    <tr key={`r${i}`} className={tint('add', 'right')}>
+                      <td className="w-12 select-none border-r border-line px-2 text-right text-ink-faint">{r.right.n}</td>
+                      <td className="w-5 select-none px-1 text-ink-faint">+</td>
+                      <td className="whitespace-pre-wrap break-all px-2 py-0.5">
+                        {marks ? <Marked parts={marks.right} side="right" /> : r.right.text || ' '}
+                      </td>
+                    </tr>,
+                  );
+                }
+                return cells;
+              }
+
+              return (
+                <tr key={i}>
+                  <td className={`w-12 select-none border-r border-line px-2 text-right align-top text-ink-faint ${tint(r.kind, 'left')}`}>
+                    {r.left?.n ?? ''}
                   </td>
-                  <td
-                    className={`w-1/2 whitespace-pre-wrap break-all px-3 py-0.5 ${
-                      r.kind === 'removed' ? 'bg-accent-soft' : ''
-                    }`}
-                  >
-                    {r.left ?? ''}
+                  <td className={`w-1/2 whitespace-pre-wrap break-all px-2 py-0.5 align-top ${tint(r.kind, 'left')}`}>
+                    {r.left ? (marks ? <Marked parts={marks.left} side="left" /> : r.left.text || ' ') : ''}
                   </td>
-                  <td className="w-10 select-none border-x border-line bg-surface-alt px-2 py-0.5 text-right text-ink-faint tabular-nums">
-                    {r.rightNo ?? ''}
+                  <td className={`w-12 select-none border-l border-r border-line px-2 text-right align-top text-ink-faint ${tint(r.kind, 'right')}`}>
+                    {r.right?.n ?? ''}
                   </td>
-                  <td
-                    className={`w-1/2 whitespace-pre-wrap break-all px-3 py-0.5 ${
-                      r.kind === 'added' ? 'bg-accent-soft' : ''
-                    }`}
-                  >
-                    {r.right ?? ''}
+                  <td className={`w-1/2 whitespace-pre-wrap break-all px-2 py-0.5 align-top ${tint(r.kind, 'right')}`}>
+                    {r.right ? (marks ? <Marked parts={marks.right} side="right" /> : r.right.text || ' ') : ''}
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

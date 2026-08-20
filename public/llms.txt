@@ -18,7 +18,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
 - [Case converter](https://vantly.xyz/case-converter): Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.
 - [Word counter](https://vantly.xyz/word-counter): Count words, characters, sentences and paragraphs as you type, with an estimated reading time.
-- [Text cleaner](https://vantly.xyz/text-cleaner): Clean up a list or a block of text: sort it, remove duplicate or empty lines, strip HTML tags, trim whitespace.
+- [Remove empty lines](https://vantly.xyz/remove-empty-lines): Delete blank and whitespace-only lines from any list or block of text. Paste it in, get it back clean. Runs in your browser.
+- [Remove duplicate lines](https://vantly.xyz/remove-duplicate-lines): Delete repeated lines from a list, keeping the first of each and the original order. Paste it in and copy the result.
+- [Sort lines](https://vantly.xyz/sort-lines): Sort any list of lines A to Z or Z to A, reverse the order, or remove duplicates while you are there.
+- [Strip HTML tags](https://vantly.xyz/strip-html-tags): Remove every HTML tag and return just the readable text. Script and style contents go too, and entities are decoded.
 - [Hash generator](https://vantly.xyz/hash-generator): Hash text or a file using the cryptography built into your browser. Nothing is uploaded, which matters more here than anywhere else on the site.
 - [Password generator](https://vantly.xyz/password-generator): Create random passwords with real cryptographic randomness rather than Math.random. Set the length and character types, and see an honest strength estimate.
 - [Base64 encoder](https://vantly.xyz/base64-encoder): Convert text or a file to Base64 and back, including data URIs. Runs in your browser.

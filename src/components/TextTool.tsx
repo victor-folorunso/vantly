@@ -87,18 +87,46 @@ export const PRESETS: Record<string, { transforms: Transform[]; sample?: string;
       { id: 'decode', label: 'Decode', run: T.decodeUrl },
     ],
   },
-  clean: {
-    sample: 'banana\napple\nbanana\n\ncherry\n  apple  ',
+  /*
+    One preset per thing somebody actually searches for.
+
+    These were a single "text cleaner" carrying seven buttons, which nobody
+    looks for. People search "remove empty lines" or "sort lines
+    alphabetically", and a page called Text cleaner is not the answer to
+    either. Each preset below gets its own page, its own title and its own
+    search result. Neighbouring actions stay on the page, so the tool is still
+    useful once you land on it.
+  */
+  'empty-lines': {
+    sample: 'first line\n\n\nsecond line\n\nthird line',
+    transforms: [
+      { id: 'empty', label: 'Remove empty lines', run: T.removeEmptyLines },
+      { id: 'trim', label: 'Trim each line', run: T.trimLines },
+    ],
+  },
+  'duplicate-lines': {
+    sample: 'banana\napple\nbanana\ncherry\napple',
+    transforms: [
+      { id: 'dedupe', label: 'Remove duplicates', run: T.dedupeLines },
+      { id: 'sort', label: 'Sort A to Z', run: T.sortLines },
+    ],
+  },
+  'sort-lines': {
+    sample: 'cherry\nbanana\napple\ndate',
     transforms: [
       { id: 'sort', label: 'Sort A to Z', run: T.sortLines },
       { id: 'sortdesc', label: 'Sort Z to A', run: T.sortLinesDesc },
       { id: 'reverse', label: 'Reverse order', run: T.reverseLines },
       { id: 'dedupe', label: 'Remove duplicates', run: T.dedupeLines },
-      { id: 'empty', label: 'Remove empty lines', run: T.removeEmptyLines },
-      { id: 'trim', label: 'Trim each line', run: T.trimLines },
+    ],
+  },
+  'strip-html': {
+    sample: '<p>Hello <b>world</b></p>\n<script>alert(1)</script>\n<p>Second &amp; last.</p>',
+    mono: true,
+    transforms: [
       {
         id: 'html',
-        label: 'Strip HTML',
+        label: 'Strip HTML tags',
         run: T.stripHtml,
         note: 'Script and style contents are removed rather than left behind as loose text, and entities are decoded.',
       },

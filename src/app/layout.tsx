@@ -110,21 +110,39 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Search placeholder="Search tools…" />
               </div>
             </div>
-            <Link
-              href="/learn"
-              className="shrink-0 text-sm text-ink-soft transition-colors hover:text-accent"
-            >
-              Learn
-            </Link>
+            {/* Both destinations on the right, styled the same, so they read as
+                a pair of controls rather than one link and one button. The
+                labels drop below 640px and the icons carry it, which is why
+                each keeps a title and an aria-label. */}
+            <div className="flex shrink-0 basis-64 items-center justify-end gap-2">
+              <Link
+                href="/learn"
+                title="Learn"
+                aria-label="Learn"
+                className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft transition-colors hover:border-accent hover:text-accent"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-[18px]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v13a1.5 1.5 0 0 0-1.5-1.5H5.5A1.5 1.5 0 0 1 4 16Z" />
+                  <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v13a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 0 20 16Z" />
+                </svg>
+                <span className="hidden md:inline">Learn</span>
+              </Link>
 
-            {/* A toolbox rather than the words. It survives a narrow screen,
-                and the title carries the name for anyone who needs it. */}
-            <Link
-              href="/all"
-              title="Toolbox"
-              className="flex shrink-0 basis-64 items-center justify-end gap-2"
-            >
-              <span className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft transition-colors hover:border-accent hover:text-accent">
+              <Link
+                href="/all"
+                title="Toolbox"
+                aria-label="Toolbox"
+                className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-soft transition-colors hover:border-accent hover:text-accent"
+              >
                 <svg
                   viewBox="0 0 24 24"
                   className="size-[18px]"
@@ -140,9 +158,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <path d="M3 12h18" />
                   <path d="M10 12v2h4v-2" />
                 </svg>
-                Toolbox
-              </span>
-            </Link>
+                <span className="hidden md:inline">Toolbox</span>
+              </Link>
+            </div>
           </div>
           <div className="mx-auto w-full max-w-[80rem] px-8 pb-3 sm:hidden">
             <Search placeholder="Search…" />

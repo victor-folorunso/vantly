@@ -391,13 +391,43 @@ export const TOOLS: Tool[] = [
     live: false,
   },
   {
-    slug: 'text-cleaner',
-    name: 'Text cleaner',
+    slug: 'remove-empty-lines',
+    name: 'Remove empty lines',
     category: 'Text',
-    blurb: 'Sort lines, remove duplicates, strip HTML.',
-    title: 'Sort lines, remove duplicates and strip HTML tags',
+    blurb: 'Strip the blank lines out of a list or a block of text.',
+    title: 'Remove empty lines from text',
     description:
-      'Clean up a list or a block of text: sort it, remove duplicate or empty lines, strip HTML tags, trim whitespace.',
+      'Delete blank and whitespace-only lines from any list or block of text. Paste it in, get it back clean. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'remove-duplicate-lines',
+    name: 'Remove duplicate lines',
+    category: 'Text',
+    blurb: 'Keep the first of each line and drop the repeats.',
+    title: 'Remove duplicate lines from a list',
+    description:
+      'Delete repeated lines from a list, keeping the first of each and the original order. Paste it in and copy the result.',
+    live: true,
+  },
+  {
+    slug: 'sort-lines',
+    name: 'Sort lines',
+    category: 'Text',
+    blurb: 'Put a list in order, forwards, backwards or reversed.',
+    title: 'Sort lines alphabetically',
+    description:
+      'Sort any list of lines A to Z or Z to A, reverse the order, or remove duplicates while you are there.',
+    live: true,
+  },
+  {
+    slug: 'strip-html-tags',
+    name: 'Strip HTML tags',
+    category: 'Text',
+    blurb: 'Pull the plain text out of HTML, tags and all.',
+    title: 'Strip HTML tags and get plain text',
+    description:
+      'Remove every HTML tag and return just the readable text. Script and style contents go too, and entities are decoded.',
     live: true,
   },
 

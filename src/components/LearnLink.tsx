@@ -1,70 +1,44 @@
 import Link from 'next/link';
 import { articlesForTool } from '@/lib/learn';
-import { TOOL_NOTES } from '@/lib/toolNotes';
 
 /**
- * What sits under a tool: the things worth knowing, then the article.
+ * One link to the article for this tool. Nothing else.
  *
- * Replaces the FAQ block that used to be here. Those were too thin to rank on
- * their own and in the way of somebody who came to use the tool, and Google
- * stopped showing FAQ rich results for most sites in 2023, so the schema was
- * buying nothing either.
+ * This was a bulleted "Worth knowing" list, added to fix pages that were too
+ * thin after the FAQ blocks came off. It fixed the word count and made every
+ * tool page carry four paragraphs of prose nobody came for. The tool is the
+ * page; the reading belongs behind a link.
  *
- * Removing them left 22 pages under 200 words, which counts as thin and drags
- * the whole domain. The fix is not to put the FAQs back but to say the true,
- * useful things a person is about to trip over, and to send anyone who wants
- * the long version to an article written for that question alone.
- *
- * Renders nothing at all when there is neither, so an unbuilt tool shows a
- * clean page rather than empty headings.
+ * Renders nothing when the tool has no article, so a page without one stays
+ * clean rather than showing an empty heading.
  */
 export default function LearnLink({ tool }: { tool: string }) {
-  const articles = articlesForTool(tool);
-  const notes = TOOL_NOTES[tool] ?? [];
-  if (articles.length === 0 && notes.length === 0) return null;
+  const article = articlesForTool(tool)[0];
+  if (!article) return null;
 
   return (
-    <div className="mt-16 max-w-2xl border-t border-line pt-8">
-      {notes.length > 0 && (
-        <section>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            Worth knowing
-          </h2>
-          <ul className="mt-4 space-y-3">
-            {notes.map((n) => (
-              <li key={n} className="flex gap-3 leading-relaxed text-ink-soft">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 size-1.5 shrink-0 rounded-full bg-accent"
-                />
-                {n}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {articles.length > 0 && (
-        <section className={notes.length > 0 ? 'mt-10' : ''}>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            Read more
-          </h2>
-          <ul className="mt-4 space-y-4">
-            {articles.map((a) => (
-              <li key={a.slug}>
-                <Link href={`/learn/${a.slug}`} className="group block">
-                  <span className="font-medium transition-colors group-hover:text-accent">
-                    {a.title}
-                  </span>
-                  <span className="mt-0.5 block text-sm leading-relaxed text-ink-soft">
-                    {a.description}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
+    <Link
+      href={`/learn/${article.slug}`}
+      className="mt-14 flex max-w-2xl items-center justify-between gap-4 rounded-xl border border-line bg-surface px-5 py-4 transition-colors hover:border-accent"
+    >
+      <span>
+        <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">
+          Docs
+        </span>
+        <span className="mt-1 block font-medium">{article.title}</span>
+      </span>
+      <svg
+        viewBox="0 0 24 24"
+        className="size-5 shrink-0 text-ink-faint"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </Link>
   );
 }
