@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { SITE } from '@/lib/site';
+import Link from 'next/link';
+import { SITE, toolBySlug } from '@/lib/site';
 
 const title = 'Privacy';
 const description =
@@ -51,7 +52,15 @@ const ROWS: { q: string; a: string }[] = [
   },
 ];
 
+/* The three tools that send a file anywhere. Named here rather than left for
+   the reader to work out, because "which ones" is the obvious next question
+   after "some of them do". Read from the registry so a fourth cannot be added
+   without appearing on this page. */
+const SENDS_FILE = ['docx-viewer', 'xlsx-viewer', 'pptx-viewer'];
+
 export default function Page() {
+  const uploads = SENDS_FILE.map((slug) => toolBySlug(slug)).filter(Boolean);
+
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-12">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Privacy</h1>
@@ -59,27 +68,58 @@ export default function Page() {
         Six questions worth asking of any site that takes a file.
       </p>
 
-      <dl className="mt-12 max-w-3xl divide-y divide-line border-t border-line">
-        {ROWS.map((row) => (
-          <div key={row.q} className="grid gap-2 py-7 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-10">
-            <dt className="text-base font-semibold tracking-tight">{row.q}</dt>
-            <dd className="leading-relaxed text-ink-soft">{row.a}</dd>
-          </div>
-        ))}
-      </dl>
+      {/* The answers take the width they need and the rail takes the rest,
+          rather than a narrow column of text with a third of the page empty
+          beside it. */}
+      <div className="mt-12 grid gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,1fr)_15rem]">
+        <dl className="divide-y divide-line border-t border-line">
+          {ROWS.map((row) => (
+            <div
+              key={row.q}
+              className="grid gap-2 py-7 sm:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] sm:gap-10"
+            >
+              <dt className="text-base font-semibold tracking-tight">{row.q}</dt>
+              <dd className="leading-relaxed text-ink-soft">{row.a}</dd>
+            </div>
+          ))}
+        </dl>
 
-      <p className="mt-10 max-w-2xl text-sm leading-relaxed text-ink-faint">
-        The site is open source, so none of the above has to be taken on trust.{' '}
-        <a
-          href={SITE.repo}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-accent underline underline-offset-4"
-        >
-          Read the code
-        </a>
-        . Questions go in an issue there.
-      </p>
+        <aside className="lg:sticky lg:top-20 lg:self-start">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+            Tools that send a file
+          </h2>
+          <ul className="mt-3 space-y-1">
+            {uploads.map((tool) => (
+              <li key={tool!.slug}>
+                <Link
+                  href={`/${tool!.slug}`}
+                  className="text-sm text-ink-soft underline-offset-4 transition-colors hover:text-accent hover:underline"
+                >
+                  {tool!.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-sm leading-relaxed text-ink-faint">
+            Every other tool on the site runs on your machine.
+          </p>
+
+          <h2 className="mt-8 text-xs font-semibold uppercase tracking-wider text-ink-faint">
+            Check it yourself
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-ink-faint">
+            The site is open source, so none of this has to be taken on trust.
+          </p>
+          <a
+            href={SITE.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block text-sm text-accent underline underline-offset-4"
+          >
+            Read the code
+          </a>
+        </aside>
+      </div>
     </div>
   );
 }
