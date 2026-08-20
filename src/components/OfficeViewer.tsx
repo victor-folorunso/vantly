@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { convertFile, conversionAvailable } from '@/lib/convert';
+import PageDeck, { type DeckMode, type PageNoun, type RenderedPage } from '@/components/PageDeck';
 
 /**
  * Opens a Word, Excel or PowerPoint file without the Office app.
@@ -31,7 +32,13 @@ const NOUN: Record<Kind, string> = {
   pptx: 'presentation',
 };
 
-type Rendered = { page: number; url: string };
+type Rendered = RenderedPage;
+
+/* A deck opens one slide at a time, because that is how a deck is read. A
+   document opens as a scroll, because that is how a document is read, and
+   because the browser's own find only searches what is on the page. */
+const NOUNS: Record<Kind, PageNoun> = { docx: 'page', xlsx: 'sheet', pptx: 'slide' };
+const DEFAULT_MODE: Record<Kind, DeckMode> = { docx: 'all', xlsx: 'all', pptx: 'one' };
 
 export default function OfficeViewer({ kind }: { kind: Kind }) {
   const [file, setFile] = useState<File | null>(null);
@@ -154,9 +161,6 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">{file.name}</p>
-          <p className="text-xs tabular-nums text-ink-faint">
-            {busy ? `${busy}…` : `${pages.length} page${pages.length === 1 ? '' : 's'}`}
-          </p>
         </div>
         <div className="flex flex-wrap gap-3 text-sm">
           {pdfUrl && (
@@ -179,16 +183,13 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
 
       {error && <p className="mt-4 max-w-2xl text-sm leading-relaxed text-accent">{error}</p>}
 
-      <div className="mt-6 space-y-6">
-        {pages.map((p) => (
-          <figure key={p.page} className="overflow-hidden rounded-lg border border-line bg-surface">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={p.url} alt={`Page ${p.page}`} className="block w-full" />
-            <figcaption className="px-3 py-2 text-xs tabular-nums text-ink-faint">
-              Page {p.page}
-            </figcaption>
-          </figure>
-        ))}
+      <div className="mt-6">
+        <PageDeck
+          pages={pages}
+          noun={NOUNS[kind]}
+          defaultMode={DEFAULT_MODE[kind]}
+          busy={busy}
+        />
       </div>
     </div>
   );

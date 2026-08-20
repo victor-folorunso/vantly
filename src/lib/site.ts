@@ -181,6 +181,16 @@ export const TOOLS: Tool[] = [
     live: true,
   },
   {
+    slug: 'pdf-viewer',
+    name: 'PDF viewer',
+    category: 'Documents',
+    blurb: 'Open a PDF without a reader. A page at a time, or all of it.',
+    title: 'Open and read a PDF online',
+    description:
+      'View a PDF in your browser. Step through it a page at a time or scroll the whole document. Nothing is uploaded.',
+    live: true,
+  },
+  {
     slug: 'epub-viewer',
     name: 'EPUB reader',
     category: 'Text',

@@ -19,6 +19,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
 - [XLSX viewer](https://vantly.xyz/xlsx-viewer): View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.
+- [PDF viewer](https://vantly.xyz/pdf-viewer): View a PDF in your browser. Step through it a page at a time or scroll the whole document. Nothing is uploaded.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
 - [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
 - [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
