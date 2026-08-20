@@ -670,6 +670,378 @@ export const TOOLS: Tool[] = [
       'Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.',
     live: true,
   },
+
+  // ── Added in bulk, none built yet ──────────────────────────────────────
+  {
+    slug: 'pdf-to-word',
+    name: 'PDF to Word',
+    category: 'Documents',
+    blurb: 'Turn a PDF back into an editable document.',
+    title: 'Convert PDF to Word (DOCX)',
+    description:
+      'Convert a PDF into an editable Word document, keeping the text, headings and tables where they were.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-png',
+    name: 'PDF to PNG',
+    category: 'Documents',
+    blurb: 'Every page as a sharp image.',
+    title: 'Convert PDF pages to PNG images',
+    description:
+      'Turn each page of a PDF into a PNG at the resolution you choose. Pick every page or a range.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-jpg',
+    name: 'PDF to JPG',
+    category: 'Documents',
+    blurb: 'Every page as a photo-friendly image.',
+    title: 'Convert PDF pages to JPG images',
+    description:
+      'Turn each page of a PDF into a JPG. Choose the pages and the resolution.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-excel',
+    name: 'PDF to Excel',
+    category: 'Documents',
+    blurb: 'Pull the tables out of a PDF into a spreadsheet.',
+    title: 'Convert PDF tables to Excel',
+    description:
+      'Extract tables from a PDF into an editable spreadsheet, with the rows and columns preserved.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-pptx',
+    name: 'PDF to PowerPoint',
+    category: 'Documents',
+    blurb: 'One slide per page.',
+    title: 'Convert PDF to PowerPoint (PPTX)',
+    description:
+      'Turn a PDF into a PowerPoint deck, one slide per page.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-html',
+    name: 'PDF to HTML',
+    category: 'Documents',
+    blurb: 'A web page from a PDF.',
+    title: 'Convert PDF to HTML',
+    description:
+      'Turn a PDF into HTML you can publish or edit, with the text and layout carried across.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-txt',
+    name: 'PDF to text',
+    category: 'Documents',
+    blurb: 'Just the words, nothing else.',
+    title: 'Extract the text from a PDF',
+    description:
+      'Pull the plain text out of a PDF, without the formatting, images or layout.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-epub',
+    name: 'PDF to EPUB',
+    category: 'Documents',
+    blurb: 'Turn a PDF into an ebook that reflows.',
+    title: 'Convert PDF to EPUB',
+    description:
+      'Turn a PDF into an EPUB, so the text reflows to fit a phone or an e-reader instead of staying fixed to the page.',
+    live: false,
+  },
+  {
+    slug: 'word-to-pdf',
+    name: 'Word to PDF',
+    category: 'Documents',
+    blurb: 'A DOCX that looks the same everywhere.',
+    title: 'Convert Word to PDF',
+    description:
+      'Turn a Word document into a PDF, so the formatting holds on any machine.',
+    live: false,
+  },
+  {
+    slug: 'excel-to-pdf',
+    name: 'Excel to PDF',
+    category: 'Documents',
+    blurb: 'A spreadsheet that prints predictably.',
+    title: 'Convert Excel to PDF',
+    description:
+      'Turn a spreadsheet into a PDF, choosing which sheets and how the columns fit the page.',
+    live: false,
+  },
+  {
+    slug: 'pptx-to-pdf',
+    name: 'PowerPoint to PDF',
+    category: 'Documents',
+    blurb: 'A deck anyone can open.',
+    title: 'Convert PowerPoint to PDF',
+    description:
+      'Turn a PPTX into a PDF, one page per slide, with the notes kept or dropped.',
+    live: false,
+  },
+  {
+    slug: 'html-to-pdf',
+    name: 'HTML to PDF',
+    category: 'Documents',
+    blurb: 'A page or a file, printed properly.',
+    title: 'Convert HTML to PDF',
+    description:
+      'Turn HTML into a PDF with the page size and margins you choose.',
+    live: false,
+  },
+  {
+    slug: 'epub-to-pdf',
+    name: 'EPUB to PDF',
+    category: 'Documents',
+    blurb: 'An ebook with fixed pages.',
+    title: 'Convert EPUB to PDF',
+    description:
+      'Turn an EPUB into a PDF at a fixed page size, for printing or for a device that cannot read EPUB.',
+    live: false,
+  },
+  {
+    slug: 'png-to-pdf',
+    name: 'PNG to PDF',
+    category: 'Documents',
+    blurb: 'Images into one document.',
+    title: 'Convert PNG images to PDF',
+    description:
+      'Combine PNG images into a single PDF, in the order you choose.',
+    live: false,
+  },
+  {
+    slug: 'jpg-to-pdf',
+    name: 'JPG to PDF',
+    category: 'Documents',
+    blurb: 'Photos or scans into one document.',
+    title: 'Convert JPG images to PDF',
+    description:
+      'Combine JPG photos or scans into a single PDF, reordered however you like.',
+    live: false,
+  },
+  {
+    slug: 'pdf-converter',
+    name: 'PDF converter',
+    category: 'Documents',
+    blurb: 'Whatever you have, into or out of PDF.',
+    title: 'PDF converter',
+    description:
+      'Convert to and from PDF: Word, Excel, PowerPoint, HTML, EPUB, images and plain text.',
+    live: false,
+  },
+  {
+    slug: 'image-to-excel',
+    name: 'Image to Excel',
+    category: 'Data',
+    blurb: 'Read a table out of a photo or screenshot.',
+    title: 'Convert an image of a table to Excel',
+    description:
+      'Read the table in a photo or screenshot and turn it into a spreadsheet you can edit.',
+    live: false,
+  },
+  {
+    slug: 'image-to-text',
+    name: 'Image to text',
+    category: 'Text',
+    blurb: 'Pull the words out of a picture.',
+    title: 'Extract text from an image',
+    description:
+      'Read the text in a photo, screenshot or scan and get it back as text you can copy.',
+    live: false,
+  },
+  {
+    slug: 'merge-images',
+    name: 'Merge images',
+    category: 'Images',
+    blurb: 'Join pictures into one, across or down.',
+    title: 'Merge images into one',
+    description:
+      'Combine several images into a single picture, side by side or stacked, with the spacing you choose.',
+    live: false,
+  },
+  {
+    slug: 'add-watermark-image',
+    name: 'Watermark an image',
+    category: 'Images',
+    blurb: 'Put your mark on a picture, in bulk.',
+    title: 'Add a watermark to an image',
+    description:
+      'Add text or a logo to your images, positioned and faded how you like, across a whole batch at once.',
+    live: false,
+  },
+  {
+    slug: 'mp4-to-gif',
+    name: 'MP4 to GIF',
+    category: 'Media',
+    blurb: 'A short clip as a looping image.',
+    title: 'Convert MP4 video to GIF',
+    description:
+      'Turn a clip into a looping GIF. Trim it, set the frame rate, and keep the file small enough to send.',
+    live: false,
+  },
+  {
+    slug: 'convert-to-audio',
+    name: 'Convert to audio',
+    category: 'Media',
+    blurb: 'Pull the sound out of anything.',
+    title: 'Convert video to audio',
+    description:
+      'Extract the audio from a video, or convert between MP3, WAV, M4A and OGG.',
+    live: false,
+  },
+  {
+    slug: 'convert-to-video',
+    name: 'Convert video',
+    category: 'Media',
+    blurb: 'Move between video formats.',
+    title: 'Convert between video formats',
+    description:
+      'Convert video to MP4, WebM or MOV, choosing the quality and size.',
+    live: false,
+  },
+  {
+    slug: 'transcribe-audio',
+    name: 'Transcribe audio',
+    category: 'Media',
+    blurb: 'Turn speech into text you can read.',
+    title: 'Transcribe audio to text',
+    description:
+      'Turn a recording into text, with timestamps, ready to edit or caption.',
+    live: false,
+  },
+  {
+    slug: 'transcribe-video',
+    name: 'Transcribe video',
+    category: 'Media',
+    blurb: 'Captions and a transcript from a clip.',
+    title: 'Transcribe video to text',
+    description:
+      'Turn the speech in a video into a transcript or a subtitle file.',
+    live: false,
+  },
+  {
+    slug: 'vocal-remover',
+    name: 'Vocal remover',
+    category: 'Media',
+    blurb: 'Separate the voice from the backing.',
+    title: 'Remove vocals from a song',
+    description:
+      'Split a track into vocals and instrumental, for a backing track or an acapella.',
+    live: false,
+  },
+  {
+    slug: 'noise-remover',
+    name: 'Noise remover',
+    category: 'Media',
+    blurb: 'Clean up a noisy recording.',
+    title: 'Remove background noise from audio',
+    description:
+      'Strip hiss, hum and background noise out of a recording without hollowing out the voice.',
+    live: false,
+  },
+  {
+    slug: 'text-to-speech',
+    name: 'Text to speech',
+    category: 'Media',
+    blurb: 'Read text aloud and save the audio.',
+    title: 'Convert text to speech',
+    description:
+      'Turn written text into spoken audio you can download.',
+    live: false,
+  },
+  {
+    slug: 'compress-video',
+    name: 'Compress video',
+    category: 'Media',
+    blurb: 'Make a video small enough to send.',
+    title: 'Compress a video file',
+    description:
+      'Reduce a video file size, choosing quality against size and seeing the result before you save it.',
+    live: false,
+  },
+  {
+    slug: 'pdf-ocr',
+    name: 'PDF OCR',
+    category: 'Documents',
+    blurb: 'Make a scanned PDF searchable.',
+    title: 'Make a scanned PDF searchable with OCR',
+    description:
+      'Read the text in a scanned PDF and put it back into the file, so it can be searched, selected and copied.',
+    live: false,
+  },
+  {
+    slug: 'scan-to-pdf',
+    name: 'Scan to PDF',
+    category: 'Documents',
+    blurb: 'Photos of paper, straightened into a document.',
+    title: 'Turn photos of documents into a PDF',
+    description:
+      'Turn phone photos of paper into a clean PDF: cropped square, straightened and readable.',
+    live: false,
+  },
+  {
+    slug: 'translate-pdf',
+    name: 'Translate PDF',
+    category: 'Documents',
+    blurb: 'A PDF in another language, laid out the same.',
+    title: 'Translate a PDF',
+    description:
+      'Translate a PDF into another language while keeping the layout it had.',
+    live: false,
+  },
+  {
+    slug: 'edit-pdf',
+    name: 'Edit PDF',
+    category: 'Documents',
+    blurb: 'Change the text and pages in a PDF.',
+    title: 'Edit a PDF',
+    description:
+      'Change text, add notes, move and delete pages, and save the result.',
+    live: false,
+  },
+  {
+    slug: 'sign-pdf',
+    name: 'Sign PDF',
+    category: 'Documents',
+    blurb: 'Put your signature on a document.',
+    title: 'Sign a PDF',
+    description:
+      'Draw, type or upload a signature and place it on a PDF.',
+    live: false,
+  },
+  {
+    slug: 'fill-pdf',
+    name: 'Fill a PDF form',
+    category: 'Documents',
+    blurb: 'Type into a form instead of printing it.',
+    title: 'Fill in a PDF form',
+    description:
+      'Type into a PDF form, tick the boxes and save it, without printing anything.',
+    live: false,
+  },
+  {
+    slug: 'watermark-pdf',
+    name: 'Watermark a PDF',
+    category: 'Documents',
+    blurb: 'Mark a document as a draft or a copy.',
+    title: 'Add a watermark to a PDF',
+    description:
+      'Add text or an image across the pages of a PDF, angled and faded how you choose.',
+    live: false,
+  },
+  {
+    slug: 'unlock-pdf',
+    name: 'Unlock PDF',
+    category: 'Documents',
+    blurb: 'Remove a password you already know.',
+    title: 'Remove a password from a PDF',
+    description:
+      'Take the password off a PDF you can already open, so it stops asking every time.',
+    live: false,
+  },
 ];
 
 export const LIVE_TOOLS = TOOLS.filter((t) => t.live);
