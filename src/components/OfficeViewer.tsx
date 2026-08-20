@@ -111,7 +111,7 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
   if (!conversionAvailable) {
     return (
       <p className="rounded-xl border border-line bg-surface p-5 text-ink-soft">
-        This one needs the conversion service, which is not switched on yet.
+        This tool is unavailable right now.
       </p>
     );
   }
@@ -128,7 +128,7 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
       >
         <p className="text-lg font-medium">Drop a {NOUN[kind]} here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
-          Opens in your browser. No Office licence and nothing to install.
+          No Office licence and nothing to install.
         </p>
         <button
           onClick={() => inputRef.current?.click()}

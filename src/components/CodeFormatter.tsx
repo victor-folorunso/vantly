@@ -242,9 +242,7 @@ export default function CodeFormatter({ initial = 'json' }: { initial?: Lang }) 
       </div>
 
       <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-        Minifying here only removes whitespace. It will not rename variables or
-        drop unused code, because those need to understand the program and are a
-        build step rather than a text tool.
+        Removes whitespace only. Renaming variables and dropping unused code is a build step.
       </p>
     </div>
   );

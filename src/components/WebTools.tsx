@@ -274,7 +274,7 @@ export function RobotsGenerator() {
           </div>
           {blockAi.length > 0 && (
             <p className="mt-2 text-xs leading-relaxed text-ink-faint">
-              Worth knowing: blocking these also keeps you out of AI answers,
+              Blocking these also keeps you out of AI answers,
               which is increasingly how people find things.
             </p>
           )}

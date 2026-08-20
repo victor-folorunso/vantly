@@ -35,7 +35,7 @@ export default function Page() {
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
           {tool.name}
         </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Open a Word document in your browser. No Office licence and nothing to install.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Open a Word document without Office. Nothing to install.</p>
 
         <div className="mt-10">
           <OfficeViewer kind="docx" />

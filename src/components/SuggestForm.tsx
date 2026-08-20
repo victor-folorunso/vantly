@@ -117,8 +117,7 @@ export default function SuggestForm() {
       <label className="mt-5 block text-sm font-medium">
         What were you trying to do?
         <span className="mt-1 block text-xs font-normal leading-relaxed text-ink-faint">
-          Optional, but it decides what gets built first. A request with a reason
-          behind it beats five without one.
+          Optional, but it decides what gets built first.
         </span>
         <textarea
           value={why}

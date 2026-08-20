@@ -44,8 +44,7 @@ export default function Page() {
     <div className="mx-auto w-full max-w-6xl px-5 py-10">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Learn</h1>
       <p className="mt-3 max-w-xl leading-relaxed text-ink-soft">
-        Every guide on the site, grouped by what it is about. Each one lives on
-        the page of the tool it explains.
+        Every guide on the site, grouped by what it is about.
       </p>
 
       <div className="mt-12 grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_220px]">

@@ -35,7 +35,7 @@ export default function Page() {
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
           {tool.name}
         </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Step through a PowerPoint deck in your browser, slide by slide.</p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Step through a PowerPoint deck without PowerPoint, slide by slide.</p>
 
         <div className="mt-10">
           <OfficeViewer kind="pptx" />

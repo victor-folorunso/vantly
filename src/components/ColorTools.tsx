@@ -179,9 +179,7 @@ export function ColorConverter() {
                   value={`${Math.round(cmyk.c)}%, ${Math.round(cmyk.m)}%, ${Math.round(cmyk.y)}%, ${Math.round(cmyk.k)}%`}
                 />
                 <div className="py-3 text-xs leading-relaxed text-ink-faint">
-                  CMYK here is the straightforward conversion, which is what any
-                  screen tool can honestly give you. Matching a specific press
-                  needs that printer&rsquo;s own colour profile.
+                  Matching a specific press needs that printer&rsquo;s own colour profile.
                 </div>
               </>
             );
@@ -275,9 +273,7 @@ export function ContrastChecker() {
         </ul>
 
         <p className="mt-5 text-xs leading-relaxed text-ink-faint">
-          Large text means 18.66px bold or 24px and up. Falling short by a small
-          amount is usually one step of lightness away, which is why the gap is
-          shown rather than a bare pass or fail.
+          Large text means 18.66px bold or 24px and up. Falling short by a small amount is usually one step of lightness away.
         </p>
       </div>
     </div>

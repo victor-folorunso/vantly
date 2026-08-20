@@ -310,8 +310,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
 
         {loadingDecoder && (
           <p className="mt-2 text-xs text-ink-faint leading-relaxed">
-            Loading the decoder. This happens once, and only because you asked to
-            convert something.
+            Loading the decoder.
           </p>
         )}
 

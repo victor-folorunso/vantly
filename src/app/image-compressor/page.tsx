@@ -35,7 +35,7 @@ export default function Page() {
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Compress images</h1>
-        <p className="mt-3 max-w-2xl text-ink-soft">Drop in as many as you like and pull the quality down until the size looks right. It runs in your browser, so there is no upload wait and no limit on how many.</p>
+        <p className="mt-3 max-w-2xl text-ink-soft">Drop in as many as you like and pull the quality down until the size looks right. No limit on how many.</p>
 
         <div className="mt-10">
           <ImageStudio mode="compress" />

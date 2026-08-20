@@ -238,9 +238,8 @@ export function PasswordGenerator() {
       </div>
 
       <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-        Generated in your browser using crypto.getRandomValues, with rejection
-        sampling so no character is likelier than another. It is never sent
-        anywhere, which is the only way a generated password can be trusted.
+        Never sent anywhere, which is the only way a generated password can be
+        trusted.
       </p>
     </div>
   );

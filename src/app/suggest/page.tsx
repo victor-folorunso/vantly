@@ -20,8 +20,7 @@ export default function Page() {
         What is missing?
       </h1>
       <p className="mt-3 leading-relaxed text-ink-soft">
-        This started as a handful of image converters and grew because the same
-        formats kept coming up. If the thing you need is not here, say so.
+        If the thing you need is not here, say so.
       </p>
 
       <SuggestForm />
