@@ -103,6 +103,19 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert an iPhone HEIC photo to JPG in the browser, in bulk.
 - [HEIC to WebP](https://vantly.xyz/heic-to-webp): Convert an iPhone HEIC photo to WebP in the browser, in bulk.
 - [SVG to PNG](https://vantly.xyz/svg-to-png): Convert an SVG vector to PNG in the browser, in bulk.
+- [CSV to JSON](https://vantly.xyz/csv-to-json): Convert a CSV spreadsheet to JSON in the browser, in bulk.
+- [CSV to XML](https://vantly.xyz/csv-to-xml): Convert a CSV spreadsheet to XML in the browser, in bulk.
+- [CSV to YAML](https://vantly.xyz/csv-to-yaml): Convert a CSV spreadsheet to YAML in the browser, in bulk.
+- [CSV to TSV](https://vantly.xyz/csv-to-tsv): Convert a CSV spreadsheet to TSV in the browser, in bulk.
+- [JSON to CSV](https://vantly.xyz/json-to-csv): Convert a JSON file to CSV in the browser, in bulk.
+- [JSON to XML](https://vantly.xyz/json-to-xml): Convert a JSON file to XML in the browser, in bulk.
+- [JSON to YAML](https://vantly.xyz/json-to-yaml): Convert a JSON file to YAML in the browser, in bulk.
+- [XML to JSON](https://vantly.xyz/xml-to-json): Convert an XML file to JSON in the browser, in bulk.
+- [XML to CSV](https://vantly.xyz/xml-to-csv): Convert an XML file to CSV in the browser, in bulk.
+- [YAML to JSON](https://vantly.xyz/yaml-to-json): Convert a YAML file to JSON in the browser, in bulk.
+- [YAML to CSV](https://vantly.xyz/yaml-to-csv): Convert a YAML file to CSV in the browser, in bulk.
+- [TSV to CSV](https://vantly.xyz/tsv-to-csv): Convert a tab separated file to CSV in the browser, in bulk.
+- [TSV to JSON](https://vantly.xyz/tsv-to-json): Convert a tab separated file to JSON in the browser, in bulk.
 
 ## Known limits
 

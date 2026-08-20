@@ -15,10 +15,12 @@
     "docs:check": "node --experimental-strip-types scripts/check-docs.mjs"
   },
   "dependencies": {
+    "@types/js-yaml": "^4.0.9",
     "diff": "^9.0.0",
     "gray-matter": "^4.0.3",
     "heic-to": "^1.5.2",
     "js-beautify": "^2.0.3",
+    "js-yaml": "^5.3.0",
     "jszip": "^3.10.1",
     "marked": "^18.0.9",
     "next": "16.3.1",

@@ -78,6 +78,7 @@ const PAGES = [
     sub: 'Strip the editor leftovers your icons are carrying.' },
   { slug: 'base64', component: 'TextTool', props: 'preset="base64"',
     sub: 'Encode text or a file to Base64, or decode it back.' },
+
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

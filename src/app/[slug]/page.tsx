@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { SITE, LIVE_TOOLS, SOON_TOOLS, toolBySlug } from '@/lib/site';
 import {
   CONVERSIONS,
+  dataHandles,
   CONVERSION_BY_SLUG,
   conversionTitle,
   conversionDescription,
@@ -12,6 +13,7 @@ import {
   type Conversion,
   type EncodableTarget,
 } from '@/lib/conversions';
+import DataConvert, { type Format as DataFormat } from '@/components/DataConvert';
 import ImageConvert from '@/components/ImageConvert';
 
 /**
@@ -35,7 +37,9 @@ export function generateStaticParams() {
     ...SOON_TOOLS.map((t) => ({ slug: t.slug })),
     // Canvas pairs are live and still belong here: they are served by this file
     // rather than by a folder of their own, so a new raster pair costs nothing.
-    ...CONVERSIONS.filter((c) => !c.live || canvasHandles(c)).map((c) => ({ slug: c.slug })),
+    ...CONVERSIONS.filter((c) => !c.live || canvasHandles(c) || dataHandles(c)).map((c) => ({
+      slug: c.slug,
+    })),
   ];
 }
 
@@ -46,7 +50,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
   if (conversion) {
-    const working = canvasHandles(conversion);
+    const working = canvasHandles(conversion) || dataHandles(conversion);
     return {
       title: conversionTitle(conversion),
       description: conversionDescription(conversion),
@@ -76,6 +80,46 @@ export default async function Page({ params }: Params) {
   const { slug } = await params;
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
+
+  if (conversion && dataHandles(conversion)) {
+    const related = relatedConversions(conversion, 14);
+    return (
+      <div className="mx-auto w-full max-w-6xl px-5 py-12">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: conversionTitle(conversion),
+              applicationCategory: 'DeveloperApplication',
+              operatingSystem: 'Any, runs in a web browser',
+              url: `${SITE.url}/${slug}`,
+              description: conversionDescription(conversion),
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            }),
+          }}
+        />
+        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
+          {conversionTitle(conversion)}
+        </h1>
+
+        <div className="mt-10">
+          <DataConvert from={conversion.from.id as DataFormat} to={conversion.to.id as DataFormat} />
+        </div>
+
+        {related.length > 0 && (
+          <Related
+            heading={`Other ${conversion.from.label} conversions`}
+            items={related.map((c) => ({
+              slug: c.slug,
+              label: `${c.from.label} to ${c.to.label}`,
+            }))}
+          />
+        )}
+      </div>
+    );
+  }
 
   if (conversion && canvasHandles(conversion)) {
     const related = relatedConversions(conversion, 14);

@@ -138,6 +138,23 @@ export function canvasHandles(c: { from: Format; to: Format }): boolean {
 }
 
 /**
+ * The data formats the browser can read and write here.
+ *
+ * Every pair among these works, in both directions, because the tool parses
+ * into ordinary values and writes them back out. csv to csv is excluded by the
+ * same-format check below rather than listed as an exception.
+ */
+const DATA_FORMATS = ['csv', 'tsv', 'json', 'xml', 'yaml'] as const;
+
+export function dataHandles(c: { from: Format; to: Format }): boolean {
+  return (
+    (DATA_FORMATS as readonly string[]).includes(c.from.id) &&
+    (DATA_FORMATS as readonly string[]).includes(c.to.id) &&
+    c.from.id !== c.to.id
+  );
+}
+
+/**
  * Conversions that are actually implemented.
  *
  * The three named here have their own hand written route. Everything the canvas
@@ -165,7 +182,7 @@ function build(): Conversion[] {
         slug,
         from,
         to,
-        live: HAND_BUILT.includes(slug) || canvasHandles({ from, to }),
+        live: HAND_BUILT.includes(slug) || canvasHandles({ from, to }) || dataHandles({ from, to }),
       });
     }
   }
