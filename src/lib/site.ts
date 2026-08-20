@@ -95,7 +95,7 @@ export const TOOLS: Tool[] = [
     title: 'Favicon and app icon generator',
     description:
       'Generate every favicon and app icon size from a single image, with the HTML to paste in. Runs in your browser.',
-    live: false,
+    live: true,
   },
 
   // ── PDF ────────────────────────────────────────────────────────────────────
@@ -232,7 +232,7 @@ export const TOOLS: Tool[] = [
     title: 'Base64 encode and decode',
     description:
       'Encode text or files to Base64 and decode them back, including data URIs for images. Runs in your browser.',
-    live: false,
+    live: true,
   },
   {
     slug: 'url-encoder',
@@ -356,7 +356,7 @@ export const TOOLS: Tool[] = [
     title: 'Cron expression generator and explainer',
     description:
       'Build and read cron schedules in plain English, with the next run times shown so you can check it does what you meant.',
-    live: false,
+    live: true,
   },
   {
     slug: 'diff-checker',
@@ -716,7 +716,7 @@ export const TOOLS: Tool[] = [
     title: 'CSS gradient generator',
     description:
       'Build linear and radial CSS gradients visually and copy the code out.',
-    live: false,
+    live: true,
   },
   {
     slug: 'shadow-generator',
@@ -726,7 +726,7 @@ export const TOOLS: Tool[] = [
     title: 'CSS box shadow generator',
     description:
       'Build a CSS box shadow with a live preview, including multiple layered shadows.',
-    live: false,
+    live: true,
   },
   {
     slug: 'svg-optimizer',
@@ -736,7 +736,7 @@ export const TOOLS: Tool[] = [
     title: 'Optimise and minify SVG files',
     description:
       'Remove editor metadata and shrink SVG files, with a before and after preview so you can see nothing broke.',
-    live: false,
+    live: true,
   },
 
   // ── Web ─────────────────────────
@@ -960,7 +960,7 @@ export const TOOLS: Tool[] = [
     title: 'Merge images into one',
     description:
       'Combine several images into a single picture, side by side or stacked, with the spacing you choose.',
-    live: false,
+    live: true,
   },
   {
     slug: 'add-watermark-image',
@@ -970,7 +970,7 @@ export const TOOLS: Tool[] = [
     title: 'Add a watermark to an image',
     description:
       'Add text or a logo to your images, positioned and faded how you like, across a whole batch at once.',
-    live: false,
+    live: true,
   },
   {
     slug: 'mp4-to-gif',

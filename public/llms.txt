@@ -13,6 +13,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit. Runs in your browser.
 - [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
 - [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.
+- [Favicon generator](https://vantly.xyz/favicon-generator): Generate every favicon and app icon size from a single image, with the HTML to paste in. Runs in your browser.
 - [Merge PDF](https://vantly.xyz/merge-pdf): Combine multiple PDFs into a single file. Drag to reorder and remove the pages you do not want.
 - [Split PDF](https://vantly.xyz/split-pdf): Split a PDF into separate files or extract a page range. Runs in your browser.
 - [Images to PDF](https://vantly.xyz/images-to-pdf): Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.
@@ -22,6 +23,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PDF viewer](https://vantly.xyz/pdf-viewer): View a PDF in your browser. Step through it a page at a time or scroll the whole document. Nothing is uploaded.
 - [CSV viewer](https://vantly.xyz/csv-viewer): View, sort and filter CSV files too large for a spreadsheet. Handles hundreds of thousands of rows in your browser, with no row limit.
 - [CSV to JSON](https://vantly.xyz/csv-to-json): Convert CSV to JSON or JSON to CSV in your browser. Choose the delimiter and handle quoted fields.
+- [Base64 encoder](https://vantly.xyz/base64): Encode text or files to Base64 and decode them back, including data URIs for images. Runs in your browser.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
 - [Markdown preview](https://vantly.xyz/markdown-preview): Write markdown with a live preview and export the result as HTML. Runs in your browser with nothing stored.
 - [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
@@ -30,6 +32,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [CSS formatter](https://vantly.xyz/css-formatter): Tidy CSS for reading or strip it down for shipping, in your browser.
 - [JavaScript formatter](https://vantly.xyz/js-formatter): Indent JavaScript for reading or minify it for shipping. Runs in your browser.
 - [Regex tester](https://vantly.xyz/regex-tester): Build regular expressions with live highlighting, capture groups and a plain English explanation of what each part does.
+- [Crontab generator](https://vantly.xyz/crontab-generator): Build and read cron schedules in plain English, with the next run times shown so you can check it does what you meant.
 - [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
 - [Case converter](https://vantly.xyz/case-converter): Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.
 - [Word counter](https://vantly.xyz/word-counter): Count words, characters, sentences and paragraphs as you type, with an estimated reading time.
@@ -61,6 +64,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [HEX to CMYK](https://vantly.xyz/hex-to-cmyk): Paste a hex colour and get an approximate CMYK breakdown for print. Runs in your browser.
 - [Colour picker](https://vantly.xyz/color-picker): Pick a colour and read it back as hex, RGB, HSL and CMYK. Runs in your browser.
 - [Contrast checker](https://vantly.xyz/contrast-checker): Check whether a text and background pair meets WCAG AA or AAA, with the ratio and a live preview.
+- [Gradient generator](https://vantly.xyz/gradient-generator): Build linear and radial CSS gradients visually and copy the code out.
+- [Box shadow generator](https://vantly.xyz/shadow-generator): Build a CSS box shadow with a live preview, including multiple layered shadows.
+- [SVG optimiser](https://vantly.xyz/svg-optimizer): Remove editor metadata and shrink SVG files, with a before and after preview so you can see nothing broke.
 - [UTM link builder](https://vantly.xyz/utm-builder): Build Google Analytics campaign URLs with the right parameter names, and keep a list of the ones you have made.
 - [Robots.txt generator](https://vantly.xyz/robots-txt-generator): Build a robots.txt with the rules you actually want, including whether AI crawlers are allowed.
 - [Meta tag generator](https://vantly.xyz/meta-tag-generator): Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.
@@ -75,6 +81,8 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PNG to PDF](https://vantly.xyz/png-to-pdf): Combine PNG images into a single PDF, in the order you choose.
 - [JPG to PDF](https://vantly.xyz/jpg-to-pdf): Combine JPG photos or scans into a single PDF, reordered however you like.
 - [PDF converter](https://vantly.xyz/pdf-converter): Convert to and from PDF: Word, Excel, PowerPoint, HTML, EPUB, images and plain text.
+- [Merge images](https://vantly.xyz/merge-images): Combine several images into a single picture, side by side or stacked, with the spacing you choose.
+- [Watermark an image](https://vantly.xyz/add-watermark-image): Add text or a logo to your images, positioned and faded how you like, across a whole batch at once.
 - [Watermark a PDF](https://vantly.xyz/watermark-pdf): Add text or an image across the pages of a PDF, angled and faded how you choose.
 - [Unlock PDF](https://vantly.xyz/unlock-pdf): Take the password off a PDF you can already open, so it stops asking every time.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.

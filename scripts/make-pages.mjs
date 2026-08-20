@@ -60,6 +60,24 @@ const PAGES = [
     sub: 'Open a CSV too big for Excel. Search it, read it, no upload.' },
   { slug: 'csv-to-json', component: 'CsvTools', props: 'mode="json"',
     sub: 'Numbers stay numbers and empty cells become null.' },
+
+  // Builders and generators. All canvas or plain CSS.
+  { slug: 'favicon-generator', component: 'FaviconGenerator', props: '',
+    sub: 'Every icon a site needs, from one picture, with the head tag to paste.' },
+  { slug: 'merge-images', component: 'ImageCompose', props: 'mode="merge"',
+    sub: 'Join pictures into one, across or down, without stretching any of them.' },
+  { slug: 'add-watermark-image', component: 'ImageCompose', props: 'mode="watermark"',
+    sub: 'Stamp your text on a picture, in a corner or tiled across the whole thing.' },
+  { slug: 'crontab-generator', component: 'CrontabGenerator', props: '',
+    sub: 'Build the expression, and read back in plain words when it will run.' },
+  { slug: 'gradient-generator', component: 'CssBuilder', props: 'mode="gradient"',
+    sub: 'Build a CSS gradient and see it at full size, not in a swatch.' },
+  { slug: 'shadow-generator', component: 'CssBuilder', props: 'mode="shadow"',
+    sub: 'Build a box shadow and copy the CSS.' },
+  { slug: 'svg-optimizer', component: 'SvgOptimizer', props: '',
+    sub: 'Strip the editor leftovers your icons are carrying.' },
+  { slug: 'base64', component: 'TextTool', props: 'preset="base64"',
+    sub: 'Encode text or a file to Base64, or decode it back.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';
