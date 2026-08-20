@@ -27,9 +27,18 @@ type Item = {
   error?: string;
 };
 
-export type EncodableTarget = 'png' | 'jpg' | 'webp';
+export type EncodableTarget = 'png' | 'jpg' | 'webp' | 'gif' | 'tiff' | 'bmp' | 'ico';
+
+/* The four the canvas cannot write. These go through src/lib/raster instead,
+   which encodes them from the pixels rather than asking toBlob and being
+   handed a PNG with the wrong name on it. */
+const WRITTEN_HERE: readonly string[] = ['gif', 'tiff', 'bmp', 'ico'];
 
 const MIME: Record<EncodableTarget, string> = {
+  gif: 'image/gif',
+  tiff: 'image/tiff',
+  bmp: 'image/bmp',
+  ico: 'image/x-icon',
   png: 'image/png',
   jpg: 'image/jpeg',
   webp: 'image/webp',
@@ -62,7 +71,7 @@ export default function ImageConvert({
   const [zipping, setZipping] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const lossy = target !== 'png';
+  const lossy = target === 'jpg' || target === 'webp';
 
   const itemsRef = useRef<Item[]>([]);
   itemsRef.current = items;
@@ -101,31 +110,69 @@ export default function ImageConvert({
         // createImageBitmap decodes off the main thread and handles every
         // format the browser knows, including the ones an <img> tag is fussy
         // about.
-        const bitmap = await createImageBitmap(item.file);
+        // TIFF is the one common format no browser decodes, so it is unpacked
+        // to pixels first and drawn on like anything else.
+        const isTiff = /\.tiff?$/i.test(item.file.name) || item.file.type === 'image/tiff';
+
         const canvas = document.createElement('canvas');
-        canvas.width = bitmap.width;
-        canvas.height = bitmap.height;
         const ctx = canvas.getContext('2d');
         if (!ctx) throw new Error('This browser would not give us a canvas.');
 
-        // JPEG has no alpha. Without a white ground underneath, anything
-        // transparent comes out black rather than empty.
-        if (target === 'jpg') {
+        let bitmap: ImageBitmap | null = null;
+
+        if (isTiff) {
+          const { decodeTiff } = await import('@/lib/raster');
+          const raster = await decodeTiff(await item.file.arrayBuffer());
+          canvas.width = raster.width;
+          canvas.height = raster.height;
+          const pixels = ctx.createImageData(raster.width, raster.height);
+          pixels.data.set(raster.data);
+          ctx.putImageData(pixels, 0, 0);
+        } else {
+          bitmap = await createImageBitmap(item.file);
+          canvas.width = bitmap.width;
+          canvas.height = bitmap.height;
+        }
+
+        // JPEG and BMP have no alpha. Without a white ground underneath,
+        // anything transparent comes out black rather than empty.
+        if (bitmap) {
+          if (target === 'jpg') {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+          ctx.drawImage(bitmap, 0, 0);
+        } else if (target === 'jpg') {
+          // Already drawn, so the ground goes underneath what is there.
+          ctx.globalCompositeOperation = 'destination-over';
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.globalCompositeOperation = 'source-over';
         }
-        ctx.drawImage(bitmap, 0, 0);
-        bitmap.close();
 
-        const blob = await new Promise<Blob | null>((res) =>
-          canvas.toBlob(res, MIME[target], lossy ? quality : undefined),
-        );
-        if (!blob) throw new Error('The browser could not write that format.');
-        if (blob.type !== MIME[target]) {
-          // The silent substitution described at the top of this file. Better
-          // to refuse than to hand somebody a mislabelled file.
-          throw new Error(`This browser cannot write ${target.toUpperCase()}.`);
+        let blob: Blob | null;
+
+        if (WRITTEN_HERE.includes(target)) {
+          const { encodeRaster } = await import('@/lib/raster');
+          const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          blob = await encodeRaster(
+            target as 'gif' | 'tiff' | 'bmp' | 'ico',
+            { data: pixels.data, width: canvas.width, height: canvas.height },
+            canvas,
+          );
+        } else {
+          blob = await new Promise<Blob | null>((res) =>
+            canvas.toBlob(res, MIME[target], lossy ? quality : undefined),
+          );
+          if (blob && blob.type !== MIME[target]) {
+            // The silent substitution described at the top of this file.
+            // Better to refuse than to hand somebody a mislabelled file.
+            throw new Error(`This browser cannot write ${target.toUpperCase()}.`);
+          }
         }
+
+        bitmap?.close();
+        if (!blob) throw new Error('The browser could not write that format.');
 
         const url = URL.createObjectURL(blob);
         setItems((p) =>

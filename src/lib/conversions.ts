@@ -124,8 +124,8 @@ const RULES: { from: string; to: string[] }[] = [
  * a file named .avif, which opens correctly everywhere and is wrong in a way
  * nobody would ever report.
  */
-export const CANVAS_SOURCES = ['png', 'jpg', 'webp', 'gif', 'bmp', 'avif'] as const;
-export const CANVAS_TARGETS = ['png', 'jpg', 'webp'] as const;
+export const CANVAS_SOURCES = ['png', 'jpg', 'webp', 'gif', 'bmp', 'avif', 'tiff'] as const;
+export const CANVAS_TARGETS = ['png', 'jpg', 'webp', 'gif', 'tiff', 'bmp', 'ico'] as const;
 
 export type EncodableTarget = (typeof CANVAS_TARGETS)[number];
 
