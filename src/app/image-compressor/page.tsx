@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import ImageStudio from '@/components/ImageStudio';
 import { SITE } from '@/lib/site';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const title = 'Image compressor';
 const description = 'Make images smaller without making them look worse. Bulk compression in your browser, no upload, no watermark, no file size limit.';
@@ -41,7 +41,7 @@ export default function Page() {
           <ImageStudio mode="compress" />
         </div>
 
-        <LearnLink tool="image-compressor" />
+        <ToolDocs tool="image-compressor" />
       </div>
     </>
   );

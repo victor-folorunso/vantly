@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import SvgToPng from '@/components/SvgToPng';
 import { SITE, TOOLS } from '@/lib/site';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = TOOLS.find((t) => t.slug === 'svg-to-png')!;
 
@@ -55,7 +55,7 @@ export default function Page() {
           <SvgToPng />
         </div>
 
-        <LearnLink tool="svg-to-png" />
+        <ToolDocs tool="svg-to-png" />
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { LoanCalculator } from '@/components/Calculators';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('loan-calculator')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <LoanCalculator />
         </div>
 
-        <LearnLink tool="loan-calculator" />
+        <ToolDocs tool="loan-calculator" />
       </div>
     </>
   );

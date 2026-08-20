@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { PasswordGenerator } from '@/components/Generators';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('password-generator')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <PasswordGenerator />
         </div>
 
-        <LearnLink tool="password-generator" />
+        <ToolDocs tool="password-generator" />
       </div>
     </>
   );

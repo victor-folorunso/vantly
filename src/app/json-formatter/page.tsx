@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import CodeFormatter from '@/components/CodeFormatter';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('json-formatter')!;
 
@@ -42,7 +42,7 @@ export default function Page() {
           <CodeFormatter initial="json" />
         </div>
 
-        <LearnLink tool="json-formatter" />
+        <ToolDocs tool="json-formatter" />
       </div>
     </>
   );

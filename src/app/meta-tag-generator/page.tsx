@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { MetaTagGenerator } from '@/components/WebTools';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('meta-tag-generator')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <MetaTagGenerator />
         </div>
 
-        <LearnLink tool="meta-tag-generator" />
+        <ToolDocs tool="meta-tag-generator" />
       </div>
     </>
   );

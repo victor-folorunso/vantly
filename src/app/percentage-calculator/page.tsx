@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { PercentageCalculator } from '@/components/Calculators';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('percentage-calculator')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <PercentageCalculator />
         </div>
 
-        <LearnLink tool="percentage-calculator" />
+        <ToolDocs tool="percentage-calculator" />
       </div>
     </>
   );

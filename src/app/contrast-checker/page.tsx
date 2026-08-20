@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { ContrastChecker } from '@/components/ColorTools';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('contrast-checker')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <ContrastChecker />
         </div>
 
-        <LearnLink tool="contrast-checker" />
+        <ToolDocs tool="contrast-checker" />
       </div>
     </>
   );

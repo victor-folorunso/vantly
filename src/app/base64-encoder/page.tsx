@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('base64-encoder')!;
 
@@ -42,7 +42,7 @@ export default function Page() {
           <TextTool preset="base64" outputLabel="Result" />
         </div>
 
-        <LearnLink tool="base64-encoder" />
+        <ToolDocs tool="base64-encoder" />
       </div>
     </>
   );

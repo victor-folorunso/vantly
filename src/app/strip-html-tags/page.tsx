@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('strip-html-tags')!;
 
@@ -41,7 +41,7 @@ export default function Page() {
           <TextTool preset="strip-html" outputLabel="Result" />
         </div>
 
-        <LearnLink tool="strip-html-tags" />
+        <ToolDocs tool="strip-html-tags" />
       </div>
     </>
   );

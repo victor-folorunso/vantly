@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import ImageStudio from '@/components/ImageStudio';
 import { SITE } from '@/lib/site';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const title = 'Image resizer';
 const description = 'Resize images in bulk in your browser. Pick a longest edge, keep the aspect ratio, no upload and no limit on how many.';
@@ -41,7 +41,7 @@ export default function Page() {
           <ImageStudio mode="resize" />
         </div>
 
-        <LearnLink tool="image-resizer" />
+        <ToolDocs tool="image-resizer" />
       </div>
     </>
   );

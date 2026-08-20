@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { UuidGenerator } from '@/components/Generators';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('uuid-generator')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <UuidGenerator />
         </div>
 
-        <LearnLink tool="uuid-generator" />
+        <ToolDocs tool="uuid-generator" />
       </div>
     </>
   );

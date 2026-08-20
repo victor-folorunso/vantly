@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import HashGenerator from '@/components/HashGenerator';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('hash-generator')!;
 
@@ -42,7 +42,7 @@ export default function Page() {
           <HashGenerator />
         </div>
 
-        <LearnLink tool="hash-generator" />
+        <ToolDocs tool="hash-generator" />
       </div>
     </>
   );

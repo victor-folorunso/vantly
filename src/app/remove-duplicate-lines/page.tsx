@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('remove-duplicate-lines')!;
 
@@ -41,7 +41,7 @@ export default function Page() {
           <TextTool preset="duplicate-lines" outputLabel="Result" />
         </div>
 
-        <LearnLink tool="remove-duplicate-lines" />
+        <ToolDocs tool="remove-duplicate-lines" />
       </div>
     </>
   );

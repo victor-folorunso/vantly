@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('case-converter')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <TextTool preset="case" outputLabel="Result" />
         </div>
 
-        <LearnLink tool="case-converter" />
+        <ToolDocs tool="case-converter" />
       </div>
     </>
   );

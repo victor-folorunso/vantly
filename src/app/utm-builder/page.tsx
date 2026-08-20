@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { UtmBuilder } from '@/components/WebTools';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('utm-builder')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <UtmBuilder />
         </div>
 
-        <LearnLink tool="utm-builder" />
+        <ToolDocs tool="utm-builder" />
       </div>
     </>
   );

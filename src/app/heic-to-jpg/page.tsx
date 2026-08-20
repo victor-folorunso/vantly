@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import HeicConvert from '@/components/HeicConvert';
 import { SITE, TOOLS } from '@/lib/site';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = TOOLS.find((t) => t.slug === 'heic-to-jpg')!;
 
@@ -51,7 +51,7 @@ export default function Page() {
           <HeicConvert />
         </div>
 
-        <LearnLink tool="heic-to-jpg" />
+        <ToolDocs tool="heic-to-jpg" />
       </div>
     </>
   );

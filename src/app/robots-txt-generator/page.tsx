@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { RobotsGenerator } from '@/components/WebTools';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('robots-txt-generator')!;
 
@@ -40,7 +40,7 @@ export default function Page() {
           <RobotsGenerator />
         </div>
 
-        <LearnLink tool="robots-txt-generator" />
+        <ToolDocs tool="robots-txt-generator" />
       </div>
     </>
   );

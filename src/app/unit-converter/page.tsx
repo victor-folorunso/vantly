@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import UnitConverter from '@/components/UnitConverter';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('unit-converter')!;
 
@@ -42,7 +42,7 @@ export default function Page() {
           <UnitConverter />
         </div>
 
-        <LearnLink tool="unit-converter" />
+        <ToolDocs tool="unit-converter" />
       </div>
     </>
   );

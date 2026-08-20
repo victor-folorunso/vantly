@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import HeicConvert from '@/components/HeicConvert';
 import { SITE } from '@/lib/site';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 /*
   The same converter as /heic-to-jpg, landing on WebP instead.
@@ -57,7 +57,7 @@ export default function Page() {
           <HeicConvert initialFormat="webp" />
         </div>
 
-        <LearnLink tool="heic-to-webp" />
+        <ToolDocs tool="heic-to-webp" />
       </div>
     </>
   );

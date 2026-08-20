@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import PaletteTool from '@/components/PaletteTool';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('color-palette')!;
 
@@ -44,7 +44,7 @@ export default function Page() {
           <PaletteTool />
         </div>
 
-        <LearnLink tool="color-palette" />
+        <ToolDocs tool="color-palette" />
       </div>
     </>
   );

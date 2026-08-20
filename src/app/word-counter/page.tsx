@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import WordCounter from '@/components/WordCounter';
-import LearnLink from '@/components/LearnLink';
+import ToolDocs from '@/components/ToolDocs';
 
 const tool = toolBySlug('word-counter')!;
 
@@ -42,7 +42,7 @@ export default function Page() {
           <WordCounter />
         </div>
 
-        <LearnLink tool="word-counter" />
+        <ToolDocs tool="word-counter" />
       </div>
     </>
   );
