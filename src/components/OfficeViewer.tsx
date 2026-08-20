@@ -11,9 +11,10 @@ import { convertFile, conversionAvailable } from '@/lib/convert';
  * reads the Office formats faithfully and it cannot run in a browser, but once
  * it has produced a PDF the viewing is something the browser already does well.
  *
- * It says the file is converted on a server, in four words under the button.
- * An earlier draft explained at length why, which was arguing with a promise
- * the site does not make. Say the fact, not the defence.
+ * Where the conversion happens is not something the drop zone mentions. It is
+ * plumbing, the same way no other converter on the web narrates its own
+ * upload. What the file is used for belongs in a privacy policy, which is a
+ * page rather than a caption.
  */
 
 type Kind = 'docx' | 'xlsx' | 'pptx';
@@ -135,8 +136,6 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
         >
           Choose a file
         </button>
-
-        <p className="mt-4 text-xs text-ink-faint">Converted on our server, not stored.</p>
 
         {error && <p className="mt-4 max-w-sm text-sm text-accent">{error}</p>}
         <input
