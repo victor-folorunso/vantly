@@ -39,7 +39,7 @@ const FRIENDLY: Record<number, string> = {
 
 export async function convertFile(
   file: File,
-  to: 'pdf' | 'docx' | 'xlsx' | 'pptx' | 'html' | 'txt' = 'pdf',
+  to: 'pdf' | 'docx' | 'xlsx' | 'pptx' | 'html' | 'txt' | 'md' | 'epub' = 'pdf',
   signal?: AbortSignal,
 ): Promise<ConvertResult> {
   if (!conversionAvailable) {

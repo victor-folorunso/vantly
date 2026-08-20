@@ -128,6 +128,15 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [SVG to PNG](https://vantly.xyz/svg-to-png): Convert an SVG vector to PNG in the browser, in bulk.
 - [PNG to ICO](https://vantly.xyz/png-to-ico): Convert a PNG image to ICO in the browser, in bulk.
 - [JPG to ICO](https://vantly.xyz/jpg-to-ico): Convert a JPEG photo to ICO in the browser, in bulk.
+- [DOCX to PDF](https://vantly.xyz/docx-to-pdf): Convert a Word document to PDF in the browser, in bulk.
+- [DOCX to TXT](https://vantly.xyz/docx-to-txt): Convert a Word document to TXT in the browser, in bulk.
+- [DOCX to Markdown](https://vantly.xyz/docx-to-md): Convert a Word document to Markdown in the browser, in bulk.
+- [DOCX to HTML](https://vantly.xyz/docx-to-html): Convert a Word document to HTML in the browser, in bulk.
+- [Markdown to PDF](https://vantly.xyz/md-to-pdf): Convert a Markdown file to PDF in the browser, in bulk.
+- [Markdown to HTML](https://vantly.xyz/md-to-html): Convert a Markdown file to HTML in the browser, in bulk.
+- [Markdown to DOCX](https://vantly.xyz/md-to-docx): Convert a Markdown file to DOCX in the browser, in bulk.
+- [HTML to Markdown](https://vantly.xyz/html-to-md): Convert an HTML page to Markdown in the browser, in bulk.
+- [TXT to PDF](https://vantly.xyz/txt-to-pdf): Convert a plain text file to PDF in the browser, in bulk.
 - [CSV to JSON](https://vantly.xyz/csv-to-json): Convert a CSV spreadsheet to JSON in the browser, in bulk.
 - [CSV to XML](https://vantly.xyz/csv-to-xml): Convert a CSV spreadsheet to XML in the browser, in bulk.
 - [CSV to YAML](https://vantly.xyz/csv-to-yaml): Convert a CSV spreadsheet to YAML in the browser, in bulk.

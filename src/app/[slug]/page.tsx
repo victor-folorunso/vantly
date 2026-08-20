@@ -5,6 +5,7 @@ import { SITE, LIVE_TOOLS, SOON_TOOLS, toolBySlug } from '@/lib/site';
 import {
   CONVERSIONS,
   dataHandles,
+  docHandles,
   CONVERSION_BY_SLUG,
   conversionTitle,
   conversionDescription,
@@ -14,6 +15,7 @@ import {
   type EncodableTarget,
 } from '@/lib/conversions';
 import DataConvert, { type Format as DataFormat } from '@/components/DataConvert';
+import DocConvert, { type DocFormat } from '@/components/DocConvert';
 import ImageConvert from '@/components/ImageConvert';
 
 /**
@@ -37,9 +39,9 @@ export function generateStaticParams() {
     ...SOON_TOOLS.map((t) => ({ slug: t.slug })),
     // Canvas pairs are live and still belong here: they are served by this file
     // rather than by a folder of their own, so a new raster pair costs nothing.
-    ...CONVERSIONS.filter((c) => !c.live || canvasHandles(c) || dataHandles(c)).map((c) => ({
-      slug: c.slug,
-    })),
+    ...CONVERSIONS.filter(
+      (c) => !c.live || canvasHandles(c) || dataHandles(c) || docHandles(c),
+    ).map((c) => ({ slug: c.slug })),
   ];
 }
 
@@ -50,7 +52,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
   if (conversion) {
-    const working = canvasHandles(conversion) || dataHandles(conversion);
+    const working =
+      canvasHandles(conversion) || dataHandles(conversion) || docHandles(conversion);
     return {
       title: conversionTitle(conversion),
       description: conversionDescription(conversion),
@@ -80,6 +83,29 @@ export default async function Page({ params }: Params) {
   const { slug } = await params;
 
   const conversion = CONVERSION_BY_SLUG.get(slug);
+
+  if (conversion && docHandles(conversion)) {
+    const related = relatedConversions(conversion, 14);
+    return (
+      <div className="mx-auto w-full max-w-6xl px-5 py-12">
+        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
+          {conversionTitle(conversion)}
+        </h1>
+        <div className="mt-10">
+          <DocConvert from={conversion.from.id as DocFormat} to={conversion.to.id as DocFormat} />
+        </div>
+        {related.length > 0 && (
+          <Related
+            heading={`Other ${conversion.from.label} conversions`}
+            items={related.map((c) => ({
+              slug: c.slug,
+              label: `${c.from.label} to ${c.to.label}`,
+            }))}
+          />
+        )}
+      </div>
+    );
+  }
 
   if (conversion && dataHandles(conversion)) {
     const related = relatedConversions(conversion, 14);

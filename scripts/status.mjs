@@ -21,7 +21,7 @@ const root = join(here, '..');
 const load = (rel) => import(pathToFileURL(join(root, rel)).href);
 
 const { TOOLS, CATEGORIES } = await load('src/lib/site.ts');
-const { CONVERSIONS, canvasHandles, dataHandles } = await load('src/lib/conversions.ts');
+const { CONVERSIONS, canvasHandles, dataHandles, docHandles } = await load('src/lib/conversions.ts');
 
 const tick = (live) => (live ? 'x' : ' ');
 
@@ -90,7 +90,9 @@ const missing = [
   ...TOOLS.filter((t) => t.live).map((t) => t.slug),
   // Canvas and data pairs are served by src/app/[slug], so they are live with
   // no folder of their own and are exempt from the folder check.
-  ...CONVERSIONS.filter((c) => c.live && !canvasHandles(c) && !dataHandles(c)).map((c) => c.slug),
+  ...CONVERSIONS.filter(
+    (c) => c.live && !canvasHandles(c) && !dataHandles(c) && !docHandles(c),
+  ).map((c) => c.slug),
 ].filter((slug, i, all) => all.indexOf(slug) === i)
   .filter((slug) => !existsSync(join(root, 'src/app', slug, 'page.tsx')));
 

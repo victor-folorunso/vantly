@@ -62,6 +62,10 @@ image = (
         "libreoffice-writer",
         "libreoffice-calc",
         "libreoffice-impress",
+        # LibreOffice does not read or write Markdown, so pandoc covers that
+        # side. It is also better than LibreOffice at HTML, which it treats as
+        # a document rather than a web page to lay out.
+        "pandoc",
         "fonts-liberation",
         "fonts-dejavu",
         "fonts-noto-core",
@@ -86,6 +90,21 @@ ACCEPTED = {
     "xls", "xlsx", "ods", "csv",
     "ppt", "pptx", "odp",
     "epub", "html", "htm",
+    "md", "markdown", "pdf",
+}
+
+# What pandoc handles better than LibreOffice, or at all. Markdown is the "at
+# all": LibreOffice neither reads nor writes it.
+PANDOC_FORMATS = {"md", "markdown", "html", "htm", "txt", "docx", "epub"}
+
+PANDOC_NAMES = {
+    "md": "markdown",
+    "markdown": "markdown",
+    "htm": "html",
+    "html": "html",
+    "txt": "plain",
+    "docx": "docx",
+    "epub": "epub",
 }
 
 # A cap, because a free endpoint with no limit is somebody else's compute
@@ -181,7 +200,7 @@ def web():
                 415,
                 f"Cannot convert .{ext}. Accepted: {', '.join(sorted(ACCEPTED))}.",
             )
-        if to not in {"pdf", "docx", "xlsx", "pptx", "html", "txt"}:
+        if to not in {"pdf", "docx", "xlsx", "pptx", "html", "txt", "md", "epub"}:
             raise HTTPException(400, f"Cannot convert to {to}.")
 
         data = await file.read()
@@ -199,23 +218,69 @@ def web():
             # Each conversion gets its own LibreOffice profile. Without this,
             # two requests in the same container fight over one profile
             # directory and the second one silently produces nothing.
-            profile = f"file:///tmp/lo-{uuid.uuid4().hex}"
+            out = os.path.join(work, f"input.{to}")
 
-            result = subprocess.run(
-                [
-                    "soffice",
-                    "--headless",
-                    "--norestore",
-                    f"-env:UserInstallation={profile}",
-                    "--convert-to", to,
-                    "--outdir", work,
-                    src,
-                ],
-                capture_output=True,
-                timeout=280,
+            # Markdown on either side goes to pandoc, because LibreOffice
+            # cannot read or write it at all. Everything else goes to
+            # LibreOffice, which is the one that understands Office layout.
+            use_pandoc = (
+                ext in {"md", "markdown"}
+                or to == "md"
+                or (ext in PANDOC_FORMATS and to in PANDOC_FORMATS and to != "pdf")
             )
 
-            out = os.path.join(work, f"input.{to}")
+            # Markdown to PDF goes the long way round, through Word.
+            #
+            # pandoc writes a PDF only by shelling out to LaTeX, and a LaTeX
+            # install is over a gigabyte for the sake of one conversion. So
+            # pandoc makes a .docx and LibreOffice turns that into the PDF,
+            # which is two fast steps in the same container and needs nothing
+            # else installed.
+            if use_pandoc and to == "pdf":
+                middle = os.path.join(work, "input.docx")
+                bridge = subprocess.run(
+                    ["pandoc", "--from", PANDOC_NAMES.get(ext, ext), "--to", "docx",
+                     "-o", middle, src],
+                    capture_output=True,
+                    timeout=140,
+                )
+                if not os.path.exists(middle):
+                    detail = bridge.stderr.decode("utf8", "replace")[:400] or "no output produced"
+                    raise HTTPException(422, f"Conversion failed: {detail}")
+                src = middle
+                ext = "docx"
+                use_pandoc = False
+
+            if use_pandoc:
+                result = subprocess.run(
+                    [
+                        "pandoc",
+                        "--from", PANDOC_NAMES.get(ext, ext),
+                        "--to", "markdown" if to == "md" else PANDOC_NAMES.get(to, to),
+                        # Without this, images and links in the source are
+                        # dropped rather than carried across.
+                        "--wrap=preserve",
+                        "-o", out,
+                        src,
+                    ],
+                    capture_output=True,
+                    timeout=280,
+                )
+            else:
+                profile = f"file:///tmp/lo-{uuid.uuid4().hex}"
+                result = subprocess.run(
+                    [
+                        "soffice",
+                        "--headless",
+                        "--norestore",
+                        f"-env:UserInstallation={profile}",
+                        "--convert-to", to,
+                        "--outdir", work,
+                        src,
+                    ],
+                    capture_output=True,
+                    timeout=280,
+                )
             if not os.path.exists(out):
                 # LibreOffice exits 0 even when it converts nothing, so the
                 # output file is the only reliable signal. Its stderr is the
@@ -230,6 +295,8 @@ def web():
                 "pdf": "application/pdf",
                 "html": "text/html",
                 "txt": "text/plain",
+                "md": "text/markdown",
+                "epub": "application/epub+zip",
                 "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",

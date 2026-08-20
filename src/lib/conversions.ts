@@ -155,6 +155,30 @@ export function dataHandles(c: { from: Format; to: Format }): boolean {
 }
 
 /**
+ * Document pairs the conversion service handles.
+ *
+ * PDF is deliberately absent as a source. LibreOffice can import a PDF, but
+ * only with a Java runtime, and what comes out the other side is a page of
+ * text boxes rather than a document anybody wants to edit. Promising "PDF to
+ * Word" and delivering that is worse than not offering it. Reading a PDF as
+ * plain text is a different job and already runs in the browser.
+ */
+const DOC_SOURCES = ['docx', 'md', 'html', 'txt'] as const;
+const DOC_TARGETS = ['pdf', 'docx', 'md', 'html', 'txt'] as const;
+
+/** Pairs that already have a hand written page, so the catch-all leaves them alone. */
+const DOC_HAS_OWN_ROUTE = ['html-to-pdf'];
+
+export function docHandles(c: { from: Format; to: Format }): boolean {
+  return (
+    (DOC_SOURCES as readonly string[]).includes(c.from.id) &&
+    (DOC_TARGETS as readonly string[]).includes(c.to.id) &&
+    c.from.id !== c.to.id &&
+    !DOC_HAS_OWN_ROUTE.includes(`${c.from.id}-to-${c.to.id}`)
+  );
+}
+
+/**
  * Conversions that are actually implemented.
  *
  * The three named here have their own hand written route. Everything the canvas
@@ -182,7 +206,11 @@ function build(): Conversion[] {
         slug,
         from,
         to,
-        live: HAND_BUILT.includes(slug) || canvasHandles({ from, to }) || dataHandles({ from, to }),
+        live:
+          HAND_BUILT.includes(slug) ||
+          canvasHandles({ from, to }) ||
+          dataHandles({ from, to }) ||
+          docHandles({ from, to }),
       });
     }
   }
