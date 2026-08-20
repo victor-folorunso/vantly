@@ -158,7 +158,7 @@ export const TOOLS: Tool[] = [
     title: 'Open a DOCX file online without Word',
     description:
       'View Word documents in your browser. No Office licence. Formatting, tables and images are kept.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pptx-viewer',
@@ -168,7 +168,7 @@ export const TOOLS: Tool[] = [
     title: 'Open a PPTX file online without PowerPoint',
     description:
       'View PowerPoint presentations in your browser. Step through the slides and read the notes.',
-    live: false,
+    live: true,
   },
   {
     slug: 'xlsx-viewer',
@@ -178,7 +178,7 @@ export const TOOLS: Tool[] = [
     title: 'Open an XLSX file online without Excel',
     description:
       'View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.',
-    live: false,
+    live: true,
   },
   {
     slug: 'epub-viewer',
@@ -589,13 +589,103 @@ export const TOOLS: Tool[] = [
     live: true,
   },
   {
-    slug: 'color-converter',
-    name: 'Colour converter',
+    slug: 'hex-to-rgb',
+    name: 'HEX to RGB',
     category: 'Design',
-    blurb: 'HEX, RGB, HSL and CMYK, all at once.',
-    title: 'Convert colours between HEX, RGB, HSL and CMYK',
+    blurb: 'Paste a hex colour like #b4530a and get the RGB values, plus HSL and CMYK.',
+    title: 'Convert a hex colour code to RGB',
     description:
-      'Pick a colour and read it in every format at once, with a copy button for each.',
+      'Paste a hex colour like #b4530a and get the RGB values, plus HSL and CMYK. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'rgb-to-hex',
+    name: 'RGB to HEX',
+    category: 'Design',
+    blurb: 'Paste RGB values and get the hex code, plus HSL and CMYK.',
+    title: 'Convert RGB to a hex colour code',
+    description:
+      'Paste RGB values and get the hex code, plus HSL and CMYK. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'hex-to-hsl',
+    name: 'HEX to HSL',
+    category: 'Design',
+    blurb: 'Paste a hex colour and get HSL, the format worth learning because lightness is one number.',
+    title: 'Convert a hex colour code to HSL',
+    description:
+      'Paste a hex colour and get HSL, the format worth learning because lightness is one number. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'hsl-to-hex',
+    name: 'HSL to HEX',
+    category: 'Design',
+    blurb: 'Paste HSL values and get the hex code, plus RGB and CMYK.',
+    title: 'Convert HSL to a hex colour code',
+    description:
+      'Paste HSL values and get the hex code, plus RGB and CMYK. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'rgb-to-hsl',
+    name: 'RGB to HSL',
+    category: 'Design',
+    blurb: 'Paste RGB values and get HSL, which makes a colour easier to adjust.',
+    title: 'Convert RGB to HSL',
+    description:
+      'Paste RGB values and get HSL, which makes a colour easier to adjust. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'hsl-to-rgb',
+    name: 'HSL to RGB',
+    category: 'Design',
+    blurb: 'Paste HSL values and get RGB, plus hex and CMYK.',
+    title: 'Convert HSL to RGB',
+    description:
+      'Paste HSL values and get RGB, plus hex and CMYK. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'rgb-to-cmyk',
+    name: 'RGB to CMYK',
+    category: 'Design',
+    blurb: 'Paste RGB values and get an approximate CMYK breakdown for print.',
+    title: 'Convert RGB to CMYK for print',
+    description:
+      'Paste RGB values and get an approximate CMYK breakdown for print. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'cmyk-to-rgb',
+    name: 'CMYK to RGB',
+    category: 'Design',
+    blurb: 'Paste CMYK values and get RGB and hex for screen use.',
+    title: 'Convert CMYK to RGB',
+    description:
+      'Paste CMYK values and get RGB and hex for screen use. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'hex-to-cmyk',
+    name: 'HEX to CMYK',
+    category: 'Design',
+    blurb: 'Paste a hex colour and get an approximate CMYK breakdown for print.',
+    title: 'Convert a hex colour code to CMYK',
+    description:
+      'Paste a hex colour and get an approximate CMYK breakdown for print. Runs in your browser.',
+    live: true,
+  },
+  {
+    slug: 'color-picker',
+    name: 'Colour picker',
+    category: 'Design',
+    blurb: 'Pick a colour and read it back as hex, RGB, HSL and CMYK.',
+    title: 'Pick a colour and get every code',
+    description:
+      'Pick a colour and read it back as hex, RGB, HSL and CMYK. Runs in your browser.',
     live: true,
   },
   {
