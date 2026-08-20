@@ -145,7 +145,16 @@ export default function FilePicker() {
             style={{ backgroundImage: "image-set(url('/puzzle-bg.webp') type('image/webp'), url('/puzzle-bg.jpg') type('image/jpeg'))" }}
           />
 
-          <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface px-9 py-7 shadow-sm">
+          {/* The panel is the control, not just a label beside one. It is the
+              biggest thing in the zone, so it is what people aim at, and a
+              large target that does nothing reads as broken. The button below
+              stays for anyone who needs an obvious one. */}
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            aria-label="Choose files"
+            className="flex cursor-pointer flex-col items-center gap-3 rounded-2xl border border-line bg-surface px-9 py-7 shadow-sm transition-transform hover:scale-[1.02] active:scale-100"
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -160,7 +169,7 @@ export default function FilePicker() {
               <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
             </svg>
             <p className="text-xl font-medium tracking-tight">Drop your files</p>
-          </div>
+          </button>
           <button
             onClick={() => inputRef.current?.click()}
             className="mt-6 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform hover:scale-[1.02] active:scale-100"
