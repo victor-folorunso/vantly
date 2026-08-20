@@ -740,7 +740,7 @@ export const TOOLS: Tool[] = [
     title: 'Extract the text from a PDF',
     description:
       'Pull the plain text out of a PDF, without the formatting, images or layout.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-to-epub',
@@ -1030,7 +1030,7 @@ export const TOOLS: Tool[] = [
     title: 'Add a watermark to a PDF',
     description:
       'Add text or an image across the pages of a PDF, angled and faded how you choose.',
-    live: false,
+    live: true,
   },
   {
     slug: 'unlock-pdf',
@@ -1040,7 +1040,7 @@ export const TOOLS: Tool[] = [
     title: 'Remove a password from a PDF',
     description:
       'Take the password off a PDF you can already open, so it stops asking every time.',
-    live: false,
+    live: true,
   },
 ];
 

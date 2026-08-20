@@ -42,8 +42,11 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Meta tag generator](https://vantly.xyz/meta-tag-generator): Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.
 - [PDF to PNG](https://vantly.xyz/pdf-to-png): Turn each page of a PDF into a PNG at the resolution you choose. Pick every page or a range.
 - [PDF to JPG](https://vantly.xyz/pdf-to-jpg): Turn each page of a PDF into a JPG. Choose the pages and the resolution.
+- [PDF to text](https://vantly.xyz/pdf-to-txt): Pull the plain text out of a PDF, without the formatting, images or layout.
 - [PNG to PDF](https://vantly.xyz/png-to-pdf): Combine PNG images into a single PDF, in the order you choose.
 - [JPG to PDF](https://vantly.xyz/jpg-to-pdf): Combine JPG photos or scans into a single PDF, reordered however you like.
+- [Watermark a PDF](https://vantly.xyz/watermark-pdf): Add text or an image across the pages of a PDF, angled and faded how you choose.
+- [Unlock PDF](https://vantly.xyz/unlock-pdf): Take the password off a PDF you can already open, so it stops asking every time.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
 - [JPG to WebP](https://vantly.xyz/jpg-to-webp): Convert a JPEG photo to WebP in the browser, in bulk.
 - [PNG to JPG](https://vantly.xyz/png-to-jpg): Convert a PNG image to JPG in the browser, in bulk.
