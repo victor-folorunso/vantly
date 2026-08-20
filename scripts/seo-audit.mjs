@@ -61,9 +61,13 @@ for (const p of pages) {
   if (p.h1s > 1) problems.push([`${p.h1s} h1 tags`, p.url]);
   if (!noindex && !p.og) problems.push(['no og:title', p.url]);
   if (!noindex && p.schema === 0) problems.push(['no structured data', p.url]);
-  // Under 200 words of real content is what Google calls thin, and thin pages
-  // drag the whole domain rather than just themselves.
-  if (!noindex && p.words < 200) problems.push([`thin, ${p.words} words`, p.url]);
+  /*
+    120, not 200. The old number was mine rather than Google's, which has no
+    word count rule, and it flagged working tool pages as broken. That pushed
+    toward padding, which is the opposite of what a tool page needs. Below 120
+    a page usually has no explanation at all, which is worth knowing about.
+  */
+  if (!noindex && p.words < 120) problems.push([`very short, ${p.words} words`, p.url]);
 }
 
 /* Duplicate titles and descriptions across pages compete with each other. */
