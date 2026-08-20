@@ -11,10 +11,9 @@ import { convertFile, conversionAvailable } from '@/lib/convert';
  * reads the Office formats faithfully and it cannot run in a browser, but once
  * it has produced a PDF the viewing is something the browser already does well.
  *
- * This is the first tool on the site that sends a file anywhere, so it says so
- * plainly rather than inheriting the "nothing is uploaded" line that is true of
- * everything else. Quietly uploading a contract because the copy elsewhere on
- * the site says files stay local would be the worst kind of bug.
+ * It says the file is converted on a server, in four words under the button.
+ * An earlier draft explained at length why, which was arguing with a promise
+ * the site does not make. Say the fact, not the defence.
  */
 
 type Kind = 'docx' | 'xlsx' | 'pptx';
@@ -137,13 +136,7 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
           Choose a file
         </button>
 
-        {/* Said here rather than buried, because every other tool on this site
-            keeps your file on your machine and this one does not. */}
-        <p className="mt-6 max-w-sm text-xs leading-relaxed text-ink-faint">
-          Unlike most tools here, this sends your file to our server to convert
-          it, because nothing in a browser reads Office formats properly. The
-          file is converted and discarded, never stored.
-        </p>
+        <p className="mt-4 text-xs text-ink-faint">Converted on our server, not stored.</p>
 
         {error && <p className="mt-4 max-w-sm text-sm text-accent">{error}</p>}
         <input
