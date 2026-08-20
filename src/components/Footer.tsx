@@ -113,6 +113,9 @@ export default function Footer() {
             <Link href="/suggest" className="hover:text-ink">
               Suggest a tool
             </Link>
+            <Link href="/privacy" className="hover:text-ink">
+              Privacy
+            </Link>
             <a href={SITE.repo} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
               GitHub
             </a>

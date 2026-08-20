@@ -24,6 +24,7 @@ execution, so an idle endpoint is free.
 """
 
 import os
+import hashlib
 import shutil
 import subprocess
 import time
@@ -139,8 +140,13 @@ def web():
         moment. That is fine here: the point is stopping a script running
         thousands of conversions, not policing the eightieth.
         """
+        # The IP is hashed rather than stored. Counting requests needs to tell
+        # two callers apart, which a hash does, and nothing here ever needs to
+        # know who they were. Storing the address itself would make this a
+        # store of personal data for no gain. The window number is in the hash
+        # so yesterday's keys cannot be matched against today's.
         slot = int(now // WINDOW)
-        key = f"{ip}:{slot}"
+        key = hashlib.sha256(f"{ip}:{slot}".encode()).hexdigest()[:32]
         used = buckets.get(key, 0)
         if used >= PER_HOUR:
             return False

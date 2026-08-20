@@ -45,6 +45,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${SITE.url}/privacy`,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
     /* The index of every doc. The docs themselves live on the tool pages,
        which are already listed below, so there is nothing else to add here. */
     {
