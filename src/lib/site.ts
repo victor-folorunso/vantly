@@ -210,7 +210,7 @@ export const TOOLS: Tool[] = [
     title: 'Open and filter a large CSV file',
     description:
       'View, sort and filter CSV files too large for a spreadsheet. Handles hundreds of thousands of rows in your browser, with no row limit.',
-    live: false,
+    live: true,
   },
   {
     slug: 'csv-to-json',
@@ -220,7 +220,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert CSV to JSON and back',
     description:
       'Convert CSV to JSON or JSON to CSV in your browser. Choose the delimiter and handle quoted fields.',
-    live: false,
+    live: true,
   },
 
   // ── Text ───────────────────────────────────────────────────────────────────
@@ -252,7 +252,7 @@ export const TOOLS: Tool[] = [
     title: 'Markdown editor and live preview',
     description:
       'Write markdown with a live preview and export the result as HTML. Runs in your browser with nothing stored.',
-    live: false,
+    live: true,
   },
 
   // ── Media ──────────────────────────────────────────────────────────────────
@@ -346,7 +346,7 @@ export const TOOLS: Tool[] = [
     title: 'Test and debug a regular expression online',
     description:
       'Build regular expressions with live highlighting, capture groups and a plain English explanation of what each part does.',
-    live: false,
+    live: true,
   },
   {
     slug: 'crontab-generator',
@@ -398,7 +398,7 @@ export const TOOLS: Tool[] = [
     title: 'Lorem ipsum placeholder text generator',
     description:
       'Generate placeholder text by words, sentences or paragraphs, as plain text or wrapped in HTML.',
-    live: false,
+    live: true,
   },
   {
     slug: 'remove-empty-lines',
@@ -542,7 +542,7 @@ export const TOOLS: Tool[] = [
     title: 'Date difference and duration calculator',
     description:
       'Count the days, weeks or months between two dates, or add and subtract time from a date.',
-    live: false,
+    live: true,
   },
 
   // ── Generators ───────────────────
@@ -574,7 +574,7 @@ export const TOOLS: Tool[] = [
     title: 'Random name and choice picker',
     description:
       'Paste a list and pick one at random, or shuffle the whole thing. Uses real randomness rather than Math.random.',
-    live: false,
+    live: true,
   },
   {
     slug: 'barcode-generator',

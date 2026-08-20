@@ -44,6 +44,22 @@ const PAGES = [
     sub: 'Turn a saved web page into a PDF.' },
   { slug: 'pdf-converter', component: 'ConvertToPdf', props: 'from="any"',
     sub: 'Word, Excel, PowerPoint, EPUB or HTML, all into a PDF.' },
+
+  // Pure browser tools, no dependency and no server.
+  { slug: 'lorem-ipsum-generator', component: 'LoremIpsum', props: '',
+    sub: 'Placeholder text in the amount you need, by paragraph, sentence or word.' },
+  { slug: 'regex-tester', component: 'RegexTester', props: '',
+    sub: 'See what your pattern matches, highlighted in the text itself.' },
+  { slug: 'random-picker', component: 'RandomPicker', props: '',
+    sub: 'Draw a name, pick a winner, or shuffle a list into a running order.' },
+  { slug: 'date-calculator', component: 'DateCalculator', props: '',
+    sub: 'Days between two dates, or the date a number of days from one.' },
+  { slug: 'markdown-preview', component: 'MarkdownPreview', props: '',
+    sub: 'Type on the left, read the result on the right.' },
+  { slug: 'csv-viewer', component: 'CsvTools', props: 'mode="view"',
+    sub: 'Open a CSV too big for Excel. Search it, read it, no upload.' },
+  { slug: 'csv-to-json', component: 'CsvTools', props: 'mode="json"',
+    sub: 'Numbers stay numbers and empty cells become null.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

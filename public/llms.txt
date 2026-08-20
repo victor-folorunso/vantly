@@ -20,15 +20,20 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
 - [XLSX viewer](https://vantly.xyz/xlsx-viewer): View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.
 - [PDF viewer](https://vantly.xyz/pdf-viewer): View a PDF in your browser. Step through it a page at a time or scroll the whole document. Nothing is uploaded.
+- [CSV viewer](https://vantly.xyz/csv-viewer): View, sort and filter CSV files too large for a spreadsheet. Handles hundreds of thousands of rows in your browser, with no row limit.
+- [CSV to JSON](https://vantly.xyz/csv-to-json): Convert CSV to JSON or JSON to CSV in your browser. Choose the delimiter and handle quoted fields.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
+- [Markdown preview](https://vantly.xyz/markdown-preview): Write markdown with a live preview and export the result as HTML. Runs in your browser with nothing stored.
 - [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
 - [XML formatter](https://vantly.xyz/xml-formatter): Format, indent and validate XML in your browser.
 - [HTML formatter](https://vantly.xyz/html-formatter): Indent and clean HTML in your browser, or minify it back down.
 - [CSS formatter](https://vantly.xyz/css-formatter): Tidy CSS for reading or strip it down for shipping, in your browser.
 - [JavaScript formatter](https://vantly.xyz/js-formatter): Indent JavaScript for reading or minify it for shipping. Runs in your browser.
+- [Regex tester](https://vantly.xyz/regex-tester): Build regular expressions with live highlighting, capture groups and a plain English explanation of what each part does.
 - [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
 - [Case converter](https://vantly.xyz/case-converter): Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.
 - [Word counter](https://vantly.xyz/word-counter): Count words, characters, sentences and paragraphs as you type, with an estimated reading time.
+- [Lorem ipsum generator](https://vantly.xyz/lorem-ipsum-generator): Generate placeholder text by words, sentences or paragraphs, as plain text or wrapped in HTML.
 - [Remove empty lines](https://vantly.xyz/remove-empty-lines): Delete blank and whitespace-only lines from any list or block of text. Paste it in, get it back clean. Runs in your browser.
 - [Remove duplicate lines](https://vantly.xyz/remove-duplicate-lines): Delete repeated lines from a list, keeping the first of each and the original order. Paste it in and copy the result.
 - [Sort lines](https://vantly.xyz/sort-lines): Sort any list of lines A to Z or Z to A, reverse the order, or remove duplicates while you are there.
@@ -41,7 +46,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Tip and bill splitter](https://vantly.xyz/tip-calculator): Add a tip, split a bill between any number of people, and round the result sensibly.
 - [Compound interest](https://vantly.xyz/compound-interest-calculator): Project savings growth over time with regular contributions, showing the total, the contributions and the interest separately.
 - [Loan calculator](https://vantly.xyz/loan-calculator): Work out monthly repayments, total interest and a full amortisation schedule for a loan or a mortgage.
+- [Date calculator](https://vantly.xyz/date-calculator): Count the days, weeks or months between two dates, or add and subtract time from a date.
 - [UUID generator](https://vantly.xyz/uuid-generator): Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.
+- [Random picker](https://vantly.xyz/random-picker): Paste a list and pick one at random, or shuffle the whole thing. Uses real randomness rather than Math.random.
 - [Colour palette](https://vantly.xyz/color-palette): Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.
 - [HEX to RGB](https://vantly.xyz/hex-to-rgb): Paste a hex colour like #b4530a and get the RGB values, plus HSL and CMYK. Runs in your browser.
 - [RGB to HEX](https://vantly.xyz/rgb-to-hex): Paste RGB values and get the hex code, plus HSL and CMYK. Runs in your browser.
