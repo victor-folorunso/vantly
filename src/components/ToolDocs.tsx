@@ -61,7 +61,7 @@ export default function ToolDocs({ tool }: { tool: string }) {
         }}
       />
 
-      <section id="docs" className="mt-24 scroll-mt-20 border-t border-line pt-12">
+      <section id="docs" className="mt-36 scroll-mt-20 border-t border-line pt-14">
         <p className="text-xs font-semibold uppercase tracking-wider text-accent">Docs</p>
         <h2 className="mt-2 max-w-3xl text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
           {doc.title}
