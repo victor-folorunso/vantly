@@ -950,7 +950,7 @@ export const TOOLS: Tool[] = [
     title: 'Extract text from an image',
     description:
       'Read the text in a photo, screenshot or scan and get it back as text you can copy.',
-    live: false,
+    live: true,
   },
   {
     slug: 'merge-images',
@@ -1070,7 +1070,7 @@ export const TOOLS: Tool[] = [
     title: 'Make a scanned PDF searchable with OCR',
     description:
       'Read the text in a scanned PDF and put it back into the file, so it can be searched, selected and copied.',
-    live: false,
+    live: true,
   },
   {
     slug: 'scan-to-pdf',

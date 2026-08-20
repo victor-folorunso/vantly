@@ -81,8 +81,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PNG to PDF](https://vantly.xyz/png-to-pdf): Combine PNG images into a single PDF, in the order you choose.
 - [JPG to PDF](https://vantly.xyz/jpg-to-pdf): Combine JPG photos or scans into a single PDF, reordered however you like.
 - [PDF converter](https://vantly.xyz/pdf-converter): Convert to and from PDF: Word, Excel, PowerPoint, HTML, EPUB, images and plain text.
+- [Image to text](https://vantly.xyz/image-to-text): Read the text in a photo, screenshot or scan and get it back as text you can copy.
 - [Merge images](https://vantly.xyz/merge-images): Combine several images into a single picture, side by side or stacked, with the spacing you choose.
 - [Watermark an image](https://vantly.xyz/add-watermark-image): Add text or a logo to your images, positioned and faded how you like, across a whole batch at once.
+- [PDF OCR](https://vantly.xyz/pdf-ocr): Read the text in a scanned PDF and put it back into the file, so it can be searched, selected and copied.
 - [Watermark a PDF](https://vantly.xyz/watermark-pdf): Add text or an image across the pages of a PDF, angled and faded how you choose.
 - [Unlock PDF](https://vantly.xyz/unlock-pdf): Take the password off a PDF you can already open, so it stops asking every time.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.

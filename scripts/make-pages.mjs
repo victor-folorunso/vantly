@@ -79,6 +79,12 @@ const PAGES = [
   { slug: 'base64', component: 'TextTool', props: 'preset="base64"',
     sub: 'Encode text or a file to Base64, or decode it back.' },
 
+
+  // Recognising words in pictures. Tesseract, in the browser.
+  { slug: 'image-to-text', component: 'OcrTool', props: 'mode="image"',
+    sub: 'Pull the words out of a screenshot, a photo of a page, or a scan.' },
+  { slug: 'pdf-ocr', component: 'OcrTool', props: 'mode="pdf"',
+    sub: 'For a PDF that is pictures of words, where selecting text does nothing.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';
