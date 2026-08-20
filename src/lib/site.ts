@@ -306,7 +306,7 @@ export const TOOLS: Tool[] = [
     title: 'Format and beautify XML online',
     description:
       'Format, indent and validate XML in your browser.',
-    live: false,
+    live: true,
   },
   {
     slug: 'html-formatter',
@@ -316,7 +316,7 @@ export const TOOLS: Tool[] = [
     title: 'Format and beautify HTML online',
     description:
       'Indent and clean HTML in your browser, or minify it back down.',
-    live: false,
+    live: true,
   },
   {
     slug: 'css-formatter',
@@ -326,7 +326,7 @@ export const TOOLS: Tool[] = [
     title: 'Format, beautify and minify CSS online',
     description:
       'Tidy CSS for reading or strip it down for shipping, in your browser.',
-    live: false,
+    live: true,
   },
   {
     slug: 'js-formatter',
@@ -336,7 +336,7 @@ export const TOOLS: Tool[] = [
     title: 'Format, beautify and minify JavaScript online',
     description:
       'Indent JavaScript for reading or minify it for shipping. Runs in your browser.',
-    live: false,
+    live: true,
   },
   {
     slug: 'regex-tester',
@@ -860,7 +860,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert Word to PDF',
     description:
       'Turn a Word document into a PDF, so the formatting holds on any machine.',
-    live: false,
+    live: true,
   },
   {
     slug: 'excel-to-pdf',
@@ -870,7 +870,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert Excel to PDF',
     description:
       'Turn a spreadsheet into a PDF, choosing which sheets and how the columns fit the page.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pptx-to-pdf',
@@ -880,7 +880,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert PowerPoint to PDF',
     description:
       'Turn a PPTX into a PDF, one page per slide, with the notes kept or dropped.',
-    live: false,
+    live: true,
   },
   {
     slug: 'html-to-pdf',
@@ -890,7 +890,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert HTML to PDF',
     description:
       'Turn HTML into a PDF with the page size and margins you choose.',
-    live: false,
+    live: true,
   },
   {
     slug: 'epub-to-pdf',
@@ -900,7 +900,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert EPUB to PDF',
     description:
       'Turn an EPUB into a PDF at a fixed page size, for printing or for a device that cannot read EPUB.',
-    live: false,
+    live: true,
   },
   {
     slug: 'png-to-pdf',
@@ -930,7 +930,7 @@ export const TOOLS: Tool[] = [
     title: 'PDF converter',
     description:
       'Convert to and from PDF: Word, Excel, PowerPoint, HTML, EPUB, images and plain text.',
-    live: false,
+    live: true,
   },
   {
     slug: 'image-to-excel',

@@ -22,6 +22,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PDF viewer](https://vantly.xyz/pdf-viewer): View a PDF in your browser. Step through it a page at a time or scroll the whole document. Nothing is uploaded.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
 - [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
+- [XML formatter](https://vantly.xyz/xml-formatter): Format, indent and validate XML in your browser.
+- [HTML formatter](https://vantly.xyz/html-formatter): Indent and clean HTML in your browser, or minify it back down.
+- [CSS formatter](https://vantly.xyz/css-formatter): Tidy CSS for reading or strip it down for shipping, in your browser.
+- [JavaScript formatter](https://vantly.xyz/js-formatter): Indent JavaScript for reading or minify it for shipping. Runs in your browser.
 - [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
 - [Case converter](https://vantly.xyz/case-converter): Switch text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case and a URL slug.
 - [Word counter](https://vantly.xyz/word-counter): Count words, characters, sentences and paragraphs as you type, with an estimated reading time.
@@ -56,8 +60,14 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PDF to PNG](https://vantly.xyz/pdf-to-png): Turn each page of a PDF into a PNG at the resolution you choose. Pick every page or a range.
 - [PDF to JPG](https://vantly.xyz/pdf-to-jpg): Turn each page of a PDF into a JPG. Choose the pages and the resolution.
 - [PDF to text](https://vantly.xyz/pdf-to-txt): Pull the plain text out of a PDF, without the formatting, images or layout.
+- [Word to PDF](https://vantly.xyz/word-to-pdf): Turn a Word document into a PDF, so the formatting holds on any machine.
+- [Excel to PDF](https://vantly.xyz/excel-to-pdf): Turn a spreadsheet into a PDF, choosing which sheets and how the columns fit the page.
+- [PowerPoint to PDF](https://vantly.xyz/pptx-to-pdf): Turn a PPTX into a PDF, one page per slide, with the notes kept or dropped.
+- [HTML to PDF](https://vantly.xyz/html-to-pdf): Turn HTML into a PDF with the page size and margins you choose.
+- [EPUB to PDF](https://vantly.xyz/epub-to-pdf): Turn an EPUB into a PDF at a fixed page size, for printing or for a device that cannot read EPUB.
 - [PNG to PDF](https://vantly.xyz/png-to-pdf): Combine PNG images into a single PDF, in the order you choose.
 - [JPG to PDF](https://vantly.xyz/jpg-to-pdf): Combine JPG photos or scans into a single PDF, reordered however you like.
+- [PDF converter](https://vantly.xyz/pdf-converter): Convert to and from PDF: Word, Excel, PowerPoint, HTML, EPUB, images and plain text.
 - [Watermark a PDF](https://vantly.xyz/watermark-pdf): Add text or an image across the pages of a PDF, angled and faded how you choose.
 - [Unlock PDF](https://vantly.xyz/unlock-pdf): Take the password off a PDF you can already open, so it stops asking every time.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
