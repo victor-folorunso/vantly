@@ -95,6 +95,10 @@ const PAGES = [
     sub: 'For the one that is too big to email. Lossless, or much smaller.' },
   { slug: 'pdf-reader', component: 'PdfViewer', props: '',
     sub: 'Read a PDF a page at a time, or scroll the whole thing.' },
+
+  // Subtitles are a text file, so this one needs no video machinery at all.
+  { slug: 'srt-shifter', component: 'SubtitleShifter', props: '',
+    sub: 'Move subtitles earlier or later, fix frame rate drift, and swap between SRT and VTT.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

@@ -199,6 +199,22 @@ const HAND_BUILT = [
   'jpg-to-pdf',
 ];
 
+/**
+ * Pairs that will not be built, removed rather than left as coming soon.
+ *
+ * Reading a PDF back into an editable document is the whole list. LibreOffice
+ * needs a Java runtime for it and returns a page of loose text boxes; the
+ * commercial tools that do it properly use layout analysis that has no browser
+ * equivalent. These are among the most searched conversions on the site, which
+ * is exactly the argument against a weak version: ranking for "PDF to Word"
+ * and then disappointing everyone who arrives costs more than the traffic is
+ * worth, and a shelf of permanent coming soon pages drags the working ones
+ * down with it.
+ *
+ * Reading a PDF as plain text is a different job and already works.
+ */
+const NEVER = ['pdf-to-docx', 'pdf-to-html', 'pdf-to-md'];
+
 function build(): Conversion[] {
   const seen = new Set<string>();
   const out: Conversion[] = [];
@@ -213,6 +229,7 @@ function build(): Conversion[] {
       // Rules overlap on purpose, so png appears in both the raster block and
       // the icon block. First writer wins and the duplicate is dropped.
       if (seen.has(slug)) continue;
+      if (NEVER.includes(slug)) continue;
       seen.add(slug);
       out.push({
         slug,

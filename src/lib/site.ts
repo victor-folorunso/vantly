@@ -284,7 +284,7 @@ export const TOOLS: Tool[] = [
     title: 'Shift subtitle timing in an SRT file',
     description:
       'Move every subtitle in an SRT file forward or back by a set number of seconds. Runs in your browser.',
-    live: false,
+    live: true,
   },
 
   // ── Developer ───────────────────────
@@ -773,16 +773,6 @@ export const TOOLS: Tool[] = [
 
   // ── Added in bulk, none built yet ──────────────────────────────────────
   {
-    slug: 'pdf-to-word',
-    name: 'PDF to Word',
-    category: 'Documents',
-    blurb: 'Turn a PDF back into an editable document.',
-    title: 'Convert PDF to Word (DOCX)',
-    description:
-      'Convert a PDF into an editable Word document, keeping the text, headings and tables where they were.',
-    live: false,
-  },
-  {
     slug: 'pdf-to-png',
     name: 'PDF to PNG',
     category: 'Documents',
@@ -803,26 +793,6 @@ export const TOOLS: Tool[] = [
     live: true,
   },
   {
-    slug: 'pdf-to-excel',
-    name: 'PDF to Excel',
-    category: 'Documents',
-    blurb: 'Pull the tables out of a PDF into a spreadsheet.',
-    title: 'Convert PDF tables to Excel',
-    description:
-      'Extract tables from a PDF into an editable spreadsheet, with the rows and columns preserved.',
-    live: false,
-  },
-  {
-    slug: 'pdf-to-pptx',
-    name: 'PDF to PowerPoint',
-    category: 'Documents',
-    blurb: 'One slide per page.',
-    title: 'Convert PDF to PowerPoint (PPTX)',
-    description:
-      'Turn a PDF into a PowerPoint deck, one slide per page.',
-    live: false,
-  },
-  {
     slug: 'pdf-to-html',
     name: 'PDF to HTML',
     category: 'Documents',
@@ -841,16 +811,6 @@ export const TOOLS: Tool[] = [
     description:
       'Pull the plain text out of a PDF, without the formatting, images or layout.',
     live: true,
-  },
-  {
-    slug: 'pdf-to-epub',
-    name: 'PDF to EPUB',
-    category: 'Documents',
-    blurb: 'Turn a PDF into an ebook that reflows.',
-    title: 'Convert PDF to EPUB',
-    description:
-      'Turn a PDF into an EPUB, so the text reflows to fit a phone or an e-reader instead of staying fixed to the page.',
-    live: false,
   },
   {
     slug: 'word-to-pdf',
@@ -933,16 +893,6 @@ export const TOOLS: Tool[] = [
     live: true,
   },
   {
-    slug: 'image-to-excel',
-    name: 'Image to Excel',
-    category: 'Data',
-    blurb: 'Read a table out of a photo or screenshot.',
-    title: 'Convert an image of a table to Excel',
-    description:
-      'Read the table in a photo or screenshot and turn it into a spreadsheet you can edit.',
-    live: false,
-  },
-  {
     slug: 'image-to-text',
     name: 'Image to text',
     category: 'Text',
@@ -1003,56 +953,6 @@ export const TOOLS: Tool[] = [
     live: false,
   },
   {
-    slug: 'transcribe-audio',
-    name: 'Transcribe audio',
-    category: 'Media',
-    blurb: 'Turn speech into text you can read.',
-    title: 'Transcribe audio to text',
-    description:
-      'Turn a recording into text, with timestamps, ready to edit or caption.',
-    live: false,
-  },
-  {
-    slug: 'transcribe-video',
-    name: 'Transcribe video',
-    category: 'Media',
-    blurb: 'Captions and a transcript from a clip.',
-    title: 'Transcribe video to text',
-    description:
-      'Turn the speech in a video into a transcript or a subtitle file.',
-    live: false,
-  },
-  {
-    slug: 'vocal-remover',
-    name: 'Vocal remover',
-    category: 'Media',
-    blurb: 'Separate the voice from the backing.',
-    title: 'Remove vocals from a song',
-    description:
-      'Split a track into vocals and instrumental, for a backing track or an acapella.',
-    live: false,
-  },
-  {
-    slug: 'noise-remover',
-    name: 'Noise remover',
-    category: 'Media',
-    blurb: 'Clean up a noisy recording.',
-    title: 'Remove background noise from audio',
-    description:
-      'Strip hiss, hum and background noise out of a recording without hollowing out the voice.',
-    live: false,
-  },
-  {
-    slug: 'text-to-speech',
-    name: 'Text to speech',
-    category: 'Media',
-    blurb: 'Read text aloud and save the audio.',
-    title: 'Convert text to speech',
-    description:
-      'Turn written text into spoken audio you can download.',
-    live: false,
-  },
-  {
     slug: 'compress-video',
     name: 'Compress video',
     category: 'Media',
@@ -1080,16 +980,6 @@ export const TOOLS: Tool[] = [
     title: 'Turn photos of documents into a PDF',
     description:
       'Turn phone photos of paper into a clean PDF: cropped square, straightened and readable.',
-    live: false,
-  },
-  {
-    slug: 'translate-pdf',
-    name: 'Translate PDF',
-    category: 'Documents',
-    blurb: 'A PDF in another language, laid out the same.',
-    title: 'Translate a PDF',
-    description:
-      'Translate a PDF into another language while keeping the layout it had.',
     live: false,
   },
   {
