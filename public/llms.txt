@@ -13,6 +13,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [HEIC to JPG](https://vantly.xyz/heic-to-jpg): Convert iPhone HEIC photos to JPG or WebP. Bulk conversion, no file limit. Runs in your browser.
 - [Image compressor](https://vantly.xyz/image-compressor): Reduce JPG, PNG and WebP file sizes in your browser. Compare before and after, choose your own quality, convert in bulk. No upload, no watermark, no limit.
 - [Image resizer](https://vantly.xyz/image-resizer): Resize images to any longest edge in your browser. Batch resize, aspect ratio always kept, never enlarged, export as JPG, PNG or WebP. No upload and no limit.
+- [Merge PDF](https://vantly.xyz/merge-pdf): Combine multiple PDFs into a single file. Drag to reorder and remove the pages you do not want.
+- [Split PDF](https://vantly.xyz/split-pdf): Split a PDF into separate files or extract a page range. Runs in your browser.
+- [Images to PDF](https://vantly.xyz/images-to-pdf): Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
 - [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
 - [Diff checker](https://vantly.xyz/diff-checker): Find what changed between two pieces of text or code, highlighted line by line and word by word.
@@ -37,6 +40,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [UTM link builder](https://vantly.xyz/utm-builder): Build Google Analytics campaign URLs with the right parameter names, and keep a list of the ones you have made.
 - [Robots.txt generator](https://vantly.xyz/robots-txt-generator): Build a robots.txt with the rules you actually want, including whether AI crawlers are allowed.
 - [Meta tag generator](https://vantly.xyz/meta-tag-generator): Write the meta and Open Graph tags for a page and see how the result looks as a search result and as a shared card.
+- [PDF to PNG](https://vantly.xyz/pdf-to-png): Turn each page of a PDF into a PNG at the resolution you choose. Pick every page or a range.
+- [PDF to JPG](https://vantly.xyz/pdf-to-jpg): Turn each page of a PDF into a JPG. Choose the pages and the resolution.
+- [PNG to PDF](https://vantly.xyz/png-to-pdf): Combine PNG images into a single PDF, in the order you choose.
+- [JPG to PDF](https://vantly.xyz/jpg-to-pdf): Combine JPG photos or scans into a single PDF, reordered however you like.
 - [JPG to PNG](https://vantly.xyz/jpg-to-png): Convert a JPEG photo to PNG in the browser, in bulk.
 - [JPG to WebP](https://vantly.xyz/jpg-to-webp): Convert a JPEG photo to WebP in the browser, in bulk.
 - [PNG to JPG](https://vantly.xyz/png-to-jpg): Convert a PNG image to JPG in the browser, in bulk.

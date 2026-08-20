@@ -117,7 +117,7 @@ export const TOOLS: Tool[] = [
     title: 'Merge PDF files into one',
     description:
       'Combine multiple PDFs into a single file. Drag to reorder and remove the pages you do not want.',
-    live: false,
+    live: true,
   },
   {
     slug: 'split-pdf',
@@ -127,7 +127,7 @@ export const TOOLS: Tool[] = [
     title: 'Split a PDF or extract pages',
     description:
       'Split a PDF into separate files or extract a page range. Runs in your browser.',
-    live: false,
+    live: true,
   },
   {
     slug: 'compress-pdf',
@@ -147,7 +147,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert images to a single PDF',
     description:
       'Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.',
-    live: false,
+    live: true,
   },
 
   {
@@ -690,7 +690,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert PDF pages to PNG images',
     description:
       'Turn each page of a PDF into a PNG at the resolution you choose. Pick every page or a range.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-to-jpg',
@@ -700,7 +700,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert PDF pages to JPG images',
     description:
       'Turn each page of a PDF into a JPG. Choose the pages and the resolution.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-to-excel',
@@ -810,7 +810,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert PNG images to PDF',
     description:
       'Combine PNG images into a single PDF, in the order you choose.',
-    live: false,
+    live: true,
   },
   {
     slug: 'jpg-to-pdf',
@@ -820,7 +820,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert JPG images to PDF',
     description:
       'Combine JPG photos or scans into a single PDF, reordered however you like.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-converter',
