@@ -132,6 +132,14 @@ const PAGES = [
   // Movable doh, which is how a great many people were taught to read music.
   { slug: 'tonic-solfa-converter', component: 'SolfaConverter', props: '',
     sub: 'Note names into doh ray me in any key, and back the other way.' },
+
+  // Codes and a keyboard test, all drawn locally.
+  { slug: 'qr-code-generator', component: 'CodeGenerator', props: 'kind="qr"',
+    sub: 'A link, a wifi network or a contact card, downloaded as PNG or SVG.' },
+  { slug: 'barcode-generator', component: 'CodeGenerator', props: 'kind="barcode"',
+    sub: 'Code 128, EAN, UPC and the rest, checked as you type.' },
+  { slug: 'typing-speed-test', component: 'TypingTest', props: '',
+    sub: 'Words a minute over 15, 30, 60 or 120 seconds, with accuracy.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

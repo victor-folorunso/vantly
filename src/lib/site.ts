@@ -845,6 +845,17 @@ export const TOOLS: Tool[] = [
   },
 
   {
+    slug: 'typing-speed-test',
+    name: 'Typing speed test',
+    category: 'Generators',
+    blurb: 'How fast you actually type, in words a minute.',
+    title: 'Typing speed test, words per minute',
+    description:
+      'Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.',
+    live: true,
+  },
+
+  {
     slug: 'docx-viewer',
     name: 'DOCX viewer',
     category: 'Documents',
@@ -1258,7 +1269,7 @@ export const TOOLS: Tool[] = [
     title: 'Create a QR code online',
     description:
       'Generate a QR code for a URL, plain text, a phone number or Wi-Fi credentials, and download it as PNG or SVG.',
-    live: false,
+    live: true,
   },
   {
     slug: 'random-picker',
@@ -1278,7 +1289,7 @@ export const TOOLS: Tool[] = [
     title: 'Generate a barcode online',
     description:
       'Create EAN, UPC and Code 128 barcodes and download them as PNG or SVG.',
-    live: false,
+    live: true,
   },
 
   // ── Design ──────────────────────

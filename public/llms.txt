@@ -33,6 +33,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Placeholder 400x400](https://vantly.xyz/placeholder-400x400): A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.
 - [Placeholder 1500x500](https://vantly.xyz/placeholder-1500x500): A 1500 by 500 placeholder, the header image across the top of an X profile.
 - [Tonic solfa converter](https://vantly.xyz/tonic-solfa-converter): Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.
+- [Typing speed test](https://vantly.xyz/typing-speed-test): Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
 - [XLSX viewer](https://vantly.xyz/xlsx-viewer): View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.
@@ -68,7 +69,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Loan calculator](https://vantly.xyz/loan-calculator): Work out monthly repayments, total interest and a full amortisation schedule for a loan or a mortgage.
 - [Date calculator](https://vantly.xyz/date-calculator): Count the days, weeks or months between two dates, or add and subtract time from a date.
 - [UUID generator](https://vantly.xyz/uuid-generator): Generate cryptographically random UUIDs one at a time or in bulk, ready to copy.
+- [QR code generator](https://vantly.xyz/qr-code-generator): Generate a QR code for a URL, plain text, a phone number or Wi-Fi credentials, and download it as PNG or SVG.
 - [Random picker](https://vantly.xyz/random-picker): Paste a list and pick one at random, or shuffle the whole thing. Uses real randomness rather than Math.random.
+- [Barcode generator](https://vantly.xyz/barcode-generator): Create EAN, UPC and Code 128 barcodes and download them as PNG or SVG.
 - [Colour palette](https://vantly.xyz/color-palette): Extract a colour palette from any image, or build harmonies and shades from one colour. Copy the result as hex, CSS variables, Tailwind, SCSS or JSON.
 - [HEX to RGB](https://vantly.xyz/hex-to-rgb): Paste a hex colour like #b4530a and get the RGB values, plus HSL and CMYK. Runs in your browser.
 - [RGB to HEX](https://vantly.xyz/rgb-to-hex): Paste RGB values and get the hex code, plus HSL and CMYK. Runs in your browser.
