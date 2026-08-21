@@ -4,18 +4,15 @@
  * Rerunnable: anything already in the registry is skipped, so this can be
  * pointed at a fresh list without checking by hand first.
  *
- * Two rules decide what gets in.
+ * The rule for getting in is that it has to run in the browser, or on the one
+ * container we already pay for. Anything needing a server of our own to answer
+ * a question costs a request every time it is used and earns nothing, and a
+ * page load is the billable event here.
  *
- * It has to run in the browser, or on the one container we already pay for.
- * Anything that needs a server to answer a question, a DNS or WHOIS lookup, a
- * header or certificate check, live currency rates, costs a request every time
- * it is used and earns nothing. A page load is the billable event here, so a
- * page that must call out to answer is a page that costs money to be popular.
- *
- * And it has to be a real search on its own. That is the argument for the
- * placeholder sizes below: nobody searches "placeholder image tool", they
- * search the size they were told to supply, and each of those is a different
- * page with a different reason to exist.
+ * The domain checker is the exception that proves it works: RDAP, the registry
+ * protocol that actually knows whether a name is taken, answers browsers
+ * directly with an open CORS header. Checked before it was added rather than
+ * assumed, because the whole tool depends on it.
  *
  * Run: node --experimental-strip-types scripts/add-batch.mjs
  */
@@ -27,170 +24,57 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const file = join(root, 'src/lib/site.ts');
 
-/* ── PDF work, mostly pdf-lib in the browser ───────────────────────────────
-   The Office to PDF entries are LibreOffice on the container, which already
-   accepts every one of these formats. They are separate pages because they
-   are separate searches, not because they are separate work. */
-const PDF = [
-  ['rotate-pdf', 'Rotate PDF', 'Documents',
-   'Turn the pages that came in sideways.',
-   'Rotate PDF pages and save them that way',
-   'Rotate some or all pages of a PDF and save it, so a scan that came in sideways stops being sideways.'],
+const TOOLS = [
+  ['random-name-generator', 'Random name generator', 'Generators',
+   'First names, surnames, or both, from anywhere.',
+   'Random name generator',
+   'Generate random names from a choice of regions, as first names, surnames or full names, one or a thousand at a time.'],
 
-  ['delete-pdf-pages', 'Delete PDF pages', 'Documents',
-   'Drop the blank scans and the pages you do not need.',
-   'Delete pages from a PDF',
-   'Remove pages from a PDF and download what is left, without reordering anything else.'],
+  ['business-name-generator', 'Business name generator', 'Generators',
+   'Names for a thing you have not named yet.',
+   'Business name generator',
+   'Generate business name ideas from a word you start with, or from nothing at all, in several naming styles.'],
 
-  ['extract-pdf-pages', 'Extract PDF pages', 'Documents',
-   'Pull a few pages out into their own file.',
-   'Extract pages from a PDF into a new file',
-   'Pick the pages you want and save them as a separate PDF, leaving the original alone.'],
+  ['fantasy-name-generator', 'Fantasy name generator', 'Generators',
+   'For characters, places and things that do not exist.',
+   'Fantasy name generator',
+   'Generate names for characters, places, guilds and creatures, built from syllable patterns rather than a fixed list.'],
 
-  ['organize-pdf', 'Organize PDF', 'Documents',
-   'Reorder, rotate and remove pages in one go.',
-   'Reorder and organise the pages of a PDF',
-   'Move pages around, turn them the right way up and drop the ones you do not want, then save the result.'],
+  ['address-generator', 'Address generator', 'Generators',
+   'Fake addresses for filling a test database.',
+   'Generate fake addresses for testing',
+   'Generate addresses in the right shape for a country, for seeding a test database or filling a form while developing. Invented, not real, and not deliverable.'],
 
-  ['add-page-numbers', 'Add page numbers', 'Documents',
-   'Number a PDF that arrived without any.',
-   'Add page numbers to a PDF',
-   'Stamp page numbers onto a PDF, choosing where they sit, what they count from and how they are formatted.'],
+  ['domain-name-checker', 'Domain name checker', 'Web',
+   'See whether a name is taken, across the endings.',
+   'Check whether a domain name is available',
+   'Check whether a domain is registered across com, net, org, io, xyz and more, asking the registries directly.'],
 
-  ['crop-pdf', 'Crop PDF', 'Documents',
-   'Cut the margins off a scan.',
-   'Crop the margins of a PDF',
-   'Trim the edges of every page, for a scan with wide margins or a document that needs to fit a different paper size.'],
+  ['domain-name-generator', 'Domain name generator', 'Web',
+   'Ideas, with a word to start from or without one.',
+   'Domain name idea generator',
+   'Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.'],
 
-  ['redact-pdf', 'Redact PDF', 'Documents',
-   'Black something out so it is actually gone.',
-   'Redact a PDF properly',
-   'Cover text so it cannot be read, and so it cannot be copied back out either, which a black rectangle drawn on top does not do.'],
+  ['tonic-solfa-converter', 'Tonic solfa converter', 'Media',
+   'Note names into doh ray me, in any key.',
+   'Convert note names to tonic solfa',
+   'Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.'],
 
-  ['protect-pdf', 'Protect PDF', 'Documents',
-   'Put a password on it.',
-   'Add a password to a PDF',
-   'Lock a PDF with a password so it cannot be opened without one.'],
+  ['song-to-tonic-solfa', 'Song to tonic solfa', 'Media',
+   'Hum or play a melody, read it back as solfa.',
+   'Turn a melody into tonic solfa',
+   'Work out the tonic solfa of a melody from a recording, by following the pitch. Works on one line at a time: a voice, a whistle, a single instrument.'],
 
-  ['flatten-pdf', 'Flatten PDF', 'Documents',
-   'Lock the form answers and annotations into the page.',
-   'Flatten a PDF so it cannot be edited',
-   'Turn form fields, annotations and layers into part of the page itself, so nobody can change the answers later.'],
+  ['video-to-mp3', 'Video to MP3', 'Media',
+   'Keep the sound, drop the picture.',
+   'Extract the audio from a video as MP3',
+   'Pull the audio out of a video file and save it as an MP3, choosing the quality.'],
 
-  ['pdf-annotator', 'PDF annotator', 'Documents',
-   'Highlight, draw and leave a note.',
-   'Annotate a PDF in your browser',
-   'Highlight text, draw on the page and add notes, then save a copy with the markings in it.'],
-
-  ['pdf-to-pdfa', 'PDF to PDF/A', 'Documents',
-   'The archival format an institution asked you for.',
-   'Convert a PDF to PDF/A',
-   'Convert a PDF to PDF/A, the long term archival format that libraries, courts and universities ask for.'],
-
-  ['odt-to-pdf', 'ODT to PDF', 'Documents',
-   'OpenDocument text, without OpenOffice.',
-   'Convert ODT to PDF',
-   'Turn an OpenDocument text file into a PDF, keeping the fonts, tables and page breaks.'],
-
-  ['ods-to-pdf', 'ODS to PDF', 'Documents',
-   'OpenDocument spreadsheet, without OpenOffice.',
-   'Convert ODS to PDF',
-   'Turn an OpenDocument spreadsheet into a PDF, laid out as it prints.'],
-
-  ['odp-to-pdf', 'ODP to PDF', 'Documents',
-   'OpenDocument slides, without OpenOffice.',
-   'Convert ODP to PDF',
-   'Turn an OpenDocument presentation into a PDF, one slide per page.'],
-
-  ['rtf-to-pdf', 'RTF to PDF', 'Documents',
-   'Rich text, kept as it looks.',
-   'Convert RTF to PDF',
-   'Turn a rich text file into a PDF with its formatting intact.'],
-
-  ['txt-to-pdf', 'TXT to PDF', 'Documents',
-   'Plain text on a proper page.',
-   'Convert a text file to PDF',
-   'Turn a plain text file into a PDF, laid out on a page with margins you can print.'],
-
-  ['csv-to-pdf', 'CSV to PDF', 'Documents',
-   'A spreadsheet as a table you can send.',
-   'Convert CSV to PDF',
-   'Turn a CSV into a PDF table, ready to attach to something or print.'],
-
-  ['pages-to-pdf', 'Pages to PDF', 'Documents',
-   'The Apple format nobody else can open.',
-   'Convert an Apple Pages file to PDF',
-   'Turn a Pages document into a PDF anyone can open, without a Mac.'],
+  ['mp3-to-video', 'MP3 to video', 'Media',
+   'A track plus a still, for somewhere that only takes video.',
+   'Turn an MP3 into a video file',
+   'Make a video from an audio file and a still picture, for uploading a track somewhere that only accepts video.'],
 ];
-
-/* ── Placeholder images ────────────────────────────────────────────────────
-   One generator, and a page for each size people are actually told to
-   supply. The size is the search: nobody looks for "placeholder image tool",
-   they look for the number a brief handed them. Each page says what the size
-   is for, which is the part that stops these being the same page repeated. */
-const PLACEHOLDER = [
-  ['placeholder-1920x1080', 'Placeholder 1920x1080', 'Generators',
-   'Full HD, the default for a hero or a slide.',
-   'Placeholder image, 1920x1080',
-   'A 1920 by 1080 placeholder image. Full HD and the usual size for a hero image, a slide or a video frame.'],
-
-  ['placeholder-1280x720', 'Placeholder 1280x720', 'Generators',
-   'The YouTube thumbnail size.',
-   'Placeholder image, 1280x720',
-   'A 1280 by 720 placeholder image. The size YouTube asks for a thumbnail, and 720p video.'],
-
-  ['placeholder-1200x630', 'Placeholder 1200x630', 'Generators',
-   'The link preview size for social posts.',
-   'Placeholder image, 1200x630, for Open Graph',
-   'A 1200 by 630 placeholder. The size a link preview uses when a page is shared, set by Open Graph and used by Facebook, LinkedIn and X.'],
-
-  ['placeholder-1080x1080', 'Placeholder 1080x1080', 'Generators',
-   'The square Instagram post.',
-   'Placeholder image, 1080x1080 square',
-   'A 1080 by 1080 square placeholder, the size of an Instagram feed post.'],
-
-  ['placeholder-1080x1920', 'Placeholder 1080x1920', 'Generators',
-   'The vertical story and reel size.',
-   'Placeholder image, 1080x1920 vertical',
-   'A 1080 by 1920 vertical placeholder, the size of a story, a reel and a short.'],
-
-  ['placeholder-800x600', 'Placeholder 800x600', 'Generators',
-   'The old faithful four by three.',
-   'Placeholder image, 800x600',
-   'An 800 by 600 placeholder image, four by three, still the default in plenty of templates.'],
-
-  ['placeholder-600x400', 'Placeholder 600x400', 'Generators',
-   'A card or a thumbnail in a grid.',
-   'Placeholder image, 600x400',
-   'A 600 by 400 placeholder image, the usual shape for a card or a thumbnail in a grid.'],
-
-  ['placeholder-300x250', 'Placeholder 300x250', 'Generators',
-   'The medium rectangle ad slot.',
-   'Placeholder image, 300x250 medium rectangle',
-   'A 300 by 250 placeholder, the medium rectangle, the most used display ad size there is.'],
-
-  ['placeholder-728x90', 'Placeholder 728x90', 'Generators',
-   'The leaderboard banner across the top.',
-   'Placeholder image, 728x90 leaderboard',
-   'A 728 by 90 placeholder, the leaderboard banner that runs across the top of a page.'],
-
-  ['placeholder-160x600', 'Placeholder 160x600', 'Generators',
-   'The skyscraper down the side.',
-   'Placeholder image, 160x600 skyscraper',
-   'A 160 by 600 placeholder, the wide skyscraper that runs down the side of a page.'],
-
-  ['placeholder-400x400', 'Placeholder 400x400', 'Generators',
-   'A square avatar or profile picture.',
-   'Placeholder image, 400x400 square avatar',
-   'A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.'],
-
-  ['placeholder-1500x500', 'Placeholder 1500x500', 'Generators',
-   'The X header across a profile.',
-   'Placeholder image, 1500x500 header',
-   'A 1500 by 500 placeholder, the header image across the top of an X profile.'],
-];
-
-const TOOLS = [...PDF, ...PLACEHOLDER];
 
 const source = readFileSync(file, 'utf8');
 const already = new Set([...source.matchAll(/slug: '([a-z0-9-]+)'/g)].map((m) => m[1]));

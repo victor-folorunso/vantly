@@ -32,6 +32,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Placeholder 160x600](https://vantly.xyz/placeholder-160x600): A 160 by 600 placeholder, the wide skyscraper that runs down the side of a page.
 - [Placeholder 400x400](https://vantly.xyz/placeholder-400x400): A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.
 - [Placeholder 1500x500](https://vantly.xyz/placeholder-1500x500): A 1500 by 500 placeholder, the header image across the top of an X profile.
+- [Tonic solfa converter](https://vantly.xyz/tonic-solfa-converter): Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
 - [XLSX viewer](https://vantly.xyz/xlsx-viewer): View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.

@@ -128,6 +128,10 @@ const PAGES = [
     sub: 'A square avatar or profile picture.' },
   { slug: 'placeholder-1500x500', component: 'PlaceholderImage', props: 'width={1500} height={500} fixed',
     sub: 'The header across the top of an X profile.' },
+
+  // Movable doh, which is how a great many people were taught to read music.
+  { slug: 'tonic-solfa-converter', component: 'SolfaConverter', props: '',
+    sub: 'Note names into doh ray me in any key, and back the other way.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

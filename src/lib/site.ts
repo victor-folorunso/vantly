@@ -744,6 +744,107 @@ export const TOOLS: Tool[] = [
   },
 
   {
+    slug: 'random-name-generator',
+    name: 'Random name generator',
+    category: 'Generators',
+    blurb: 'First names, surnames, or both, from anywhere.',
+    title: 'Random name generator',
+    description:
+      'Generate random names from a choice of regions, as first names, surnames or full names, one or a thousand at a time.',
+    live: false,
+  },
+  {
+    slug: 'business-name-generator',
+    name: 'Business name generator',
+    category: 'Generators',
+    blurb: 'Names for a thing you have not named yet.',
+    title: 'Business name generator',
+    description:
+      'Generate business name ideas from a word you start with, or from nothing at all, in several naming styles.',
+    live: false,
+  },
+  {
+    slug: 'fantasy-name-generator',
+    name: 'Fantasy name generator',
+    category: 'Generators',
+    blurb: 'For characters, places and things that do not exist.',
+    title: 'Fantasy name generator',
+    description:
+      'Generate names for characters, places, guilds and creatures, built from syllable patterns rather than a fixed list.',
+    live: false,
+  },
+  {
+    slug: 'address-generator',
+    name: 'Address generator',
+    category: 'Generators',
+    blurb: 'Fake addresses for filling a test database.',
+    title: 'Generate fake addresses for testing',
+    description:
+      'Generate addresses in the right shape for a country, for seeding a test database or filling a form while developing. Invented, not real, and not deliverable.',
+    live: false,
+  },
+  {
+    slug: 'domain-name-checker',
+    name: 'Domain name checker',
+    category: 'Web',
+    blurb: 'See whether a name is taken, across the endings.',
+    title: 'Check whether a domain name is available',
+    description:
+      'Check whether a domain is registered across com, net, org, io, xyz and more, asking the registries directly.',
+    live: false,
+  },
+  {
+    slug: 'domain-name-generator',
+    name: 'Domain name generator',
+    category: 'Web',
+    blurb: 'Ideas, with a word to start from or without one.',
+    title: 'Domain name idea generator',
+    description:
+      'Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.',
+    live: false,
+  },
+  {
+    slug: 'tonic-solfa-converter',
+    name: 'Tonic solfa converter',
+    category: 'Media',
+    blurb: 'Note names into doh ray me, in any key.',
+    title: 'Convert note names to tonic solfa',
+    description:
+      'Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.',
+    live: true,
+  },
+  {
+    slug: 'song-to-tonic-solfa',
+    name: 'Song to tonic solfa',
+    category: 'Media',
+    blurb: 'Hum or play a melody, read it back as solfa.',
+    title: 'Turn a melody into tonic solfa',
+    description:
+      'Work out the tonic solfa of a melody from a recording, by following the pitch. Works on one line at a time: a voice, a whistle, a single instrument.',
+    live: false,
+  },
+  {
+    slug: 'video-to-mp3',
+    name: 'Video to MP3',
+    category: 'Media',
+    blurb: 'Keep the sound, drop the picture.',
+    title: 'Extract the audio from a video as MP3',
+    description:
+      'Pull the audio out of a video file and save it as an MP3, choosing the quality.',
+    live: false,
+  },
+  {
+    slug: 'mp3-to-video',
+    name: 'MP3 to video',
+    category: 'Media',
+    blurb: 'A track plus a still, for somewhere that only takes video.',
+    title: 'Turn an MP3 into a video file',
+    description:
+      'Make a video from an audio file and a still picture, for uploading a track somewhere that only accepts video.',
+    live: false,
+  },
+
+  {
     slug: 'docx-viewer',
     name: 'DOCX viewer',
     category: 'Documents',
