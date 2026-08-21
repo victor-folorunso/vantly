@@ -168,8 +168,8 @@ export default function ImagesToPdf() {
   }
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_260px]">
-      <div>
+    <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="order-1 min-w-0 lg:order-2">
         <div className="flex items-center justify-between gap-4">
           <p className="text-sm tabular-nums text-ink-soft">
             {items.length} image{items.length === 1 ? '' : 's'}
@@ -208,7 +208,7 @@ export default function ImagesToPdf() {
         </ul>
       </div>
 
-      <div className="rounded-2xl border border-line bg-surface p-5">
+      <div className="order-2 rounded-2xl border border-line bg-surface p-5 shadow-sm lg:order-1 lg:sticky lg:top-20">
         <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">
           Page size
         </span>

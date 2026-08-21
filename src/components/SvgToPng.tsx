@@ -162,7 +162,7 @@ export default function SvgToPng() {
     : 0;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+    <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
       {/* Drop zone and preview */}
       <div
         onDragOver={(e) => {
@@ -176,7 +176,7 @@ export default function SvgToPng() {
           const f = e.dataTransfer.files?.[0];
           if (f) void accept(f);
         }}
-        className={`rounded-lg border-2 border-dashed p-8 min-h-[340px] flex flex-col items-center justify-center text-center transition-colors ${
+        className={`order-1 min-w-0 lg:order-2 rounded-lg border-2 border-dashed p-8 min-h-[340px] flex flex-col items-center justify-center text-center transition-colors ${
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
@@ -226,7 +226,7 @@ export default function SvgToPng() {
       </div>
 
       {/* Controls */}
-      <div className="rounded-lg border border-line bg-surface p-5">
+      <div className="order-2 lg:order-1 lg:sticky lg:top-20 rounded-lg border border-line bg-surface p-5">
         <fieldset disabled={!source} className="disabled:opacity-50">
           <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
             Output size

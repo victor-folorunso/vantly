@@ -236,7 +236,7 @@ export default function ImageConvert({
     .reduce((acc, i) => acc + (i.file.size - (i.bytes ?? 0)), 0);
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -248,7 +248,7 @@ export default function ImageConvert({
           setDragging(false);
           add(e.dataTransfer.files);
         }}
-        className={`rounded-2xl border-2 border-dashed transition-colors ${
+        className={`order-1 min-w-0 lg:order-2 rounded-2xl border-2 border-dashed transition-colors ${
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         } ${items.length ? 'p-5' : 'flex min-h-[320px] flex-col items-center justify-center p-8 text-center'}`}
       >
@@ -342,7 +342,7 @@ export default function ImageConvert({
         />
       </div>
 
-      <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+      <div className="order-2 lg:order-1 lg:sticky lg:top-20 rounded-2xl border border-line bg-surface p-5 shadow-sm">
 
         <button
           onClick={() => void convertAll()}

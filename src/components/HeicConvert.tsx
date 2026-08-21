@@ -169,7 +169,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
   const pendingCount = items.filter((i) => i.status === 'waiting' || i.status === 'failed').length;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+    <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -181,7 +181,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
           setDragging(false);
           add(e.dataTransfer.files);
         }}
-        className={`rounded-lg border-2 border-dashed transition-colors ${
+        className={`order-1 min-w-0 lg:order-2 rounded-lg border-2 border-dashed transition-colors ${
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         } ${items.length ? 'p-5' : 'p-8 min-h-[340px] flex flex-col items-center justify-center text-center'}`}
       >
@@ -269,7 +269,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
         />
       </div>
 
-      <div className="rounded-lg border border-line bg-surface p-5">
+      <div className="order-2 lg:order-1 lg:sticky lg:top-20 rounded-lg border border-line bg-surface p-5">
         <fieldset disabled={running}>
           <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
             Convert to

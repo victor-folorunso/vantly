@@ -205,8 +205,8 @@ export function ContrastChecker() {
   const ratio = f && b ? contrastRatio(f, b) : null;
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div>
+    <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="order-1 min-w-0 lg:order-2">
         <div
           className="rounded-xl border border-line p-8"
           style={{ background: b ? toHex(b) : undefined, color: f ? toHex(f) : undefined }}
@@ -250,7 +250,7 @@ export function ContrastChecker() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-line bg-surface p-5">
+      <div className="order-2 lg:order-1 lg:sticky lg:top-20 rounded-xl border border-line bg-surface p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Ratio</p>
         <p className="mt-1 text-4xl font-semibold tabular-nums">
           {ratio ? ratio.toFixed(2) : ''}
