@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -161,6 +162,11 @@ export default function SvgToPng() {
   const outH = source
     ? Math.round(preset.width ? source.height * (preset.width / source.width) : source.height)
     : 0;
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    void accept(files[0]);
+  });
 
   return (
     <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -171,6 +172,11 @@ export default function PdfPages({ mode }: { mode: Mode }) {
 
   const chosen = pages.filter((p) => p.selected).length;
   const verb = mode === 'merge' ? 'Merge' : mode === 'split' ? 'Split' : 'Extract';
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    void add(files);
+  });
 
   if (pages.length === 0) {
     return (

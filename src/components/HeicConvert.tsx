@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -163,6 +164,11 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
 
   const doneCount = items.filter((i) => i.status === 'done').length;
   const pendingCount = items.filter((i) => i.status === 'waiting' || i.status === 'failed').length;
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    add(files);
+  });
 
   return (
     <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start">

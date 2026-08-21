@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -194,6 +195,11 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
   const originalTotal = doneItems.reduce((a, i) => a + i.file.size, 0);
   const newTotal = doneItems.reduce((a, i) => a + (i.bytes ?? 0), 0);
   const pct = originalTotal ? Math.round((1 - newTotal / originalTotal) * 100) : 0;
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    add(files);
+  });
 
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">

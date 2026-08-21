@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -118,6 +119,11 @@ export default function CsvTools({ mode }: { mode: Mode }) {
     () => (mode === 'json' && rows.length ? toJson(rows, headerRow) : ''),
     [mode, rows, headerRow],
   );
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    void load(files[0]);
+  });
 
   if (rows.length === 0) {
     return (

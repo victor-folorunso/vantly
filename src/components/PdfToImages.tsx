@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -130,6 +131,11 @@ export default function PdfToImages({ format }: { format: 'png' | 'jpg' }) {
       setZipping(false);
     }
   }, [pages, file, format]);
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    pick(files[0]);
+  });
 
   if (!file) {
     return (

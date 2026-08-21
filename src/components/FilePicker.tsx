@@ -8,6 +8,9 @@ import {
   FORMAT_BY_ID,
   CONVERSION_BY_SLUG,
 } from '@/lib/conversions';
+import { stash, viewerFor } from '@/lib/handoff';
+import { toolBySlug } from '@/lib/site';
+import FilePreview from '@/components/FilePreview';
 
 /**
  * Pick the files first, then decide what they become.
@@ -110,6 +113,28 @@ export default function FilePicker() {
       : { kind: 'soon' as const, slug };
   }, [rows]);
 
+  /* Where these could simply be opened. Plenty of people arrive with a PDF
+     because they want to read it, and the only thing on offer until now was
+     turning it into something else. */
+  const viewPlan = useMemo(() => {
+    if (!rows.length) return null;
+    const slugs = new Set(rows.map((r) => viewerFor(r.ext) ?? ''));
+    if (slugs.size !== 1) return null;
+    const slug = [...slugs][0];
+    if (!slug) return null;
+    return toolBySlug(slug)?.live ? slug : null;
+  }, [rows]);
+
+  /* Carry the files across. Without this, pressing convert lands you on the
+     tool with an empty drop zone and the same file to choose again. */
+  const goTo = useCallback(
+    (slug: string) => {
+      stash(rows.map((r) => r.file), slug);
+      router.push(`/${slug}`);
+    },
+    [rows, router],
+  );
+
   return (
     <div
       onDragOver={(e) => {
@@ -200,6 +225,10 @@ export default function FilePicker() {
               const known = FORMAT_BY_ID.get(row.ext);
               return (
                 <li key={row.id} className="flex flex-wrap items-center gap-3 px-5 py-3.5">
+                  {/* A name is not enough to tell one screenshot from forty
+                      others named after the day they were taken. */}
+                  <FilePreview file={row.file} size="row" className="shrink-0" />
+
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{row.file.name}</p>
                     <p className="text-xs text-ink-faint tabular-nums">
@@ -262,13 +291,23 @@ export default function FilePicker() {
               </select>
             </label>
 
-            <button
-              onClick={() => plan?.kind === 'ready' && router.push(`/${plan.slug}`)}
-              disabled={plan?.kind !== 'ready'}
-              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform enabled:hover:scale-[1.02] disabled:opacity-50"
-            >
-              Convert
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              {viewPlan && (
+                <button
+                  onClick={() => goTo(viewPlan)}
+                  className="rounded-lg border border-line px-5 py-2.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
+                >
+                  View
+                </button>
+              )}
+              <button
+                onClick={() => plan?.kind === 'ready' && goTo(plan.slug)}
+                disabled={plan?.kind !== 'ready'}
+                className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform enabled:hover:scale-[1.02] disabled:opacity-50"
+              >
+                Convert
+              </button>
+            </div>
           </div>
 
           {plan && plan.kind !== 'ready' && (

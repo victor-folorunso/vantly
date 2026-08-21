@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 import PageDeck, { type RenderedPage } from '@/components/PageDeck';
 
@@ -113,6 +114,11 @@ export default function PdfViewer() {
       setBusy(null);
     }
   }, []);
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    void open(files[0]);
+  });
 
   if (!file) {
     return (

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -115,6 +116,11 @@ export default function PdfCompress() {
       setBusy(null);
     }
   }, [file, method, quality, scale]);
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    setFile(files[0]);
+  });
 
   if (!file) {
     return (

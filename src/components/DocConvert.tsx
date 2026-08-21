@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
 
@@ -86,6 +87,11 @@ export default function DocConvert({ from, to }: { from: DocFormat; to: DocForma
     },
     [to],
   );
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    void run(files[0]);
+  });
 
   if (!conversionAvailable) {
     return (

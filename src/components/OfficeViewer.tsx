@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
 import PageDeck, { type DeckMode, type PageNoun, type RenderedPage } from '@/components/PageDeck';
@@ -115,6 +116,11 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
       setBusy(null);
     }
   }, []);
+
+  // Files chosen on the home page, if that is how you arrived.
+  useHandoff((files) => {
+    void open(files[0]);
+  });
 
   if (!conversionAvailable) {
     return (
