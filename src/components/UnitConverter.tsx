@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Unit conversion, done through a base unit rather than a table of pairs.
@@ -175,27 +176,30 @@ export default function UnitConverter() {
   );
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-1.5">
-        {FAMILIES.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => {
-              setFamilyId(f.id);
-              setFromId(f.units[0].id);
-              setToId(f.units[1].id);
-            }}
-            className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
-              f.id === familyId
-                ? 'border-accent bg-accent-soft text-ink'
-                : 'border-line text-ink-soft hover:border-ink-faint'
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
+    <ToolLayout
+      title="Measuring"
+      settings={
+        <div className="flex flex-wrap gap-1.5">
+          {FAMILIES.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => {
+                setFamilyId(f.id);
+                setFromId(f.units[0].id);
+                setToId(f.units[1].id);
+              }}
+              className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
+                f.id === familyId
+                  ? 'border-accent bg-accent-soft text-ink'
+                  : 'border-line text-ink-soft hover:border-ink-faint'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      }
+    >
       <div className="mt-6 grid items-end gap-3 sm:grid-cols-[1fr_auto_1fr]">
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">
@@ -276,6 +280,6 @@ export default function UnitConverter() {
         </div>
       )}
 
-    </div>
+    </ToolLayout>
   );
 }

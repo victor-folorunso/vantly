@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
@@ -160,8 +161,19 @@ export default function CsvTools({ mode }: { mode: Mode }) {
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <ToolLayout
+      settings={
+        <label className="flex items-center gap-2 text-ink-soft">
+          <input
+            type="checkbox"
+            checked={headerRow}
+            onChange={(e) => setHeaderRow(e.target.checked)}
+            className="size-4 accent-[var(--accent)]"
+          />
+          First row is headings
+        </label>
+      }
+      status={
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">{name}</p>
           <p className="text-xs tabular-nums text-ink-faint">
@@ -170,25 +182,16 @@ export default function CsvTools({ mode }: { mode: Mode }) {
             {delimiter !== ',' && `, separated by ${delimiter === '\t' ? 'tabs' : delimiter}`}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-sm">
-          <label className="flex items-center gap-2 text-ink-soft">
-            <input
-              type="checkbox"
-              checked={headerRow}
-              onChange={(e) => setHeaderRow(e.target.checked)}
-              className="size-4 accent-[var(--accent)]"
-            />
-            First row is headings
-          </label>
-          <button
-            onClick={() => { setRows([]); setName(null); setFilter(''); }}
-            className="text-ink-faint underline underline-offset-4"
-          >
-            Use another file
-          </button>
-        </div>
-      </div>
-
+      }
+      actions={
+        <button
+          onClick={() => { setRows([]); setName(null); setFilter(''); }}
+          className="text-ink-faint underline underline-offset-4"
+        >
+          Use another file
+        </button>
+      }
+    >
       {mode === 'json' ? (
         <div className="mt-6">
           <div className="flex items-center justify-between gap-3">
@@ -274,6 +277,6 @@ export default function CsvTools({ mode }: { mode: Mode }) {
           )}
         </>
       )}
-    </div>
+    </ToolLayout>
   );
 }

@@ -85,7 +85,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
         />
         <header className="sticky top-0 z-30 border-b border-line bg-ground/85 backdrop-blur">
-          <div className="h-[3px] w-full bg-accent" />
           {/* The two basis-64 columns exist so the search box sits centred
               between equal sides on a wide screen. They only apply from sm up:
               at 375px they added to 592px of unshrinkable minimum width and
@@ -106,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {/* The tagline sits with the wordmark rather than as a page
                   heading. It belongs to the brand, not to the home page, and
                   as an h1 above the picker it pushed the actual tool down. */}
-              <span className="flex flex-col leading-none gap-0.5">
+              <span className="flex flex-col leading-none">
                 <span className="truncate text-lg font-semibold tracking-tight">{SITE.name}</span>
                 <span className="hidden whitespace-nowrap text-xs text-ink-faint sm:block">
                   Everyday tools for <span className="font-medium text-accent">everyone</span>
