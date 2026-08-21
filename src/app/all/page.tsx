@@ -52,7 +52,7 @@ export default function Page() {
           <a
             key={c}
             href={`#${c.toLowerCase()}`}
-            className="rounded-md border border-line px-2.5 py-1 text-xs text-ink-soft transition-colors hover:border-accent hover:text-accent"
+            className="rounded-md border border-line px-2.5 py-2 text-xs text-ink-soft transition-colors hover:border-accent hover:text-accent sm:py-1"
           >
             {c}
           </a>
@@ -75,12 +75,12 @@ export default function Page() {
                 <Rule />
                 {category}
               </h2>
-              <ul className="mt-2.5 grid gap-x-6 gap-y-0.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <ul className="mt-2.5 grid gap-x-6 gap-y-1 sm:gap-y-0.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {inCat.map((t) => (
                   <li key={t.slug}>
                     <Link
                       href={`/${t.slug}`}
-                      className={`block truncate py-1 text-sm transition-colors hover:text-accent ${
+                      className={`block truncate py-2 text-sm transition-colors hover:text-accent sm:py-1 ${
                         t.live ? 'text-ink-soft' : 'text-ink-faint'
                       }`}
                     >
@@ -115,7 +115,7 @@ export default function Page() {
                     <Link
                       href={`/${c.slug}`}
                       title={`${c.from.label} to ${c.to.label}`}
-                      className={`inline-block rounded border border-line px-2 py-0.5 text-xs transition-colors hover:border-accent hover:text-accent ${
+                      className={`inline-block rounded border border-line px-2 py-2 text-xs transition-colors hover:border-accent hover:text-accent sm:py-0.5 ${
                         c.live ? 'text-ink-soft' : 'text-ink-faint'
                       }`}
                     >

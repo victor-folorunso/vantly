@@ -61,7 +61,7 @@ export default function Footer() {
           {groups.map((g) => (
             <div key={g.category}>
               <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-                <Link href={`/all#${g.category.toLowerCase()}`} className="hover:text-ink">
+                <Link href={`/all#${g.category.toLowerCase()}`} className="inline-block py-1.5 hover:text-ink sm:py-0">
                   {g.category}
                 </Link>
               </h2>
@@ -70,7 +70,7 @@ export default function Footer() {
                   <li key={t.slug}>
                     <Link
                       href={`/${t.slug}`}
-                      className={`block truncate py-0.5 text-sm transition-colors hover:text-accent ${
+                      className={`block truncate py-2 text-sm transition-colors hover:text-accent sm:py-0.5 ${
                         t.live ? 'text-ink-soft' : 'text-ink-faint'
                       }`}
                     >
@@ -84,7 +84,7 @@ export default function Footer() {
 
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              <Link href="/all#conversions" className="hover:text-ink">
+              <Link href="/all#conversions" className="inline-block py-1.5 hover:text-ink sm:py-0">
                 Conversions
               </Link>
             </h2>
@@ -95,7 +95,7 @@ export default function Footer() {
                   <li key={c.slug}>
                     <Link
                       href={`/${c.slug}`}
-                      className="block truncate py-0.5 text-sm text-ink-soft transition-colors hover:text-accent"
+                      className="block truncate py-2 text-sm text-ink-soft transition-colors hover:text-accent sm:py-0.5"
                     >
                       {c.from.label} to {c.to.label}
                     </Link>
@@ -106,7 +106,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-line pt-5 text-sm text-ink-faint">
-          <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-2 [&>a]:py-1.5 sm:[&>a]:py-0">
             <Link href="/all" className="hover:text-ink">
               All tools
             </Link>

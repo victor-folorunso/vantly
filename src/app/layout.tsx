@@ -86,8 +86,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <header className="sticky top-0 z-30 border-b border-line bg-ground/85 backdrop-blur">
           <div className="h-[3px] w-full bg-accent" />
-          <div className="mx-auto flex h-16 w-full max-w-[80rem] items-center gap-4 px-8">
-            <Link href="/" className="flex shrink-0 basis-64 items-center gap-2.5">
+          {/* The two basis-64 columns exist so the search box sits centred
+              between equal sides on a wide screen. They only apply from sm up:
+              at 375px they added to 592px of unshrinkable minimum width and
+              pushed every page on the site sideways by 200px. */}
+          <div className="mx-auto flex h-16 w-full max-w-[80rem] items-center gap-3 px-4 sm:gap-4 sm:px-8">
+            <Link href="/" className="flex min-w-0 items-center gap-2.5 sm:shrink-0 sm:basis-64">
               {/* The icon is a raster render now, so it is an img rather than
                   inline SVG. Fixed dimensions to keep it out of the layout
                   shift, and 192 as the source so it stays crisp on a retina
@@ -103,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   heading. It belongs to the brand, not to the home page, and
                   as an h1 above the picker it pushed the actual tool down. */}
               <span className="flex flex-col leading-none gap-0.5">
-                <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
+                <span className="truncate text-lg font-semibold tracking-tight">{SITE.name}</span>
                 <span className="hidden whitespace-nowrap text-xs text-ink-faint sm:block">
                   Everyday tools for <span className="font-medium text-accent">everyone</span>
                 </span>
@@ -118,7 +122,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 a pair of controls rather than one link and one button. The
                 labels drop below 640px and the icons carry it, which is why
                 each keeps a title and an aria-label. */}
-            <div className="flex shrink-0 basis-64 items-center justify-end gap-2">
+            <div className="ml-auto flex shrink-0 items-center justify-end gap-2 sm:basis-64">
               <Link
                 href="/learn"
                 title="Learn"
