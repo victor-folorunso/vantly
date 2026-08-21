@@ -244,13 +244,6 @@ export default function PdfCompress() {
         )}
       </div>
 
-      {method === 'flatten' && (
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          Flattening turns each page into a picture. Nobody will be able to
-          select or search the text afterwards, and a screen reader will find
-          nothing to read. Good for a scan, bad for a contract.
-        </p>
-      )}
 
       {error && <p className="mt-4 text-sm text-accent">{error}</p>}
     </div>

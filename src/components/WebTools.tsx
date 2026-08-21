@@ -272,12 +272,6 @@ export function RobotsGenerator() {
               </label>
             ))}
           </div>
-          {blockAi.length > 0 && (
-            <p className="mt-2 text-xs leading-relaxed text-ink-faint">
-              Blocking these also keeps you out of AI answers,
-              which is increasingly how people find things.
-            </p>
-          )}
         </div>
 
         <Field label="Sitemap URL" value={sitemap} onChange={setSitemap} />
@@ -297,10 +291,6 @@ export function RobotsGenerator() {
           <Copy text={output} />
         </div>
         <Out value={output} />
-        <p className="mt-3 text-xs leading-relaxed text-ink-faint">
-          Save this as robots.txt at the root of your domain. It only works
-          there, not in a subfolder.
-        </p>
       </div>
     </div>
   );

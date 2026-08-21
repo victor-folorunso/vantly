@@ -121,10 +121,6 @@ export function UuidGenerator() {
         </ul>
       </div>
 
-      <p className="mt-3 text-xs leading-relaxed text-ink-faint">
-        Version 4. 122 of the 128 bits are random, which is enough that you
-        will not see a collision.
-      </p>
     </div>
   );
 }

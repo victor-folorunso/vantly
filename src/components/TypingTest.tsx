@@ -254,11 +254,6 @@ export default function TypingTest() {
           <p className="text-lg font-medium">
             {stats.net} words a minute, {stats.accuracy}% accurate.
           </p>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">
-            A word here is five characters including the space, which is how
-            typing speed has always been measured. Counting actual words gives a
-            different number that cannot be compared with anything.
-          </p>
           <button
             onClick={reset}
             className="mt-4 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink"

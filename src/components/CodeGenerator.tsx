@@ -303,11 +303,6 @@ export default function CodeGenerator({ kind }: { kind: Kind }) {
                   </button>
                 ))}
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                Higher correction survives more damage and scuffing, and makes
-                the code denser. H is the one to use if it is going on something
-                that will be handled.
-              </p>
             </div>
           </>
         ) : (
@@ -415,11 +410,6 @@ export default function CodeGenerator({ kind }: { kind: Kind }) {
           </div>
         )}
 
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          Take the SVG for anything printed. A small PNG enlarged to poster size
-          is the usual reason a code on a sign will not scan, and a printed code
-          cannot be fixed afterwards.
-        </p>
       </div>
     </div>
   );

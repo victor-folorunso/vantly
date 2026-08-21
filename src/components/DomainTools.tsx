@@ -286,13 +286,6 @@ export default function DomainTools({ mode }: { mode: 'check' | 'ideas' }) {
         </p>
       )}
 
-      <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-soft">
-        Free here means nobody has registered it, asked of the registry itself
-        rather than worked out from whether the name resolves. A registered name
-        with nothing set up does not resolve, which is why a DNS based check
-        calls owned names available. Buying still happens at a registrar, and a
-        name can go in the minutes between.
-      </p>
     </div>
   );
 }

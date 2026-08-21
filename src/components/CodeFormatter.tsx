@@ -205,12 +205,6 @@ export default function CodeFormatter({
         </div>
       </div>
 
-      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-        Formatting is Prettier, the same engine most editors run, so the result
-        matches what your editor would do. Minifying is Terser for JavaScript
-        and csso for CSS, which rename and remove rather than only stripping
-        spaces.
-      </p>
     </div>
   );
 }

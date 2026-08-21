@@ -256,11 +256,6 @@ export default function PdfForm() {
               </a>
             )}
           </div>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
-            Locked in means the answers become part of the page and nobody can
-            change them later. Leave it off if the form is going to somebody
-            else to finish.
-          </p>
         </>
       )}
 

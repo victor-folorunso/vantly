@@ -120,7 +120,9 @@ function parse(file: string): Doc | null {
 export function allDocs(): Doc[] {
   if (!existsSync(DIR)) return [];
   return readdirSync(DIR)
-    .filter((f) => f.endsWith('.md') && f !== 'CONTRIBUTING.md')
+    // A leading underscore marks a working note rather than a doc, so the
+    // folder can hold notes without them needing to be a tool slug.
+    .filter((f) => f.endsWith('.md') && f !== 'CONTRIBUTING.md' && !f.startsWith('_'))
     .map(parse)
     .filter((d): d is Doc => d !== null)
     /* Drafts are stubs waiting for a writer. Excluded here rather than at each

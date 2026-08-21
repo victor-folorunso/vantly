@@ -164,12 +164,6 @@ export default function SolfaConverter() {
         )}
       </div>
 
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
-        Solfa is movable doh, so doh is whichever key you pick. The same tune in
-        C and in F has the same solfa and different notes, which is why the key
-        has to be set before any of this means anything.
-      </p>
-
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <label className="block">
           <span className={label}>{direction === 'toSolfa' ? 'Notes' : 'Solfa'}</span>
@@ -210,25 +204,6 @@ export default function SolfaConverter() {
             spellCheck={false}
             className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none"
           />
-        </div>
-      </div>
-
-      <div className="mt-8 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
-        <div>
-          <h2 className="text-sm font-semibold">Marks</h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-            An apostrophe after a syllable means the octave above, a comma means
-            the octave below. So doh, is the doh underneath and doh&rsquo; is the
-            one above.
-          </p>
-        </div>
-        <div>
-          <h2 className="text-sm font-semibold">Notes between</h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-            Sharpened notes take the e vowel, de fe se le, and flattened ones
-            take the a vowel. A rising chromatic line is assumed, which is the
-            commoner one in a melody.
-          </p>
         </div>
       </div>
     </div>

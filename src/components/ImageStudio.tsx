@@ -236,9 +236,6 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
             />
             px
           </label>
-          <p className="mt-2 text-xs leading-relaxed text-ink-faint">
-            The aspect ratio is kept, and nothing is ever enlarged.
-          </p>
 
           <label className="mt-5 block text-xs font-semibold uppercase tracking-wider text-ink-faint">
             Output format
@@ -272,13 +269,6 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
                 onChange={(e) => setQuality(parseFloat(e.target.value))}
                 className="mt-2 w-full accent-[var(--accent)]"
               />
-              <span className="mt-2 block text-xs leading-relaxed text-ink-faint">
-                {quality >= 0.9
-                  ? 'Visually identical to the original for most photos.'
-                  : quality >= 0.7
-                    ? 'The usual sweet spot. Much smaller, hard to tell apart.'
-                    : 'Small files, visible softening in detailed areas.'}
-              </span>
             </label>
           )}
         </fieldset>

@@ -286,13 +286,6 @@ export default function NameGenerator({ mode }: { mode: Mode }) {
         </ul>
       </div>
 
-      {mode === 'fantasy' && (
-        <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          These are built from syllables rather than picked from a list, so the
-          supply does not run out and two people are unlikely to end up with the
-          same character name.
-        </p>
-      )}
     </div>
   );
 }

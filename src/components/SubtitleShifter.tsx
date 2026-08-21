@@ -196,11 +196,6 @@ export default function SubtitleShifter() {
         </div>
       </div>
 
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
-        Negative shifts move the subtitles earlier. If they start in sync and
-        drift further out as the film goes on, shifting will not fix it and the
-        frame rate is what changed.
-      </p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <label className="block">

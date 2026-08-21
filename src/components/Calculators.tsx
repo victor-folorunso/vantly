@@ -258,11 +258,6 @@ export function LoanCalculator() {
             label="Interest as a share of what you borrowed"
             value={P ? `${((interest / P) * 100).toFixed(0)}%` : ''}
           />
-          <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-            The monthly payment is not the amount divided by the months. Early
-            payments are mostly interest, which is why paying a little extra at
-            the start saves so much more than the same amount later.
-          </p>
         </div>
       </div>
 
@@ -339,10 +334,6 @@ export function CompoundCalculator() {
           <Row label="Final balance" value={money(last?.balance ?? P)} strong />
           <Row label="You put in" value={money(last?.contributed ?? P)} />
           <Row label="Growth" value={money(growth)} />
-          <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-            An estimate at a fixed rate. Real returns are not a straight line,
-            and this ignores inflation, fees and tax, all of which are real.
-          </p>
         </div>
 
         {rows.length > 0 && (

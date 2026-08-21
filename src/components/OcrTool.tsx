@@ -226,11 +226,6 @@ export default function OcrTool({ mode }: { mode: Mode }) {
             rows={20}
             className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none"
           />
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
-            Recognition is never perfect. A clean scan reads almost exactly, a
-            photograph at an angle reads worse, and handwriting is not what this
-            is for.
-          </p>
         </div>
       )}
     </div>

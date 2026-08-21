@@ -276,13 +276,6 @@ export default function UnitConverter() {
         </div>
       )}
 
-      {familyId === 'data' && (
-        <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-          Both meanings of kilobyte are listed. Storage manufacturers use 1000
-          and operating systems mostly use 1024, which is the entire reason a new
-          1TB drive shows up as 931GB.
-        </p>
-      )}
     </div>
   );
 }

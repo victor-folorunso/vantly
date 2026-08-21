@@ -36,7 +36,11 @@ if (!existsSync(DIR)) {
   process.exit(0);
 }
 
-const files = readdirSync(DIR).filter((f) => f.endsWith('.md') && f !== 'CONTRIBUTING.md');
+// A leading underscore marks a working note rather than a doc. The loader
+// skips those too, and the two have to agree.
+const files = readdirSync(DIR).filter(
+  (f) => f.endsWith('.md') && f !== 'CONTRIBUTING.md' && !f.startsWith('_'),
+);
 const problems = [];
 let drafts = 0;
 

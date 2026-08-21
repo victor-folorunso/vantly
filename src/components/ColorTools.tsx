@@ -272,9 +272,6 @@ export function ContrastChecker() {
           })}
         </ul>
 
-        <p className="mt-5 text-xs leading-relaxed text-ink-faint">
-          Large text means 18.66px bold or 24px and up. Falling short by a small amount is usually one step of lightness away.
-        </p>
       </div>
     </div>
   );
