@@ -150,6 +150,298 @@ export const TOOLS: Tool[] = [
     live: true,
   },
 
+  // ── Reviewed batch: what a general tool site is expected to carry ────────
+  {
+    slug: 'unix-timestamp-converter',
+    name: 'Unix timestamp converter',
+    category: 'Developer',
+    blurb: 'Turn 1755734400 into a date, and back again.',
+    title: 'Unix timestamp to date converter',
+    description:
+      'Convert a Unix or epoch timestamp to a readable date in your own timezone or UTC, and a date back to a timestamp. Seconds and milliseconds.',
+    live: false,
+  },
+  {
+    slug: 'jwt-decoder',
+    name: 'JWT decoder',
+    category: 'Developer',
+    blurb: 'Read what is inside a token, without sending it anywhere.',
+    title: 'Decode a JWT and read its claims',
+    description:
+      'Paste a JSON Web Token and read its header, payload and expiry. Decoded in your browser, so the token never leaves your machine.',
+    live: false,
+  },
+  {
+    slug: 'html-entity-encoder',
+    name: 'HTML entity encoder',
+    category: 'Developer',
+    blurb: 'Escape the characters that break a page, or decode them back.',
+    title: 'HTML entity encoder and decoder',
+    description:
+      'Turn angle brackets, ampersands and quotes into HTML entities so they render as text, or decode entities back into the characters they stand for.',
+    live: false,
+  },
+  {
+    slug: 'html-minifier',
+    name: 'HTML minifier',
+    category: 'Developer',
+    blurb: 'Strip the whitespace before you ship.',
+    title: 'Minify HTML online',
+    description:
+      'Remove whitespace and comments from HTML to make the file smaller.',
+    live: false,
+  },
+  {
+    slug: 'css-minifier',
+    name: 'CSS minifier',
+    category: 'Developer',
+    blurb: 'Strip the whitespace before you ship.',
+    title: 'Minify CSS online',
+    description:
+      'Remove whitespace and comments from CSS to make the file smaller.',
+    live: false,
+  },
+  {
+    slug: 'js-minifier',
+    name: 'JavaScript minifier',
+    category: 'Developer',
+    blurb: 'Strip the whitespace before you ship.',
+    title: 'Minify JavaScript online',
+    description:
+      'Remove whitespace and comments from JavaScript to make the file smaller.',
+    live: false,
+  },
+  {
+    slug: 'sql-formatter',
+    name: 'SQL formatter',
+    category: 'Developer',
+    blurb: 'Indent a query you can no longer read.',
+    title: 'Format and indent SQL',
+    description:
+      'Indent a SQL query so the joins and conditions line up, whichever dialect it is written in.',
+    live: false,
+  },
+  {
+    slug: 'json-validator',
+    name: 'JSON validator',
+    category: 'Developer',
+    blurb: 'Find the comma that is breaking it.',
+    title: 'Validate JSON and find the error',
+    description:
+      'Check whether JSON is valid and see exactly which line and character breaks it, rather than a bare parse error.',
+    live: false,
+  },
+  {
+    slug: 'subnet-calculator',
+    name: 'Subnet calculator',
+    category: 'Developer',
+    blurb: 'The range, the mask, and how many hosts fit.',
+    title: 'IPv4 subnet and CIDR calculator',
+    description:
+      'Enter an address and a CIDR prefix to get the network address, broadcast address, usable host range, mask and host count.',
+    live: false,
+  },
+  {
+    slug: 'slug-generator',
+    name: 'Slug generator',
+    category: 'Text',
+    blurb: 'Turn a headline into the bit that goes in the address bar.',
+    title: 'Turn a title into a URL slug',
+    description:
+      'Convert a title into a clean URL slug: lowercase, hyphens, accents folded down and punctuation removed.',
+    live: false,
+  },
+  {
+    slug: 'find-and-replace',
+    name: 'Find and replace',
+    category: 'Text',
+    blurb: 'Swap every instance at once, with a pattern if you need one.',
+    title: 'Find and replace text online',
+    description:
+      'Replace every instance of a word or a pattern in a block of text, with case sensitivity and regular expressions if you want them.',
+    live: false,
+  },
+  {
+    slug: 'markdown-to-html',
+    name: 'Markdown to HTML',
+    category: 'Text',
+    blurb: 'Get the HTML your markdown turns into.',
+    title: 'Convert Markdown to HTML',
+    description:
+      'Paste markdown and copy the HTML it produces, ready for a page or a template.',
+    live: false,
+  },
+  {
+    slug: 'character-counter',
+    name: 'Character counter',
+    category: 'Text',
+    blurb: 'Against the limit for a post, a title or a description.',
+    title: 'Character counter with post and meta limits',
+    description:
+      'Count characters as you type and see how you sit against the limits that matter: a post, a page title, a meta description.',
+    live: false,
+  },
+  {
+    slug: 'fancy-text-generator',
+    name: 'Fancy text generator',
+    category: 'Text',
+    blurb: 'Bold and italic letters that survive a plain text box.',
+    title: 'Fancy text generator for bios and captions',
+    description:
+      'Turn ordinary text into bold, italic, script or monospace letters using Unicode, so the styling survives in a box that allows no formatting.',
+    live: false,
+  },
+  {
+    slug: 'placeholder-image-generator',
+    name: 'Placeholder image generator',
+    category: 'Generators',
+    blurb: 'A grey box at exactly the size you need.',
+    title: 'Generate a placeholder image at any size',
+    description:
+      'Make a placeholder image at any dimensions, with its size written on it, for mockups and layout work.',
+    live: false,
+  },
+  {
+    slug: 'signature-generator',
+    name: 'Signature generator',
+    category: 'Generators',
+    blurb: 'Draw your name, download it with a transparent background.',
+    title: 'Draw a signature and download it as a PNG',
+    description:
+      'Draw your signature with a mouse, a finger or a stylus and download it as a transparent PNG to drop into a document.',
+    live: false,
+  },
+  {
+    slug: 'wheel-spinner',
+    name: 'Wheel spinner',
+    category: 'Generators',
+    blurb: 'Put the options on a wheel and let it decide.',
+    title: 'Spin a wheel to pick a name at random',
+    description:
+      'Enter the options, spin the wheel, and let it choose. For picking a name, a winner, or where to eat.',
+    live: false,
+  },
+  {
+    slug: 'tally-counter',
+    name: 'Tally counter',
+    category: 'Generators',
+    blurb: 'Click to count, with a key to press instead.',
+    title: 'Online tally counter',
+    description:
+      'Count by clicking or by pressing a key, with several counters at once and a total that survives a reload.',
+    live: false,
+  },
+  {
+    slug: 'online-stopwatch',
+    name: 'Stopwatch and timer',
+    category: 'Generators',
+    blurb: 'Count up, count down, and get told when it is done.',
+    title: 'Online stopwatch and countdown timer',
+    description:
+      'A stopwatch with laps and a countdown timer that sounds when it reaches zero. Nothing to install.',
+    live: false,
+  },
+  {
+    slug: 'bpm-tapper',
+    name: 'BPM tapper',
+    category: 'Media',
+    blurb: 'Tap along and read the tempo.',
+    title: 'Tap tempo BPM counter',
+    description:
+      'Tap a key in time with the music and read the beats per minute, averaged over the taps you have made.',
+    live: false,
+  },
+  {
+    slug: 'statistics-calculator',
+    name: 'Statistics calculator',
+    category: 'Calculators',
+    blurb: 'Mean, median, mode and standard deviation from a list.',
+    title: 'Mean, median, mode and standard deviation calculator',
+    description:
+      'Paste a list of numbers and get the mean, median, mode, range, variance and standard deviation, with both the sample and population figures.',
+    live: false,
+  },
+  {
+    slug: 'fraction-to-decimal',
+    name: 'Fraction to decimal',
+    category: 'Calculators',
+    blurb: 'And decimal back to a fraction in its lowest terms.',
+    title: 'Fraction to decimal converter',
+    description:
+      'Convert a fraction to a decimal, and a decimal back to a fraction reduced to its lowest terms, including recurring decimals.',
+    live: false,
+  },
+  {
+    slug: 'profit-margin-calculator',
+    name: 'Profit margin calculator',
+    category: 'Calculators',
+    blurb: 'Margin, markup, and the price you need to charge.',
+    title: 'Profit margin and markup calculator',
+    description:
+      'Work out gross margin, markup and the selling price you need from cost and revenue. Margin and markup are not the same number.',
+    live: false,
+  },
+  {
+    slug: 'roi-calculator',
+    name: 'ROI calculator',
+    category: 'Calculators',
+    blurb: 'What you got back against what you put in.',
+    title: 'Return on investment calculator',
+    description:
+      'Work out return on investment from what you spent and what came back, as a percentage and as a figure, annualised if you give it a period.',
+    live: false,
+  },
+  {
+    slug: 'file-checksum',
+    name: 'File checksum',
+    category: 'Security',
+    blurb: 'Check a download really is what it claims to be.',
+    title: 'Verify a file checksum, MD5 or SHA-256',
+    description:
+      'Work out the checksum of a file and compare it against the one the download page gave you. Read on your machine, never uploaded.',
+    live: false,
+  },
+  {
+    slug: 'htpasswd-generator',
+    name: 'Htpasswd generator',
+    category: 'Security',
+    blurb: 'The line to paste into an Apache or Nginx password file.',
+    title: 'Generate an htpasswd line',
+    description:
+      'Create the username and hashed password line for a .htpasswd file, hashed in your browser so the password is never transmitted.',
+    live: false,
+  },
+  {
+    slug: 'flexbox-generator',
+    name: 'Flexbox generator',
+    category: 'Design',
+    blurb: 'Move the boxes until it looks right, then take the CSS.',
+    title: 'Visual CSS flexbox generator',
+    description:
+      'Set the flex properties and watch the boxes move, then copy the CSS. For working out which property does the thing you want.',
+    live: false,
+  },
+  {
+    slug: 'css-grid-generator',
+    name: 'CSS grid generator',
+    category: 'Design',
+    blurb: 'Draw the grid, take the CSS.',
+    title: 'Visual CSS grid generator',
+    description:
+      'Build a grid by setting rows, columns and gaps, see it laid out, and copy the CSS it produces.',
+    live: false,
+  },
+  {
+    slug: 'sitemap-generator',
+    name: 'Sitemap generator',
+    category: 'Web',
+    blurb: 'Paste your addresses, get the XML Google wants.',
+    title: 'Generate a sitemap.xml',
+    description:
+      'Turn a list of addresses into a valid sitemap.xml, with change frequency and priority, ready to upload and submit.',
+    live: false,
+  },
+
   {
     slug: 'docx-viewer',
     name: 'DOCX viewer',
