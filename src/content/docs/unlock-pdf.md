@@ -86,7 +86,7 @@ also means anyone you send it to can open it, so think about where it goes next
 if the document was sensitive.
 
 If you need to send it protected, put a password back on rather than relying on
-permissions, since [permissions stop nobody](/protect-pdf).
+permissions, since permissions stop nobody.
 
 Everything happens in your browser. The document isn't uploaded, which matters
 here because the files people unlock are bank statements, payslips and medical

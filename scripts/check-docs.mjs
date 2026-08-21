@@ -73,6 +73,22 @@ for (const file of files) {
     );
     continue;
   }
+
+  /* Internal links, checked against the registry.
+     A doc written months after the tool it points at can outlive it. The text
+     cleaner was split into one page per job and a doc still linked the old
+     slug, which is a 404 sitting inside advice about how to do something. A
+     link to a tool that exists but is not built yet is a different problem
+     and worth naming separately: it is not broken, it just sends the reader
+     to a coming soon notice. */
+  for (const [, target] of raw.matchAll(/\]\((\/[a-z0-9-]+)\)/g)) {
+    const linked = bySlug.get(target.slice(1));
+    if (!linked) {
+      problems.push(`${where}: links to ${target}, which does not exist.`);
+    } else if (linked.live === false) {
+      problems.push(`${where}: links to ${target}, which is not built yet.`);
+    }
+  }
   if (!tool.live) {
     problems.push(`${where}: ${slug} is not live, so this doc renders nowhere.`);
   }
