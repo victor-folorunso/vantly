@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Two questions people actually ask about dates, on one page.
@@ -136,132 +137,134 @@ export default function DateCalculator() {
   const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
 
   return (
-    <div>
-      <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-        {(
-          [
-            ['between', 'Days between'],
-            ['addsub', 'Add or subtract'],
-          ] as [Mode, string][]
-        ).map(([id, text]) => (
-          <button
-            key={id}
-            onClick={() => setMode(id)}
-            aria-pressed={mode === id}
-            className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-              mode === id ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-            }`}
-          >
-            {text}
-          </button>
-        ))}
-      </div>
+    <ToolLayout
+      settings={
+        <>
+          <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+            {(
+              [
+                ['between', 'Days between'],
+                ['addsub', 'Add or subtract'],
+              ] as [Mode, string][]
+            ).map(([id, text]) => (
+              <button
+                key={id}
+                onClick={() => setMode(id)}
+                aria-pressed={mode === id}
+                className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
+                  mode === id ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                }`}
+              >
+                {text}
+              </button>
+            ))}
+          </div>
 
+          {mode === 'between' ? (
+            <div className="space-y-4">
+              <label className="block text-sm">
+                <span className={label}>From</span>
+                <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className={field} />
+              </label>
+              <label className="block text-sm">
+                <span className={label}>To</span>
+                <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className={field} />
+              </label>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <label className="block text-sm">
+                <span className={label}>Starting from</span>
+                <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className={field} />
+              </label>
+
+              <div className="flex gap-2">
+                <label className="block flex-1 text-sm">
+                  <span className={label}>How many</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={amount}
+                    onChange={(e) => setAmount(Math.max(Number(e.target.value) || 0, 0))}
+                    className={field}
+                  />
+                </label>
+                <label className="block flex-1 text-sm">
+                  <span className={label}>Of</span>
+                  <select
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value as typeof unit)}
+                    className={field}
+                  >
+                    <option value="days">days</option>
+                    <option value="weeks">weeks</option>
+                    <option value="months">months</option>
+                    <option value="years">years</option>
+                  </select>
+                </label>
+              </div>
+
+              <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+                {(
+                  [
+                    [1, 'After'],
+                    [-1, 'Before'],
+                  ] as [1 | -1, string][]
+                ).map(([d, text]) => (
+                  <button
+                    key={text}
+                    onClick={() => setDirection(d)}
+                    aria-pressed={direction === d}
+                    className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
+                      direction === d ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                    }`}
+                  >
+                    {text}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      }
+    >
       {mode === 'between' ? (
-        <div className="mt-6 grid gap-6 sm:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-          <div className="space-y-4">
-            <label className="block text-sm">
-              <span className={label}>From</span>
-              <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className={field} />
-            </label>
-            <label className="block text-sm">
-              <span className={label}>To</span>
-              <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className={field} />
-            </label>
+        between && (
+          <div className="rounded-xl border border-line bg-surface p-5">
+            <p className="text-3xl font-semibold tabular-nums tracking-tight">
+              {between.abs.toLocaleString()} day{between.abs === 1 ? '' : 's'}
+            </p>
+            {between.days < 0 && (
+              <p className="mt-1 text-sm text-ink-faint">The second date is earlier.</p>
+            )}
+            <dl className="mt-4 space-y-1.5 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-soft">In years, months and days</dt>
+                <dd className="tabular-nums">
+                  {between.span.years}y {between.span.months}m {between.span.days}d
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-soft">In weeks</dt>
+                <dd className="tabular-nums">
+                  {between.weeks}w {between.remainder}d
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-soft">Weekdays only</dt>
+                <dd className="tabular-nums">{between.weekdays.toLocaleString()}</dd>
+              </div>
+            </dl>
           </div>
-
-          {between && (
-            <div className="rounded-xl border border-line bg-surface p-5">
-              <p className="text-3xl font-semibold tabular-nums tracking-tight">
-                {between.abs.toLocaleString()} day{between.abs === 1 ? '' : 's'}
-              </p>
-              {between.days < 0 && (
-                <p className="mt-1 text-sm text-ink-faint">The second date is earlier.</p>
-              )}
-              <dl className="mt-4 space-y-1.5 text-sm">
-                <div className="flex justify-between gap-4">
-                  <dt className="text-ink-soft">In years, months and days</dt>
-                  <dd className="tabular-nums">
-                    {between.span.years}y {between.span.months}m {between.span.days}d
-                  </dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-ink-soft">In weeks</dt>
-                  <dd className="tabular-nums">
-                    {between.weeks}w {between.remainder}d
-                  </dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-ink-soft">Weekdays only</dt>
-                  <dd className="tabular-nums">{between.weekdays.toLocaleString()}</dd>
-                </div>
-              </dl>
-            </div>
-          )}
-        </div>
+        )
       ) : (
-        <div className="mt-6 grid gap-6 sm:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-          <div className="space-y-4">
-            <label className="block text-sm">
-              <span className={label}>Starting from</span>
-              <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className={field} />
-            </label>
-
-            <div className="flex gap-2">
-              <label className="block flex-1 text-sm">
-                <span className={label}>How many</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={amount}
-                  onChange={(e) => setAmount(Math.max(Number(e.target.value) || 0, 0))}
-                  className={field}
-                />
-              </label>
-              <label className="block flex-1 text-sm">
-                <span className={label}>Of</span>
-                <select
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value as typeof unit)}
-                  className={field}
-                >
-                  <option value="days">days</option>
-                  <option value="weeks">weeks</option>
-                  <option value="months">months</option>
-                  <option value="years">years</option>
-                </select>
-              </label>
-            </div>
-
-            <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-              {(
-                [
-                  [1, 'After'],
-                  [-1, 'Before'],
-                ] as [1 | -1, string][]
-              ).map(([d, text]) => (
-                <button
-                  key={text}
-                  onClick={() => setDirection(d)}
-                  aria-pressed={direction === d}
-                  className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-                    direction === d ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                  }`}
-                >
-                  {text}
-                </button>
-              ))}
-            </div>
+        result && (
+          <div className="rounded-xl border border-line bg-surface p-5">
+            <p className="text-3xl font-semibold tabular-nums tracking-tight">{iso(result)}</p>
+            <p className="mt-2 text-ink-soft">{LONG.format(result)}</p>
           </div>
-
-          {result && (
-            <div className="rounded-xl border border-line bg-surface p-5">
-              <p className="text-3xl font-semibold tabular-nums tracking-tight">{iso(result)}</p>
-              <p className="mt-2 text-ink-soft">{LONG.format(result)}</p>
-            </div>
-          )}
-        </div>
+        )
       )}
-    </div>
+    </ToolLayout>
   );
 }
