@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * SVG to PNG, entirely in the browser.
@@ -290,13 +291,9 @@ export default function SvgToPng() {
             <p className="text-sm tabular-nums">
               {result.w} × {result.h} PNG, {formatBytes(result.bytes)}
             </p>
-            <a
-              href={result.url}
-              download={(source?.name.replace(/\.svg$/i, '') ?? 'image') + `-${result.w}.png`}
-              className="mt-3 block w-full rounded-md border border-accent text-accent text-center px-4 py-2 text-sm font-semibold"
-            >
+            <DownloadButton href={result.url} filename={(source?.name.replace(/\.svg$/i, '') ?? 'image') + `-${result.w}.png`} variant="quiet">
               Download PNG
-            </a>
+            </DownloadButton>
           </div>
         )}
       </div>

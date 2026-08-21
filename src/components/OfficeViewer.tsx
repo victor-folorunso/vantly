@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
 import PageDeck, { type DeckMode, type PageNoun, type RenderedPage } from '@/components/PageDeck';
 
@@ -164,13 +165,9 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
         </div>
         <div className="flex flex-wrap gap-3 text-sm">
           {pdfUrl && (
-            <a
-              href={pdfUrl}
-              download={file.name.replace(/\.[^.]+$/, '') + '.pdf'}
-              className="text-accent underline underline-offset-4"
-            >
+            <DownloadButton href={pdfUrl} filename={file.name.replace(/\.[^.]+$/, '') + '.pdf'}>
               Download as PDF
-            </a>
+            </DownloadButton>
           )}
           <button
             onClick={() => { abort.current?.abort(); setFile(null); setPages([]); setPdfUrl(null); }}

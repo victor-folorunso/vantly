@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Merge, split and extract, which are one operation with different buttons.
@@ -291,13 +292,9 @@ export default function PdfPages({ mode }: { mode: Mode }) {
         </button>
 
         {outUrl && (
-          <a
-            href={outUrl}
-            download={mode === 'merge' ? 'merged.pdf' : 'pages.pdf'}
-            className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent"
-          >
+          <DownloadButton href={outUrl} filename={mode === 'merge' ? 'merged.pdf' : 'pages.pdf'} variant="quiet">
             Download PDF, {formatBytes(outSize)}
-          </a>
+          </DownloadButton>
         )}
 
         {error && <p className="text-sm text-accent">{error}</p>}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import PageDeck, { type RenderedPage } from '@/components/PageDeck';
 
 /**
@@ -152,13 +153,9 @@ export default function PdfViewer() {
         <div className="flex flex-wrap items-center gap-4 text-sm">
           {reordered &&
             (outUrl ? (
-              <a
-                href={outUrl}
-                download={file.name.replace(/\.pdf$/i, '') + '-reordered.pdf'}
-                className="rounded-lg border border-accent px-4 py-2 font-semibold text-accent"
-              >
+              <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-reordered.pdf'} variant="quiet">
                 Download
-              </a>
+              </DownloadButton>
             ) : (
               <button
                 onClick={() => void save()}

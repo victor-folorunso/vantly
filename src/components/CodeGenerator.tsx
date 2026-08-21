@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
 
 /**
@@ -392,22 +393,14 @@ export default function CodeGenerator({ kind }: { kind: Kind }) {
         {(pngUrl || svgText) && !error && (
           <div className="mt-4 flex flex-wrap gap-3">
             {pngUrl && (
-              <a
-                href={pngUrl}
-                download={`${kind === 'qr' ? 'qr-code' : 'barcode'}.png`}
-                className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink"
-              >
+              <DownloadButton href={pngUrl} filename={`${kind === 'qr' ? 'qr-code' : 'barcode'}.png`}>
                 Download PNG
-              </a>
+              </DownloadButton>
             )}
             {svgText && (
-              <a
-                href={URL.createObjectURL(new Blob([svgText], { type: 'image/svg+xml' }))}
-                download={`${kind === 'qr' ? 'qr-code' : 'barcode'}.svg`}
-                className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent"
-              >
+              <DownloadButton href={URL.createObjectURL(new Blob([svgText], { type: 'image/svg+xml' }))} filename={`${kind === 'qr' ? 'qr-code' : 'barcode'}.svg`} variant="quiet">
                 Download SVG
-              </a>
+              </DownloadButton>
             )}
           </div>
         )}

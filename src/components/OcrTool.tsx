@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
 
 /**
@@ -208,13 +209,9 @@ export default function OcrTool({ mode }: { mode: Mode }) {
               >
                 {copied ? 'Copied' : 'Copy'}
               </button>
-              <a
-                href={URL.createObjectURL(new Blob([text], { type: 'text/plain' }))}
-                download={(name ?? 'text').replace(/\.[^.]+$/, '') + '.txt'}
-                className="text-accent underline underline-offset-4"
-              >
+              <DownloadButton href={URL.createObjectURL(new Blob([text], { type: 'text/plain' }))} filename={(name ?? 'text').replace(/\.[^.]+$/, '') + '.txt'}>
                 Download
-              </a>
+              </DownloadButton>
               <button
                 onClick={() => { setText(''); setName(null); setError(null); }}
                 className="text-ink-faint underline underline-offset-4"

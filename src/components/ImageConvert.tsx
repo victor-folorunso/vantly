@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Raster image conversion on a canvas, for every pair the browser can honestly
@@ -208,7 +209,7 @@ export default function ImageConvert({
 
   const downloadZip = useCallback(async () => {
     const done = items.filter((i) => i.status === 'done' && i.url);
-    if (!done.length) return;
+    if (!done.length) return null;
     setZipping(true);
     try {
       const JSZip = (await import('jszip')).default;
@@ -218,12 +219,7 @@ export default function ImageConvert({
         zip.file(i.file.name.replace(/\.[^.]+$/, '') + '.' + target, data);
       }
       const out = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(out);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `converted-${target}.zip`;
-      a.click();
-      URL.revokeObjectURL(url);
+      return out;
     } finally {
       setZipping(false);
     }
@@ -315,13 +311,9 @@ export default function ImageConvert({
                     </p>
                   </div>
                   {i.status === 'done' && i.url && (
-                    <a
-                      href={i.url}
-                      download={i.file.name.replace(/\.[^.]+$/, '') + '.' + target}
-                      className="shrink-0 text-sm text-accent underline underline-offset-4"
-                    >
+                    <DownloadButton href={i.url} filename={i.file.name.replace(/\.[^.]+$/, '') + '.' + target}>
                       Save
-                    </a>
+                    </DownloadButton>
                   )}
                 </li>
               ))}
@@ -355,13 +347,9 @@ export default function ImageConvert({
         </button>
 
         {doneCount > 1 && (
-          <button
-            onClick={() => void downloadZip()}
-            disabled={zipping}
-            className="mt-3 w-full rounded-lg border border-accent px-4 py-2 text-sm font-semibold text-accent disabled:opacity-60"
-          >
-            {zipping ? 'Building zip…' : `Download all ${doneCount} as a zip`}
-          </button>
+          <DownloadButton prepare={downloadZip} filename={`converted-${target}.zip`} variant="quiet" className="w-full">
+            {`Download all ${doneCount} as a zip`}
+          </DownloadButton>
         )}
 
         {doneCount > 0 && saved > 0 && (

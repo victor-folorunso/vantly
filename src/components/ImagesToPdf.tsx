@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Images into one PDF, in the order you choose.
@@ -250,13 +251,9 @@ export default function ImagesToPdf() {
         </button>
 
         {outUrl && (
-          <a
-            href={outUrl}
-            download="images.pdf"
-            className="mt-3 block rounded-lg border border-accent px-4 py-2 text-center text-sm font-semibold text-accent"
-          >
+          <DownloadButton href={outUrl} filename="images.pdf" variant="quiet">
             Download PDF
-          </a>
+          </DownloadButton>
         )}
 
         {error && <p className="mt-3 text-sm text-accent">{error}</p>}

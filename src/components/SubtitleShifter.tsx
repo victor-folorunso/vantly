@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
 
 /**
@@ -235,13 +236,9 @@ export default function SubtitleShifter() {
                 >
                   {copied ? 'Copied' : 'Copy'}
                 </button>
-                <a
-                  href={URL.createObjectURL(new Blob([output], { type: 'text/plain' }))}
-                  download={(name ?? 'subtitles').replace(/\.[^.]+$/, '') + '.' + format}
-                  className="text-accent underline underline-offset-4"
-                >
+                <DownloadButton href={URL.createObjectURL(new Blob([output], { type: 'text/plain' }))} filename={(name ?? 'subtitles').replace(/\.[^.]+$/, '') + '.' + format}>
                   Download
-                </a>
+                </DownloadButton>
               </div>
             )}
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
 
 /**
@@ -212,13 +213,9 @@ export default function SvgOptimizer() {
                 >
                   {copied ? 'Copied' : 'Copy'}
                 </button>
-                <a
-                  href={URL.createObjectURL(new Blob([out], { type: 'image/svg+xml' }))}
-                  download="optimised.svg"
-                  className="text-accent underline underline-offset-4"
-                >
+                <DownloadButton href={URL.createObjectURL(new Blob([out], { type: 'image/svg+xml' }))} filename="optimised.svg">
                   Download
-                </a>
+                </DownloadButton>
               </div>
             )}
           </div>

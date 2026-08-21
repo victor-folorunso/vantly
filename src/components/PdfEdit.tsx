@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Three small edits to a PDF that share one shape: load, change, save.
@@ -286,13 +287,9 @@ export default function PdfEdit({ mode }: { mode: Mode }) {
             {busy ?? (mode === 'unlock' ? 'Remove the password' : 'Add the watermark')}
           </button>
           {outUrl && (
-            <a
-              href={outUrl}
-              download={file.name.replace(/\.pdf$/i, '') + (mode === 'unlock' ? '-unlocked.pdf' : '-marked.pdf')}
-              className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent"
-            >
+            <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + (mode === 'unlock' ? '-unlocked.pdf' : '-marked.pdf')} variant="quiet">
               Download PDF, {formatBytes(outSize)}
-            </a>
+            </DownloadButton>
           )}
         </div>
       )}

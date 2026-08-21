@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Puts a signature on a PDF.
@@ -314,13 +315,9 @@ export default function PdfSign() {
               {busy ? 'Signing…' : 'Add the signature'}
             </button>
             {outUrl && (
-              <a
-                href={outUrl}
-                download={file.name.replace(/\.pdf$/i, '') + '-signed.pdf'}
-                className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent"
-              >
+              <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-signed.pdf'} variant="quiet">
                 Download, {formatBytes(outSize)}
-              </a>
+              </DownloadButton>
             )}
           </div>
         </div>

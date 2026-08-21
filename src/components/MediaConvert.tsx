@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import { LICENCE_NOTE, LICENCE_URL, run, timecode } from '@/lib/ffmpeg';
 
 /**
@@ -355,13 +356,9 @@ export default function MediaConvert({
         </button>
 
         {outUrl && (
-          <a
-            href={outUrl}
-            download={file.name.replace(/\.[^.]+$/, '') + '.' + to}
-            className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent"
-          >
+          <DownloadButton href={outUrl} filename={file.name.replace(/\.[^.]+$/, '') + '.' + to} variant="quiet">
             Download, {formatBytes(outSize)}
-          </a>
+          </DownloadButton>
         )}
 
         {outUrl && mode === 'compress' && (

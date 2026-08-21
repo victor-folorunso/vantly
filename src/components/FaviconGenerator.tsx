@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
 
 /**
@@ -186,13 +187,7 @@ export default function FaviconGenerator() {
     const zip = new JSZip();
     for (const m of made) zip.file(m.name, m.blob);
     zip.file('head.html', SNIPPET);
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'favicons.zip';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    return await zip.generateAsync({ type: 'blob' });
   };
 
   if (made.length === 0 && !busy) {
@@ -269,9 +264,9 @@ export default function FaviconGenerator() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="truncate text-sm font-medium">{name}</p>
         <div className="flex flex-wrap items-center gap-4 text-sm">
-          <button onClick={() => void downloadAll()} className="rounded-lg bg-accent px-4 py-2 font-semibold text-accent-ink">
+          <DownloadButton prepare={downloadAll} filename={'favicons.zip'}>
             Download all as a zip
-          </button>
+          </DownloadButton>
           <button
             onClick={() => { setMade([]); imgRef.current = null; setName(null); }}
             className="text-ink-faint underline underline-offset-4"
@@ -290,13 +285,9 @@ export default function FaviconGenerator() {
               <p className="truncate font-mono text-sm">{m.name}</p>
               <p className="truncate text-xs text-ink-faint">{m.what}</p>
             </div>
-            <a
-              href={m.url}
-              download={m.name}
-              className="shrink-0 text-xs text-accent underline underline-offset-4"
-            >
+            <DownloadButton href={m.url} filename={m.name}>
               {formatBytes(m.size)}
-            </a>
+            </DownloadButton>
           </li>
         ))}
       </ul>

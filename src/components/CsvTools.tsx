@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Opens a CSV, or turns one into JSON.
@@ -199,13 +200,9 @@ export default function CsvTools({ mode }: { mode: Mode }) {
               >
                 {copied ? 'Copied' : 'Copy'}
               </button>
-              <a
-                href={URL.createObjectURL(new Blob([json], { type: 'application/json' }))}
-                download={(name ?? 'data').replace(/\.[^.]+$/, '') + '.json'}
-                className="text-accent underline underline-offset-4"
-              >
+              <DownloadButton href={URL.createObjectURL(new Blob([json], { type: 'application/json' }))} filename={(name ?? 'data').replace(/\.[^.]+$/, '') + '.json'}>
                 Download
-              </a>
+              </DownloadButton>
             </div>
           </div>
           <textarea

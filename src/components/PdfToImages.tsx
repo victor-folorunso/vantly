@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Every page of a PDF as an image, at a resolution you choose.
@@ -111,7 +112,9 @@ export default function PdfToImages({ format }: { format: 'png' | 'jpg' }) {
   const pick = (f: File) => { setFile(f); void render(f, scale); };
 
   const downloadZip = useCallback(async () => {
-    if (!pages.length) return;
+    // Null rather than a bare return: the button treats null as nothing to
+    // save, and an undefined would not match the type it expects.
+    if (!pages.length) return null;
     setZipping(true);
     try {
       const JSZip = (await import('jszip')).default;
@@ -122,12 +125,7 @@ export default function PdfToImages({ format }: { format: 'png' | 'jpg' }) {
           await (await fetch(p.url)).blob());
       }
       const out = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(out);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${base}-${format}.zip`;
-      a.click();
-      URL.revokeObjectURL(url);
+      return out;
     } finally {
       setZipping(false);
     }
@@ -204,13 +202,9 @@ export default function PdfToImages({ format }: { format: 'png' | 'jpg' }) {
       </div>
 
       {pages.length > 1 && (
-        <button
-          onClick={() => void downloadZip()}
-          disabled={zipping || busy !== null}
-          className="mt-5 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {zipping ? 'Building zip…' : `Download all ${pages.length} as a zip`}
-        </button>
+        <DownloadButton prepare={downloadZip} filename={`${(file?.name ?? 'pdf').replace(/\.pdf$/i, '')}-${format}.zip`}>
+          {`Download all ${pages.length} as a zip`}
+        </DownloadButton>
       )}
 
       {error && <p className="mt-4 text-sm text-accent">{error}</p>}
@@ -224,13 +218,9 @@ export default function PdfToImages({ format }: { format: 'png' | 'jpg' }) {
               <span className="text-xs tabular-nums text-ink-faint">
                 {p.w}×{p.h} · {formatBytes(p.bytes)}
               </span>
-              <a
-                href={p.url}
-                download={`${(file.name).replace(/\.pdf$/i, '')}-${String(p.page).padStart(3, '0')}.${format}`}
-                className="shrink-0 text-xs text-accent underline underline-offset-4"
-              >
+              <DownloadButton href={p.url} filename={`${(file.name).replace(/\.pdf$/i, '')}-${String(p.page).padStart(3, '0')}.${format}`}>
                 Save
-              </a>
+              </DownloadButton>
             </div>
           </li>
         ))}

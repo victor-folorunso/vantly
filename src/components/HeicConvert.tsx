@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * HEIC to JPG or WebP, in the browser, in bulk.
@@ -138,7 +139,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
 
   const downloadZip = useCallback(async () => {
     const done = items.filter((i) => i.status === 'done' && i.url);
-    if (!done.length) return;
+    if (!done.length) return null;
     setZipping(true);
     try {
       const JSZip = (await import('jszip')).default;
@@ -149,12 +150,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
         zip.file(i.file.name.replace(/\.(heic|heif)$/i, '') + '.' + ext, data);
       }
       const out = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(out);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'converted-photos.zip';
-      a.click();
-      URL.revokeObjectURL(url);
+      return out;
     } finally {
       setZipping(false);
     }
@@ -240,15 +236,11 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
                     </p>
                   </div>
                   {i.status === 'done' && i.url && (
-                    <a
-                      href={i.url}
-                      download={
+                    <DownloadButton href={i.url} filename={
                         i.file.name.replace(/\.(heic|heif)$/i, '') + '.' + FORMATS[format].ext
-                      }
-                      className="shrink-0 text-sm text-accent underline underline-offset-4"
-                    >
+                      }>
                       Save
-                    </a>
+                    </DownloadButton>
                   )}
                 </li>
               ))}
@@ -315,13 +307,9 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
         )}
 
         {doneCount > 1 && (
-          <button
-            onClick={() => void downloadZip()}
-            disabled={zipping}
-            className="mt-3 w-full rounded-md border border-accent text-accent px-4 py-2 text-sm font-semibold disabled:opacity-60"
-          >
-            {zipping ? 'Building zip…' : `Download all ${doneCount} as a zip`}
-          </button>
+          <DownloadButton prepare={downloadZip} filename={'converted-photos.zip'} variant="quiet" className="w-full">
+            {`Download all ${doneCount} as a zip`}
+          </DownloadButton>
         )}
       </div>
     </div>

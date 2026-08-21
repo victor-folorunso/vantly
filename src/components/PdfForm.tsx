@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Fills in a PDF form without a PDF reader.
@@ -247,13 +248,9 @@ export default function PdfForm() {
               Lock the answers in
             </label>
             {outUrl && (
-              <a
-                href={outUrl}
-                download={file.name.replace(/\.pdf$/i, '') + '-filled.pdf'}
-                className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent"
-              >
+              <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-filled.pdf'} variant="quiet">
                 Download, {formatBytes(outSize)}
-              </a>
+              </DownloadButton>
             )}
           </div>
         </>

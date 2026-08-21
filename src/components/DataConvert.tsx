@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import {
   findRows,
   fromXml,
@@ -201,13 +202,9 @@ export default function DataConvert({ from, to }: { from: Format; to: Format }) 
                 >
                   {copied ? 'Copied' : 'Copy'}
                 </button>
-                <a
-                  href={URL.createObjectURL(new Blob([output], { type: MIME[to] }))}
-                  download={downloadName}
-                  className="text-accent underline underline-offset-4"
-                >
+                <DownloadButton href={URL.createObjectURL(new Blob([output], { type: MIME[to] }))} filename={downloadName}>
                   Download
-                </a>
+                </DownloadButton>
               </div>
             )}
           </div>

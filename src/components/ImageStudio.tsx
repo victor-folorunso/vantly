@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Resize and compress, which are the same operation with a different dial in
@@ -172,7 +173,7 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
 
   const downloadZip = useCallback(async () => {
     const done = items.filter((i) => i.status === 'done' && i.url);
-    if (!done.length) return;
+    if (!done.length) return null;
     setZipping(true);
     try {
       const JSZip = (await import('jszip')).default;
@@ -182,12 +183,7 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
         zip.file(i.file.name.replace(/\.[^.]+$/, '') + '.' + extensionFor(data.type), data);
       }
       const out = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(out);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${mode === 'compress' ? 'compressed' : 'resized'}-images.zip`;
-      a.click();
-      URL.revokeObjectURL(url);
+      return out;
     } finally {
       setZipping(false);
     }
@@ -346,13 +342,9 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
                   Clear
                 </button>
                 {doneItems.length > 1 && (
-                  <button
-                    onClick={() => void downloadZip()}
-                    disabled={zipping}
-                    className="rounded-lg bg-accent px-4 py-2 font-semibold text-accent-ink disabled:opacity-60"
-                  >
-                    {zipping ? 'Building zip…' : `Download ${doneItems.length} as a zip`}
-                  </button>
+                  <DownloadButton prepare={downloadZip} filename={`${mode === 'compress' ? 'compressed' : 'resized'}-images.zip`}>
+                    {`Download ${doneItems.length} as a zip`}
+                  </DownloadButton>
                 )}
               </div>
             </div>
@@ -405,17 +397,13 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
                       </span>
                     )}
                     {i.status === 'done' && i.url && (
-                      <a
-                        href={i.url}
-                        download={
+                      <DownloadButton href={i.url} filename={
                           i.file.name.replace(/\.[^.]+$/, '') +
                           '.' +
                           extensionFor(OUTPUT[output].mime ?? i.file.type)
-                        }
-                        className="shrink-0 text-sm text-accent underline underline-offset-4"
-                      >
+                        }>
                         Save
-                      </a>
+                      </DownloadButton>
                     )}
                   </li>
                 );

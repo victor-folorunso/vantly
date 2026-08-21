@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
 
 /**
@@ -146,13 +147,9 @@ export default function DocConvert({ from, to }: { from: DocFormat; to: DocForma
                   {copied ? 'Copied' : 'Copy'}
                 </button>
               )}
-              <a
-                href={outUrl}
-                download={file.name.replace(/\.[^.]+$/, '') + '.' + to}
-                className="rounded-lg border border-accent px-5 py-2.5 font-semibold text-accent"
-              >
+              <DownloadButton href={outUrl} filename={file.name.replace(/\.[^.]+$/, '') + '.' + to} variant="quiet">
                 Download, {formatBytes(outSize)}
-              </a>
+              </DownloadButton>
             </div>
           )}
         </div>

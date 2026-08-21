@@ -11,8 +11,9 @@
     "llms": "node --experimental-strip-types scripts/llms.mjs",
     "icons": "node --experimental-strip-types scripts/make-icons.mjs",
     "seo": "node --experimental-strip-types scripts/seo-audit.mjs",
-    "prebuild": "npm run status && npm run llms && npm run docs:check",
-    "docs:check": "node --experimental-strip-types scripts/check-docs.mjs"
+    "prebuild": "npm run status && npm run llms && npm run docs:check && npm run downloads:check",
+    "docs:check": "node --experimental-strip-types scripts/check-docs.mjs",
+    "downloads:check": "node --experimental-strip-types scripts/check-downloads.mjs"
   },
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.12.15",
