@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
 import { LICENCE_NOTE, LICENCE_URL, run, timecode } from '@/lib/ffmpeg';
 
@@ -226,148 +227,152 @@ export default function MediaConvert({
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">{file.name}</p>
-          <p className="text-xs tabular-nums text-ink-faint">
+    <ToolLayout
+      settings={
+        <>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2">
+            {mode === 'trim' && duration !== null && (
+              <>
+                <label className="block text-sm">
+                  <span className="flex justify-between">
+                    Start
+                    <span className="tabular-nums text-ink-faint">{timecode(from).slice(3)}</span>
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={Math.floor(duration)}
+                    step={0.1}
+                    value={from}
+                    onChange={(e) => setFrom(Math.min(Number(e.target.value), until - 0.5))}
+                    className="mt-1.5 w-full accent-[var(--accent)]"
+                  />
+                </label>
+                <label className="block text-sm">
+                  <span className="flex justify-between">
+                    Stop
+                    <span className="tabular-nums text-ink-faint">{timecode(until).slice(3)}</span>
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={Math.ceil(duration)}
+                    step={0.1}
+                    value={until}
+                    onChange={(e) => setUntil(Math.max(Number(e.target.value), from + 0.5))}
+                    className="mt-1.5 w-full accent-[var(--accent)]"
+                  />
+                </label>
+              </>
+            )}
+
+            {AUDIO_TARGETS.includes(to) && to !== 'wav' && (
+              <label className="block text-sm">
+                <span className={label}>Quality</span>
+                <select value={bitrate} onChange={(e) => setBitrate(e.target.value)} className={field}>
+                  <option value="320k">320 kbps, best</option>
+                  <option value="256k">256 kbps</option>
+                  <option value="192k">192 kbps, good</option>
+                  <option value="128k">128 kbps, smaller</option>
+                  <option value="96k">96 kbps, speech</option>
+                </select>
+              </label>
+            )}
+
+            {(to === 'mp4' || to === 'webm') && (
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Quality
+                  <span className="tabular-nums text-ink-faint">
+                    {quality <= 22 ? 'High' : quality <= 30 ? 'Balanced' : 'Small'}
+                  </span>
+                </span>
+                <input
+                  type="range"
+                  min={18}
+                  max={38}
+                  value={quality}
+                  onChange={(e) => setQuality(Number(e.target.value))}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+            )}
+
+            {(to === 'gif' || mode === 'compress') && (
+              <label className="block text-sm">
+                <span className={label}>Width</span>
+                <select
+                  value={width}
+                  onChange={(e) => setWidth(Number(e.target.value))}
+                  className={field}
+                >
+                  {[1920, 1280, 960, 720, 480, 320].map((w) => (
+                    <option key={w} value={w}>
+                      {w} pixels
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            {to === 'gif' && (
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Frames a second
+                  <span className="tabular-nums text-ink-faint">{fps}</span>
+                </span>
+                <input
+                  type="range"
+                  min={5}
+                  max={25}
+                  value={fps}
+                  onChange={(e) => setFps(Number(e.target.value))}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+            )}
+          </div>
+
+          <button
+            onClick={() => void convert()}
+            disabled={stage !== null}
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
+          >
+            {stage ?? (mode === 'trim' ? 'Trim it' : mode === 'compress' ? 'Compress' : 'Convert')}
+          </button>
+        </>
+      }
+      status={
+        <>
+          <span className="font-medium">{file.name}</span>
+          <span className="ml-2 tabular-nums text-ink-faint">
             {formatBytes(file.size)}
             {duration !== null && ` · ${Math.floor(duration / 60)}m ${Math.round(duration % 60)}s`}
-          </p>
-        </div>
-        <button
-          onClick={() => { setFile(null); setOutUrl(null); setError(null); }}
-          className="text-sm text-ink-faint underline underline-offset-4"
-        >
-          Use another file
-        </button>
-      </div>
+          </span>
+        </>
+      }
+      actions={
+        <>
+          {outUrl && (
+            <DownloadButton href={outUrl} filename={file.name.replace(/\.[^.]+$/, '') + '.' + to} variant="quiet">
+              Download, {formatBytes(outSize)}
+            </DownloadButton>
+          )}
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        {mode === 'trim' && duration !== null && (
-          <>
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Start
-                <span className="tabular-nums text-ink-faint">{timecode(from).slice(3)}</span>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={Math.floor(duration)}
-                step={0.1}
-                value={from}
-                onChange={(e) => setFrom(Math.min(Number(e.target.value), until - 0.5))}
-                className="mt-1.5 w-full accent-[var(--accent)]"
-              />
-            </label>
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Stop
-                <span className="tabular-nums text-ink-faint">{timecode(until).slice(3)}</span>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={Math.ceil(duration)}
-                step={0.1}
-                value={until}
-                onChange={(e) => setUntil(Math.max(Number(e.target.value), from + 0.5))}
-                className="mt-1.5 w-full accent-[var(--accent)]"
-              />
-            </label>
-          </>
-        )}
-
-        {AUDIO_TARGETS.includes(to) && to !== 'wav' && (
-          <label className="block text-sm">
-            <span className={label}>Quality</span>
-            <select value={bitrate} onChange={(e) => setBitrate(e.target.value)} className={field}>
-              <option value="320k">320 kbps, best</option>
-              <option value="256k">256 kbps</option>
-              <option value="192k">192 kbps, good</option>
-              <option value="128k">128 kbps, smaller</option>
-              <option value="96k">96 kbps, speech</option>
-            </select>
-          </label>
-        )}
-
-        {(to === 'mp4' || to === 'webm') && (
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Quality
-              <span className="tabular-nums text-ink-faint">
-                {quality <= 22 ? 'High' : quality <= 30 ? 'Balanced' : 'Small'}
-              </span>
-            </span>
-            <input
-              type="range"
-              min={18}
-              max={38}
-              value={quality}
-              onChange={(e) => setQuality(Number(e.target.value))}
-              className="mt-1.5 w-full accent-[var(--accent)]"
-            />
-          </label>
-        )}
-
-        {(to === 'gif' || mode === 'compress') && (
-          <label className="block text-sm">
-            <span className={label}>Width</span>
-            <select
-              value={width}
-              onChange={(e) => setWidth(Number(e.target.value))}
-              className={field}
-            >
-              {[1920, 1280, 960, 720, 480, 320].map((w) => (
-                <option key={w} value={w}>
-                  {w} pixels
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-
-        {to === 'gif' && (
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Frames a second
-              <span className="tabular-nums text-ink-faint">{fps}</span>
-            </span>
-            <input
-              type="range"
-              min={5}
-              max={25}
-              value={fps}
-              onChange={(e) => setFps(Number(e.target.value))}
-              className="mt-1.5 w-full accent-[var(--accent)]"
-            />
-          </label>
-        )}
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <button
-          onClick={() => void convert()}
-          disabled={stage !== null}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {stage ?? (mode === 'trim' ? 'Trim it' : mode === 'compress' ? 'Compress' : 'Convert')}
-        </button>
-
-        {outUrl && (
-          <DownloadButton href={outUrl} filename={file.name.replace(/\.[^.]+$/, '') + '.' + to} variant="quiet">
-            Download, {formatBytes(outSize)}
-          </DownloadButton>
-        )}
-
-        {outUrl && mode === 'compress' && (
-          <p className="text-sm tabular-nums text-ink-soft">
-            {Math.max(0, Math.round((1 - outSize / file.size) * 100))}% smaller
-          </p>
-        )}
-      </div>
-
+          {outUrl && mode === 'compress' && (
+            <p className="text-sm tabular-nums text-ink-soft">
+              {Math.max(0, Math.round((1 - outSize / file.size) * 100))}% smaller
+            </p>
+          )}
+          <button
+            onClick={() => { setFile(null); setOutUrl(null); setError(null); }}
+            className="text-sm text-ink-faint underline underline-offset-4"
+          >
+            Use another file
+          </button>
+        </>
+      }
+    >
       {stage && (
         <div className="mt-4">
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
@@ -411,6 +416,6 @@ export default function MediaConvert({
         </a>
         .
       </p>
-    </div>
+    </ToolLayout>
   );
 }

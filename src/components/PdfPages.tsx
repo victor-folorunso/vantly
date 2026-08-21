@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
@@ -217,36 +218,58 @@ export default function PdfPages({ mode }: { mode: Mode }) {
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm tabular-nums text-ink-soft">
-          {pages.length} page{pages.length === 1 ? '' : 's'}, {chosen} selected
-        </p>
-        <div className="flex flex-wrap gap-3 text-sm">
-          <button onClick={() => inputRef.current?.click()} className="text-accent underline underline-offset-4">
-            Add more
-          </button>
-          <button
-            onClick={() => setPages((p) => p.map((x) => ({ ...x, selected: true })))}
-            className="text-ink-soft underline underline-offset-4"
-          >
-            Select all
-          </button>
-          <button
-            onClick={() => setPages((p) => p.map((x) => ({ ...x, selected: false })))}
-            className="text-ink-soft underline underline-offset-4"
-          >
-            None
-          </button>
-          <button
-            onClick={() => { setPages([]); setDocs([]); setOutUrl(null); }}
-            className="text-ink-faint underline underline-offset-4"
-          >
-            Clear
-          </button>
-        </div>
-      </div>
+    <ToolLayout
+      title="Selection"
+      settings={
+        <>
+          <div className="flex flex-wrap gap-3 text-sm">
+            <button onClick={() => inputRef.current?.click()} className="text-accent underline underline-offset-4">
+              Add more
+            </button>
+            <button
+              onClick={() => setPages((p) => p.map((x) => ({ ...x, selected: true })))}
+              className="text-ink-soft underline underline-offset-4"
+            >
+              Select all
+            </button>
+            <button
+              onClick={() => setPages((p) => p.map((x) => ({ ...x, selected: false })))}
+              className="text-ink-soft underline underline-offset-4"
+            >
+              None
+            </button>
+            <button
+              onClick={() => { setPages([]); setDocs([]); setOutUrl(null); }}
+              className="text-ink-faint underline underline-offset-4"
+            >
+              Clear
+            </button>
+          </div>
 
+          <button
+            onClick={() => void build()}
+            disabled={!chosen || busy !== null}
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
+          >
+            {busy ?? `${verb} ${chosen} page${chosen === 1 ? '' : 's'}`}
+          </button>
+        </>
+      }
+      status={
+        <span className="tabular-nums">
+          {pages.length} page{pages.length === 1 ? '' : 's'}, {chosen} selected
+        </span>
+      }
+      actions={
+        <>
+          {outUrl && (
+            <DownloadButton href={outUrl} filename={mode === 'merge' ? 'merged.pdf' : 'pages.pdf'} variant="quiet">
+              Download PDF, {formatBytes(outSize)}
+            </DownloadButton>
+          )}
+        </>
+      }
+    >
       <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {pages.map((p, i) => (
           <li key={p.id} className="relative">
@@ -287,25 +310,7 @@ export default function PdfPages({ mode }: { mode: Mode }) {
           </li>
         ))}
       </ul>
-
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <button
-          onClick={() => void build()}
-          disabled={!chosen || busy !== null}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {busy ?? `${verb} ${chosen} page${chosen === 1 ? '' : 's'}`}
-        </button>
-
-        {outUrl && (
-          <DownloadButton href={outUrl} filename={mode === 'merge' ? 'merged.pdf' : 'pages.pdf'} variant="quiet">
-            Download PDF, {formatBytes(outSize)}
-          </DownloadButton>
-        )}
-
-        {error && <p className="text-sm text-accent">{error}</p>}
-      </div>
-
+      {error && <p className="text-sm text-accent">{error}</p>}
       <input
         ref={inputRef}
         type="file"
@@ -314,6 +319,6 @@ export default function PdfPages({ mode }: { mode: Mode }) {
         className="sr-only"
         onChange={(e) => { if (e.target.files) void add(e.target.files); e.target.value = ''; }}
       />
-    </div>
+    </ToolLayout>
   );
 }
