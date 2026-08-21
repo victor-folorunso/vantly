@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Makes a placeholder image at whatever size is needed.
@@ -118,116 +120,113 @@ export default function PlaceholderImage({
   const fieldLabel = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-      <div className="space-y-5">
-        {!fixed && (
-          <div className="flex items-end gap-3">
-            <label className="block text-sm">
-              <span className={fieldLabel}>Width</span>
-              <input
-                type="number"
-                min={1}
-                max={MAX}
-                value={width}
-                onChange={(e) => setWidth(Number(e.target.value) || 1)}
-                className="mt-2 w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
-              />
-            </label>
-            <span className="pb-3 text-ink-faint">×</span>
-            <label className="block text-sm">
-              <span className={fieldLabel}>Height</span>
-              <input
-                type="number"
-                min={1}
-                max={MAX}
-                value={height}
-                onChange={(e) => setHeight(Number(e.target.value) || 1)}
-                className="mt-2 w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
-              />
-            </label>
+    <ToolLayout
+      settings={
+        <>
+          {!fixed && (
+            <div className="flex items-end gap-3">
+              <label className="block text-sm">
+                <span className={fieldLabel}>Width</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={MAX}
+                  value={width}
+                  onChange={(e) => setWidth(Number(e.target.value) || 1)}
+                  className="mt-2 w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
+                />
+              </label>
+              <span className="pb-3 text-ink-faint">×</span>
+              <label className="block text-sm">
+                <span className={fieldLabel}>Height</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={MAX}
+                  value={height}
+                  onChange={(e) => setHeight(Number(e.target.value) || 1)}
+                  className="mt-2 w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
+                />
+              </label>
+            </div>
+          )}
+
+          <label className="block text-sm">
+            <span className={fieldLabel}>Text on it</span>
+            <input
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+              placeholder={`${clamp(width)} × ${clamp(height)}`}
+              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+            />
+          </label>
+
+          <div>
+            <span className={fieldLabel}>Colour</span>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {PALETTES.map((p, i) => (
+                <button
+                  key={p.name}
+                  onClick={() => setPalette(i)}
+                  aria-pressed={palette === i}
+                  title={p.name}
+                  className={`size-9 rounded-lg border-2 transition-colors ${
+                    palette === i ? 'border-accent' : 'border-line'
+                  }`}
+                  style={{ background: p.bg }}
+                >
+                  <span className="block size-full rounded-md" style={{ color: p.fg }} />
+                </button>
+              ))}
+            </div>
           </div>
-        )}
 
-        <label className="block text-sm">
-          <span className={fieldLabel}>Text on it</span>
-          <input
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-            placeholder={`${clamp(width)} × ${clamp(height)}`}
-            className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-          />
-        </label>
-
-        <div>
-          <span className={fieldLabel}>Colour</span>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {PALETTES.map((p, i) => (
-              <button
-                key={p.name}
-                onClick={() => setPalette(i)}
-                aria-pressed={palette === i}
-                title={p.name}
-                className={`size-9 rounded-lg border-2 transition-colors ${
-                  palette === i ? 'border-accent' : 'border-line'
-                }`}
-                style={{ background: p.bg }}
-              >
-                <span className="block size-full rounded-md" style={{ color: p.fg }} />
-              </button>
-            ))}
+          <div>
+            <span className={fieldLabel}>Format</span>
+            <div className="mt-2 inline-flex rounded-lg border border-line p-0.5 text-sm">
+              {(['png', 'jpg', 'webp'] as const).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFormat(f)}
+                  aria-pressed={format === f}
+                  className={`rounded-md px-3 py-1 font-medium uppercase transition-colors ${
+                    format === f ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div>
-          <span className={fieldLabel}>Format</span>
-          <div className="mt-2 inline-flex rounded-lg border border-line p-0.5 text-sm">
-            {(['png', 'jpg', 'webp'] as const).map((f) => (
-              <button
-                key={f}
-                onClick={() => setFormat(f)}
-                aria-pressed={format === f}
-                className={`rounded-md px-3 py-1 font-medium uppercase transition-colors ${
-                  format === f ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <label className="flex items-center gap-2 text-sm text-ink-soft">
-          <input
-            type="checkbox"
-            checked={showGrid}
-            onChange={(e) => setShowGrid(e.target.checked)}
-            className="size-4 accent-[var(--accent)]"
-          />
-          Diagonal lines
-        </label>
-
-        {url && (
-          <a
+          <label className="flex items-center gap-2 text-sm text-ink-soft">
+            <input
+              type="checkbox"
+              checked={showGrid}
+              onChange={(e) => setShowGrid(e.target.checked)}
+              className="size-4 accent-[var(--accent)]"
+            />
+            Diagonal lines
+          </label>
+        </>
+      }
+      status={`${clamp(width)} × ${clamp(height)} pixels, downloaded at full size`}
+      actions={
+        url ? (
+          <DownloadButton
             href={url}
-            download={`placeholder-${clamp(width)}x${clamp(height)}.${format}`}
-            className="inline-block rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink"
+            filename={`placeholder-${clamp(width)}x${clamp(height)}.${format}`}
           >
             Download, {size < 1024 ? `${size} B` : `${(size / 1024).toFixed(0)} KB`}
-          </a>
-        )}
-      </div>
-
-      <div>
-        <span className={fieldLabel}>Preview</span>
+          </DownloadButton>
+        ) : null
+      }
+    >
         <div className="mt-2 flex min-h-[16rem] items-center justify-center overflow-hidden rounded-2xl border border-line bg-surface p-4">
           {/* Shown at whatever fits rather than at full size, so a 1920 wide
               image does not force the page sideways on a phone. */}
           <canvas ref={canvasRef} className="max-h-[28rem] max-w-full object-contain" />
         </div>
-        <p className="mt-2 text-xs tabular-nums text-ink-faint">
-          {clamp(width)} × {clamp(height)} pixels, downloaded at full size
-        </p>
-      </div>
-    </div>
+    </ToolLayout>
   );
 }

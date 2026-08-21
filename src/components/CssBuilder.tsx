@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Builds a gradient or a box shadow, and shows it at full size.
@@ -105,133 +106,134 @@ export default function CssBuilder({ mode }: { mode: Mode }) {
   );
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-      <div>
-        {mode === 'gradient' ? (
-          <div className="space-y-5">
-            <div className="flex flex-wrap gap-2">
-              {PRESETS.map((p) => (
+    <ToolLayout
+      settings={
+        <>
+          {mode === 'gradient' ? (
+            <div className="space-y-5">
+              <div className="flex flex-wrap gap-2">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.name}
+                    onClick={() => {
+                      setStops(p.stops);
+                      setAngle(p.angle);
+                    }}
+                    className="rounded-lg border border-line px-3 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent"
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+
+              <div className="space-y-3">
+                {stops.map((s, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <input
+                      type="color"
+                      value={s.color}
+                      onChange={(e) =>
+                        setStops((prev) => prev.map((p, pi) => (pi === i ? { ...p, color: e.target.value } : p)))
+                      }
+                      className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
+                    />
+                    <input
+                      value={s.color}
+                      onChange={(e) =>
+                        setStops((prev) => prev.map((p, pi) => (pi === i ? { ...p, color: e.target.value } : p)))
+                      }
+                      className="w-28 rounded-lg border border-line bg-surface px-2 py-2 font-mono text-sm outline-none focus:border-accent"
+                    />
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      value={s.at}
+                      onChange={(e) =>
+                        setStops((prev) =>
+                          prev.map((p, pi) => (pi === i ? { ...p, at: Number(e.target.value) } : p)),
+                        )
+                      }
+                      className="flex-1 accent-[var(--accent)]"
+                    />
+                    {stops.length > 2 && (
+                      <button
+                        onClick={() => setStops((prev) => prev.filter((_, pi) => pi !== i))}
+                        aria-label="Remove this colour"
+                        className="text-ink-faint hover:text-accent"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
                 <button
-                  key={p.name}
-                  onClick={() => {
-                    setStops(p.stops);
-                    setAngle(p.angle);
-                  }}
-                  className="rounded-lg border border-line px-3 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent"
+                  onClick={() => setStops((prev) => [...prev, { color: '#ffffff', at: 100 }])}
+                  className="text-sm text-accent underline underline-offset-4"
                 >
-                  {p.name}
+                  Add a colour
                 </button>
-              ))}
+              </div>
+
+              {!radial && slider('Angle', angle, setAngle, 0, 360, '°')}
+
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                <input
+                  type="checkbox"
+                  checked={radial}
+                  onChange={(e) => setRadial(e.target.checked)}
+                  className="size-4 accent-[var(--accent)]"
+                />
+                Radial instead of linear
+              </label>
             </div>
-
-            <div className="space-y-3">
-              {stops.map((s, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <input
-                    type="color"
-                    value={s.color}
-                    onChange={(e) =>
-                      setStops((prev) => prev.map((p, pi) => (pi === i ? { ...p, color: e.target.value } : p)))
-                    }
-                    className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
-                  />
-                  <input
-                    value={s.color}
-                    onChange={(e) =>
-                      setStops((prev) => prev.map((p, pi) => (pi === i ? { ...p, color: e.target.value } : p)))
-                    }
-                    className="w-28 rounded-lg border border-line bg-surface px-2 py-2 font-mono text-sm outline-none focus:border-accent"
-                  />
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    value={s.at}
-                    onChange={(e) =>
-                      setStops((prev) =>
-                        prev.map((p, pi) => (pi === i ? { ...p, at: Number(e.target.value) } : p)),
-                      )
-                    }
-                    className="flex-1 accent-[var(--accent)]"
-                  />
-                  {stops.length > 2 && (
-                    <button
-                      onClick={() => setStops((prev) => prev.filter((_, pi) => pi !== i))}
-                      aria-label="Remove this colour"
-                      className="text-ink-faint hover:text-accent"
-                    >
-                      ×
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                onClick={() => setStops((prev) => [...prev, { color: '#ffffff', at: 100 }])}
-                className="text-sm text-accent underline underline-offset-4"
-              >
-                Add a colour
-              </button>
+          ) : (
+            <div className="space-y-4">
+              {slider('Across', x, setX, -80, 80)}
+              {slider('Down', y, setY, -80, 80)}
+              {slider('Blur', blur, setBlur, 0, 150)}
+              {slider('Spread', spread, setSpread, -60, 60)}
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Opacity
+                  <span className="tabular-nums text-ink-faint">{Math.round(opacity * 100)}%</span>
+                </span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={Math.round(opacity * 100)}
+                  onChange={(e) => setOpacity(Number(e.target.value) / 100)}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  value={shadowColor}
+                  onChange={(e) => setShadowColor(e.target.value)}
+                  className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
+                />
+                <input
+                  value={shadowColor}
+                  onChange={(e) => setShadowColor(e.target.value)}
+                  className="w-32 rounded-lg border border-line bg-surface px-2 py-2 font-mono text-sm outline-none focus:border-accent"
+                />
+              </div>
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                <input
+                  type="checkbox"
+                  checked={inset}
+                  onChange={(e) => setInset(e.target.checked)}
+                  className="size-4 accent-[var(--accent)]"
+                />
+                Inside the box instead of under it
+              </label>
             </div>
-
-            {!radial && slider('Angle', angle, setAngle, 0, 360, '°')}
-
-            <label className="flex items-center gap-2 text-sm text-ink-soft">
-              <input
-                type="checkbox"
-                checked={radial}
-                onChange={(e) => setRadial(e.target.checked)}
-                className="size-4 accent-[var(--accent)]"
-              />
-              Radial instead of linear
-            </label>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {slider('Across', x, setX, -80, 80)}
-            {slider('Down', y, setY, -80, 80)}
-            {slider('Blur', blur, setBlur, 0, 150)}
-            {slider('Spread', spread, setSpread, -60, 60)}
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Opacity
-                <span className="tabular-nums text-ink-faint">{Math.round(opacity * 100)}%</span>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={Math.round(opacity * 100)}
-                onChange={(e) => setOpacity(Number(e.target.value) / 100)}
-                className="mt-1.5 w-full accent-[var(--accent)]"
-              />
-            </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={shadowColor}
-                onChange={(e) => setShadowColor(e.target.value)}
-                className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
-              />
-              <input
-                value={shadowColor}
-                onChange={(e) => setShadowColor(e.target.value)}
-                className="w-32 rounded-lg border border-line bg-surface px-2 py-2 font-mono text-sm outline-none focus:border-accent"
-              />
-            </div>
-            <label className="flex items-center gap-2 text-sm text-ink-soft">
-              <input
-                type="checkbox"
-                checked={inset}
-                onChange={(e) => setInset(e.target.checked)}
-                className="size-4 accent-[var(--accent)]"
-              />
-              Inside the box instead of under it
-            </label>
-          </div>
-        )}
-      </div>
-
-      <div>
+          )}
+        </>
+      }
+    >
         <span className={label}>Preview</span>
         {mode === 'gradient' ? (
           <div className="mt-2 h-72 rounded-2xl border border-line" style={style} />
@@ -250,7 +252,6 @@ export default function CssBuilder({ mode }: { mode: Mode }) {
         <pre className="mt-2 overflow-x-auto rounded-xl border border-line bg-surface p-4 font-mono text-[13px]">
           {css}
         </pre>
-      </div>
-    </div>
+    </ToolLayout>
   );
 }

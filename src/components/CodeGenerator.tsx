@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * QR codes and barcodes.
@@ -181,194 +182,195 @@ export default function CodeGenerator({ kind }: { kind: Kind }) {
     'mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent';
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-      <div className="space-y-5">
-        {kind === 'qr' ? (
-          <>
-            <label className="block text-sm">
-              <span className={label}>What it holds</span>
-              <select
-                value={preset}
-                onChange={(e) => setPreset(e.target.value as Preset)}
-                className={field}
-              >
-                <option value="text">Plain text</option>
-                <option value="url">A link</option>
-                <option value="wifi">Wifi network</option>
-                <option value="email">Email address</option>
-                <option value="phone">Phone number</option>
-                <option value="sms">Text message</option>
-                <option value="vcard">Contact card</option>
-              </select>
-            </label>
+    <ToolLayout
+      settings={
+        <>
+          {kind === 'qr' ? (
+            <>
+              <label className="block text-sm">
+                <span className={label}>What it holds</span>
+                <select
+                  value={preset}
+                  onChange={(e) => setPreset(e.target.value as Preset)}
+                  className={field}
+                >
+                  <option value="text">Plain text</option>
+                  <option value="url">A link</option>
+                  <option value="wifi">Wifi network</option>
+                  <option value="email">Email address</option>
+                  <option value="phone">Phone number</option>
+                  <option value="sms">Text message</option>
+                  <option value="vcard">Contact card</option>
+                </select>
+              </label>
 
-            {preset === 'wifi' ? (
-              <div className="space-y-4">
-                <label className="block text-sm">
-                  <span className={label}>Network name</span>
-                  <input value={ssid} onChange={(e) => setSsid(e.target.value)} className={field} />
-                </label>
-                <label className="block text-sm">
-                  <span className={label}>Security</span>
-                  <select
-                    value={encryption}
-                    onChange={(e) => setEncryption(e.target.value)}
-                    className={field}
-                  >
-                    <option value="WPA">WPA or WPA2</option>
-                    <option value="WEP">WEP</option>
-                    <option value="nopass">Open, no password</option>
-                  </select>
-                </label>
-                {encryption !== 'nopass' && (
+              {preset === 'wifi' ? (
+                <div className="space-y-4">
                   <label className="block text-sm">
-                    <span className={label}>Password</span>
-                    <input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className={field}
-                    />
+                    <span className={label}>Network name</span>
+                    <input value={ssid} onChange={(e) => setSsid(e.target.value)} className={field} />
                   </label>
-                )}
-                <label className="flex items-center gap-2 text-sm text-ink-soft">
-                  <input
-                    type="checkbox"
-                    checked={hidden}
-                    onChange={(e) => setHidden(e.target.checked)}
-                    className="size-4 accent-[var(--accent)]"
+                  <label className="block text-sm">
+                    <span className={label}>Security</span>
+                    <select
+                      value={encryption}
+                      onChange={(e) => setEncryption(e.target.value)}
+                      className={field}
+                    >
+                      <option value="WPA">WPA or WPA2</option>
+                      <option value="WEP">WEP</option>
+                      <option value="nopass">Open, no password</option>
+                    </select>
+                  </label>
+                  {encryption !== 'nopass' && (
+                    <label className="block text-sm">
+                      <span className={label}>Password</span>
+                      <input
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={field}
+                      />
+                    </label>
+                  )}
+                  <label className="flex items-center gap-2 text-sm text-ink-soft">
+                    <input
+                      type="checkbox"
+                      checked={hidden}
+                      onChange={(e) => setHidden(e.target.checked)}
+                      className="size-4 accent-[var(--accent)]"
+                    />
+                    Network name is hidden
+                  </label>
+                </div>
+              ) : (
+                <label className="block text-sm">
+                  <span className={label}>
+                    {preset === 'vcard' ? 'Name, phone, email, one per line' : 'Content'}
+                  </span>
+                  <textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    rows={preset === 'vcard' ? 3 : 4}
+                    placeholder={
+                      preset === 'url'
+                        ? 'vantly.xyz'
+                        : preset === 'vcard'
+                          ? 'Ada Lovelace\n+44 20 7946 0000\nada@example.com'
+                          : ''
+                    }
+                    className={field + ' resize-y font-mono text-[13px]'}
                   />
-                  Network name is hidden
+                </label>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <label className="block text-sm">
+                  <span className={label}>Size</span>
+                  <input
+                    type="number"
+                    min={128}
+                    max={2048}
+                    step={64}
+                    value={size}
+                    onChange={(e) => setSize(Number(e.target.value) || 512)}
+                    className={field + ' tabular-nums'}
+                  />
+                </label>
+                <label className="block text-sm">
+                  <span className={label}>Quiet border</span>
+                  <input
+                    type="number"
+                    min={0}
+                    max={10}
+                    value={margin}
+                    onChange={(e) => setMargin(Number(e.target.value))}
+                    className={field + ' tabular-nums'}
+                  />
                 </label>
               </div>
-            ) : (
-              <label className="block text-sm">
-                <span className={label}>
-                  {preset === 'vcard' ? 'Name, phone, email, one per line' : 'Content'}
-                </span>
-                <textarea
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  rows={preset === 'vcard' ? 3 : 4}
-                  placeholder={
-                    preset === 'url'
-                      ? 'vantly.xyz'
-                      : preset === 'vcard'
-                        ? 'Ada Lovelace\n+44 20 7946 0000\nada@example.com'
-                        : ''
-                  }
-                  className={field + ' resize-y font-mono text-[13px]'}
-                />
-              </label>
-            )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <label className="block text-sm">
-                <span className={label}>Size</span>
-                <input
-                  type="number"
-                  min={128}
-                  max={2048}
-                  step={64}
-                  value={size}
-                  onChange={(e) => setSize(Number(e.target.value) || 512)}
-                  className={field + ' tabular-nums'}
-                />
-              </label>
-              <label className="block text-sm">
-                <span className={label}>Quiet border</span>
-                <input
-                  type="number"
-                  min={0}
-                  max={10}
-                  value={margin}
-                  onChange={(e) => setMargin(Number(e.target.value))}
-                  className={field + ' tabular-nums'}
-                />
-              </label>
-            </div>
-
-            <div>
-              <span className={label}>Error correction</span>
-              <div className="mt-2 inline-flex rounded-lg border border-line p-0.5 text-sm">
-                {(['L', 'M', 'Q', 'H'] as const).map((l) => (
-                  <button
-                    key={l}
-                    onClick={() => setLevel(l)}
-                    aria-pressed={level === l}
-                    className={`rounded-md px-3 py-1 font-medium transition-colors ${
-                      level === l ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                    }`}
-                  >
-                    {l}
-                  </button>
-                ))}
+              <div>
+                <span className={label}>Error correction</span>
+                <div className="mt-2 inline-flex rounded-lg border border-line p-0.5 text-sm">
+                  {(['L', 'M', 'Q', 'H'] as const).map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => setLevel(l)}
+                      aria-pressed={level === l}
+                      className={`rounded-md px-3 py-1 font-medium transition-colors ${
+                        level === l ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                      }`}
+                    >
+                      {l}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <label className="block text-sm">
-              <span className={label}>Type</span>
-              <select
-                value={format}
-                onChange={(e) => setFormat(e.target.value)}
-                className={field}
-              >
-                {BARCODE_FORMATS.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.label}
-                  </option>
-                ))}
-              </select>
-              <span className="mt-2 block text-sm leading-relaxed text-ink-soft">
-                {BARCODE_FORMATS.find((f) => f.id === format)?.hint}
-              </span>
-            </label>
+            </>
+          ) : (
+            <>
+              <label className="block text-sm">
+                <span className={label}>Type</span>
+                <select
+                  value={format}
+                  onChange={(e) => setFormat(e.target.value)}
+                  className={field}
+                >
+                  {BARCODE_FORMATS.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="mt-2 block text-sm leading-relaxed text-ink-soft">
+                  {BARCODE_FORMATS.find((f) => f.id === format)?.hint}
+                </span>
+              </label>
 
+              <label className="block text-sm">
+                <span className={label}>Value</span>
+                <input
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  className={field + ' font-mono'}
+                />
+              </label>
+
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                <input
+                  type="checkbox"
+                  checked={showText}
+                  onChange={(e) => setShowText(e.target.checked)}
+                  className="size-4 accent-[var(--accent)]"
+                />
+                Print the number underneath
+              </label>
+            </>
+          )}
+
+          <div className="grid grid-cols-2 gap-4">
             <label className="block text-sm">
-              <span className={label}>Value</span>
+              <span className={label}>Ink</span>
               <input
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className={field + ' font-mono'}
+                type="color"
+                value={dark}
+                onChange={(e) => setDark(e.target.value)}
+                className="mt-2 h-11 w-full cursor-pointer rounded-lg border border-line bg-surface"
               />
             </label>
-
-            <label className="flex items-center gap-2 text-sm text-ink-soft">
+            <label className="block text-sm">
+              <span className={label}>Background</span>
               <input
-                type="checkbox"
-                checked={showText}
-                onChange={(e) => setShowText(e.target.checked)}
-                className="size-4 accent-[var(--accent)]"
+                type="color"
+                value={light}
+                onChange={(e) => setLight(e.target.value)}
+                className="mt-2 h-11 w-full cursor-pointer rounded-lg border border-line bg-surface"
               />
-              Print the number underneath
             </label>
-          </>
-        )}
-
-        <div className="grid grid-cols-2 gap-4">
-          <label className="block text-sm">
-            <span className={label}>Ink</span>
-            <input
-              type="color"
-              value={dark}
-              onChange={(e) => setDark(e.target.value)}
-              className="mt-2 h-11 w-full cursor-pointer rounded-lg border border-line bg-surface"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className={label}>Background</span>
-            <input
-              type="color"
-              value={light}
-              onChange={(e) => setLight(e.target.value)}
-              className="mt-2 h-11 w-full cursor-pointer rounded-lg border border-line bg-surface"
-            />
-          </label>
-        </div>
-      </div>
-
-      <div>
+          </div>
+        </>
+      }
+    >
         <span className={label}>Preview</span>
         <div className="mt-2 flex min-h-[18rem] items-center justify-center rounded-2xl border border-line bg-surface p-6">
           {error ? (
@@ -409,8 +411,6 @@ export default function CodeGenerator({ kind }: { kind: Kind }) {
             )}
           </div>
         )}
-
-      </div>
-    </div>
+    </ToolLayout>
   );
 }
