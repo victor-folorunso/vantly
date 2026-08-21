@@ -299,7 +299,7 @@ export const TOOLS: Tool[] = [
     title: 'Generate a placeholder image at any size',
     description:
       'Make a placeholder image at any dimensions, with its size written on it, for mockups and layout work.',
-    live: false,
+    live: true,
   },
   {
     slug: 'signature-generator',
@@ -440,6 +440,307 @@ export const TOOLS: Tool[] = [
     description:
       'Turn a list of addresses into a valid sitemap.xml, with change frequency and priority, ready to upload and submit.',
     live: false,
+  },
+
+  {
+    slug: 'rotate-pdf',
+    name: 'Rotate PDF',
+    category: 'Documents',
+    blurb: 'Turn the pages that came in sideways.',
+    title: 'Rotate PDF pages and save them that way',
+    description:
+      'Rotate some or all pages of a PDF and save it, so a scan that came in sideways stops being sideways.',
+    live: false,
+  },
+  {
+    slug: 'delete-pdf-pages',
+    name: 'Delete PDF pages',
+    category: 'Documents',
+    blurb: 'Drop the blank scans and the pages you do not need.',
+    title: 'Delete pages from a PDF',
+    description:
+      'Remove pages from a PDF and download what is left, without reordering anything else.',
+    live: false,
+  },
+  {
+    slug: 'extract-pdf-pages',
+    name: 'Extract PDF pages',
+    category: 'Documents',
+    blurb: 'Pull a few pages out into their own file.',
+    title: 'Extract pages from a PDF into a new file',
+    description:
+      'Pick the pages you want and save them as a separate PDF, leaving the original alone.',
+    live: false,
+  },
+  {
+    slug: 'organize-pdf',
+    name: 'Organize PDF',
+    category: 'Documents',
+    blurb: 'Reorder, rotate and remove pages in one go.',
+    title: 'Reorder and organise the pages of a PDF',
+    description:
+      'Move pages around, turn them the right way up and drop the ones you do not want, then save the result.',
+    live: false,
+  },
+  {
+    slug: 'add-page-numbers',
+    name: 'Add page numbers',
+    category: 'Documents',
+    blurb: 'Number a PDF that arrived without any.',
+    title: 'Add page numbers to a PDF',
+    description:
+      'Stamp page numbers onto a PDF, choosing where they sit, what they count from and how they are formatted.',
+    live: false,
+  },
+  {
+    slug: 'crop-pdf',
+    name: 'Crop PDF',
+    category: 'Documents',
+    blurb: 'Cut the margins off a scan.',
+    title: 'Crop the margins of a PDF',
+    description:
+      'Trim the edges of every page, for a scan with wide margins or a document that needs to fit a different paper size.',
+    live: false,
+  },
+  {
+    slug: 'redact-pdf',
+    name: 'Redact PDF',
+    category: 'Documents',
+    blurb: 'Black something out so it is actually gone.',
+    title: 'Redact a PDF properly',
+    description:
+      'Cover text so it cannot be read, and so it cannot be copied back out either, which a black rectangle drawn on top does not do.',
+    live: false,
+  },
+  {
+    slug: 'protect-pdf',
+    name: 'Protect PDF',
+    category: 'Documents',
+    blurb: 'Put a password on it.',
+    title: 'Add a password to a PDF',
+    description:
+      'Lock a PDF with a password so it cannot be opened without one.',
+    live: false,
+  },
+  {
+    slug: 'flatten-pdf',
+    name: 'Flatten PDF',
+    category: 'Documents',
+    blurb: 'Lock the form answers and annotations into the page.',
+    title: 'Flatten a PDF so it cannot be edited',
+    description:
+      'Turn form fields, annotations and layers into part of the page itself, so nobody can change the answers later.',
+    live: false,
+  },
+  {
+    slug: 'pdf-annotator',
+    name: 'PDF annotator',
+    category: 'Documents',
+    blurb: 'Highlight, draw and leave a note.',
+    title: 'Annotate a PDF in your browser',
+    description:
+      'Highlight text, draw on the page and add notes, then save a copy with the markings in it.',
+    live: false,
+  },
+  {
+    slug: 'pdf-to-pdfa',
+    name: 'PDF to PDF/A',
+    category: 'Documents',
+    blurb: 'The archival format an institution asked you for.',
+    title: 'Convert a PDF to PDF/A',
+    description:
+      'Convert a PDF to PDF/A, the long term archival format that libraries, courts and universities ask for.',
+    live: false,
+  },
+  {
+    slug: 'odt-to-pdf',
+    name: 'ODT to PDF',
+    category: 'Documents',
+    blurb: 'OpenDocument text, without OpenOffice.',
+    title: 'Convert ODT to PDF',
+    description:
+      'Turn an OpenDocument text file into a PDF, keeping the fonts, tables and page breaks.',
+    live: false,
+  },
+  {
+    slug: 'ods-to-pdf',
+    name: 'ODS to PDF',
+    category: 'Documents',
+    blurb: 'OpenDocument spreadsheet, without OpenOffice.',
+    title: 'Convert ODS to PDF',
+    description:
+      'Turn an OpenDocument spreadsheet into a PDF, laid out as it prints.',
+    live: false,
+  },
+  {
+    slug: 'odp-to-pdf',
+    name: 'ODP to PDF',
+    category: 'Documents',
+    blurb: 'OpenDocument slides, without OpenOffice.',
+    title: 'Convert ODP to PDF',
+    description:
+      'Turn an OpenDocument presentation into a PDF, one slide per page.',
+    live: false,
+  },
+  {
+    slug: 'rtf-to-pdf',
+    name: 'RTF to PDF',
+    category: 'Documents',
+    blurb: 'Rich text, kept as it looks.',
+    title: 'Convert RTF to PDF',
+    description:
+      'Turn a rich text file into a PDF with its formatting intact.',
+    live: false,
+  },
+  {
+    slug: 'txt-to-pdf',
+    name: 'TXT to PDF',
+    category: 'Documents',
+    blurb: 'Plain text on a proper page.',
+    title: 'Convert a text file to PDF',
+    description:
+      'Turn a plain text file into a PDF, laid out on a page with margins you can print.',
+    live: false,
+  },
+  {
+    slug: 'csv-to-pdf',
+    name: 'CSV to PDF',
+    category: 'Documents',
+    blurb: 'A spreadsheet as a table you can send.',
+    title: 'Convert CSV to PDF',
+    description:
+      'Turn a CSV into a PDF table, ready to attach to something or print.',
+    live: false,
+  },
+  {
+    slug: 'pages-to-pdf',
+    name: 'Pages to PDF',
+    category: 'Documents',
+    blurb: 'The Apple format nobody else can open.',
+    title: 'Convert an Apple Pages file to PDF',
+    description:
+      'Turn a Pages document into a PDF anyone can open, without a Mac.',
+    live: false,
+  },
+  {
+    slug: 'placeholder-1920x1080',
+    name: 'Placeholder 1920x1080',
+    category: 'Generators',
+    blurb: 'Full HD, the default for a hero or a slide.',
+    title: 'Placeholder image, 1920x1080',
+    description:
+      'A 1920 by 1080 placeholder image. Full HD and the usual size for a hero image, a slide or a video frame.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-1280x720',
+    name: 'Placeholder 1280x720',
+    category: 'Generators',
+    blurb: 'The YouTube thumbnail size.',
+    title: 'Placeholder image, 1280x720',
+    description:
+      'A 1280 by 720 placeholder image. The size YouTube asks for a thumbnail, and 720p video.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-1200x630',
+    name: 'Placeholder 1200x630',
+    category: 'Generators',
+    blurb: 'The link preview size for social posts.',
+    title: 'Placeholder image, 1200x630, for Open Graph',
+    description:
+      'A 1200 by 630 placeholder. The size a link preview uses when a page is shared, set by Open Graph and used by Facebook, LinkedIn and X.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-1080x1080',
+    name: 'Placeholder 1080x1080',
+    category: 'Generators',
+    blurb: 'The square Instagram post.',
+    title: 'Placeholder image, 1080x1080 square',
+    description:
+      'A 1080 by 1080 square placeholder, the size of an Instagram feed post.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-1080x1920',
+    name: 'Placeholder 1080x1920',
+    category: 'Generators',
+    blurb: 'The vertical story and reel size.',
+    title: 'Placeholder image, 1080x1920 vertical',
+    description:
+      'A 1080 by 1920 vertical placeholder, the size of a story, a reel and a short.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-800x600',
+    name: 'Placeholder 800x600',
+    category: 'Generators',
+    blurb: 'The old faithful four by three.',
+    title: 'Placeholder image, 800x600',
+    description:
+      'An 800 by 600 placeholder image, four by three, still the default in plenty of templates.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-600x400',
+    name: 'Placeholder 600x400',
+    category: 'Generators',
+    blurb: 'A card or a thumbnail in a grid.',
+    title: 'Placeholder image, 600x400',
+    description:
+      'A 600 by 400 placeholder image, the usual shape for a card or a thumbnail in a grid.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-300x250',
+    name: 'Placeholder 300x250',
+    category: 'Generators',
+    blurb: 'The medium rectangle ad slot.',
+    title: 'Placeholder image, 300x250 medium rectangle',
+    description:
+      'A 300 by 250 placeholder, the medium rectangle, the most used display ad size there is.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-728x90',
+    name: 'Placeholder 728x90',
+    category: 'Generators',
+    blurb: 'The leaderboard banner across the top.',
+    title: 'Placeholder image, 728x90 leaderboard',
+    description:
+      'A 728 by 90 placeholder, the leaderboard banner that runs across the top of a page.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-160x600',
+    name: 'Placeholder 160x600',
+    category: 'Generators',
+    blurb: 'The skyscraper down the side.',
+    title: 'Placeholder image, 160x600 skyscraper',
+    description:
+      'A 160 by 600 placeholder, the wide skyscraper that runs down the side of a page.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-400x400',
+    name: 'Placeholder 400x400',
+    category: 'Generators',
+    blurb: 'A square avatar or profile picture.',
+    title: 'Placeholder image, 400x400 square avatar',
+    description:
+      'A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.',
+    live: true,
+  },
+  {
+    slug: 'placeholder-1500x500',
+    name: 'Placeholder 1500x500',
+    category: 'Generators',
+    blurb: 'The X header across a profile.',
+    title: 'Placeholder image, 1500x500 header',
+    description:
+      'A 1500 by 500 placeholder, the header image across the top of an X profile.',
+    live: true,
   },
 
   {

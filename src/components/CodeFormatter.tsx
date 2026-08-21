@@ -1,44 +1,46 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
-import { formatJson, minifyJson } from '@/lib/textTools';
+import { useCallback, useState } from 'react';
+import { LANGS, format, minify, type Lang } from '@/lib/code';
 
 /**
- * Beautify and minify, one component behind five languages.
+ * Formats and minifies code, using Prettier and Terser rather than a
+ * re-indenter.
  *
- * js-beautify does the work. It is the MIT library that most online formatters
- * are already quietly running, it has been maintained since 2007, and writing
- * another HTML indenter would be a week spent rediscovering why inline elements
- * are hard.
- *
- * It is imported only when somebody presses the button, because a visitor who
- * lands here from a search result and reads the page should not pay for a
- * parser they never ran.
- *
- * JSON does not go through it. JSON.parse gives a precise error position and
- * js-beautify will happily pretty-print something invalid, which hides the one
- * thing people came to find.
+ * The distinction shows up the moment somebody compares this with the tool
+ * they already use. Prettier parses to a syntax tree and prints it again, so
+ * the result matches what their editor would produce, and broken input comes
+ * back as a syntax error with a position on it. That error is the feature: a
+ * formatter that happily reformats invalid code has hidden the bug you opened
+ * it to find.
  */
 
-type Lang = 'json' | 'html' | 'css' | 'js' | 'xml';
-
-const LANGS: { id: Lang; label: string; mode: 'html' | 'css' | 'js' | null }[] = [
-  { id: 'json', label: 'JSON', mode: null },
-  { id: 'html', label: 'HTML', mode: 'html' },
-  { id: 'xml', label: 'XML', mode: 'html' },
-  { id: 'css', label: 'CSS', mode: 'css' },
-  { id: 'js', label: 'JavaScript', mode: 'js' },
-];
-
-const SAMPLES: Record<Lang, string> = {
-  json: '{"name":"vantly","tools":[{"slug":"json-formatter","live":true}],"count":158}',
+const SAMPLES: Partial<Record<Lang, string>> = {
+  json: '{"name":"vantly","tools":[{"slug":"json-formatter","live":true}],"count":163}',
   html: '<div class="card"><h2>Hello</h2><p>Some <em>text</em> here.</p></div>',
   xml: '<catalog><book id="1"><title>Dune</title><author>Herbert</author></book></catalog>',
   css: '.card{padding:1rem;border:1px solid #eee}.card h2{margin:0;font-size:1.25rem}',
+  scss: '.card{ padding:1rem; h2{ margin:0; &:hover{ color:red } } }',
+  less: '@pad: 1rem; .card{ padding:@pad; h2{ margin:0 } }',
   js: 'function add(a,b){if(a>b){return a+b}else{return b-a}}const x=add(1,2);',
+  jsx: 'const App=()=><div className="card"><h2>Hi</h2></div>;',
+  ts: 'type User={id:number,name:string};function greet(u:User):string{return `Hi ${u.name}`}',
+  tsx: 'const App=({n}:{n:number})=><p>{n}</p>;',
+  vue: '<template><div class="card">{{ title }}</div></template>',
+  yaml: 'name: vantly\ntools:   [json, css]\nlive:    true',
+  markdown: '# Title\nSome   *text*  here.\n\n- one\n- two',
+  graphql: 'query{user(id:1){name email posts{title}}}',
+  sql: "select id, name from users u join orders o on o.user_id = u.id where u.active = true and o.total > 100 order by o.total desc limit 10",
 };
 
-export default function CodeFormatter({ initial = 'json' }: { initial?: Lang }) {
+export default function CodeFormatter({
+  initial = 'json',
+  action = 'format',
+}: {
+  initial?: Lang;
+  /** Minifier pages open on the minify action and say so in the button. */
+  action?: 'format' | 'minify';
+}) {
   const [lang, setLang] = useState<Lang>(initial);
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -47,152 +49,129 @@ export default function CodeFormatter({ initial = 'json' }: { initial?: Lang }) 
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  const mode = LANGS.find((l) => l.id === lang)!.mode;
+  const meta = LANGS.find((l) => l.id === lang)!;
 
   const run = useCallback(
-    async (minify: boolean) => {
+    async (shrink: boolean) => {
       setError(null);
       if (!input.trim()) return setOutput('');
-
-      if (lang === 'json') {
-        const r = minify ? minifyJson(input) : formatJson(input, indent);
-        if (r.ok) return setOutput(r.text);
-        setOutput('');
-        // The position is the whole reason to use this rather than an editor.
-        return setError(
-          'line' in r && r.line
-            ? `${r.message}  (line ${r.line}, column ${r.column})`
-            : r.message,
-        );
-      }
-
       setBusy(true);
       try {
-        const beautify = await import('js-beautify');
-        const opts = {
-          indent_size: indent === 'tab' ? 1 : indent,
-          indent_with_tabs: indent === 'tab',
-          end_with_newline: false,
-          preserve_newlines: !minify,
-          max_preserve_newlines: minify ? 0 : 2,
-        };
-        if (minify) {
-          // js-beautify does not minify, so this is a conservative squeeze that
-          // cannot change behaviour: no identifier renaming, no dead code
-          // removal, nothing that needs to understand the program.
-          setOutput(
-            mode === 'css'
-              ? input.replace(/\s*([{}:;,])\s*/g, '$1').replace(/;\}/g, '}').trim()
-              : mode === 'html'
-                ? input.replace(/>\s+</g, '><').trim()
-                : input.replace(/\n\s*/g, ' ').trim(),
-          );
-        } else if (mode === 'css') {
-          setOutput(beautify.css(input, opts));
-        } else if (mode === 'html') {
-          setOutput(beautify.html(input, opts));
+        const result = shrink ? await minify(input, lang) : await format(input, lang, indent);
+        if (result.ok) {
+          setOutput(result.output);
         } else {
-          setOutput(beautify.js(input, opts));
+          setOutput('');
+          setError(result.error);
         }
-      } catch (e) {
-        setOutput('');
-        setError(e instanceof Error ? e.message : 'Could not format that.');
       } finally {
         setBusy(false);
       }
     },
-    [input, lang, indent, mode],
+    [input, lang, indent],
   );
 
-  const stats = useMemo(() => {
-    if (!input || !output) return null;
-    const delta = output.length - input.length;
-    const pct = Math.round((Math.abs(delta) / input.length) * 100);
-    return delta === 0 ? 'same size' : `${pct}% ${delta > 0 ? 'larger' : 'smaller'}`;
-  }, [input, output]);
+  const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
+  const saved =
+    output && input ? Math.round((1 - output.length / input.length) * 100) : 0;
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2">
-        {LANGS.map((l) => (
-          <button
-            key={l.id}
-            onClick={() => {
-              setLang(l.id);
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <label className="block text-sm">
+          <span className={label}>Language</span>
+          <select
+            value={lang}
+            onChange={(e) => {
+              setLang(e.target.value as Lang);
               setOutput('');
               setError(null);
             }}
-            className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
-              l.id === lang
-                ? 'border-accent bg-accent-soft text-ink'
-                : 'border-line text-ink-soft hover:border-ink-faint'
-            }`}
+            className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
           >
-            {l.label}
-          </button>
-        ))}
+            {LANGS.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <div className="ml-auto flex items-center gap-1.5">
-          <span className="text-xs text-ink-faint">Indent</span>
-          {([2, 4, 'tab'] as const).map((i) => (
+        <div className="flex flex-wrap items-end gap-4">
+          <label className="block text-sm">
+            <span className={label}>Indent</span>
+            <div className="mt-2 inline-flex rounded-lg border border-line p-0.5">
+              {([2, 4, 'tab'] as const).map((i) => (
+                <button
+                  key={String(i)}
+                  onClick={() => setIndent(i)}
+                  aria-pressed={indent === i}
+                  className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
+                    indent === i ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                  }`}
+                >
+                  {i === 'tab' ? 'Tab' : i}
+                </button>
+              ))}
+            </div>
+          </label>
+
+          <button
+            onClick={() => void run(action === 'minify')}
+            disabled={busy}
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
+          >
+            {busy ? 'Working…' : action === 'minify' ? 'Minify' : 'Format'}
+          </button>
+
+          {meta.canMinify && (
             <button
-              key={String(i)}
-              onClick={() => setIndent(i)}
-              className={`rounded-md border px-2 py-1 text-xs font-medium transition-colors ${
-                i === indent
-                  ? 'border-accent bg-accent-soft text-ink'
-                  : 'border-line text-ink-soft hover:border-ink-faint'
-              }`}
+              onClick={() => void run(action !== 'minify')}
+              disabled={busy}
+              className="rounded-lg border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
             >
-              {i === 'tab' ? 'Tab' : i}
+              {action === 'minify' ? 'Format instead' : 'Minify instead'}
             </button>
-          ))}
+          )}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div>
-          <div className="flex items-baseline justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              Input
-            </span>
-            <div className="flex gap-3 text-xs">
-              {!input && (
-                <button
-                  onClick={() => setInput(SAMPLES[lang])}
-                  className="text-accent underline underline-offset-4"
-                >
-                  Use an example
-                </button>
-              )}
-              {input && (
-                <button
-                  onClick={() => {
-                    setInput('');
-                    setOutput('');
-                    setError(null);
-                  }}
-                  className="text-ink-faint underline underline-offset-4"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className={label}>In</span>
+            {SAMPLES[lang] && (
+              <button
+                onClick={() => {
+                  setInput(SAMPLES[lang]!);
+                  setOutput('');
+                  setError(null);
+                }}
+                className="text-sm text-ink-faint underline underline-offset-4 hover:text-ink"
+              >
+                Use an example
+              </button>
+            )}
           </div>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={`Paste your ${LANGS.find((l) => l.id === lang)!.label} here…`}
+            rows={20}
             spellCheck={false}
-            rows={16}
-            className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] outline-none placeholder:text-ink-faint focus:border-accent"
+            placeholder={`Paste ${meta.label} here.`}
+            className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
           />
         </div>
 
         <div>
-          <div className="flex items-baseline justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              Result {stats && <span className="normal-case tracking-normal">· {stats}</span>}
+          <div className="flex items-center justify-between gap-3">
+            <span className={label}>
+              Out
+              {output && saved > 0 && (
+                <span className="ml-2 font-normal normal-case tracking-normal text-ink-faint">
+                  {saved}% smaller
+                </span>
+              )}
             </span>
             {output && (
               <button
@@ -201,48 +180,36 @@ export default function CodeFormatter({ initial = 'json' }: { initial?: Lang }) 
                   setCopied(true);
                   setTimeout(() => setCopied(false), 1500);
                 }}
-                className="text-xs text-accent underline underline-offset-4"
+                className="text-sm text-accent underline underline-offset-4"
               >
                 {copied ? 'Copied' : 'Copy'}
               </button>
             )}
           </div>
-          <textarea
-            readOnly
-            value={output}
-            placeholder="The formatted result appears here."
-            spellCheck={false}
-            rows={16}
-            className="mt-2 w-full resize-y rounded-xl border border-line bg-surface-alt p-4 font-mono text-[13px] outline-none placeholder:text-ink-faint"
-          />
+
+          {error ? (
+            /* Shown where the output would be, because it is the answer: the
+               position is the thing somebody came here to find out. */
+            <p className="mt-2 rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed text-accent">
+              {error}
+            </p>
+          ) : (
+            <textarea
+              value={output}
+              readOnly
+              rows={20}
+              spellCheck={false}
+              className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none"
+            />
+          )}
         </div>
       </div>
 
-      {error && (
-        <p className="mt-3 rounded-lg border border-accent bg-accent-soft px-4 py-3 text-sm leading-relaxed">
-          {error}
-        </p>
-      )}
-
-      <div className="mt-5 flex flex-wrap gap-3">
-        <button
-          onClick={() => void run(false)}
-          disabled={busy || !input.trim()}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {busy ? 'Working…' : 'Beautify'}
-        </button>
-        <button
-          onClick={() => void run(true)}
-          disabled={busy || !input.trim()}
-          className="rounded-lg border border-accent px-5 py-2.5 text-sm font-semibold text-accent disabled:opacity-60"
-        >
-          Minify
-        </button>
-      </div>
-
-      <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-        Removes whitespace only. Renaming variables and dropping unused code is a build step.
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
+        Formatting is Prettier, the same engine most editors run, so the result
+        matches what your editor would do. Minifying is Terser for JavaScript
+        and csso for CSS, which rename and remove rather than only stripping
+        spaces.
       </p>
     </div>
   );

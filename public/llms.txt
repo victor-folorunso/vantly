@@ -19,6 +19,19 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Split PDF](https://vantly.xyz/split-pdf): Split a PDF into separate files or extract a page range. Runs in your browser.
 - [Compress PDF](https://vantly.xyz/compress-pdf): Reduce PDF file size in your browser. Choose how hard to compress and see the result before you save it.
 - [Images to PDF](https://vantly.xyz/images-to-pdf): Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.
+- [Placeholder image generator](https://vantly.xyz/placeholder-image-generator): Make a placeholder image at any dimensions, with its size written on it, for mockups and layout work.
+- [Placeholder 1920x1080](https://vantly.xyz/placeholder-1920x1080): A 1920 by 1080 placeholder image. Full HD and the usual size for a hero image, a slide or a video frame.
+- [Placeholder 1280x720](https://vantly.xyz/placeholder-1280x720): A 1280 by 720 placeholder image. The size YouTube asks for a thumbnail, and 720p video.
+- [Placeholder 1200x630](https://vantly.xyz/placeholder-1200x630): A 1200 by 630 placeholder. The size a link preview uses when a page is shared, set by Open Graph and used by Facebook, LinkedIn and X.
+- [Placeholder 1080x1080](https://vantly.xyz/placeholder-1080x1080): A 1080 by 1080 square placeholder, the size of an Instagram feed post.
+- [Placeholder 1080x1920](https://vantly.xyz/placeholder-1080x1920): A 1080 by 1920 vertical placeholder, the size of a story, a reel and a short.
+- [Placeholder 800x600](https://vantly.xyz/placeholder-800x600): An 800 by 600 placeholder image, four by three, still the default in plenty of templates.
+- [Placeholder 600x400](https://vantly.xyz/placeholder-600x400): A 600 by 400 placeholder image, the usual shape for a card or a thumbnail in a grid.
+- [Placeholder 300x250](https://vantly.xyz/placeholder-300x250): A 300 by 250 placeholder, the medium rectangle, the most used display ad size there is.
+- [Placeholder 728x90](https://vantly.xyz/placeholder-728x90): A 728 by 90 placeholder, the leaderboard banner that runs across the top of a page.
+- [Placeholder 160x600](https://vantly.xyz/placeholder-160x600): A 160 by 600 placeholder, the wide skyscraper that runs down the side of a page.
+- [Placeholder 400x400](https://vantly.xyz/placeholder-400x400): A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.
+- [Placeholder 1500x500](https://vantly.xyz/placeholder-1500x500): A 1500 by 500 placeholder, the header image across the top of an X profile.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
 - [XLSX viewer](https://vantly.xyz/xlsx-viewer): View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.

@@ -99,6 +99,35 @@ const PAGES = [
   // Subtitles are a text file, so this one needs no video machinery at all.
   { slug: 'srt-shifter', component: 'SubtitleShifter', props: '',
     sub: 'Move subtitles earlier or later, fix frame rate drift, and swap between SRT and VTT.' },
+
+  // Placeholder images. One component, and a page for each size people are
+  // actually told to supply, because the size is the search.
+  { slug: 'placeholder-image-generator', component: 'PlaceholderImage', props: '',
+    sub: 'Any size you need, drawn here and downloaded. No service to call and no link to rot.' },
+  { slug: 'placeholder-1920x1080', component: 'PlaceholderImage', props: 'width={1920} height={1080} fixed',
+    sub: 'Full HD, and what a hero image or a slide is usually asked for.' },
+  { slug: 'placeholder-1280x720', component: 'PlaceholderImage', props: 'width={1280} height={720} fixed',
+    sub: 'What YouTube asks for a thumbnail.' },
+  { slug: 'placeholder-1200x630', component: 'PlaceholderImage', props: 'width={1200} height={630} fixed',
+    sub: 'What a link preview uses when a page gets shared.' },
+  { slug: 'placeholder-1080x1080', component: 'PlaceholderImage', props: 'width={1080} height={1080} fixed',
+    sub: 'The square Instagram feed post.' },
+  { slug: 'placeholder-1080x1920', component: 'PlaceholderImage', props: 'width={1080} height={1920} fixed',
+    sub: 'Vertical, for a story, a reel or a short.' },
+  { slug: 'placeholder-800x600', component: 'PlaceholderImage', props: 'width={800} height={600} fixed',
+    sub: 'Four by three, still the default in plenty of templates.' },
+  { slug: 'placeholder-600x400', component: 'PlaceholderImage', props: 'width={600} height={400} fixed',
+    sub: 'A card or a thumbnail in a grid.' },
+  { slug: 'placeholder-300x250', component: 'PlaceholderImage', props: 'width={300} height={250} fixed',
+    sub: 'The medium rectangle, the most used display ad size there is.' },
+  { slug: 'placeholder-728x90', component: 'PlaceholderImage', props: 'width={728} height={90} fixed',
+    sub: 'The leaderboard banner across the top of a page.' },
+  { slug: 'placeholder-160x600', component: 'PlaceholderImage', props: 'width={160} height={600} fixed',
+    sub: 'The wide skyscraper down the side of a page.' },
+  { slug: 'placeholder-400x400', component: 'PlaceholderImage', props: 'width={400} height={400} fixed',
+    sub: 'A square avatar or profile picture.' },
+  { slug: 'placeholder-1500x500', component: 'PlaceholderImage', props: 'width={1500} height={500} fixed',
+    sub: 'The header across the top of an X profile.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

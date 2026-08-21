@@ -1,17 +1,21 @@
 /**
- * Adds the reviewed batch of tools to the registry.
+ * Adds tools to the registry as stubs, greyed out until the code exists.
  *
- * A one-off, kept in the repo because the reasoning for what was left out
- * matters more than the list itself, and a commit message is not where anyone
- * will look for it.
+ * Rerunnable: anything already in the registry is skipped, so this can be
+ * pointed at a fresh list without checking by hand first.
  *
- * Everything added here runs in the browser. The suggestions that needed a
- * server to answer at all, DNS and WHOIS lookups, HTTP header and TLS
- * certificate checks, IP geolocation, live currency rates, an API request
- * tester, were left out on purpose: each one costs a request every time it is
- * used and earns nothing, which is the reverse of how the rest of the site
- * pays for itself. A page load is the billable event here; a page that has to
- * call out to answer is a page that costs money to be popular.
+ * Two rules decide what gets in.
+ *
+ * It has to run in the browser, or on the one container we already pay for.
+ * Anything that needs a server to answer a question, a DNS or WHOIS lookup, a
+ * header or certificate check, live currency rates, costs a request every time
+ * it is used and earns nothing. A page load is the billable event here, so a
+ * page that must call out to answer is a page that costs money to be popular.
+ *
+ * And it has to be a real search on its own. That is the argument for the
+ * placeholder sizes below: nobody searches "placeholder image tool", they
+ * search the size they were told to supply, and each of those is a different
+ * page with a different reason to exist.
  *
  * Run: node --experimental-strip-types scripts/add-batch.mjs
  */
@@ -23,157 +27,178 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const file = join(root, 'src/lib/site.ts');
 
-const TOOLS = [
-  ['unix-timestamp-converter', 'Unix timestamp converter', 'Developer',
-   'Turn 1755734400 into a date, and back again.',
-   'Unix timestamp to date converter',
-   'Convert a Unix or epoch timestamp to a readable date in your own timezone or UTC, and a date back to a timestamp. Seconds and milliseconds.'],
+/* ── PDF work, mostly pdf-lib in the browser ───────────────────────────────
+   The Office to PDF entries are LibreOffice on the container, which already
+   accepts every one of these formats. They are separate pages because they
+   are separate searches, not because they are separate work. */
+const PDF = [
+  ['rotate-pdf', 'Rotate PDF', 'Documents',
+   'Turn the pages that came in sideways.',
+   'Rotate PDF pages and save them that way',
+   'Rotate some or all pages of a PDF and save it, so a scan that came in sideways stops being sideways.'],
 
-  ['jwt-decoder', 'JWT decoder', 'Developer',
-   'Read what is inside a token, without sending it anywhere.',
-   'Decode a JWT and read its claims',
-   'Paste a JSON Web Token and read its header, payload and expiry. Decoded in your browser, so the token never leaves your machine.'],
+  ['delete-pdf-pages', 'Delete PDF pages', 'Documents',
+   'Drop the blank scans and the pages you do not need.',
+   'Delete pages from a PDF',
+   'Remove pages from a PDF and download what is left, without reordering anything else.'],
 
-  ['html-entity-encoder', 'HTML entity encoder', 'Developer',
-   'Escape the characters that break a page, or decode them back.',
-   'HTML entity encoder and decoder',
-   'Turn angle brackets, ampersands and quotes into HTML entities so they render as text, or decode entities back into the characters they stand for.'],
+  ['extract-pdf-pages', 'Extract PDF pages', 'Documents',
+   'Pull a few pages out into their own file.',
+   'Extract pages from a PDF into a new file',
+   'Pick the pages you want and save them as a separate PDF, leaving the original alone.'],
 
-  ['html-minifier', 'HTML minifier', 'Developer',
-   'Strip the whitespace before you ship.',
-   'Minify HTML online',
-   'Remove whitespace and comments from HTML to make the file smaller.'],
+  ['organize-pdf', 'Organize PDF', 'Documents',
+   'Reorder, rotate and remove pages in one go.',
+   'Reorder and organise the pages of a PDF',
+   'Move pages around, turn them the right way up and drop the ones you do not want, then save the result.'],
 
-  ['css-minifier', 'CSS minifier', 'Developer',
-   'Strip the whitespace before you ship.',
-   'Minify CSS online',
-   'Remove whitespace and comments from CSS to make the file smaller.'],
+  ['add-page-numbers', 'Add page numbers', 'Documents',
+   'Number a PDF that arrived without any.',
+   'Add page numbers to a PDF',
+   'Stamp page numbers onto a PDF, choosing where they sit, what they count from and how they are formatted.'],
 
-  ['js-minifier', 'JavaScript minifier', 'Developer',
-   'Strip the whitespace before you ship.',
-   'Minify JavaScript online',
-   'Remove whitespace and comments from JavaScript to make the file smaller.'],
+  ['crop-pdf', 'Crop PDF', 'Documents',
+   'Cut the margins off a scan.',
+   'Crop the margins of a PDF',
+   'Trim the edges of every page, for a scan with wide margins or a document that needs to fit a different paper size.'],
 
-  ['sql-formatter', 'SQL formatter', 'Developer',
-   'Indent a query you can no longer read.',
-   'Format and indent SQL',
-   'Indent a SQL query so the joins and conditions line up, whichever dialect it is written in.'],
+  ['redact-pdf', 'Redact PDF', 'Documents',
+   'Black something out so it is actually gone.',
+   'Redact a PDF properly',
+   'Cover text so it cannot be read, and so it cannot be copied back out either, which a black rectangle drawn on top does not do.'],
 
-  ['json-validator', 'JSON validator', 'Developer',
-   'Find the comma that is breaking it.',
-   'Validate JSON and find the error',
-   'Check whether JSON is valid and see exactly which line and character breaks it, rather than a bare parse error.'],
+  ['protect-pdf', 'Protect PDF', 'Documents',
+   'Put a password on it.',
+   'Add a password to a PDF',
+   'Lock a PDF with a password so it cannot be opened without one.'],
 
-  ['subnet-calculator', 'Subnet calculator', 'Developer',
-   'The range, the mask, and how many hosts fit.',
-   'IPv4 subnet and CIDR calculator',
-   'Enter an address and a CIDR prefix to get the network address, broadcast address, usable host range, mask and host count.'],
+  ['flatten-pdf', 'Flatten PDF', 'Documents',
+   'Lock the form answers and annotations into the page.',
+   'Flatten a PDF so it cannot be edited',
+   'Turn form fields, annotations and layers into part of the page itself, so nobody can change the answers later.'],
 
-  ['slug-generator', 'Slug generator', 'Text',
-   'Turn a headline into the bit that goes in the address bar.',
-   'Turn a title into a URL slug',
-   'Convert a title into a clean URL slug: lowercase, hyphens, accents folded down and punctuation removed.'],
+  ['pdf-annotator', 'PDF annotator', 'Documents',
+   'Highlight, draw and leave a note.',
+   'Annotate a PDF in your browser',
+   'Highlight text, draw on the page and add notes, then save a copy with the markings in it.'],
 
-  ['find-and-replace', 'Find and replace', 'Text',
-   'Swap every instance at once, with a pattern if you need one.',
-   'Find and replace text online',
-   'Replace every instance of a word or a pattern in a block of text, with case sensitivity and regular expressions if you want them.'],
+  ['pdf-to-pdfa', 'PDF to PDF/A', 'Documents',
+   'The archival format an institution asked you for.',
+   'Convert a PDF to PDF/A',
+   'Convert a PDF to PDF/A, the long term archival format that libraries, courts and universities ask for.'],
 
-  ['markdown-to-html', 'Markdown to HTML', 'Text',
-   'Get the HTML your markdown turns into.',
-   'Convert Markdown to HTML',
-   'Paste markdown and copy the HTML it produces, ready for a page or a template.'],
+  ['odt-to-pdf', 'ODT to PDF', 'Documents',
+   'OpenDocument text, without OpenOffice.',
+   'Convert ODT to PDF',
+   'Turn an OpenDocument text file into a PDF, keeping the fonts, tables and page breaks.'],
 
-  ['character-counter', 'Character counter', 'Text',
-   'Against the limit for a post, a title or a description.',
-   'Character counter with post and meta limits',
-   'Count characters as you type and see how you sit against the limits that matter: a post, a page title, a meta description.'],
+  ['ods-to-pdf', 'ODS to PDF', 'Documents',
+   'OpenDocument spreadsheet, without OpenOffice.',
+   'Convert ODS to PDF',
+   'Turn an OpenDocument spreadsheet into a PDF, laid out as it prints.'],
 
-  ['fancy-text-generator', 'Fancy text generator', 'Text',
-   'Bold and italic letters that survive a plain text box.',
-   'Fancy text generator for bios and captions',
-   'Turn ordinary text into bold, italic, script or monospace letters using Unicode, so the styling survives in a box that allows no formatting.'],
+  ['odp-to-pdf', 'ODP to PDF', 'Documents',
+   'OpenDocument slides, without OpenOffice.',
+   'Convert ODP to PDF',
+   'Turn an OpenDocument presentation into a PDF, one slide per page.'],
 
-  ['placeholder-image-generator', 'Placeholder image generator', 'Generators',
-   'A grey box at exactly the size you need.',
-   'Generate a placeholder image at any size',
-   'Make a placeholder image at any dimensions, with its size written on it, for mockups and layout work.'],
+  ['rtf-to-pdf', 'RTF to PDF', 'Documents',
+   'Rich text, kept as it looks.',
+   'Convert RTF to PDF',
+   'Turn a rich text file into a PDF with its formatting intact.'],
 
-  ['signature-generator', 'Signature generator', 'Generators',
-   'Draw your name, download it with a transparent background.',
-   'Draw a signature and download it as a PNG',
-   'Draw your signature with a mouse, a finger or a stylus and download it as a transparent PNG to drop into a document.'],
+  ['txt-to-pdf', 'TXT to PDF', 'Documents',
+   'Plain text on a proper page.',
+   'Convert a text file to PDF',
+   'Turn a plain text file into a PDF, laid out on a page with margins you can print.'],
 
-  ['wheel-spinner', 'Wheel spinner', 'Generators',
-   'Put the options on a wheel and let it decide.',
-   'Spin a wheel to pick a name at random',
-   'Enter the options, spin the wheel, and let it choose. For picking a name, a winner, or where to eat.'],
+  ['csv-to-pdf', 'CSV to PDF', 'Documents',
+   'A spreadsheet as a table you can send.',
+   'Convert CSV to PDF',
+   'Turn a CSV into a PDF table, ready to attach to something or print.'],
 
-  ['tally-counter', 'Tally counter', 'Generators',
-   'Click to count, with a key to press instead.',
-   'Online tally counter',
-   'Count by clicking or by pressing a key, with several counters at once and a total that survives a reload.'],
-
-  ['online-stopwatch', 'Stopwatch and timer', 'Generators',
-   'Count up, count down, and get told when it is done.',
-   'Online stopwatch and countdown timer',
-   'A stopwatch with laps and a countdown timer that sounds when it reaches zero. Nothing to install.'],
-
-  ['bpm-tapper', 'BPM tapper', 'Media',
-   'Tap along and read the tempo.',
-   'Tap tempo BPM counter',
-   'Tap a key in time with the music and read the beats per minute, averaged over the taps you have made.'],
-
-  ['statistics-calculator', 'Statistics calculator', 'Calculators',
-   'Mean, median, mode and standard deviation from a list.',
-   'Mean, median, mode and standard deviation calculator',
-   'Paste a list of numbers and get the mean, median, mode, range, variance and standard deviation, with both the sample and population figures.'],
-
-  ['fraction-to-decimal', 'Fraction to decimal', 'Calculators',
-   'And decimal back to a fraction in its lowest terms.',
-   'Fraction to decimal converter',
-   'Convert a fraction to a decimal, and a decimal back to a fraction reduced to its lowest terms, including recurring decimals.'],
-
-  ['profit-margin-calculator', 'Profit margin calculator', 'Calculators',
-   'Margin, markup, and the price you need to charge.',
-   'Profit margin and markup calculator',
-   'Work out gross margin, markup and the selling price you need from cost and revenue. Margin and markup are not the same number.'],
-
-  ['roi-calculator', 'ROI calculator', 'Calculators',
-   'What you got back against what you put in.',
-   'Return on investment calculator',
-   'Work out return on investment from what you spent and what came back, as a percentage and as a figure, annualised if you give it a period.'],
-
-  ['file-checksum', 'File checksum', 'Security',
-   'Check a download really is what it claims to be.',
-   'Verify a file checksum, MD5 or SHA-256',
-   'Work out the checksum of a file and compare it against the one the download page gave you. Read on your machine, never uploaded.'],
-
-  ['htpasswd-generator', 'Htpasswd generator', 'Security',
-   'The line to paste into an Apache or Nginx password file.',
-   'Generate an htpasswd line',
-   'Create the username and hashed password line for a .htpasswd file, hashed in your browser so the password is never transmitted.'],
-
-  ['flexbox-generator', 'Flexbox generator', 'Design',
-   'Move the boxes until it looks right, then take the CSS.',
-   'Visual CSS flexbox generator',
-   'Set the flex properties and watch the boxes move, then copy the CSS. For working out which property does the thing you want.'],
-
-  ['css-grid-generator', 'CSS grid generator', 'Design',
-   'Draw the grid, take the CSS.',
-   'Visual CSS grid generator',
-   'Build a grid by setting rows, columns and gaps, see it laid out, and copy the CSS it produces.'],
-
-  ['sitemap-generator', 'Sitemap generator', 'Web',
-   'Paste your addresses, get the XML Google wants.',
-   'Generate a sitemap.xml',
-   'Turn a list of addresses into a valid sitemap.xml, with change frequency and priority, ready to upload and submit.'],
+  ['pages-to-pdf', 'Pages to PDF', 'Documents',
+   'The Apple format nobody else can open.',
+   'Convert an Apple Pages file to PDF',
+   'Turn a Pages document into a PDF anyone can open, without a Mac.'],
 ];
+
+/* ── Placeholder images ────────────────────────────────────────────────────
+   One generator, and a page for each size people are actually told to
+   supply. The size is the search: nobody looks for "placeholder image tool",
+   they look for the number a brief handed them. Each page says what the size
+   is for, which is the part that stops these being the same page repeated. */
+const PLACEHOLDER = [
+  ['placeholder-1920x1080', 'Placeholder 1920x1080', 'Generators',
+   'Full HD, the default for a hero or a slide.',
+   'Placeholder image, 1920x1080',
+   'A 1920 by 1080 placeholder image. Full HD and the usual size for a hero image, a slide or a video frame.'],
+
+  ['placeholder-1280x720', 'Placeholder 1280x720', 'Generators',
+   'The YouTube thumbnail size.',
+   'Placeholder image, 1280x720',
+   'A 1280 by 720 placeholder image. The size YouTube asks for a thumbnail, and 720p video.'],
+
+  ['placeholder-1200x630', 'Placeholder 1200x630', 'Generators',
+   'The link preview size for social posts.',
+   'Placeholder image, 1200x630, for Open Graph',
+   'A 1200 by 630 placeholder. The size a link preview uses when a page is shared, set by Open Graph and used by Facebook, LinkedIn and X.'],
+
+  ['placeholder-1080x1080', 'Placeholder 1080x1080', 'Generators',
+   'The square Instagram post.',
+   'Placeholder image, 1080x1080 square',
+   'A 1080 by 1080 square placeholder, the size of an Instagram feed post.'],
+
+  ['placeholder-1080x1920', 'Placeholder 1080x1920', 'Generators',
+   'The vertical story and reel size.',
+   'Placeholder image, 1080x1920 vertical',
+   'A 1080 by 1920 vertical placeholder, the size of a story, a reel and a short.'],
+
+  ['placeholder-800x600', 'Placeholder 800x600', 'Generators',
+   'The old faithful four by three.',
+   'Placeholder image, 800x600',
+   'An 800 by 600 placeholder image, four by three, still the default in plenty of templates.'],
+
+  ['placeholder-600x400', 'Placeholder 600x400', 'Generators',
+   'A card or a thumbnail in a grid.',
+   'Placeholder image, 600x400',
+   'A 600 by 400 placeholder image, the usual shape for a card or a thumbnail in a grid.'],
+
+  ['placeholder-300x250', 'Placeholder 300x250', 'Generators',
+   'The medium rectangle ad slot.',
+   'Placeholder image, 300x250 medium rectangle',
+   'A 300 by 250 placeholder, the medium rectangle, the most used display ad size there is.'],
+
+  ['placeholder-728x90', 'Placeholder 728x90', 'Generators',
+   'The leaderboard banner across the top.',
+   'Placeholder image, 728x90 leaderboard',
+   'A 728 by 90 placeholder, the leaderboard banner that runs across the top of a page.'],
+
+  ['placeholder-160x600', 'Placeholder 160x600', 'Generators',
+   'The skyscraper down the side.',
+   'Placeholder image, 160x600 skyscraper',
+   'A 160 by 600 placeholder, the wide skyscraper that runs down the side of a page.'],
+
+  ['placeholder-400x400', 'Placeholder 400x400', 'Generators',
+   'A square avatar or profile picture.',
+   'Placeholder image, 400x400 square avatar',
+   'A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.'],
+
+  ['placeholder-1500x500', 'Placeholder 1500x500', 'Generators',
+   'The X header across a profile.',
+   'Placeholder image, 1500x500 header',
+   'A 1500 by 500 placeholder, the header image across the top of an X profile.'],
+];
+
+const TOOLS = [...PDF, ...PLACEHOLDER];
 
 const source = readFileSync(file, 'utf8');
 const already = new Set([...source.matchAll(/slug: '([a-z0-9-]+)'/g)].map((m) => m[1]));
 
-const blocks = TOOLS.filter(([slug]) => !already.has(slug)).map(
+const wanted = TOOLS.filter(([slug]) => !already.has(slug));
+const skipped = TOOLS.length - wanted.length;
+
+const blocks = wanted.map(
   ([slug, name, category, blurb, title, description]) => `  {
     slug: '${slug}',
     name: '${name}',
@@ -187,12 +212,11 @@ const blocks = TOOLS.filter(([slug]) => !already.has(slug)).map(
 );
 
 if (blocks.length === 0) {
-  console.log('nothing to add, every slug is already in the registry');
+  console.log(`nothing to add, all ${TOOLS.length} slugs are already in the registry`);
 } else {
   const anchor = "  {\n    slug: 'docx-viewer',";
-  if (!source.includes(anchor)) throw new Error('anchor not found');
-  const banner = `  // ── Reviewed batch: what a general tool site is expected to carry ────────\n`;
-  writeFileSync(file, source.replace(anchor, banner + blocks.join('\n') + '\n\n' + anchor), 'utf8');
-  console.log(`added ${blocks.length} tools:`);
-  console.log(blocks.map((b) => '  ' + /slug: '([a-z0-9-]+)'/.exec(b)[1]).join('\n'));
+  if (!source.includes(anchor)) throw new Error('anchor not found in site.ts');
+  writeFileSync(file, source.replace(anchor, blocks.join('\n') + '\n\n' + anchor), 'utf8');
+  console.log(`added ${blocks.length} stubs${skipped ? `, skipped ${skipped} already present` : ''}`);
+  for (const b of blocks) console.log('  ' + /slug: '([a-z0-9-]+)'/.exec(b)[1]);
 }
