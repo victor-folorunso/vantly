@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Moves subtitles earlier or later, and converts between SRT and VTT.
@@ -135,68 +136,69 @@ export default function SubtitleShifter() {
   const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-5">
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="rounded-lg border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
-        >
-          Open a subtitle file
-        </button>
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".srt,.vtt,text/plain"
-          className="sr-only"
-          onChange={(e) => { const f = e.target.files?.[0]; if (f) void load(f); e.target.value = ''; }}
-        />
-
-        <label className="block text-sm">
-          <span className={label}>Shift by</span>
-          <div className="mt-2 flex items-center gap-2">
-            <input
-              type="number"
-              step="0.1"
-              value={seconds}
-              onChange={(e) => setSeconds(Number(e.target.value) || 0)}
-              className="w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
-            />
-            <span className="text-ink-soft">seconds</span>
-          </div>
-        </label>
-
-        <label className="block text-sm">
-          <span className={label}>Frame rate</span>
-          <select
-            value={rate}
-            onChange={(e) => setRate(Number(e.target.value))}
-            className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+    <ToolLayout
+      settings={
+        <>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="rounded-lg border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
           >
-            {RATES.map((r) => (
-              <option key={r.label} value={r.value}>
-                {r.label}
-              </option>
-            ))}
-          </select>
-        </label>
+            Open a subtitle file
+          </button>
+          <input
+            ref={inputRef}
+            type="file"
+            accept=".srt,.vtt,text/plain"
+            className="sr-only"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) void load(f); e.target.value = ''; }}
+          />
 
-        <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-          {(['srt', 'vtt'] as Format[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFormat(f)}
-              aria-pressed={format === f}
-              className={`rounded-md px-3 py-1.5 font-medium uppercase transition-colors ${
-                format === f ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-              }`}
+          <label className="block text-sm">
+            <span className={label}>Shift by</span>
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="number"
+                step="0.1"
+                value={seconds}
+                onChange={(e) => setSeconds(Number(e.target.value) || 0)}
+                className="w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
+              />
+              <span className="text-ink-soft">seconds</span>
+            </div>
+          </label>
+
+          <label className="block text-sm">
+            <span className={label}>Frame rate</span>
+            <select
+              value={rate}
+              onChange={(e) => setRate(Number(e.target.value))}
+              className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
             >
-              {f}
-            </button>
-          ))}
-        </div>
-      </div>
+              {RATES.map((r) => (
+                <option key={r.label} value={r.value}>
+                  {r.label}
+                </option>
+              ))}
+            </select>
+          </label>
 
-
+          <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+            {(['srt', 'vtt'] as Format[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFormat(f)}
+                aria-pressed={format === f}
+                className={`rounded-md px-3 py-1.5 font-medium uppercase transition-colors ${
+                  format === f ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </>
+      }
+    >
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <label className="block">
           <span className={label}>
@@ -257,6 +259,6 @@ export default function SubtitleShifter() {
           )}
         </div>
       </div>
-    </div>
+    </ToolLayout>
   );
 }

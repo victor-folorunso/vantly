@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Three name generators sharing one interface.
@@ -157,101 +158,103 @@ export default function NameGenerator({ mode }: { mode: Mode }) {
   const asText = useMemo(() => names.join('\n'), [names]);
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-5">
-        {mode === 'random' && (
-          <>
-            <label className="block text-sm">
-              <span className={label}>Region</span>
-              <select value={region} onChange={(e) => setRegion(e.target.value)} className={field}>
-                {Object.keys(FIRST).map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
+    <ToolLayout
+      settings={
+        <>
+          {mode === 'random' && (
+            <>
+              <label className="block text-sm">
+                <span className={label}>Region</span>
+                <select value={region} onChange={(e) => setRegion(e.target.value)} className={field}>
+                  {Object.keys(FIRST).map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+                {(
+                  [
+                    ['full', 'Full name'],
+                    ['first', 'First only'],
+                    ['last', 'Surname only'],
+                  ] as const
+                ).map(([id, text]) => (
+                  <button
+                    key={id}
+                    onClick={() => setPart(id)}
+                    aria-pressed={part === id}
+                    className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
+                      part === id ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                    }`}
+                  >
+                    {text}
+                  </button>
                 ))}
-              </select>
-            </label>
-            <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-              {(
-                [
-                  ['full', 'Full name'],
-                  ['first', 'First only'],
-                  ['last', 'Surname only'],
-                ] as const
-              ).map(([id, text]) => (
-                <button
-                  key={id}
-                  onClick={() => setPart(id)}
-                  aria-pressed={part === id}
-                  className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-                    part === id ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                  }`}
-                >
-                  {text}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+              </div>
+            </>
+          )}
 
-        {mode === 'business' && (
+          {mode === 'business' && (
+            <label className="block text-sm">
+              <span className={label}>Word to build on, if you have one</span>
+              <input
+                value={seed}
+                onChange={(e) => setSeed(e.target.value)}
+                placeholder="Leave empty for anything"
+                className={field + ' w-64'}
+              />
+            </label>
+          )}
+
+          {mode === 'fantasy' && (
+            <>
+              <label className="block text-sm">
+                <span className={label}>Flavour</span>
+                <select
+                  value={flavour}
+                  onChange={(e) => setFlavour(e.target.value as Flavour)}
+                  className={field}
+                >
+                  <option value="soft">Elvish, soft</option>
+                  <option value="harsh">Orcish, harsh</option>
+                  <option value="place">Places and holds</option>
+                </select>
+              </label>
+              <label className="flex items-center gap-2 pb-3 text-sm text-ink-soft">
+                <input
+                  type="checkbox"
+                  checked={long}
+                  onChange={(e) => setLong(e.target.checked)}
+                  className="size-4 accent-[var(--accent)]"
+                />
+                Longer names
+              </label>
+            </>
+          )}
+
           <label className="block text-sm">
-            <span className={label}>Word to build on, if you have one</span>
+            <span className={label}>How many</span>
             <input
-              value={seed}
-              onChange={(e) => setSeed(e.target.value)}
-              placeholder="Leave empty for anything"
-              className={field + ' w-64'}
+              type="number"
+              min={1}
+              max={500}
+              value={count}
+              onChange={(e) => setCount(Math.min(500, Math.max(1, Number(e.target.value) || 1)))}
+              className={field + ' w-24 tabular-nums'}
             />
           </label>
-        )}
 
-        {mode === 'fantasy' && (
-          <>
-            <label className="block text-sm">
-              <span className={label}>Flavour</span>
-              <select
-                value={flavour}
-                onChange={(e) => setFlavour(e.target.value as Flavour)}
-                className={field}
-              >
-                <option value="soft">Elvish, soft</option>
-                <option value="harsh">Orcish, harsh</option>
-                <option value="place">Places and holds</option>
-              </select>
-            </label>
-            <label className="flex items-center gap-2 pb-3 text-sm text-ink-soft">
-              <input
-                type="checkbox"
-                checked={long}
-                onChange={(e) => setLong(e.target.checked)}
-                className="size-4 accent-[var(--accent)]"
-              />
-              Longer names
-            </label>
-          </>
-        )}
-
-        <label className="block text-sm">
-          <span className={label}>How many</span>
-          <input
-            type="number"
-            min={1}
-            max={500}
-            value={count}
-            onChange={(e) => setCount(Math.min(500, Math.max(1, Number(e.target.value) || 1)))}
-            className={field + ' w-24 tabular-nums'}
-          />
-        </label>
-
-        <button
-          onClick={generate}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink"
-        >
-          Generate
-        </button>
-      </div>
-
+          <button
+            onClick={generate}
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink"
+          >
+            Generate
+          </button>
+        </>
+      }
+    >
       <div className="mt-6">
         <div className="flex items-center justify-between gap-3">
           <span className={label}>
@@ -285,7 +288,6 @@ export default function NameGenerator({ mode }: { mode: Mode }) {
           ))}
         </ul>
       </div>
-
-    </div>
+    </ToolLayout>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Placeholder text, in the amount asked for.
@@ -74,50 +75,52 @@ export default function LoremIpsum() {
   const text = useMemo(() => build(unit, count, classic), [unit, count, classic]);
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-4">
-        <label className="block text-sm">
-          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            How many
-          </span>
-          <input
-            type="number"
-            min={1}
-            max={200}
-            value={count}
-            onChange={(e) => setCount(Math.min(Math.max(Number(e.target.value) || 1, 1), 200))}
-            className="mt-2 w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
-          />
-        </label>
-
-        <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-          {(['paragraphs', 'sentences', 'words'] as Unit[]).map((u) => (
-            <button
-              key={u}
-              onClick={() => setUnit(u)}
-              aria-pressed={unit === u}
-              className={`rounded-md px-3 py-1.5 font-medium capitalize transition-colors ${
-                unit === u ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-              }`}
-            >
-              {u}
-            </button>
-          ))}
-        </div>
-
-        {unit === 'paragraphs' && (
-          <label className="flex items-center gap-2 text-sm text-ink-soft">
+    <ToolLayout
+      settings={
+        <>
+          <label className="block text-sm">
+            <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              How many
+            </span>
             <input
-              type="checkbox"
-              checked={classic}
-              onChange={(e) => setClassic(e.target.checked)}
-              className="size-4 accent-[var(--accent)]"
+              type="number"
+              min={1}
+              max={200}
+              value={count}
+              onChange={(e) => setCount(Math.min(Math.max(Number(e.target.value) || 1, 1), 200))}
+              className="mt-2 w-28 rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
             />
-            Start with the usual line
           </label>
-        )}
-      </div>
 
+          <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+            {(['paragraphs', 'sentences', 'words'] as Unit[]).map((u) => (
+              <button
+                key={u}
+                onClick={() => setUnit(u)}
+                aria-pressed={unit === u}
+                className={`rounded-md px-3 py-1.5 font-medium capitalize transition-colors ${
+                  unit === u ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                }`}
+              >
+                {u}
+              </button>
+            ))}
+          </div>
+
+          {unit === 'paragraphs' && (
+            <label className="flex items-center gap-2 text-sm text-ink-soft">
+              <input
+                type="checkbox"
+                checked={classic}
+                onChange={(e) => setClassic(e.target.checked)}
+                className="size-4 accent-[var(--accent)]"
+              />
+              Start with the usual line
+            </label>
+          )}
+        </>
+      }
+    >
       <div className="mt-6">
         <div className="flex items-center justify-between gap-3">
           <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
@@ -144,6 +147,6 @@ export default function LoremIpsum() {
           {text.trim().split(/\s+/).length} words, {text.length} characters
         </p>
       </div>
-    </div>
+    </ToolLayout>
   );
 }
