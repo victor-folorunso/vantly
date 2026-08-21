@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
+import FilePreview from '@/components/FilePreview';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
@@ -156,99 +158,106 @@ export default function PdfCompress() {
   const saved = outUrl && outSize > 0 ? Math.round((1 - outSize / file.size) * 100) : null;
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">{file.name}</p>
-          <p className="text-xs tabular-nums text-ink-faint">{formatBytes(file.size)}</p>
-        </div>
-        <button
-          onClick={() => { setFile(null); setOutUrl(null); }}
-          className="text-sm text-ink-faint underline underline-offset-4"
-        >
-          Use another PDF
-        </button>
-      </div>
+    <ToolLayout
+      settings={
+        <>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {(
+              [
+                ['tidy', 'Tidy up', 'Lossless. Text stays text. Smaller savings.'],
+                ['flatten', 'Flatten to pictures', 'Much smaller. Text stops being text.'],
+              ] as [Method, string, string][]
+            ).map(([id, title, note]) => (
+              <button
+                key={id}
+                onClick={() => { setMethod(id); setOutUrl(null); }}
+                aria-pressed={method === id}
+                className={`rounded-xl border p-4 text-left transition-colors ${
+                  method === id ? 'border-accent bg-accent-soft' : 'border-line bg-surface hover:border-accent'
+                }`}
+              >
+                <p className="font-semibold">{title}</p>
+                <p className="mt-1 text-sm text-ink-soft">{note}</p>
+              </button>
+            ))}
+          </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        {(
-          [
-            ['tidy', 'Tidy up', 'Lossless. Text stays text. Smaller savings.'],
-            ['flatten', 'Flatten to pictures', 'Much smaller. Text stops being text.'],
-          ] as [Method, string, string][]
-        ).map(([id, title, note]) => (
+          {method === 'flatten' && (
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Picture quality
+                  <span className="tabular-nums text-ink-faint">{Math.round(quality * 100)}%</span>
+                </span>
+                <input
+                  type="range"
+                  min={30}
+                  max={95}
+                  value={Math.round(quality * 100)}
+                  onChange={(e) => { setQuality(Number(e.target.value) / 100); setOutUrl(null); }}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Resolution
+                  <span className="tabular-nums text-ink-faint">{Math.round(scale * 72)} dpi</span>
+                </span>
+                <input
+                  type="range"
+                  min={72}
+                  max={288}
+                  step={36}
+                  value={Math.round(scale * 72)}
+                  onChange={(e) => { setScale(Number(e.target.value) / 72); setOutUrl(null); }}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+            </div>
+          )}
+
           <button
-            key={id}
-            onClick={() => { setMethod(id); setOutUrl(null); }}
-            aria-pressed={method === id}
-            className={`rounded-xl border p-4 text-left transition-colors ${
-              method === id ? 'border-accent bg-accent-soft' : 'border-line bg-surface hover:border-accent'
-            }`}
+            onClick={() => void run()}
+            disabled={busy !== null}
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
           >
-            <p className="font-semibold">{title}</p>
-            <p className="mt-1 text-sm text-ink-soft">{note}</p>
+            {busy ?? 'Compress'}
           </button>
-        ))}
-      </div>
-
-      {method === 'flatten' && (
-        <div className="mt-5 grid gap-5 sm:grid-cols-2">
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Picture quality
-              <span className="tabular-nums text-ink-faint">{Math.round(quality * 100)}%</span>
-            </span>
-            <input
-              type="range"
-              min={30}
-              max={95}
-              value={Math.round(quality * 100)}
-              onChange={(e) => { setQuality(Number(e.target.value) / 100); setOutUrl(null); }}
-              className="mt-1.5 w-full accent-[var(--accent)]"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Resolution
-              <span className="tabular-nums text-ink-faint">{Math.round(scale * 72)} dpi</span>
-            </span>
-            <input
-              type="range"
-              min={72}
-              max={288}
-              step={36}
-              value={Math.round(scale * 72)}
-              onChange={(e) => { setScale(Number(e.target.value) / 72); setOutUrl(null); }}
-              className="mt-1.5 w-full accent-[var(--accent)]"
-            />
-          </label>
-        </div>
-      )}
-
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <button
-          onClick={() => void run()}
-          disabled={busy !== null}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {busy ?? 'Compress'}
-        </button>
-        {outUrl && (
-          <>
-            <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-smaller.pdf'} variant="quiet">
-              Download, {formatBytes(outSize)}
-            </DownloadButton>
-            <p className="text-sm tabular-nums text-ink-soft">
-              {saved !== null && saved > 0
-                ? `${saved}% smaller`
-                : 'Already about as small as it goes'}
-            </p>
-          </>
-        )}
-      </div>
-
-
+        </>
+      }
+      status={
+        <>
+          <span className="font-medium">{file.name}</span>
+          <span className="ml-2 tabular-nums text-ink-faint">{formatBytes(file.size)}</span>
+        </>
+      }
+      actions={
+        <>
+          {outUrl && (
+            <>
+              <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-smaller.pdf'} variant="quiet">
+                Download, {formatBytes(outSize)}
+              </DownloadButton>
+              <p className="text-sm tabular-nums text-ink-soft">
+                {saved !== null && saved > 0
+                  ? `${saved}% smaller`
+                  : 'Already about as small as it goes'}
+              </p>
+            </>
+          )}
+          <button
+            onClick={() => { setFile(null); setOutUrl(null); }}
+            className="text-sm text-ink-faint underline underline-offset-4"
+          >
+            Use another PDF
+          </button>
+        </>
+      }
+    >
+      {/* The first page, so it is obvious which document is about to be
+          squashed. Without it the right hand side holds nothing at all. */}
+      <FilePreview file={file} />
       {error && <p className="mt-4 text-sm text-accent">{error}</p>}
-    </div>
+    </ToolLayout>
   );
 }

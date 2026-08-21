@@ -198,8 +198,8 @@ export default function PdfSign() {
         </button>
       </div>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
-        <div>
+      <div className="mt-6 grid items-start gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
+        <div className="order-1 min-w-0 lg:order-2">
           <span className={label}>Your signature</span>
           {uploaded ? (
             <div className="mt-2 flex items-center gap-4 rounded-xl border border-line bg-surface p-4">
@@ -250,7 +250,7 @@ export default function PdfSign() {
           />
         </div>
 
-        <div className="space-y-5">
+        <div className="order-2 space-y-5 rounded-2xl border border-line bg-surface p-5 shadow-sm lg:order-1 lg:sticky lg:top-20">
           <label className="block text-sm">
             <span className={label}>Page</span>
             <input
