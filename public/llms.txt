@@ -38,6 +38,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Domain name checker](https://vantly.xyz/domain-name-checker): Check whether a domain is registered across com, net, org, io, xyz and more, asking the registries directly.
 - [Domain name generator](https://vantly.xyz/domain-name-generator): Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.
 - [Tonic solfa converter](https://vantly.xyz/tonic-solfa-converter): Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.
+- [Video to MP3](https://vantly.xyz/video-to-mp3): Pull the audio out of a video file and save it as an MP3, choosing the quality.
 - [Typing speed test](https://vantly.xyz/typing-speed-test): Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
@@ -48,6 +49,8 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Base64 encoder](https://vantly.xyz/base64): Encode text or files to Base64 and decode them back, including data URIs for images. Runs in your browser.
 - [URL encoder](https://vantly.xyz/url-encoder): Percent-encode and decode URLs and query strings, with the component and full-URL rules handled separately.
 - [Markdown preview](https://vantly.xyz/markdown-preview): Write markdown with a live preview and export the result as HTML. Runs in your browser with nothing stored.
+- [Audio trimmer](https://vantly.xyz/audio-trimmer): Cut and trim audio in your browser. Drag the handles, hear the result, export it.
+- [Video compressor](https://vantly.xyz/video-compressor): Reduce video file size in your browser. Choose the quality and watch the size estimate.
 - [Subtitle shifter](https://vantly.xyz/srt-shifter): Move every subtitle in an SRT file forward or back by a set number of seconds. Runs in your browser.
 - [JSON formatter](https://vantly.xyz/json-formatter): Format, minify and validate JSON in your browser. Points at the exact position of a syntax error rather than only saying it is invalid.
 - [XML formatter](https://vantly.xyz/xml-formatter): Format, indent and validate XML in your browser.
@@ -109,6 +112,10 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Image to text](https://vantly.xyz/image-to-text): Read the text in a photo, screenshot or scan and get it back as text you can copy.
 - [Merge images](https://vantly.xyz/merge-images): Combine several images into a single picture, side by side or stacked, with the spacing you choose.
 - [Watermark an image](https://vantly.xyz/add-watermark-image): Add text or a logo to your images, positioned and faded how you like, across a whole batch at once.
+- [MP4 to GIF](https://vantly.xyz/mp4-to-gif): Turn a clip into a looping GIF. Trim it, set the frame rate, and keep the file small enough to send.
+- [Convert to audio](https://vantly.xyz/convert-to-audio): Extract the audio from a video, or convert between MP3, WAV, M4A and OGG.
+- [Convert video](https://vantly.xyz/convert-to-video): Convert video to MP4, WebM or MOV, choosing the quality and size.
+- [Compress video](https://vantly.xyz/compress-video): Reduce a video file size, choosing quality against size and seeing the result before you save it.
 - [PDF OCR](https://vantly.xyz/pdf-ocr): Read the text in a scanned PDF and put it back into the file, so it can be searched, selected and copied.
 - [Sign PDF](https://vantly.xyz/sign-pdf): Draw, type or upload a signature and place it on a PDF.
 - [Fill a PDF form](https://vantly.xyz/fill-pdf): Type into a PDF form, tick the boxes and save it, without printing anything.
@@ -181,6 +188,28 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [YAML to CSV](https://vantly.xyz/yaml-to-csv): Convert a YAML file to CSV in the browser, in bulk.
 - [TSV to CSV](https://vantly.xyz/tsv-to-csv): Convert a tab separated file to CSV in the browser, in bulk.
 - [TSV to JSON](https://vantly.xyz/tsv-to-json): Convert a tab separated file to JSON in the browser, in bulk.
+- [MP4 to MP3](https://vantly.xyz/mp4-to-mp3): Convert an MP4 video to MP3 in the browser, in bulk.
+- [MP4 to WebM](https://vantly.xyz/mp4-to-webm): Convert an MP4 video to WebM in the browser, in bulk.
+- [MP4 to Animated GIF](https://vantly.xyz/mp4-to-gifv): Convert an MP4 video to Animated GIF in the browser, in bulk.
+- [MP4 to WAV](https://vantly.xyz/mp4-to-wav): Convert an MP4 video to WAV in the browser, in bulk.
+- [MOV to MP4](https://vantly.xyz/mov-to-mp4): Convert a QuickTime video to MP4 in the browser, in bulk.
+- [MOV to WebM](https://vantly.xyz/mov-to-webm): Convert a QuickTime video to WebM in the browser, in bulk.
+- [MOV to Animated GIF](https://vantly.xyz/mov-to-gifv): Convert a QuickTime video to Animated GIF in the browser, in bulk.
+- [WebM to MP4](https://vantly.xyz/webm-to-mp4): Convert a WebM video to MP4 in the browser, in bulk.
+- [WebM to MP3](https://vantly.xyz/webm-to-mp3): Convert a WebM video to MP3 in the browser, in bulk.
+- [WebM to Animated GIF](https://vantly.xyz/webm-to-gifv): Convert a WebM video to Animated GIF in the browser, in bulk.
+- [Animated GIF to MP4](https://vantly.xyz/gifv-to-mp4): Convert an animated GIF to MP4 in the browser, in bulk.
+- [Animated GIF to WebM](https://vantly.xyz/gifv-to-webm): Convert an animated GIF to WebM in the browser, in bulk.
+- [MP3 to WAV](https://vantly.xyz/mp3-to-wav): Convert an MP3 audio to WAV in the browser, in bulk.
+- [MP3 to OGG](https://vantly.xyz/mp3-to-ogg): Convert an MP3 audio to OGG in the browser, in bulk.
+- [MP3 to M4A](https://vantly.xyz/mp3-to-m4a): Convert an MP3 audio to M4A in the browser, in bulk.
+- [WAV to MP3](https://vantly.xyz/wav-to-mp3): Convert a WAV audio to MP3 in the browser, in bulk.
+- [WAV to OGG](https://vantly.xyz/wav-to-ogg): Convert a WAV audio to OGG in the browser, in bulk.
+- [WAV to M4A](https://vantly.xyz/wav-to-m4a): Convert a WAV audio to M4A in the browser, in bulk.
+- [M4A to MP3](https://vantly.xyz/m4a-to-mp3): Convert a M4A audio to MP3 in the browser, in bulk.
+- [M4A to WAV](https://vantly.xyz/m4a-to-wav): Convert a M4A audio to WAV in the browser, in bulk.
+- [OGG to MP3](https://vantly.xyz/ogg-to-mp3): Convert an OGG audio to MP3 in the browser, in bulk.
+- [OGG to WAV](https://vantly.xyz/ogg-to-wav): Convert an OGG audio to WAV in the browser, in bulk.
 
 ## Known limits
 

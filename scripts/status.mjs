@@ -21,7 +21,8 @@ const root = join(here, '..');
 const load = (rel) => import(pathToFileURL(join(root, rel)).href);
 
 const { TOOLS, CATEGORIES } = await load('src/lib/site.ts');
-const { CONVERSIONS, canvasHandles, dataHandles, docHandles } = await load('src/lib/conversions.ts');
+const { CONVERSIONS, canvasHandles, dataHandles, docHandles, mediaHandles } =
+  await load('src/lib/conversions.ts');
 
 const tick = (live) => (live ? 'x' : ' ');
 
@@ -88,10 +89,17 @@ console.log(`STATUS.md written. ${done}/${total} done.`);
  */
 const missing = [
   ...TOOLS.filter((t) => t.live).map((t) => t.slug),
-  // Canvas and data pairs are served by src/app/[slug], so they are live with
-  // no folder of their own and are exempt from the folder check.
+  // Pairs served by src/app/[slug] are live with no folder of their own, so
+  // they are exempt. This list has to match the one in that file's
+  // generateStaticParams: a handler added there and not here fails the build,
+  // and a handler added here and not there ships a 404, which is worse.
   ...CONVERSIONS.filter(
-    (c) => c.live && !canvasHandles(c) && !dataHandles(c) && !docHandles(c),
+    (c) =>
+      c.live &&
+      !canvasHandles(c) &&
+      !dataHandles(c) &&
+      !docHandles(c) &&
+      !mediaHandles(c),
   ).map((c) => c.slug),
 ].filter((slug, i, all) => all.indexOf(slug) === i)
   .filter((slug) => !existsSync(join(root, 'src/app', slug, 'page.tsx')));

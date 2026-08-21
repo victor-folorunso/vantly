@@ -6,6 +6,7 @@ import {
   CONVERSIONS,
   dataHandles,
   docHandles,
+  mediaHandles,
   CONVERSION_BY_SLUG,
   conversionTitle,
   conversionDescription,
@@ -17,6 +18,7 @@ import {
 import DataConvert, { type Format as DataFormat } from '@/components/DataConvert';
 import DocConvert, { type DocFormat } from '@/components/DocConvert';
 import ImageConvert from '@/components/ImageConvert';
+import MediaConvert, { type Target as MediaTarget } from '@/components/MediaConvert';
 
 /**
  * Everything that does not have its own folder yet: unbuilt tools and every
@@ -40,7 +42,7 @@ export function generateStaticParams() {
     // Canvas pairs are live and still belong here: they are served by this file
     // rather than by a folder of their own, so a new raster pair costs nothing.
     ...CONVERSIONS.filter(
-      (c) => !c.live || canvasHandles(c) || dataHandles(c) || docHandles(c),
+      (c) => !c.live || canvasHandles(c) || dataHandles(c) || docHandles(c) || mediaHandles(c),
     ).map((c) => ({ slug: c.slug })),
   ];
 }
@@ -94,6 +96,53 @@ export default async function Page({ params }: Params) {
         <div className="mt-10">
           <DocConvert from={conversion.from.id as DocFormat} to={conversion.to.id as DocFormat} />
         </div>
+        {related.length > 0 && (
+          <Related
+            heading={`Other ${conversion.from.label} conversions`}
+            items={related.map((c) => ({
+              slug: c.slug,
+              label: `${c.from.label} to ${c.to.label}`,
+            }))}
+          />
+        )}
+      </div>
+    );
+  }
+
+  if (conversion && mediaHandles(conversion)) {
+    const related = relatedConversions(conversion, 14);
+    /* gifv is not a real container. It is a short silent video that sites show
+       where a GIF would once have gone, so it is produced as MP4. */
+    const target = (conversion.to.id === 'gifv' ? 'mp4' : conversion.to.id) as MediaTarget;
+    const source = (['mp3', 'wav', 'ogg', 'm4a'] as string[]).includes(conversion.from.id)
+      ? 'audio'
+      : 'video';
+
+    return (
+      <div className="mx-auto w-full max-w-6xl px-5 py-12">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: conversionTitle(conversion),
+              applicationCategory: 'MultimediaApplication',
+              operatingSystem: 'Any, runs in a web browser',
+              url: `${SITE.url}/${slug}`,
+              description: conversionDescription(conversion),
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            }),
+          }}
+        />
+        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
+          {conversionTitle(conversion)}
+        </h1>
+
+        <div className="mt-10">
+          <MediaConvert to={target} source={source} />
+        </div>
+
         {related.length > 0 && (
           <Related
             heading={`Other ${conversion.from.label} conversions`}

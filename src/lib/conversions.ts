@@ -166,6 +166,34 @@ export function dataHandles(c: { from: Format; to: Format }): boolean {
 const DOC_SOURCES = ['docx', 'md', 'html', 'txt'] as const;
 const DOC_TARGETS = ['pdf', 'docx', 'md', 'html', 'txt'] as const;
 
+/**
+ * Audio and video pairs, which ffmpeg handles in the browser.
+ *
+ * Sound cannot be turned into a picture, so an audio source only reaches an
+ * audio target. Going the other way is fine: a video always has a soundtrack
+ * to take. Making a video out of an audio file is a real thing people want,
+ * but it needs a picture supplied as well, so it is a tool of its own rather
+ * than a conversion pair.
+ */
+const MEDIA_AUDIO = ['mp3', 'wav', 'ogg', 'm4a'] as const;
+const MEDIA_VIDEO = ['mp4', 'mov', 'webm', 'gifv'] as const;
+
+/** Pairs with a hand written page already, left alone by the catch-all. */
+const MEDIA_HAS_OWN_ROUTE = ['mp4-to-gif'];
+
+export function mediaHandles(c: { from: Format; to: Format }): boolean {
+  const fromAudio = (MEDIA_AUDIO as readonly string[]).includes(c.from.id);
+  const fromVideo = (MEDIA_VIDEO as readonly string[]).includes(c.from.id);
+  const toAudio = (MEDIA_AUDIO as readonly string[]).includes(c.to.id);
+  const toVideo = (MEDIA_VIDEO as readonly string[]).includes(c.to.id);
+
+  if (c.from.id === c.to.id) return false;
+  if (MEDIA_HAS_OWN_ROUTE.includes(`${c.from.id}-to-${c.to.id}`)) return false;
+  if (fromAudio) return toAudio;
+  if (fromVideo) return toAudio || toVideo;
+  return false;
+}
+
 /** Pairs that already have a hand written page, so the catch-all leaves them alone. */
 const DOC_HAS_OWN_ROUTE = ['html-to-pdf'];
 
@@ -241,7 +269,8 @@ function build(): Conversion[] {
           HAND_BUILT.includes(slug) ||
           canvasHandles({ from, to }) ||
           dataHandles({ from, to }) ||
-          docHandles({ from, to }),
+          docHandles({ from, to }) ||
+          mediaHandles({ from, to }),
       });
     }
   }

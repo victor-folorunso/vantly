@@ -831,7 +831,7 @@ export const TOOLS: Tool[] = [
     title: 'Extract the audio from a video as MP3',
     description:
       'Pull the audio out of a video file and save it as an MP3, choosing the quality.',
-    live: false,
+    live: true,
   },
   {
     slug: 'mp3-to-video',
@@ -853,6 +853,27 @@ export const TOOLS: Tool[] = [
     description:
       'Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.',
     live: true,
+  },
+
+  {
+    slug: 'markdown-viewer',
+    name: 'Markdown viewer',
+    category: 'Text',
+    blurb: 'Open a markdown file and read it properly.',
+    title: 'Open and read a markdown file',
+    description:
+      'Open a README or any markdown file and read it rendered rather than raw, editing it live if you want to.',
+    live: false,
+  },
+  {
+    slug: 'html-viewer',
+    name: 'HTML viewer',
+    category: 'Text',
+    blurb: 'See what a page looks like, and change it as you look.',
+    title: 'View and edit HTML live',
+    description:
+      'Paste or open HTML and see it rendered next to the source, with edits appearing as you type.',
+    live: false,
   },
 
   {
@@ -969,7 +990,7 @@ export const TOOLS: Tool[] = [
     title: 'Trim an MP3 or audio file',
     description:
       'Cut and trim audio in your browser. Drag the handles, hear the result, export it.',
-    live: false,
+    live: true,
   },
   {
     slug: 'video-compressor',
@@ -979,7 +1000,7 @@ export const TOOLS: Tool[] = [
     title: 'Compress a video file',
     description:
       'Reduce video file size in your browser. Choose the quality and watch the size estimate.',
-    live: false,
+    live: true,
   },
   {
     slug: 'srt-shifter',
@@ -1635,7 +1656,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert MP4 video to GIF',
     description:
       'Turn a clip into a looping GIF. Trim it, set the frame rate, and keep the file small enough to send.',
-    live: false,
+    live: true,
   },
   {
     slug: 'convert-to-audio',
@@ -1645,7 +1666,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert video to audio',
     description:
       'Extract the audio from a video, or convert between MP3, WAV, M4A and OGG.',
-    live: false,
+    live: true,
   },
   {
     slug: 'convert-to-video',
@@ -1655,7 +1676,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert between video formats',
     description:
       'Convert video to MP4, WebM or MOV, choosing the quality and size.',
-    live: false,
+    live: true,
   },
   {
     slug: 'compress-video',
@@ -1665,7 +1686,7 @@ export const TOOLS: Tool[] = [
     title: 'Compress a video file',
     description:
       'Reduce a video file size, choosing quality against size and seeing the result before you save it.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-ocr',
