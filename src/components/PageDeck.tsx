@@ -58,8 +58,8 @@ export default function PageDeck({
       const to = from + delta;
       if (!onMove || to < 0 || to >= count) return;
       onMove(from, to);
-      // Follow the page that was moved, so pressing Later twice moves the same
-      // page twice rather than moving whichever page landed here.
+      // Follow the page that was moved, so pressing Move later twice moves
+      // the same page twice rather than whichever page landed here.
       setIndex(to);
     },
     [onMove, count],
@@ -111,7 +111,7 @@ export default function PageDeck({
           aria-label={`Move this ${noun} earlier`}
           className="rounded border border-line px-2 py-0.5 text-xs transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-40"
         >
-          &lsaquo; Earlier
+          &lsaquo; Move earlier
         </button>
         <button
           onClick={(e) => {
@@ -122,7 +122,7 @@ export default function PageDeck({
           aria-label={`Move this ${noun} later`}
           className="rounded border border-line px-2 py-0.5 text-xs transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-40"
         >
-          Later &rsaquo;
+          Move later &rsaquo;
         </button>
       </span>
     ) : null;
@@ -214,7 +214,14 @@ export default function PageDeck({
             </button>
           </div>
 
-          {onMove && <div className="mt-3 flex justify-center">{arrange(at)}</div>}
+          {onMove && (
+            <div className="mt-4 flex flex-col items-center gap-1.5 border-t border-line pt-4">
+              <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                Reorder this {noun}
+              </span>
+              {arrange(at)}
+            </div>
+          )}
         </div>
       )}
 
