@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSetting } from '@/lib/remember';
 import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
 
@@ -44,9 +45,9 @@ export default function PlaceholderImage({
   const [width, setWidth] = useState(initialWidth);
   const [height, setHeight] = useState(initialHeight);
   const [label, setLabel] = useState('');
-  const [palette, setPalette] = useState(0);
-  const [format, setFormat] = useState<'png' | 'jpg' | 'webp'>('png');
-  const [showGrid, setShowGrid] = useState(true);
+  const [palette, setPalette] = useSetting('placeholder', 'palette', 0);
+  const [format, setFormat] = useSetting<'png' | 'jpg' | 'webp'>('placeholder', 'format', 'png');
+  const [showGrid, setShowGrid] = useSetting('placeholder', 'grid', true);
   const [url, setUrl] = useState<string | null>(null);
   const [size, setSize] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

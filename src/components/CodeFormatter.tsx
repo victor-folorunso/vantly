@@ -3,6 +3,8 @@
 import { useCallback, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { LANGS, format, minify, type Lang } from '@/lib/code';
+import { useSetting, useDraft } from '@/lib/remember';
+import RestoredNotice from '@/components/RestoredNotice';
 
 /**
  * Formats and minifies code, using Prettier and Terser rather than a
@@ -42,11 +44,16 @@ export default function CodeFormatter({
   /** Minifier pages open on the minify action and say so in the button. */
   action?: 'format' | 'minify';
 }) {
-  const [lang, setLang] = useState<Lang>(initial);
-  const [input, setInput] = useState('');
+  /* The language and the indent are settings, so they come back quietly.
+     What you pasted is yours, so it comes back visibly, keyed per language:
+     switching to CSS should not hand you the JavaScript you left behind. */
+  const [lang, setLang] = useSetting<Lang>('formatter', 'lang', initial);
+  const [indent, setIndent] = useSetting<2 | 4 | 'tab'>('formatter', 'indent', 2);
+  const draft = useDraft<string>('formatter', `input-${lang}`, '');
+  const input = draft.value;
+  const setInput = draft.set;
   const [output, setOutput] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [indent, setIndent] = useState<2 | 4 | 'tab'>(2);
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
 
@@ -164,6 +171,9 @@ export default function CodeFormatter({
             placeholder={`Paste ${meta.label} here.`}
             className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
           />
+          {draft.restored && (
+            <RestoredNotice onClear={draft.clear} what={`the ${meta.label} you had here`} />
+          )}
         </div>
 
         <div>

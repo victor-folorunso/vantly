@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSetting } from '@/lib/remember';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
@@ -72,9 +73,9 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
   const [items, setItems] = useState<Item[]>([]);
   // Resizing keeps a visually lossless default; compressing lets you choose,
   // because trading quality for size is the entire point of that one.
-  const [quality, setQuality] = useState(mode === 'compress' ? 0.75 : 0.92);
-  const [longEdge, setLongEdge] = useState(mode === 'resize' ? 1920 : 0);
-  const [output, setOutput] = useState<OutputKey>(mode === 'compress' ? 'webp' : 'keep');
+  const [quality, setQuality] = useSetting(`image-${mode}`, 'quality', mode === 'compress' ? 0.75 : 0.92);
+  const [longEdge, setLongEdge] = useSetting(`image-${mode}`, 'longEdge', mode === 'resize' ? 1920 : 0);
+  const [output, setOutput] = useSetting<OutputKey>(`image-${mode}`, 'output', mode === 'compress' ? 'webp' : 'keep');
   const [running, setRunning] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [zipping, setZipping] = useState(false);

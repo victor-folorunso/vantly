@@ -75,12 +75,12 @@ export default function Page() {
                 <Rule />
                 {category}
               </h2>
-              <ul className="mt-2.5 grid gap-x-6 gap-y-1 sm:gap-y-0.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <ul className="mt-2.5 grid grid-cols-2 gap-x-4 gap-y-1 sm:gap-x-6 sm:gap-y-0.5 lg:grid-cols-3 xl:grid-cols-4">
                 {inCat.map((t) => (
                   <li key={t.slug}>
                     <Link
                       href={`/${t.slug}`}
-                      className={`block truncate py-2 text-sm transition-colors hover:text-accent sm:py-1 ${
+                      className={`block py-2 text-sm leading-snug transition-colors hover:text-accent sm:truncate sm:py-1 ${
                         t.live ? 'text-ink-soft' : 'text-ink-faint'
                       }`}
                     >
