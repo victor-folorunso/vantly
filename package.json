@@ -15,7 +15,6 @@
     "docs:check": "node --experimental-strip-types scripts/check-docs.mjs"
   },
   "dependencies": {
-    "@types/js-yaml": "^4.0.9",
     "diff": "^9.0.0",
     "gifenc": "^1.0.3",
     "gray-matter": "^4.0.3",
@@ -36,6 +35,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/js-beautify": "^1.14.3",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

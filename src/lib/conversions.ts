@@ -194,6 +194,8 @@ const HAND_BUILT = [
   // status report claim less was finished than actually was.
   'pdf-to-jpg',
   'pdf-to-png',
+  'url-encoder',
+  'html-to-pdf',
   'pdf-to-txt',
   'png-to-pdf',
   'jpg-to-pdf',

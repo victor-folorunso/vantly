@@ -32,6 +32,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      /* 48 first, and it is not decoration: Google's own guidance asks for a
+         square favicon whose size is a multiple of 48, and it picks the entry
+         nearest that. The 16 and 32 remain for browser tabs. */
+      { url: '/favicon-48.png', sizes: '48x48', type: 'image/png' },
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
       { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
     ],

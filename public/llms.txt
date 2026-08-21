@@ -143,6 +143,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Markdown to PDF](https://vantly.xyz/md-to-pdf): Convert a Markdown file to PDF in the browser, in bulk.
 - [Markdown to HTML](https://vantly.xyz/md-to-html): Convert a Markdown file to HTML in the browser, in bulk.
 - [Markdown to DOCX](https://vantly.xyz/md-to-docx): Convert a Markdown file to DOCX in the browser, in bulk.
+- [HTML to PDF](https://vantly.xyz/html-to-pdf): Convert an HTML page to PDF in the browser, in bulk.
 - [HTML to Markdown](https://vantly.xyz/html-to-md): Convert an HTML page to Markdown in the browser, in bulk.
 - [TXT to PDF](https://vantly.xyz/txt-to-pdf): Convert a plain text file to PDF in the browser, in bulk.
 - [CSV to JSON](https://vantly.xyz/csv-to-json): Convert a CSV spreadsheet to JSON in the browser, in bulk.
