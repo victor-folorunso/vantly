@@ -32,6 +32,11 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Placeholder 160x600](https://vantly.xyz/placeholder-160x600): A 160 by 600 placeholder, the wide skyscraper that runs down the side of a page.
 - [Placeholder 400x400](https://vantly.xyz/placeholder-400x400): A 400 by 400 square placeholder, the usual size for an avatar or a profile picture.
 - [Placeholder 1500x500](https://vantly.xyz/placeholder-1500x500): A 1500 by 500 placeholder, the header image across the top of an X profile.
+- [Random name generator](https://vantly.xyz/random-name-generator): Generate random names from a choice of regions, as first names, surnames or full names, one or a thousand at a time.
+- [Business name generator](https://vantly.xyz/business-name-generator): Generate business name ideas from a word you start with, or from nothing at all, in several naming styles.
+- [Fantasy name generator](https://vantly.xyz/fantasy-name-generator): Generate names for characters, places, guilds and creatures, built from syllable patterns rather than a fixed list.
+- [Domain name checker](https://vantly.xyz/domain-name-checker): Check whether a domain is registered across com, net, org, io, xyz and more, asking the registries directly.
+- [Domain name generator](https://vantly.xyz/domain-name-generator): Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.
 - [Tonic solfa converter](https://vantly.xyz/tonic-solfa-converter): Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.
 - [Typing speed test](https://vantly.xyz/typing-speed-test): Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.

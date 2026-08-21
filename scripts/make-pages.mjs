@@ -140,6 +140,18 @@ const PAGES = [
     sub: 'Code 128, EAN, UPC and the rest, checked as you type.' },
   { slug: 'typing-speed-test', component: 'TypingTest', props: '',
     sub: 'Words a minute over 15, 30, 60 or 120 seconds, with accuracy.' },
+
+  // Names and domains. The domain pair asks RDAP, which answers browsers.
+  { slug: 'random-name-generator', component: 'NameGenerator', props: 'mode="random"',
+    sub: 'First names, surnames or both, from a choice of regions.' },
+  { slug: 'business-name-generator', component: 'NameGenerator', props: 'mode="business"',
+    sub: 'Names for a company, from a word you start with or from nothing.' },
+  { slug: 'fantasy-name-generator', component: 'NameGenerator', props: 'mode="fantasy"',
+    sub: 'Built from syllables, so the supply does not run out.' },
+  { slug: 'domain-name-checker', component: 'DomainTools', props: 'mode="check"',
+    sub: 'Asks the registries themselves, not whether the name resolves.' },
+  { slug: 'domain-name-generator', component: 'DomainTools', props: 'mode="ideas"',
+    sub: 'Ideas from a seed word or from nothing, checked as they are made.' },
 ];
 
 const TPL = ({ slug, component, props, sub }) => `import type { Metadata } from 'next';

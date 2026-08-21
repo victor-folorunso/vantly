@@ -751,7 +751,7 @@ export const TOOLS: Tool[] = [
     title: 'Random name generator',
     description:
       'Generate random names from a choice of regions, as first names, surnames or full names, one or a thousand at a time.',
-    live: false,
+    live: true,
   },
   {
     slug: 'business-name-generator',
@@ -761,7 +761,7 @@ export const TOOLS: Tool[] = [
     title: 'Business name generator',
     description:
       'Generate business name ideas from a word you start with, or from nothing at all, in several naming styles.',
-    live: false,
+    live: true,
   },
   {
     slug: 'fantasy-name-generator',
@@ -771,7 +771,7 @@ export const TOOLS: Tool[] = [
     title: 'Fantasy name generator',
     description:
       'Generate names for characters, places, guilds and creatures, built from syllable patterns rather than a fixed list.',
-    live: false,
+    live: true,
   },
   {
     slug: 'address-generator',
@@ -791,7 +791,7 @@ export const TOOLS: Tool[] = [
     title: 'Check whether a domain name is available',
     description:
       'Check whether a domain is registered across com, net, org, io, xyz and more, asking the registries directly.',
-    live: false,
+    live: true,
   },
   {
     slug: 'domain-name-generator',
@@ -801,7 +801,7 @@ export const TOOLS: Tool[] = [
     title: 'Domain name idea generator',
     description:
       'Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.',
-    live: false,
+    live: true,
   },
   {
     slug: 'tonic-solfa-converter',
