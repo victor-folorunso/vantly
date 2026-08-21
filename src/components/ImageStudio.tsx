@@ -200,142 +200,8 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
   const pct = originalTotal ? Math.round((1 - newTotal / originalTotal) * 100) : 0;
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDragging(true);
-        }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDragging(false);
-          add(e.dataTransfer.files);
-        }}
-        className={`rounded-2xl border-2 border-dashed transition-colors ${
-          dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
-        } ${items.length ? 'p-5' : 'flex min-h-[300px] flex-col items-center justify-center p-8 text-center'}`}
-      >
-        {items.length === 0 ? (
-          <>
-            <p className="text-lg font-medium">Drop your images here</p>
-            <p className="mt-1 text-sm text-ink-soft">
-              JPG, PNG, WebP, AVIF, GIF or BMP. Nothing is uploaded.
-            </p>
-            <button
-              onClick={() => inputRef.current?.click()}
-              className="mt-5 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-ink"
-            >
-              Choose images
-            </button>
-          </>
-        ) : (
-          <>
-            <div className="flex items-center justify-between gap-4">
-              <p className="text-sm tabular-nums text-ink-soft">
-                {items.length} image{items.length === 1 ? '' : 's'}
-                {doneItems.length > 0 && `, ${doneItems.length} done`}
-              </p>
-              <div className="flex gap-3 text-sm">
-                <button
-                  onClick={() => inputRef.current?.click()}
-                  className="text-accent underline underline-offset-4"
-                >
-                  Add more
-                </button>
-                <button
-                  onClick={() => {
-                    items.forEach((i) => i.url && URL.revokeObjectURL(i.url));
-                    setItems([]);
-                  }}
-                  className="text-ink-faint underline underline-offset-4"
-                >
-                  Clear
-                </button>
-              </div>
-            </div>
-
-            <ul className="mt-4 divide-y divide-line">
-              {items.map((i) => {
-                const saved = i.bytes != null ? i.file.size - i.bytes : 0;
-                return (
-                  <li key={i.id} className="flex items-center gap-3 py-2.5">
-                    <div className="grid size-10 shrink-0 place-items-center overflow-hidden rounded bg-surface-alt">
-                      {i.url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={i.url} alt="" className="size-full object-cover" />
-                      ) : (
-                        <span className="text-[10px] uppercase text-ink-faint">
-                          {i.file.name.split('.').pop()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm">{i.file.name}</p>
-                      <p className="text-xs tabular-nums text-ink-faint">
-                        {i.status === 'working' && 'Working…'}
-                        {i.status === 'waiting' && formatBytes(i.file.size)}
-                        {i.status === 'done' && (
-                          <>
-                            {i.srcW}×{i.srcH}
-                            {i.outW !== i.srcW && ` → ${i.outW}×${i.outH}`} ·{' '}
-                            {formatBytes(i.file.size)} → {formatBytes(i.bytes ?? 0)}
-                            {/* Asking for a longer edge than the image already
-                                has does nothing, since it is never enlarged.
-                                Without this the tool looks broken: you set a
-                                size, pressed the button, and the dimensions did
-                                not move. */}
-                            {longEdge > 0 &&
-                              i.outW === i.srcW &&
-                              Math.max(i.srcW ?? 0, i.srcH ?? 0) <= longEdge &&
-                              ` · already under ${longEdge}px`}
-                          </>
-                        )}
-                        {i.status === 'failed' && (i.error ?? 'Failed')}
-                      </p>
-                    </div>
-                    {i.status === 'done' && saved < 0 && (
-                      <span
-                        title="This came out larger than the original"
-                        className="shrink-0 text-xs text-ink-faint"
-                      >
-                        larger
-                      </span>
-                    )}
-                    {i.status === 'done' && i.url && (
-                      <a
-                        href={i.url}
-                        download={
-                          i.file.name.replace(/\.[^.]+$/, '') +
-                          '.' +
-                          extensionFor(OUTPUT[output].mime ?? i.file.type)
-                        }
-                        className="shrink-0 text-sm text-accent underline underline-offset-4"
-                      >
-                        Save
-                      </a>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </>
-        )}
-
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          className="sr-only"
-          onChange={(e) => {
-            if (e.target.files) add(e.target.files);
-            e.target.value = '';
-          }}
-        />
-      </div>
-
-      <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+    <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="order-2 rounded-2xl border border-line bg-surface p-5 shadow-sm lg:order-1 lg:sticky lg:top-20">
         <fieldset disabled={running}>
           <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
             {mode === 'resize' ? 'Longest edge' : 'Also shrink to'}
@@ -427,22 +293,158 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
             : `${mode === 'resize' ? 'Resize' : 'Compress'} ${pendingCount || ''}`.trim()}
         </button>
 
-        {doneItems.length > 1 && (
-          <button
-            onClick={() => void downloadZip()}
-            disabled={zipping}
-            className="mt-3 w-full rounded-lg border border-accent px-4 py-2 text-sm font-semibold text-accent disabled:opacity-60"
-          >
-            {zipping ? 'Building zip…' : `Download all ${doneItems.length} as a zip`}
-          </button>
+      </div>
+
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragging(false);
+          add(e.dataTransfer.files);
+        }}
+        className={`order-1 rounded-2xl border-2 border-dashed transition-colors lg:order-2 ${
+          dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
+        } ${items.length ? 'p-5' : 'flex min-h-[300px] flex-col items-center justify-center p-8 text-center'}`}
+      >
+        {items.length === 0 ? (
+          <>
+            <p className="text-lg font-medium">Drop your images here</p>
+            <p className="mt-1 text-sm text-ink-soft">
+              JPG, PNG, WebP, AVIF, GIF or BMP. Nothing is uploaded.
+            </p>
+            <button
+              onClick={() => inputRef.current?.click()}
+              className="mt-5 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-ink"
+            >
+              Choose images
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-sm tabular-nums text-ink-soft">
+                {items.length} image{items.length === 1 ? '' : 's'}
+                {doneItems.length > 0 && `, ${doneItems.length} done`}
+              </p>
+              {/* Getting the result out is the last thing anybody does, so
+                  it sits on the right where the eye finishes, rather than back
+                  in the panel the settings live in. */}
+              <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm">
+                {doneItems.length > 0 && (
+                  <span className="tabular-nums text-ink-faint">
+                    {formatBytes(originalTotal)} → {formatBytes(newTotal)}
+                    {pct > 0 ? `, ${pct}% smaller` : pct < 0 ? `, ${-pct}% larger` : ''}
+                  </span>
+                )}
+                <button
+                  onClick={() => inputRef.current?.click()}
+                  className="text-accent underline underline-offset-4"
+                >
+                  Add more
+                </button>
+                <button
+                  onClick={() => {
+                    items.forEach((i) => i.url && URL.revokeObjectURL(i.url));
+                    setItems([]);
+                  }}
+                  className="text-ink-faint underline underline-offset-4"
+                >
+                  Clear
+                </button>
+                {doneItems.length > 1 && (
+                  <button
+                    onClick={() => void downloadZip()}
+                    disabled={zipping}
+                    className="rounded-lg bg-accent px-4 py-2 font-semibold text-accent-ink disabled:opacity-60"
+                  >
+                    {zipping ? 'Building zip…' : `Download ${doneItems.length} as a zip`}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <ul className="mt-4 divide-y divide-line">
+              {items.map((i) => {
+                const saved = i.bytes != null ? i.file.size - i.bytes : 0;
+                return (
+                  <li key={i.id} className="flex items-center gap-3 py-2.5">
+                    <div className="grid size-10 shrink-0 place-items-center overflow-hidden rounded bg-surface-alt">
+                      {i.url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={i.url} alt="" className="size-full object-cover" />
+                      ) : (
+                        <span className="text-[10px] uppercase text-ink-faint">
+                          {i.file.name.split('.').pop()}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm">{i.file.name}</p>
+                      <p className="text-xs tabular-nums text-ink-faint">
+                        {i.status === 'working' && 'Working…'}
+                        {i.status === 'waiting' && formatBytes(i.file.size)}
+                        {i.status === 'done' && (
+                          <>
+                            {i.srcW}×{i.srcH}
+                            {i.outW !== i.srcW && ` → ${i.outW}×${i.outH}`} ·{' '}
+                            {formatBytes(i.file.size)} → {formatBytes(i.bytes ?? 0)}
+                            {/* Asking for a longer edge than the image already
+                                has does nothing, since it is never enlarged.
+                                Without this the tool looks broken: you set a
+                                size, pressed the button, and the dimensions did
+                                not move. */}
+                            {longEdge > 0 &&
+                              i.outW === i.srcW &&
+                              Math.max(i.srcW ?? 0, i.srcH ?? 0) <= longEdge &&
+                              ` · already under ${longEdge}px`}
+                          </>
+                        )}
+                        {i.status === 'failed' && (i.error ?? 'Failed')}
+                      </p>
+                    </div>
+                    {i.status === 'done' && saved < 0 && (
+                      <span
+                        title="This came out larger than the original"
+                        className="shrink-0 text-xs text-ink-faint"
+                      >
+                        larger
+                      </span>
+                    )}
+                    {i.status === 'done' && i.url && (
+                      <a
+                        href={i.url}
+                        download={
+                          i.file.name.replace(/\.[^.]+$/, '') +
+                          '.' +
+                          extensionFor(OUTPUT[output].mime ?? i.file.type)
+                        }
+                        className="shrink-0 text-sm text-accent underline underline-offset-4"
+                      >
+                        Save
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         )}
 
-        {doneItems.length > 0 && (
-          <p className="mt-3 text-center text-xs tabular-nums text-ink-faint">
-            {formatBytes(originalTotal)} → {formatBytes(newTotal)}
-            {pct > 0 ? `, ${pct}% smaller` : pct < 0 ? `, ${-pct}% larger` : ''}
-          </p>
-        )}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="sr-only"
+          onChange={(e) => {
+            if (e.target.files) add(e.target.files);
+            e.target.value = '';
+          }}
+        />
       </div>
     </div>
   );
