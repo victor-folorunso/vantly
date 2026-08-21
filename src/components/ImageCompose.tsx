@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
+import DownloadButton from '@/components/DownloadButton';
 
 /**
  * Joins images together, or stamps text across one.
@@ -222,225 +224,228 @@ export default function ImageCompose({ mode }: { mode: Mode }) {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-      <div className="space-y-5">
-        {mode === 'merge' ? (
-          <>
-            <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-              {(['down', 'across'] as const).map((d) => (
+    <ToolLayout
+      settings={
+        <>
+          {mode === 'merge' ? (
+            <>
+              <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+                {(['down', 'across'] as const).map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setDirection(d)}
+                    aria-pressed={direction === d}
+                    className={`rounded-md px-3 py-1.5 font-medium capitalize transition-colors ${
+                      direction === d ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                    }`}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Gap
+                  <span className="tabular-nums text-ink-faint">{gap}px</span>
+                </span>
+                <input
+                  type="range"
+                  min={0}
+                  max={120}
+                  value={gap}
+                  onChange={(e) => setGap(Number(e.target.value))}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+
+              {gap > 0 && (
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={background}
+                    onChange={(e) => setBackground(e.target.value)}
+                    className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
+                  />
+                  <span className="text-sm text-ink-soft">Gap colour</span>
+                </div>
+              )}
+
+              <div>
+                <span className={label}>{items.length} pictures</span>
+                <ul className="mt-2 space-y-1.5">
+                  {items.map((it, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm">
+                      <span className="min-w-0 flex-1 truncate">{it.name}</span>
+                      <button
+                        onClick={() =>
+                          setItems((prev) => {
+                            const next = [...prev];
+                            if (i === 0) return next;
+                            [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                            return next;
+                          })
+                        }
+                        disabled={i === 0}
+                        aria-label="Move up"
+                        className="rounded border border-line px-2 text-xs disabled:opacity-30"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        onClick={() =>
+                          setItems((prev) => {
+                            const next = [...prev];
+                            if (i === next.length - 1) return next;
+                            [next[i + 1], next[i]] = [next[i], next[i + 1]];
+                            return next;
+                          })
+                        }
+                        disabled={i === items.length - 1}
+                        aria-label="Move down"
+                        className="rounded border border-line px-2 text-xs disabled:opacity-30"
+                      >
+                        ↓
+                      </button>
+                      <button
+                        onClick={() => setItems((prev) => prev.filter((_, pi) => pi !== i))}
+                        aria-label="Remove"
+                        className="text-ink-faint hover:text-accent"
+                      >
+                        ×
+                      </button>
+                    </li>
+                  ))}
+                </ul>
                 <button
-                  key={d}
-                  onClick={() => setDirection(d)}
-                  aria-pressed={direction === d}
-                  className={`rounded-md px-3 py-1.5 font-medium capitalize transition-colors ${
-                    direction === d ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                  }`}
+                  onClick={() => inputRef.current?.click()}
+                  className="mt-3 text-sm text-accent underline underline-offset-4"
                 >
-                  {d}
+                  Add more
                 </button>
-              ))}
-            </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <label className="block text-sm">
+                <span className={label}>Text</span>
+                <input
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+                />
+              </label>
 
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Gap
-                <span className="tabular-nums text-ink-faint">{gap}px</span>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={120}
-                value={gap}
-                onChange={(e) => setGap(Number(e.target.value))}
-                className="mt-1.5 w-full accent-[var(--accent)]"
-              />
-            </label>
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Size
+                  <span className="tabular-nums text-ink-faint">{size}%</span>
+                </span>
+                <input
+                  type="range"
+                  min={1}
+                  max={20}
+                  value={size}
+                  onChange={(e) => setSize(Number(e.target.value))}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
 
-            {gap > 0 && (
+              <label className="block text-sm">
+                <span className="flex justify-between">
+                  Opacity
+                  <span className="tabular-nums text-ink-faint">{Math.round(opacity * 100)}%</span>
+                </span>
+                <input
+                  type="range"
+                  min={5}
+                  max={100}
+                  value={Math.round(opacity * 100)}
+                  onChange={(e) => setOpacity(Number(e.target.value) / 100)}
+                  className="mt-1.5 w-full accent-[var(--accent)]"
+                />
+              </label>
+
               <div className="flex items-center gap-3">
                 <input
                   type="color"
-                  value={background}
-                  onChange={(e) => setBackground(e.target.value)}
+                  value={colour}
+                  onChange={(e) => setColour(e.target.value)}
                   className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
                 />
-                <span className="text-sm text-ink-soft">Gap colour</span>
+                <span className="text-sm text-ink-soft">Colour</span>
               </div>
-            )}
 
-            <div>
-              <span className={label}>{items.length} pictures</span>
-              <ul className="mt-2 space-y-1.5">
-                {items.map((it, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm">
-                    <span className="min-w-0 flex-1 truncate">{it.name}</span>
-                    <button
-                      onClick={() =>
-                        setItems((prev) => {
-                          const next = [...prev];
-                          if (i === 0) return next;
-                          [next[i - 1], next[i]] = [next[i], next[i - 1]];
-                          return next;
-                        })
-                      }
-                      disabled={i === 0}
-                      aria-label="Move up"
-                      className="rounded border border-line px-2 text-xs disabled:opacity-30"
-                    >
-                      ↑
-                    </button>
-                    <button
-                      onClick={() =>
-                        setItems((prev) => {
-                          const next = [...prev];
-                          if (i === next.length - 1) return next;
-                          [next[i + 1], next[i]] = [next[i], next[i + 1]];
-                          return next;
-                        })
-                      }
-                      disabled={i === items.length - 1}
-                      aria-label="Move down"
-                      className="rounded border border-line px-2 text-xs disabled:opacity-30"
-                    >
-                      ↓
-                    </button>
-                    <button
-                      onClick={() => setItems((prev) => prev.filter((_, pi) => pi !== i))}
-                      aria-label="Remove"
-                      className="text-ink-faint hover:text-accent"
-                    >
-                      ×
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => inputRef.current?.click()}
-                className="mt-3 text-sm text-accent underline underline-offset-4"
-              >
-                Add more
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <label className="block text-sm">
-              <span className={label}>Text</span>
-              <input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-              />
-            </label>
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                <input
+                  type="checkbox"
+                  checked={tiled}
+                  onChange={(e) => setTiled(e.target.checked)}
+                  className="size-4 accent-[var(--accent)]"
+                />
+                Repeat across the whole picture
+              </label>
 
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Size
-                <span className="tabular-nums text-ink-faint">{size}%</span>
-              </span>
-              <input
-                type="range"
-                min={1}
-                max={20}
-                value={size}
-                onChange={(e) => setSize(Number(e.target.value))}
-                className="mt-1.5 w-full accent-[var(--accent)]"
-              />
-            </label>
-
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Opacity
-                <span className="tabular-nums text-ink-faint">{Math.round(opacity * 100)}%</span>
-              </span>
-              <input
-                type="range"
-                min={5}
-                max={100}
-                value={Math.round(opacity * 100)}
-                onChange={(e) => setOpacity(Number(e.target.value) / 100)}
-                className="mt-1.5 w-full accent-[var(--accent)]"
-              />
-            </label>
-
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={colour}
-                onChange={(e) => setColour(e.target.value)}
-                className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
-              />
-              <span className="text-sm text-ink-soft">Colour</span>
-            </div>
-
-            <label className="flex items-center gap-2 text-sm text-ink-soft">
-              <input
-                type="checkbox"
-                checked={tiled}
-                onChange={(e) => setTiled(e.target.checked)}
-                className="size-4 accent-[var(--accent)]"
-              />
-              Repeat across the whole picture
-            </label>
-
-            {!tiled && (
-              <div>
-                <span className={label}>Where</span>
-                <div className="mt-2 grid grid-cols-3 gap-1.5">
-                  {POSITIONS.map(([id, name]) => (
-                    <button
-                      key={id}
-                      onClick={() => setPosition(id)}
-                      aria-pressed={position === id}
-                      title={name}
-                      className={`rounded-lg border py-2.5 text-xs transition-colors ${
-                        position === id
-                          ? 'border-accent bg-accent-soft text-accent'
-                          : 'border-line text-ink-soft hover:text-ink'
-                      }`}
-                    >
-                      {name}
-                    </button>
-                  ))}
+              {!tiled && (
+                <div>
+                  <span className={label}>Where</span>
+                  <div className="mt-2 grid grid-cols-3 gap-1.5">
+                    {POSITIONS.map(([id, name]) => (
+                      <button
+                        key={id}
+                        onClick={() => setPosition(id)}
+                        aria-pressed={position === id}
+                        title={name}
+                        className={`rounded-lg border py-2.5 text-xs transition-colors ${
+                          position === id
+                            ? 'border-accent bg-accent-soft text-accent'
+                            : 'border-line text-ink-soft hover:text-ink'
+                        }`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </>
-        )}
-
-        <button
-          onClick={() => {
-            items.forEach((i) => URL.revokeObjectURL(i.url));
-            setItems([]);
-            setOutUrl(null);
-          }}
-          className="text-sm text-ink-faint underline underline-offset-4"
-        >
-          Start again
-        </button>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between gap-3">
-          <span className={label}>Result</span>
-          {outUrl && (
-            <a
-              href={outUrl}
-              download={mode === 'merge' ? 'merged.png' : 'watermarked.png'}
-              className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-ink"
-            >
-              Download PNG, {formatBytes(outSize)}
-            </a>
+              )}
+            </>
           )}
+
+          <button
+            onClick={() => {
+              items.forEach((i) => URL.revokeObjectURL(i.url));
+              setItems([]);
+              setOutUrl(null);
+            }}
+            className="text-sm text-ink-faint underline underline-offset-4"
+          >
+            Start again
+          </button>
+        </>
+      }
+      status={outUrl ? `PNG, ${formatBytes(outSize)}` : null}
+      actions={
+        outUrl ? (
+          <DownloadButton
+            href={outUrl}
+            filename={mode === 'merge' ? 'merged.png' : 'watermarked.png'}
+          >
+            Download PNG
+          </DownloadButton>
+        ) : null
+      }
+    >
+      {outUrl ? (
+        <div className="overflow-hidden rounded-xl border border-line bg-surface">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={outUrl} alt="The result" className="block w-full" />
         </div>
-        {outUrl && (
-          <div className="mt-2 overflow-hidden rounded-xl border border-line bg-surface">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={outUrl} alt="The result" className="block w-full" />
-          </div>
-        )}
-        {error && <p className="mt-3 text-sm text-accent">{error}</p>}
-      </div>
-    </div>
+      ) : (
+        <div className="flex min-h-[240px] items-center justify-center rounded-xl border border-line bg-surface text-sm text-ink-faint">
+          The result appears here.
+        </div>
+      )}
+      {error && <p className="mt-3 text-sm text-accent">{error}</p>}
+    </ToolLayout>
   );
 }
