@@ -2,7 +2,17 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
-import { toolBySlug, type Tool } from './site';
+import { toolBySlug, type Category, type Tool } from './site';
+import {
+  CONVERSION_BY_SLUG,
+  canvasHandles,
+  conversionDescription,
+  conversionTitle,
+  dataHandles,
+  docHandles,
+  mediaHandles,
+  type Conversion,
+} from './conversions';
 
 /**
  * The documentation, one file per tool, rendered on the tool's own page.
@@ -50,10 +60,45 @@ function isoDate(value: unknown): string {
   return /^\d{4}-\d{2}-\d{2}$/.test(text) ? text : '';
 }
 
+/**
+ * A conversion, described in the shape a doc needs.
+ *
+ * Conversion pages are the majority of the site and had no docs at all, which
+ * left most of it as a heading, a drop zone and nothing else. They are not in
+ * the tools list because they are generated from format pairs, so a doc named
+ * after one is turned into the same shape here rather than the rest of the
+ * site learning about a second kind of subject.
+ *
+ * The category comes from whichever handler serves the pair, so it cannot
+ * drift away from the code that actually runs.
+ */
+function asSubject(c: Conversion): Tool {
+  const category: Category = canvasHandles(c)
+    ? 'Images'
+    : dataHandles(c)
+      ? 'Data'
+      : mediaHandles(c)
+        ? 'Media'
+        : docHandles(c)
+          ? 'Documents'
+          : 'Documents';
+
+  return {
+    slug: c.slug,
+    name: `${c.from.label} to ${c.to.label}`,
+    category,
+    blurb: conversionDescription(c),
+    title: conversionTitle(c),
+    description: conversionDescription(c),
+    live: c.live,
+  };
+}
+
 function parse(file: string): Doc | null {
   const slug = file.replace(/\.md$/, '');
-  const tool = toolBySlug(slug);
-  // A doc for a tool that no longer exists is dropped rather than rendered
+  const conversion = CONVERSION_BY_SLUG.get(slug);
+  const tool = toolBySlug(slug) ?? (conversion ? asSubject(conversion) : undefined);
+  // A doc for something that no longer exists is dropped rather than rendered
   // somewhere odd. check-docs turns this into a build failure.
   if (!tool) return null;
 

@@ -19,6 +19,7 @@ import DataConvert, { type Format as DataFormat } from '@/components/DataConvert
 import DocConvert, { type DocFormat } from '@/components/DocConvert';
 import ImageConvert from '@/components/ImageConvert';
 import MediaConvert, { type Target as MediaTarget } from '@/components/MediaConvert';
+import ToolDocs from '@/components/ToolDocs';
 
 /**
  * Everything that does not have its own folder yet: unbuilt tools and every
@@ -96,6 +97,8 @@ export default async function Page({ params }: Params) {
         <div className="mt-10">
           <DocConvert from={conversion.from.id as DocFormat} to={conversion.to.id as DocFormat} />
         </div>
+        <ToolDocs tool={slug} />
+
         {related.length > 0 && (
           <Related
             heading={`Other ${conversion.from.label} conversions`}
@@ -143,6 +146,8 @@ export default async function Page({ params }: Params) {
           <MediaConvert to={target} source={source} />
         </div>
 
+        <ToolDocs tool={slug} />
+
         {related.length > 0 && (
           <Related
             heading={`Other ${conversion.from.label} conversions`}
@@ -182,6 +187,8 @@ export default async function Page({ params }: Params) {
         <div className="mt-10">
           <DataConvert from={conversion.from.id as DataFormat} to={conversion.to.id as DataFormat} />
         </div>
+
+        <ToolDocs tool={slug} />
 
         {related.length > 0 && (
           <Related
@@ -229,6 +236,8 @@ export default async function Page({ params }: Params) {
 
         <ConversionNotes conversion={conversion} />
 
+        <ToolDocs tool={slug} />
+
         {related.length > 0 && (
           <Related
             heading={`Other ${conversion.from.label} conversions`}
@@ -250,6 +259,8 @@ export default async function Page({ params }: Params) {
         heading={conversionTitle(conversion)}
         blurb={conversionDescription(conversion)}
       >
+        <ToolDocs tool={slug} />
+
         {related.length > 0 && (
           <Related
             heading={`Other ${conversion.from.label} conversions`}

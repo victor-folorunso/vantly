@@ -104,7 +104,7 @@ export const TOOLS: Tool[] = [
     name: 'PDF reader',
     category: 'Documents',
     blurb: 'Open a PDF and read it. No plugin and no download.',
-    title: 'Open and read a PDF online',
+    title: 'Read a PDF in your browser, no reader needed',
     description:
       'Read any PDF in your browser. Search the text, jump between pages.',
     live: true,
@@ -1683,7 +1683,7 @@ export const TOOLS: Tool[] = [
     name: 'Compress video',
     category: 'Media',
     blurb: 'Make a video small enough to send.',
-    title: 'Compress a video file',
+    title: 'Make a video smaller online',
     description:
       'Reduce a video file size, choosing quality against size and seeing the result before you save it.',
     live: true,

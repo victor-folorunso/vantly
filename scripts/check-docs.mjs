@@ -20,7 +20,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = join(root, 'src/content/docs');
 
 const { TOOLS } = await import(pathToFileURL(join(root, 'src/lib/site.ts')).href);
-const bySlug = new Map(TOOLS.map((t) => [t.slug, t]));
+const { CONVERSIONS } = await import(pathToFileURL(join(root, 'src/lib/conversions.ts')).href);
+
+/* A doc can belong to a tool or to a conversion pair. Conversions are the
+   majority of the site's pages and had nothing below the drop zone, so they
+   are a valid subject too. Either way the filename has to name something that
+   exists, which is the point of this check. */
+const bySlug = new Map([
+  ...TOOLS.map((t) => [t.slug, t]),
+  ...CONVERSIONS.map((c) => [c.slug, c]),
+]);
 
 if (!existsSync(DIR)) {
   console.log('No src/content/docs yet, nothing to check.');
@@ -59,7 +68,9 @@ for (const file of files) {
 
   const tool = bySlug.get(slug);
   if (!tool) {
-    problems.push(`${where}: no tool "${slug}" in src/lib/site.ts. The filename must be a tool slug.`);
+    problems.push(
+      `${where}: nothing called "${slug}" exists. The filename must be a tool slug or a conversion slug.`,
+    );
     continue;
   }
   if (!tool.live) {
