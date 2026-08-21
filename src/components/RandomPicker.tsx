@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Picks from a list, or shuffles it.
@@ -58,24 +59,9 @@ export default function RandomPicker() {
   };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]">
-      <label className="block">
-        <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-          One per line
-        </span>
-        <textarea
-          value={raw}
-          onChange={(e) => setRaw(e.target.value)}
-          rows={14}
-          spellCheck={false}
-          className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 leading-relaxed outline-none focus:border-accent"
-        />
-        <span className="mt-2 block text-xs tabular-nums text-ink-faint">
-          {items.length} item{items.length === 1 ? '' : 's'}
-        </span>
-      </label>
-
-      <div>
+    <ToolLayout
+      settings={
+        <>
         <div className="flex flex-wrap items-end gap-3">
           <label className="block text-sm">
             <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
@@ -120,6 +106,24 @@ export default function RandomPicker() {
             Shuffle all
           </button>
         </div>
+        </>
+      }
+    >
+      <label className="block">
+        <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+          One per line
+        </span>
+        <textarea
+          value={raw}
+          onChange={(e) => setRaw(e.target.value)}
+          rows={14}
+          spellCheck={false}
+          className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 leading-relaxed outline-none focus:border-accent"
+        />
+        <span className="mt-2 block text-xs tabular-nums text-ink-faint">
+          {items.length} item{items.length === 1 ? '' : 's'}
+        </span>
+      </label>
 
         {picked && (
           <div className="mt-5 rounded-xl border border-line bg-surface p-5">
@@ -148,7 +152,6 @@ export default function RandomPicker() {
             ))}
           </ol>
         )}
-      </div>
-    </div>
+    </ToolLayout>
   );
 }

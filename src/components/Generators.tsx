@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * UUIDs and passwords.
@@ -172,52 +173,54 @@ export function PasswordGenerator() {
     bits >= 128 ? 'Overkill, in a good way' : bits >= 80 ? 'Strong' : bits >= 60 ? 'Reasonable' : 'Too weak';
 
   return (
-    <div>
+    <ToolLayout
+      settings={
+        <>
+          <div>
+            <label className="block text-sm">
+              <span className="flex justify-between">
+                Length
+                <span className="tabular-nums text-ink-faint">{length}</span>
+              </span>
+              <input
+                type="range"
+                min={6}
+                max={64}
+                value={length}
+                onChange={(e) => setLength(Number(e.target.value))}
+                className="mt-2 w-full accent-[var(--accent)]"
+              />
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {(Object.keys(SETS) as (keyof typeof SETS)[]).map((k) => (
+              <label key={k} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={use[k]}
+                  onChange={(e) => setUse((u) => ({ ...u, [k]: e.target.checked }))}
+                />
+                {k === 'digits' ? 'Numbers' : k === 'symbols' ? 'Symbols' : k === 'upper' ? 'A-Z' : 'a-z'}
+              </label>
+            ))}
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={noAmbiguous}
+                onChange={(e) => setNoAmbiguous(e.target.checked)}
+              />
+              No lookalikes
+            </label>
+          </div>
+        </>
+      }
+    >
       <div className="rounded-xl border border-line bg-surface p-5">
         <div className="flex items-center gap-4">
           <code className="min-w-0 flex-1 break-all font-mono text-lg">
             {password || 'Pick at least one character type'}
           </code>
           {password && <CopyButton value={password} />}
-        </div>
-      </div>
-
-      <div className="mt-5 grid gap-5 sm:grid-cols-2">
-        <div>
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Length
-              <span className="tabular-nums text-ink-faint">{length}</span>
-            </span>
-            <input
-              type="range"
-              min={6}
-              max={64}
-              value={length}
-              onChange={(e) => setLength(Number(e.target.value))}
-              className="mt-2 w-full accent-[var(--accent)]"
-            />
-          </label>
-        </div>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          {(Object.keys(SETS) as (keyof typeof SETS)[]).map((k) => (
-            <label key={k} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={use[k]}
-                onChange={(e) => setUse((u) => ({ ...u, [k]: e.target.checked }))}
-              />
-              {k === 'digits' ? 'Numbers' : k === 'symbols' ? 'Symbols' : k === 'upper' ? 'A-Z' : 'a-z'}
-            </label>
-          ))}
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={noAmbiguous}
-              onChange={(e) => setNoAmbiguous(e.target.checked)}
-            />
-            No lookalikes
-          </label>
         </div>
       </div>
 
@@ -237,6 +240,6 @@ export function PasswordGenerator() {
         Never sent anywhere, which is the only way a generated password can be
         trusted.
       </p>
-    </div>
+    </ToolLayout>
   );
 }

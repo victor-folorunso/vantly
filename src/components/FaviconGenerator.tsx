@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Makes the whole set of icons a site needs, from one picture.
@@ -227,7 +228,44 @@ export default function FaviconGenerator() {
   }
 
   return (
-    <div>
+    <ToolLayout
+      settings={
+        <>
+          <label className="block text-sm">
+            <span className="flex justify-between gap-6">
+              Padding
+              <span className="tabular-nums text-ink-faint">{padding}%</span>
+            </span>
+            <input
+              type="range"
+              min={0}
+              max={40}
+              value={padding}
+              onChange={(e) => setPadding(Number(e.target.value))}
+              className="mt-1.5 w-48 accent-[var(--accent)]"
+            />
+          </label>
+
+          <label className="flex items-center gap-2 text-sm text-ink-soft">
+            <input
+              type="checkbox"
+              checked={background !== null}
+              onChange={(e) => setBackground(e.target.checked ? '#ffffff' : null)}
+              className="size-4 accent-[var(--accent)]"
+            />
+            Solid background
+          </label>
+          {background !== null && (
+            <input
+              type="color"
+              value={background}
+              onChange={(e) => setBackground(e.target.value)}
+              className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
+            />
+          )}
+        </>
+      }
+    >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="truncate text-sm font-medium">{name}</p>
         <div className="flex flex-wrap items-center gap-4 text-sm">
@@ -241,41 +279,6 @@ export default function FaviconGenerator() {
             Use another picture
           </button>
         </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap items-end gap-6">
-        <label className="block text-sm">
-          <span className="flex justify-between gap-6">
-            Padding
-            <span className="tabular-nums text-ink-faint">{padding}%</span>
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={40}
-            value={padding}
-            onChange={(e) => setPadding(Number(e.target.value))}
-            className="mt-1.5 w-48 accent-[var(--accent)]"
-          />
-        </label>
-
-        <label className="flex items-center gap-2 text-sm text-ink-soft">
-          <input
-            type="checkbox"
-            checked={background !== null}
-            onChange={(e) => setBackground(e.target.checked ? '#ffffff' : null)}
-            className="size-4 accent-[var(--accent)]"
-          />
-          Solid background
-        </label>
-        {background !== null && (
-          <input
-            type="color"
-            value={background}
-            onChange={(e) => setBackground(e.target.value)}
-            className="size-10 cursor-pointer rounded-lg border border-line bg-surface"
-          />
-        )}
       </div>
 
       <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -318,6 +321,6 @@ export default function FaviconGenerator() {
           {SNIPPET}
         </pre>
       </div>
-    </div>
+    </ToolLayout>
   );
 }

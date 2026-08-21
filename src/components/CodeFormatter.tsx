@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import { LANGS, format, minify, type Lang } from '@/lib/code';
 
 /**
@@ -76,66 +77,68 @@ export default function CodeFormatter({
     output && input ? Math.round((1 - output.length / input.length) * 100) : 0;
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <label className="block text-sm">
-          <span className={label}>Language</span>
-          <select
-            value={lang}
-            onChange={(e) => {
-              setLang(e.target.value as Lang);
-              setOutput('');
-              setError(null);
-            }}
-            className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-          >
-            {LANGS.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <div className="flex flex-wrap items-end gap-4">
+    <ToolLayout
+      settings={
+        <>
           <label className="block text-sm">
-            <span className={label}>Indent</span>
-            <div className="mt-2 inline-flex rounded-lg border border-line p-0.5">
-              {([2, 4, 'tab'] as const).map((i) => (
-                <button
-                  key={String(i)}
-                  onClick={() => setIndent(i)}
-                  aria-pressed={indent === i}
-                  className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-                    indent === i ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                  }`}
-                >
-                  {i === 'tab' ? 'Tab' : i}
-                </button>
+            <span className={label}>Language</span>
+            <select
+              value={lang}
+              onChange={(e) => {
+                setLang(e.target.value as Lang);
+                setOutput('');
+                setError(null);
+              }}
+              className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+            >
+              {LANGS.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.label}
+                </option>
               ))}
-            </div>
+            </select>
           </label>
 
-          <button
-            onClick={() => void run(action === 'minify')}
-            disabled={busy}
-            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-          >
-            {busy ? 'Working…' : action === 'minify' ? 'Minify' : 'Format'}
-          </button>
+          <div className="flex flex-wrap items-end gap-4">
+            <label className="block text-sm">
+              <span className={label}>Indent</span>
+              <div className="mt-2 inline-flex rounded-lg border border-line p-0.5">
+                {([2, 4, 'tab'] as const).map((i) => (
+                  <button
+                    key={String(i)}
+                    onClick={() => setIndent(i)}
+                    aria-pressed={indent === i}
+                    className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
+                      indent === i ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                    }`}
+                  >
+                    {i === 'tab' ? 'Tab' : i}
+                  </button>
+                ))}
+              </div>
+            </label>
 
-          {meta.canMinify && (
             <button
-              onClick={() => void run(action !== 'minify')}
+              onClick={() => void run(action === 'minify')}
               disabled={busy}
-              className="rounded-lg border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
+              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
             >
-              {action === 'minify' ? 'Format instead' : 'Minify instead'}
+              {busy ? 'Working…' : action === 'minify' ? 'Minify' : 'Format'}
             </button>
-          )}
-        </div>
-      </div>
 
+            {meta.canMinify && (
+              <button
+                onClick={() => void run(action !== 'minify')}
+                disabled={busy}
+                className="rounded-lg border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
+              >
+                {action === 'minify' ? 'Format instead' : 'Minify instead'}
+              </button>
+            )}
+          </div>
+        </>
+      }
+    >
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div>
           <div className="flex items-center justify-between gap-3">
@@ -204,7 +207,6 @@ export default function CodeFormatter({
           )}
         </div>
       </div>
-
-    </div>
+    </ToolLayout>
   );
 }

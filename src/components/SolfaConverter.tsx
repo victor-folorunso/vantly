@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Note names into tonic solfa, and back.
@@ -111,59 +112,61 @@ export default function SolfaConverter() {
   const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-5">
-        <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
-          {(
-            [
-              ['toSolfa', 'Notes to solfa'],
-              ['toNotes', 'Solfa to notes'],
-            ] as const
-          ).map(([id, text]) => (
-            <button
-              key={id}
-              onClick={() => {
-                setDirection(id);
-                setInput(output);
-              }}
-              aria-pressed={direction === id}
-              className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-                direction === id ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-              }`}
-            >
-              {text}
-            </button>
-          ))}
-        </div>
-
-        <label className="block text-sm">
-          <span className={label}>Key</span>
-          <select
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-            className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-          >
-            {KEYS.map((k) => (
-              <option key={k} value={k}>
-                {k} major
-              </option>
+    <ToolLayout
+      settings={
+        <>
+          <div className="inline-flex rounded-lg border border-line p-0.5 text-sm">
+            {(
+              [
+                ['toSolfa', 'Notes to solfa'],
+                ['toNotes', 'Solfa to notes'],
+              ] as const
+            ).map(([id, text]) => (
+              <button
+                key={id}
+                onClick={() => {
+                  setDirection(id);
+                  setInput(output);
+                }}
+                aria-pressed={direction === id}
+                className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
+                  direction === id ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                }`}
+              >
+                {text}
+              </button>
             ))}
-          </select>
-        </label>
+          </div>
 
-        {direction === 'toNotes' && (
-          <label className="flex items-center gap-2 pb-3 text-sm text-ink-soft">
-            <input
-              type="checkbox"
-              checked={flats}
-              onChange={(e) => setFlats(e.target.checked)}
-              className="size-4 accent-[var(--accent)]"
-            />
-            Write flats instead of sharps
+          <label className="block text-sm">
+            <span className={label}>Key</span>
+            <select
+              value={key}
+              onChange={(e) => setKey(e.target.value)}
+              className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+            >
+              {KEYS.map((k) => (
+                <option key={k} value={k}>
+                  {k} major
+                </option>
+              ))}
+            </select>
           </label>
-        )}
-      </div>
 
+          {direction === 'toNotes' && (
+            <label className="flex items-center gap-2 pb-3 text-sm text-ink-soft">
+              <input
+                type="checkbox"
+                checked={flats}
+                onChange={(e) => setFlats(e.target.checked)}
+                className="size-4 accent-[var(--accent)]"
+              />
+              Write flats instead of sharps
+            </label>
+          )}
+        </>
+      }
+    >
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <label className="block">
           <span className={label}>{direction === 'toSolfa' ? 'Notes' : 'Solfa'}</span>
@@ -206,6 +209,6 @@ export default function SolfaConverter() {
           />
         </div>
       </div>
-    </div>
+    </ToolLayout>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Checks whether domain names are taken, and suggests some.
@@ -194,44 +195,46 @@ export default function DomainTools({ mode }: { mode: 'check' | 'ideas' }) {
         : 'border-line text-ink-soft';
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-4">
-        <label className="block text-sm">
-          <span className={label}>
-            {mode === 'check' ? 'Name to check' : 'Word to build on, if you have one'}
-          </span>
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') void run();
-            }}
-            placeholder={mode === 'check' ? 'vantly' : 'Leave empty for anything'}
-            className="mt-2 w-64 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-          />
-        </label>
+    <ToolLayout
+      settings={
+        <>
+          <label className="block text-sm">
+            <span className={label}>
+              {mode === 'check' ? 'Name to check' : 'Word to build on, if you have one'}
+            </span>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') void run();
+              }}
+              placeholder={mode === 'check' ? 'vantly' : 'Leave empty for anything'}
+              className="mt-2 w-64 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+            />
+          </label>
 
-        <button
-          onClick={() => void run()}
-          disabled={busy}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {busy ? 'Checking…' : mode === 'check' ? 'Check' : 'Suggest and check'}
-        </button>
-
-        {busy && (
           <button
-            onClick={() => {
-              abort.current?.abort();
-              setBusy(false);
-            }}
-            className="text-sm text-ink-faint underline underline-offset-4"
+            onClick={() => void run()}
+            disabled={busy}
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
           >
-            Stop
+            {busy ? 'Checking…' : mode === 'check' ? 'Check' : 'Suggest and check'}
           </button>
-        )}
-      </div>
 
+          {busy && (
+            <button
+              onClick={() => {
+                abort.current?.abort();
+                setBusy(false);
+              }}
+              className="text-sm text-ink-faint underline underline-offset-4"
+            >
+              Stop
+            </button>
+          )}
+        </>
+      }
+    >
       {mode === 'check' && (
         <div className="mt-5">
           <span className={label}>Endings</span>
@@ -285,7 +288,6 @@ export default function DomainTools({ mode }: { mode: 'check' | 'ideas' }) {
           and do not answer this way.
         </p>
       )}
-
-    </div>
+    </ToolLayout>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Strips the parts of an SVG that nothing renders.
@@ -132,45 +133,47 @@ export default function SvgOptimizer() {
   const saved = before > 0 ? Math.round((1 - after / before) * 100) : 0;
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-6">
-        <label className="block text-sm">
-          <span className="flex justify-between gap-6">
-            Decimal places
-            <span className="tabular-nums text-ink-faint">{precision}</span>
-          </span>
+    <ToolLayout
+      settings={
+        <>
+          <label className="block text-sm">
+            <span className="flex justify-between gap-6">
+              Decimal places
+              <span className="tabular-nums text-ink-faint">{precision}</span>
+            </span>
+            <input
+              type="range"
+              min={0}
+              max={5}
+              value={precision}
+              onChange={(e) => setPrecision(Number(e.target.value))}
+              className="mt-1.5 w-40 accent-[var(--accent)]"
+            />
+          </label>
+          <label className="flex items-center gap-2 text-sm text-ink-soft">
+            <input type="checkbox" checked={dropTitle} onChange={(e) => setDropTitle(e.target.checked)} className="size-4 accent-[var(--accent)]" />
+            Drop the title
+          </label>
+          <label className="flex items-center gap-2 text-sm text-ink-soft">
+            <input type="checkbox" checked={dropIds} onChange={(e) => setDropIds(e.target.checked)} className="size-4 accent-[var(--accent)]" />
+            Drop ids
+          </label>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="rounded-lg border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+          >
+            Open a file
+          </button>
           <input
-            type="range"
-            min={0}
-            max={5}
-            value={precision}
-            onChange={(e) => setPrecision(Number(e.target.value))}
-            className="mt-1.5 w-40 accent-[var(--accent)]"
+            ref={inputRef}
+            type="file"
+            accept=".svg,image/svg+xml"
+            className="sr-only"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) void load(f); e.target.value = ''; }}
           />
-        </label>
-        <label className="flex items-center gap-2 text-sm text-ink-soft">
-          <input type="checkbox" checked={dropTitle} onChange={(e) => setDropTitle(e.target.checked)} className="size-4 accent-[var(--accent)]" />
-          Drop the title
-        </label>
-        <label className="flex items-center gap-2 text-sm text-ink-soft">
-          <input type="checkbox" checked={dropIds} onChange={(e) => setDropIds(e.target.checked)} className="size-4 accent-[var(--accent)]" />
-          Drop ids
-        </label>
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="rounded-lg border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
-        >
-          Open a file
-        </button>
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".svg,image/svg+xml"
-          className="sr-only"
-          onChange={(e) => { const f = e.target.files?.[0]; if (f) void load(f); e.target.value = ''; }}
-        />
-      </div>
-
+        </>
+      }
+    >
       {dropIds && (
         <p className="mt-3 max-w-2xl text-sm text-ink-soft">
           Only drop ids if nothing points at them. CSS, animation and
@@ -240,6 +243,6 @@ export default function SvgOptimizer() {
           )}
         </div>
       </div>
-    </div>
+    </ToolLayout>
   );
 }

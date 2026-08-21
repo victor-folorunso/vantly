@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Reads the words out of a picture, or out of a scanned PDF.
@@ -125,32 +126,34 @@ export default function OcrTool({ mode }: { mode: Mode }) {
   const accept = mode === 'pdf' ? 'application/pdf,.pdf' : 'image/*';
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end gap-4">
-        <label className="block text-sm">
-          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            Language
-          </span>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-          >
-            {LANGUAGES.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        {name && (
-          <p className="pb-3 text-sm text-ink-faint">
-            <span className="truncate">{name}</span>
-            {busy && <span className="ml-2 tabular-nums">{busy}…</span>}
-          </p>
-        )}
-      </div>
-
+    <ToolLayout
+      settings={
+        <>
+          <label className="block text-sm">
+            <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              Language
+            </span>
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+            >
+              {LANGUAGES.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          {name && (
+            <p className="pb-3 text-sm text-ink-faint">
+              <span className="truncate">{name}</span>
+              {busy && <span className="ml-2 tabular-nums">{busy}…</span>}
+            </p>
+          )}
+        </>
+      }
+    >
       {!text && (
         <div
           onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
@@ -228,6 +231,6 @@ export default function OcrTool({ mode }: { mode: Mode }) {
           />
         </div>
       )}
-    </div>
+    </ToolLayout>
   );
 }
