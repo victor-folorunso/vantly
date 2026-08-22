@@ -13,6 +13,7 @@
  */
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import matter from 'gray-matter';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -44,25 +45,28 @@ const files = readdirSync(DIR).filter(
 const problems = [];
 let drafts = 0;
 
-/** Enough frontmatter parsing for a flat block of scalars and one list. */
+/**
+ * Parses frontmatter with the same library the site uses.
+ *
+ * This used to be a hand rolled parser: split on the first colon, split lists
+ * on commas, strip quotes. Lenient, never threw, and therefore useless as a
+ * check. It passed a doc whose keywords contained an unquoted %20, which is a
+ * reserved indicator in YAML, and the build then failed on six pages while the
+ * checker reported everything valid.
+ *
+ * Two parsers with different rules for the same file is the bug. There is one
+ * now, and it is the one that decides whether the site builds.
+ */
 function frontmatter(raw) {
-  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!m) return null;
-  const out = {};
-  for (const line of m[1].split(/\r?\n/)) {
-    const t = line.trim();
-    if (!t || t.startsWith('#')) continue;
-    const at = t.indexOf(':');
-    if (at < 0) continue;
-    const key = t.slice(0, at).trim();
-    let value = t.slice(at + 1).trim();
-    if (value.startsWith('[') && value.endsWith(']')) {
-      out[key] = value.slice(1, -1).split(',').map((s) => s.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
-    } else {
-      out[key] = value.replace(/^["']|["']$/g, '');
-    }
+  try {
+    const parsed = matter(raw);
+    return { data: parsed.data, body: parsed.content };
+  } catch (e) {
+    // The first line is the useful part. A YAML error then prints the
+    // offending line and a caret under it, which is noise in a summary.
+    const message = String(e instanceof Error ? e.message : e);
+    return { error: message.split(/\r?\n/)[0] };
   }
-  return { data: out, body: raw.slice(m[0].length) };
 }
 
 for (const file of files) {
@@ -98,6 +102,10 @@ for (const file of files) {
   }
 
   const parsed = frontmatter(raw);
+  if (parsed?.error) {
+    problems.push(`${where}: the frontmatter is not valid YAML. ${parsed.error}`);
+    continue;
+  }
   if (!parsed) {
     problems.push(`${where}: no frontmatter. The file must start with --- on line 1.`);
     continue;

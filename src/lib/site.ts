@@ -1198,16 +1198,6 @@ export const TOOLS: Tool[] = [
       'Convert text or a file to Base64 and back, including data URIs. Runs in your browser.',
     live: true,
   },
-  {
-    slug: 'url-encoder',
-    name: 'URL encoder',
-    category: 'Security',
-    blurb: 'Escape or unescape a URL or query string.',
-    title: 'URL encode and decode online',
-    description:
-      'Percent-encode text for safe use in a URL, or decode one you have been given.',
-    live: false,
-  },
 
   // ── Calculators ────────────────────
   {
