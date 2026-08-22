@@ -30,12 +30,30 @@ export default function ToolLayout({
   status,
   title = 'Settings',
 }: {
+  /** Null when the tool has none. The rail is dropped rather than left empty. */
   settings: React.ReactNode;
   children: React.ReactNode;
   actions?: React.ReactNode;
   status?: React.ReactNode;
   title?: string;
 }) {
+  /* Some tools have nothing to configure, and a few change shape between
+     modes and only have settings in one of them. An empty 300px card is worse
+     than no card, so the rail is dropped and the work takes the full width. */
+  if (!settings) {
+    return (
+      <div>
+        {(status || actions) && (
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+            <div className="min-w-0 text-sm text-ink-soft">{status}</div>
+            <div className="flex flex-wrap items-center gap-3">{actions}</div>
+          </div>
+        )}
+        {children}
+      </div>
+    );
+  }
+
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
       <div className="order-2 rounded-2xl border border-line bg-surface p-5 shadow-sm lg:order-1 lg:sticky lg:top-20">

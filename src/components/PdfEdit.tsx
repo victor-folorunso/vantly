@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -191,19 +192,77 @@ export default function PdfEdit({ mode }: { mode: Mode }) {
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">{file.name}</p>
-          <p className="text-xs tabular-nums text-ink-faint">
-            {busy ?? formatBytes(file.size)}
-          </p>
-        </div>
-        <button onClick={reset} className="text-sm text-ink-faint underline underline-offset-4">
-          Use another PDF
-        </button>
-      </div>
-
+    <ToolLayout
+      settings={
+        mode === 'text' ? null : (
+          <>
+            {mode === 'mark' && (
+              <>
+                <label className="block text-sm">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                    Watermark text
+                  </span>
+                  <input
+                    value={markText}
+                    onChange={(e) => setMarkText(e.target.value)}
+                    className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+                  />
+                </label>
+                <div className="rounded-xl border border-line bg-surface p-4">
+                  <label className="block text-sm">
+                    <span className="flex justify-between">
+                      Opacity
+                      <span className="tabular-nums text-ink-faint">{Math.round(opacity * 100)}%</span>
+                    </span>
+                    <input type="range" min={5} max={60} value={opacity * 100}
+                      onChange={(e) => setOpacity(Number(e.target.value) / 100)}
+                      className="mt-1.5 w-full accent-[var(--accent)]" />
+                  </label>
+                  <label className="mt-3 block text-sm">
+                    <span className="flex justify-between">
+                      Angle
+                      <span className="tabular-nums text-ink-faint">{angle}°</span>
+                    </span>
+                    <input type="range" min={0} max={90} step={15} value={angle}
+                      onChange={(e) => setAngle(Number(e.target.value))}
+                      className="mt-1.5 w-full accent-[var(--accent)]" />
+                  </label>
+                </div>
+              </>
+            )}
+            <button
+              onClick={() => void write()}
+              disabled={busy !== null || (mode === 'mark' && !markText.trim())}
+              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
+            >
+              {busy ?? (mode === 'unlock' ? 'Remove the password' : 'Add the watermark')}
+            </button>
+          </>
+        )
+      }
+      status={
+        <>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{file.name}</p>
+            <p className="text-xs tabular-nums text-ink-faint">
+              {busy ?? formatBytes(file.size)}
+            </p>
+          </div>
+        </>
+      }
+      actions={
+        <>
+          {outUrl && (
+            <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + (mode === 'unlock' ? '-unlocked.pdf' : '-marked.pdf')} variant="quiet">
+              Download PDF, {formatBytes(outSize)}
+            </DownloadButton>
+          )}
+          <button onClick={reset} className="text-sm text-ink-faint underline underline-offset-4">
+            Use another PDF
+          </button>
+        </>
+      }
+    >
       {mode === 'text' && (
         <div className="mt-5">
           <div className="flex items-center justify-between gap-3">
@@ -234,41 +293,6 @@ export default function PdfEdit({ mode }: { mode: Mode }) {
         </div>
       )}
 
-      {mode === 'mark' && (
-        <div className="mt-5 grid gap-5 sm:grid-cols-[minmax(0,1fr)_240px]">
-          <label className="block text-sm">
-            <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-              Watermark text
-            </span>
-            <input
-              value={markText}
-              onChange={(e) => setMarkText(e.target.value)}
-              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-            />
-          </label>
-          <div className="rounded-xl border border-line bg-surface p-4">
-            <label className="block text-sm">
-              <span className="flex justify-between">
-                Opacity
-                <span className="tabular-nums text-ink-faint">{Math.round(opacity * 100)}%</span>
-              </span>
-              <input type="range" min={5} max={60} value={opacity * 100}
-                onChange={(e) => setOpacity(Number(e.target.value) / 100)}
-                className="mt-1.5 w-full accent-[var(--accent)]" />
-            </label>
-            <label className="mt-3 block text-sm">
-              <span className="flex justify-between">
-                Angle
-                <span className="tabular-nums text-ink-faint">{angle}°</span>
-              </span>
-              <input type="range" min={0} max={90} step={15} value={angle}
-                onChange={(e) => setAngle(Number(e.target.value))}
-                className="mt-1.5 w-full accent-[var(--accent)]" />
-            </label>
-          </div>
-        </div>
-      )}
-
       {mode === 'unlock' && (
         <p className="mt-5 max-w-2xl rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-ink-soft">
           This removes the password from a PDF you can already open. It is not a
@@ -277,24 +301,7 @@ export default function PdfEdit({ mode }: { mode: Mode }) {
         </p>
       )}
 
-      {mode !== 'text' && (
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => void write()}
-            disabled={busy !== null || (mode === 'mark' && !markText.trim())}
-            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-          >
-            {busy ?? (mode === 'unlock' ? 'Remove the password' : 'Add the watermark')}
-          </button>
-          {outUrl && (
-            <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + (mode === 'unlock' ? '-unlocked.pdf' : '-marked.pdf')} variant="quiet">
-              Download PDF, {formatBytes(outSize)}
-            </DownloadButton>
-          )}
-        </div>
-      )}
-
       {error && <p className="mt-4 max-w-2xl text-sm leading-relaxed text-accent">{error}</p>}
-    </div>
+    </ToolLayout>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
@@ -164,73 +165,10 @@ export default function PdfForm() {
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">{file.name}</p>
-          <p className="text-xs tabular-nums text-ink-faint">
-            {busy ? 'Working…' : `${fields.length} field${fields.length === 1 ? '' : 's'}`}
-          </p>
-        </div>
-        <button
-          onClick={() => { setFile(null); setFields([]); setOutUrl(null); setNotice(null); }}
-          className="text-sm text-ink-faint underline underline-offset-4"
-        >
-          Use another PDF
-        </button>
-      </div>
-
-      {notice && (
-        <p className="mt-5 max-w-2xl rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-ink-soft">
-          {notice}
-        </p>
-      )}
-
-      {fields.length > 0 && (
-        <>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {fields.map((f) => (
-              <label key={f.name} className="block text-sm">
-                <span className="block truncate text-xs font-semibold uppercase tracking-wider text-ink-faint">
-                  {f.name}
-                </span>
-                {f.kind === 'text' && (
-                  <input
-                    value={f.value}
-                    onChange={(e) => set(f.name, e.target.value)}
-                    className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-                  />
-                )}
-                {f.kind === 'check' && (
-                  <span className="mt-2 flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={f.value}
-                      onChange={(e) => set(f.name, e.target.checked)}
-                      className="size-4 accent-[var(--accent)]"
-                    />
-                    <span className="text-ink-soft">{f.value ? 'Ticked' : 'Not ticked'}</span>
-                  </span>
-                )}
-                {f.kind === 'choice' && (
-                  <select
-                    value={f.value}
-                    onChange={(e) => set(f.name, e.target.value)}
-                    className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
-                  >
-                    <option value="">Not chosen</option>
-                    {f.options.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </label>
-            ))}
-          </div>
-
-          <div className="mt-6 flex flex-wrap items-center gap-4">
+    <ToolLayout
+      settings={
+        fields.length > 0 ? (
+          <>
             <button
               onClick={() => void save()}
               disabled={busy}
@@ -247,16 +185,88 @@ export default function PdfForm() {
               />
               Lock the answers in
             </label>
-            {outUrl && (
-              <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-filled.pdf'} variant="quiet">
-                Download, {formatBytes(outSize)}
-              </DownloadButton>
-            )}
+          </>
+        ) : (
+          <p className="text-sm text-ink-soft">Nothing to fill in yet.</p>
+        )
+      }
+      status={
+        <>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{file.name}</p>
+            <p className="text-xs tabular-nums text-ink-faint">
+              {busy ? 'Working…' : `${fields.length} field${fields.length === 1 ? '' : 's'}`}
+            </p>
           </div>
         </>
+      }
+      actions={
+        <>
+          {outUrl && (
+            <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-filled.pdf'} variant="quiet">
+              Download, {formatBytes(outSize)}
+            </DownloadButton>
+          )}
+          <button
+            onClick={() => { setFile(null); setFields([]); setOutUrl(null); setNotice(null); }}
+            className="text-sm text-ink-faint underline underline-offset-4"
+          >
+            Use another PDF
+          </button>
+        </>
+      }
+    >
+      {notice && (
+        <p className="mt-5 max-w-2xl rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-ink-soft">
+          {notice}
+        </p>
+      )}
+
+      {fields.length > 0 && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {fields.map((f) => (
+            <label key={f.name} className="block text-sm">
+              <span className="block truncate text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                {f.name}
+              </span>
+              {f.kind === 'text' && (
+                <input
+                  value={f.value}
+                  onChange={(e) => set(f.name, e.target.value)}
+                  className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+                />
+              )}
+              {f.kind === 'check' && (
+                <span className="mt-2 flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={f.value}
+                    onChange={(e) => set(f.name, e.target.checked)}
+                    className="size-4 accent-[var(--accent)]"
+                  />
+                  <span className="text-ink-soft">{f.value ? 'Ticked' : 'Not ticked'}</span>
+                </span>
+              )}
+              {f.kind === 'choice' && (
+                <select
+                  value={f.value}
+                  onChange={(e) => set(f.name, e.target.value)}
+                  className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+                >
+                  <option value="">Not chosen</option>
+                  {f.options.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </label>
+          ))}
+        </div>
       )}
 
       {error && <p className="mt-4 text-sm text-accent">{error}</p>}
-    </div>
+    </ToolLayout>
   );
 }
