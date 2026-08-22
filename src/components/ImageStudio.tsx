@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import { useSetting } from '@/lib/remember';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
@@ -203,91 +204,93 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
   });
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-      <div className="order-2 rounded-2xl border border-line bg-surface p-5 shadow-sm lg:order-1 lg:sticky lg:top-20">
-        <fieldset disabled={running}>
-          <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            {mode === 'resize' ? 'Longest edge' : 'Also shrink to'}
-          </legend>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {PRESETS.map((p) => (
-              <button
-                key={p.label}
-                onClick={() => setLongEdge(p.px)}
-                className={`rounded-md border px-2.5 py-1.5 text-xs font-medium ${
-                  longEdge === p.px
-                    ? 'border-accent bg-accent-soft text-ink'
-                    : 'border-line text-ink-soft hover:border-ink-faint'
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-          {/* A number field beside the presets, because a preset list you have
-              to fit into is the exact thing this is meant to avoid. */}
-          <label className="mt-3 flex items-center gap-2 text-xs text-ink-faint">
-            or exactly
-            <input
-              type="number"
-              min={16}
-              max={20000}
-              value={longEdge || ''}
-              placeholder="px"
-              onChange={(e) => setLongEdge(Math.max(0, parseInt(e.target.value || '0', 10)))}
-              className="w-24 rounded-md border border-line bg-ground px-2 py-1.5 text-sm tabular-nums text-ink outline-none focus:border-accent"
-            />
-            px
-          </label>
-
-          <label className="mt-5 block text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            Output format
-            <select
-              value={output}
-              onChange={(e) => setOutput(e.target.value as OutputKey)}
-              className="mt-2 w-full rounded-lg border border-line bg-ground px-2.5 py-2 text-sm font-medium normal-case tracking-normal text-ink outline-none focus:border-accent"
-            >
-              {(Object.keys(OUTPUT) as OutputKey[]).map((k) => (
-                <option key={k} value={k}>
-                  {OUTPUT[k].label}
-                </option>
+    <ToolLayout
+      settings={
+        <>
+          <fieldset disabled={running}>
+            <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              {mode === 'resize' ? 'Longest edge' : 'Also shrink to'}
+            </legend>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {PRESETS.map((p) => (
+                <button
+                  key={p.label}
+                  onClick={() => setLongEdge(p.px)}
+                  className={`rounded-md border px-2.5 py-1.5 text-xs font-medium ${
+                    longEdge === p.px
+                      ? 'border-accent bg-accent-soft text-ink'
+                      : 'border-line text-ink-soft hover:border-ink-faint'
+                  }`}
+                >
+                  {p.label}
+                </button>
               ))}
-            </select>
-          </label>
-
-          {/* Only where it is the actual job. Resizing does not need a
-              quality question; it needs the picture to survive. */}
-          {mode === 'compress' && output !== 'png' && (
-            <label className="mt-5 block text-sm">
-              <span className="flex justify-between">
-                Quality
-                <span className="tabular-nums text-ink-faint">{Math.round(quality * 100)}%</span>
-              </span>
+            </div>
+            {/* A number field beside the presets, because a preset list you have
+                to fit into is the exact thing this is meant to avoid. */}
+            <label className="mt-3 flex items-center gap-2 text-xs text-ink-faint">
+              or exactly
               <input
-                type="range"
-                min={0.3}
-                max={1}
-                step={0.05}
-                value={quality}
-                onChange={(e) => setQuality(parseFloat(e.target.value))}
-                className="mt-2 w-full accent-[var(--accent)]"
+                type="number"
+                min={16}
+                max={20000}
+                value={longEdge || ''}
+                placeholder="px"
+                onChange={(e) => setLongEdge(Math.max(0, parseInt(e.target.value || '0', 10)))}
+                className="w-24 rounded-md border border-line bg-ground px-2 py-1.5 text-sm tabular-nums text-ink outline-none focus:border-accent"
               />
+              px
             </label>
-          )}
-        </fieldset>
 
-        <button
-          onClick={() => void run()}
-          disabled={!pendingCount || running}
-          className="mt-5 w-full rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-        >
-          {running
-            ? 'Working…'
-            : `${mode === 'resize' ? 'Resize' : 'Compress'} ${pendingCount || ''}`.trim()}
-        </button>
+            <label className="mt-5 block text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              Output format
+              <select
+                value={output}
+                onChange={(e) => setOutput(e.target.value as OutputKey)}
+                className="mt-2 w-full rounded-lg border border-line bg-ground px-2.5 py-2 text-sm font-medium normal-case tracking-normal text-ink outline-none focus:border-accent"
+              >
+                {(Object.keys(OUTPUT) as OutputKey[]).map((k) => (
+                  <option key={k} value={k}>
+                    {OUTPUT[k].label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-      </div>
+            {/* Only where it is the actual job. Resizing does not need a
+                quality question; it needs the picture to survive. */}
+            {mode === 'compress' && output !== 'png' && (
+              <label className="mt-5 block text-sm">
+                <span className="flex justify-between">
+                  Quality
+                  <span className="tabular-nums text-ink-faint">{Math.round(quality * 100)}%</span>
+                </span>
+                <input
+                  type="range"
+                  min={0.3}
+                  max={1}
+                  step={0.05}
+                  value={quality}
+                  onChange={(e) => setQuality(parseFloat(e.target.value))}
+                  className="mt-2 w-full accent-[var(--accent)]"
+                />
+              </label>
+            )}
+          </fieldset>
 
+          <button
+            onClick={() => void run()}
+            disabled={!pendingCount || running}
+            className="mt-5 w-full rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
+          >
+            {running
+              ? 'Working…'
+              : `${mode === 'resize' ? 'Resize' : 'Compress'} ${pendingCount || ''}`.trim()}
+          </button>
+
+        </>
+      }
+    >
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -299,7 +302,7 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
           setDragging(false);
           add(e.dataTransfer.files);
         }}
-        className={`order-1 rounded-2xl border-2 border-dashed transition-colors lg:order-2 ${
+        className={`rounded-2xl border-2 border-dashed transition-colors ${
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         } ${items.length ? 'p-5' : 'flex min-h-[300px] flex-col items-center justify-center p-8 text-center'}`}
       >
@@ -431,6 +434,6 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
           }}
         />
       </div>
-    </div>
+    </ToolLayout>
   );
 }
