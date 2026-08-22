@@ -13,6 +13,7 @@
  */
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -134,6 +135,66 @@ for (const file of files) {
   if (words < 400) {
     problems.push(`${where}: ${words} words. Under 400 is too thin to be worth the space.`);
   }
+}
+
+/**
+ * Warns when a doc that already existed has been replaced rather than edited.
+ *
+ * Twice now a doc has been written for a tool that already had one, and the
+ * file was overwritten in place. Nothing failed: the build stayed green, this
+ * checker passed, and the only clue was the published count rising by less
+ * than the number of docs written. Both times the version destroyed was the
+ * better one.
+ *
+ * There is a gap report to consult first, and it only helps if it gets run.
+ * This does not depend on anybody remembering.
+ */
+function rewrites() {
+  let numstat = "";
+  try {
+    numstat = execSync("git diff --numstat -- src/content/docs", {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+  } catch {
+    return [];
+  }
+
+  const found = [];
+  for (const line of numstat.split(/\r?\n/)) {
+    const [, removed, path] = line.split("\t");
+    if (!path || !path.endsWith(".md")) continue;
+    const gone = Number(removed);
+    if (!Number.isFinite(gone)) continue;
+
+    let committed = 0;
+    try {
+      committed = execSync("git show HEAD:" + path, {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      }).split(/\r?\n/).length;
+    } catch {
+      continue;
+    }
+
+    // Most of the committed doc gone, and a similar amount arrived.
+    // Deletions are the signal on their own. Requiring a similar number of
+    // additions was wrong: a replacement can be shorter than what it
+    // destroys, and that version of this check sat here doing nothing.
+    if (committed > 20 && gone > committed * 0.5) {
+      found.push(path + ": " + gone + " of " + committed + " lines replaced. This looks like a rewrite of a doc that already existed. Run npm run docs:gaps before writing.");
+    }
+  }
+  return found;
+}
+
+const rewritten = rewrites();
+if (rewritten.length) {
+  console.error("");
+  console.error(rewritten.length + " doc(s) rewritten in place:");
+  console.error("");
+  for (const r of rewritten) console.error("  " + r);
+  console.error("");
 }
 
 if (problems.length) {
