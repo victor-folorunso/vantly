@@ -55,6 +55,8 @@ export default function MediaConvert({
   mode?: Mode;
 }) {
   const [file, setFile] = useState<File | null>(null);
+  /* Only the still mode uses this: a picture to sit behind the audio. */
+  const [cover, setCover] = useState<File | null>(null);
   const [stage, setStage] = useState<string | null>(null);
   const [ratio, setRatio] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +74,7 @@ export default function MediaConvert({
   const [until, setUntil] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const coverRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => () => { if (outUrl) URL.revokeObjectURL(outUrl); }, [outUrl]);
 
@@ -162,10 +165,18 @@ export default function MediaConvert({
     setStage('Starting');
     setRatio(0);
 
-    const result = await run(file, `out.${to}`, args, ({ stage: s, ratio: r }) => {
-      setStage(s);
-      setRatio(r);
-    });
+    const result = await run(
+      file,
+      `out.${to}`,
+      args,
+      ({ stage: s, ratio: r }) => {
+        setStage(s);
+        setRatio(r);
+      },
+      // The arguments for a still name cover.png, so it has to be written
+      // into the converter's filesystem under exactly that name.
+      mode === 'still' && cover ? [{ name: 'cover.png', file: cover }] : undefined,
+    );
 
     setStage(null);
     if (!result.ok) {
@@ -178,7 +189,7 @@ export default function MediaConvert({
       if (prev) URL.revokeObjectURL(prev);
       return URL.createObjectURL(blob);
     });
-  }, [file, to, args]);
+  }, [file, to, args, mode, cover]);
 
   const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
   const field =
@@ -202,7 +213,9 @@ export default function MediaConvert({
             ? 'Then choose where it should start and stop.'
             : mode === 'compress'
               ? 'Then pick how small you need it.'
-              : `It comes back as ${to.toUpperCase()}.`}
+              : mode === 'still'
+                ? 'Then choose a picture to hold behind it.'
+                : `It comes back as ${to.toUpperCase()}.`}
         </p>
         <button
           onClick={() => inputRef.current?.click()}
@@ -230,6 +243,34 @@ export default function MediaConvert({
     <ToolLayout
       settings={
         <>
+          {mode === 'still' && (
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                Picture
+              </span>
+              <button
+                onClick={() => coverRef.current?.click()}
+                className="mt-2 w-full rounded-lg border border-line px-4 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+              >
+                {cover ? cover.name : 'Choose a picture'}
+              </button>
+              <input
+                ref={coverRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) setCover(f);
+                  e.target.value = '';
+                }}
+              />
+              <p className="mt-2 text-xs leading-relaxed text-ink-faint">
+                Held for the length of the audio.
+              </p>
+            </div>
+          )}
+
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             {mode === 'trim' && duration !== null && (
               <>
@@ -335,7 +376,9 @@ export default function MediaConvert({
 
           <button
             onClick={() => void convert()}
-            disabled={stage !== null}
+            // A still needs the picture as well as the audio, and without it
+            // ffmpeg fails on a missing file rather than saying anything useful.
+            disabled={stage !== null || (mode === 'still' && !cover)}
             className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
           >
             {stage ?? (mode === 'trim' ? 'Trim it' : mode === 'compress' ? 'Compress' : 'Convert')}

@@ -841,7 +841,7 @@ export const TOOLS: Tool[] = [
     title: 'Turn an MP3 into a video file',
     description:
       'Make a video from an audio file and a still picture, for uploading a track somewhere that only accepts video.',
-    live: false,
+    live: true,
   },
 
   {

@@ -79,6 +79,15 @@ export async function run(
   outputName: string,
   args: (input: string, output: string) => string[],
   onProgress?: Progress,
+  /**
+   * Files the arguments refer to by name besides the main input.
+   *
+   * Turning an audio file into a video needs a picture as a second input, and
+   * ffmpeg can only read what has been written into its filesystem first.
+   * Without this the still mode named cover.png in its arguments and nothing
+   * ever put a cover.png there, so it could only ever have failed.
+   */
+  extra?: { name: string; file: Blob }[],
 ): Promise<RunResult> {
   try {
     const ffmpeg = await getFFmpeg(onProgress);
@@ -94,6 +103,9 @@ export async function run(
     try {
       onProgress?.({ stage: 'Reading the file', ratio: 0 });
       await ffmpeg.writeFile(inputName, await fetchFile(file));
+      for (const item of extra ?? []) {
+        await ffmpeg.writeFile(item.name, await fetchFile(item.file));
+      }
 
       onProgress?.({ stage: 'Converting', ratio: 0 });
       await ffmpeg.exec(args(inputName, outputName));
@@ -109,6 +121,9 @@ export async function run(
       // that is not worth failing the conversion over.
       await ffmpeg.deleteFile(inputName).catch(() => {});
       await ffmpeg.deleteFile(outputName).catch(() => {});
+      for (const item of extra ?? []) {
+        await ffmpeg.deleteFile(item.name).catch(() => {});
+      }
     }
   } catch (e) {
     if (e instanceof Error && /network|fetch|load/i.test(e.message)) {

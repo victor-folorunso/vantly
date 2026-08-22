@@ -39,6 +39,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Domain name generator](https://vantly.xyz/domain-name-generator): Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.
 - [Tonic solfa converter](https://vantly.xyz/tonic-solfa-converter): Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.
 - [Video to MP3](https://vantly.xyz/video-to-mp3): Pull the audio out of a video file and save it as an MP3, choosing the quality.
+- [MP3 to video](https://vantly.xyz/mp3-to-video): Make a video from an audio file and a still picture, for uploading a track somewhere that only accepts video.
 - [Typing speed test](https://vantly.xyz/typing-speed-test): Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.
 - [DOCX viewer](https://vantly.xyz/docx-viewer): View Word documents in your browser. No Office licence. Formatting, tables and images are kept.
 - [PPTX viewer](https://vantly.xyz/pptx-viewer): View PowerPoint presentations in your browser. Step through the slides and read the notes.
