@@ -20,6 +20,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Compress PDF](https://vantly.xyz/compress-pdf): Reduce PDF file size in your browser. Choose how hard to compress and see the result before you save it.
 - [Images to PDF](https://vantly.xyz/images-to-pdf): Combine JPG, PNG and HEIC images into one PDF. Reorder them and choose the page size.
 - [Placeholder image generator](https://vantly.xyz/placeholder-image-generator): Make a placeholder image at any dimensions, with its size written on it, for mockups and layout work.
+- [BPM tapper](https://vantly.xyz/bpm-tapper): Tap a key in time with the music and read the beats per minute, averaged over the taps you have made.
 - [Placeholder 1920x1080](https://vantly.xyz/placeholder-1920x1080): A 1920 by 1080 placeholder image. Full HD and the usual size for a hero image, a slide or a video frame.
 - [Placeholder 1280x720](https://vantly.xyz/placeholder-1280x720): A 1280 by 720 placeholder image. The size YouTube asks for a thumbnail, and 720p video.
 - [Placeholder 1200x630](https://vantly.xyz/placeholder-1200x630): A 1200 by 630 placeholder. The size a link preview uses when a page is shared, set by Open Graph and used by Facebook, LinkedIn and X.

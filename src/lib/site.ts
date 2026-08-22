@@ -349,7 +349,7 @@ export const TOOLS: Tool[] = [
     title: 'Tap tempo BPM counter',
     description:
       'Tap a key in time with the music and read the beats per minute, averaged over the taps you have made.',
-    live: false,
+    live: true,
   },
   {
     slug: 'statistics-calculator',
