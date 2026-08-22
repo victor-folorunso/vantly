@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
 import {
   findRows,
@@ -142,39 +143,41 @@ export default function DataConvert({ from, to }: { from: Format; to: Format }) 
   const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center gap-4">
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="rounded-lg border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
-        >
-          Open a {NAMES[from]} file
-        </button>
-        {TABLE.includes(from) && (
-          <label className="flex items-center gap-2 text-sm text-ink-soft">
-            <input
-              type="checkbox"
-              checked={headerRow}
-              onChange={(e) => setHeaderRow(e.target.checked)}
-              className="size-4 accent-[var(--accent)]"
-            />
-            First row is headings
-          </label>
-        )}
-        {name && <span className="truncate text-sm text-ink-faint">{name}</span>}
-        <input
-          ref={inputRef}
-          type="file"
-          accept={EXTENSIONS[from] + ',text/plain'}
-          className="sr-only"
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) void load(f);
-            e.target.value = '';
-          }}
-        />
-      </div>
-
+    <ToolLayout
+      settings={
+        <>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="rounded-lg border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+          >
+            Open a {NAMES[from]} file
+          </button>
+          {TABLE.includes(from) && (
+            <label className="flex items-center gap-2 text-sm text-ink-soft">
+              <input
+                type="checkbox"
+                checked={headerRow}
+                onChange={(e) => setHeaderRow(e.target.checked)}
+                className="size-4 accent-[var(--accent)]"
+              />
+              First row is headings
+            </label>
+          )}
+          {name && <span className="truncate text-sm text-ink-faint">{name}</span>}
+          <input
+            ref={inputRef}
+            type="file"
+            accept={EXTENSIONS[from] + ',text/plain'}
+            className="sr-only"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) void load(f);
+              e.target.value = '';
+            }}
+          />
+        </>
+      }
+    >
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <label className="block">
           <span className={label}>{NAMES[from]} in</span>
@@ -224,6 +227,6 @@ export default function DataConvert({ from, to }: { from: Format; to: Format }) 
           )}
         </div>
       </div>
-    </div>
+    </ToolLayout>
   );
 }

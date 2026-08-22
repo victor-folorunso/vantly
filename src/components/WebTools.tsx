@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * The webmaster string builders: UTM links, robots.txt, meta tags.
@@ -327,44 +328,46 @@ export function MetaTagGenerator() {
   }, [title, description, url, image, site]);
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-2">
-      <div className="space-y-3.5 rounded-xl border border-line bg-surface p-5">
-        <label className="block text-sm">
-          <span className="flex justify-between text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            Title
-            <span className={`tabular-nums ${title.length > 60 ? 'text-accent' : ''}`}>
-              {title.length}/60
+    <ToolLayout
+      settings={
+        <>
+          <label className="block text-sm">
+            <span className="flex justify-between text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              Title
+              <span className={`tabular-nums ${title.length > 60 ? 'text-accent' : ''}`}>
+                {title.length}/60
+              </span>
             </span>
-          </span>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="The page title"
-            className="mt-1.5 w-full rounded-lg border border-line bg-ground px-3 py-2 outline-none focus:border-accent"
-          />
-        </label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="The page title"
+              className="mt-1.5 w-full rounded-lg border border-line bg-ground px-3 py-2 outline-none focus:border-accent"
+            />
+          </label>
 
-        <label className="block text-sm">
-          <span className="flex justify-between text-xs font-semibold uppercase tracking-wider text-ink-faint">
-            Description
-            <span className={`tabular-nums ${description.length > 160 ? 'text-accent' : ''}`}>
-              {description.length}/160
+          <label className="block text-sm">
+            <span className="flex justify-between text-xs font-semibold uppercase tracking-wider text-ink-faint">
+              Description
+              <span className={`tabular-nums ${description.length > 160 ? 'text-accent' : ''}`}>
+                {description.length}/160
+              </span>
             </span>
-          </span>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={3}
-            placeholder="One or two sentences."
-            className="mt-1.5 w-full resize-y rounded-lg border border-line bg-ground px-3 py-2 outline-none focus:border-accent"
-          />
-        </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              placeholder="One or two sentences."
+              className="mt-1.5 w-full resize-y rounded-lg border border-line bg-ground px-3 py-2 outline-none focus:border-accent"
+            />
+          </label>
 
-        <Field label="Canonical URL" value={url} onChange={setUrl} placeholder="https://…" />
-        <Field label="Share image" value={image} onChange={setImage} hint="1200x630 works everywhere" />
-        <Field label="X handle" value={site} onChange={setSite} placeholder="@you" />
-      </div>
-
+          <Field label="Canonical URL" value={url} onChange={setUrl} placeholder="https://…" />
+          <Field label="Share image" value={image} onChange={setImage} hint="1200x630 works everywhere" />
+          <Field label="X handle" value={site} onChange={setSite} placeholder="@you" />
+        </>
+      }
+    >
       <div>
         <div className="flex items-center justify-between gap-3">
           <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
@@ -393,6 +396,6 @@ export function MetaTagGenerator() {
           </div>
         )}
       </div>
-    </div>
+    </ToolLayout>
   );
 }
