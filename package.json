@@ -13,6 +13,7 @@
     "seo": "node --experimental-strip-types scripts/seo-audit.mjs",
     "prebuild": "npm run status && npm run llms && npm run docs:check && npm run downloads:check",
     "docs:check": "node --experimental-strip-types scripts/check-docs.mjs",
+    "docs:gaps": "node --experimental-strip-types scripts/docs-gaps.mjs",
     "downloads:check": "node --experimental-strip-types scripts/check-downloads.mjs"
   },
   "dependencies": {

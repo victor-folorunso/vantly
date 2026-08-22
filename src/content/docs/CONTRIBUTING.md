@@ -41,6 +41,21 @@ Everything below the frontmatter is the doc. Write it.
 
 ---
 
+## Pick the tool from the folder, not from memory
+
+```bash
+npm run docs:gaps
+```
+
+Lists every live tool with no doc, grouped by category. Add `--have` to see
+what already exists.
+
+Do this first, every time. Writing a doc for a tool that already has one
+overwrites it in place: the build stays green, the checker still passes, and
+the only sign is the published count going up by less than you wrote. That has
+already happened once and cost three finished docs, which were only recovered
+because they had been committed.
+
 ## What a doc is for
 
 Somebody arrived for the tool. They used it, or they are deciding whether to,
