@@ -81,7 +81,7 @@ export default function Home() {
               </h2>
               <Link
                 href={`/all#${s.anchor}`}
-                className="shrink-0 text-sm text-ink-faint transition-colors hover:text-accent"
+                className="-my-3 shrink-0 py-3 text-sm text-ink-faint transition-colors hover:text-accent"
               >
                 View more
               </Link>
@@ -104,7 +104,7 @@ export default function Home() {
             <li key={c.label}>
               <Link
                 href={`/all#${c.anchor}`}
-                className="inline-block rounded-lg border border-line bg-surface px-3.5 py-2 text-sm transition-colors hover:border-accent hover:text-accent"
+                className="inline-block rounded-lg border border-line bg-surface px-3.5 py-3 text-sm transition-colors hover:border-accent hover:text-accent"
               >
                 {c.label}
               </Link>
