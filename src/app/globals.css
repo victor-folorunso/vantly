@@ -163,3 +163,23 @@ body {
   text-align: left;
 }
 .prose-vantly th { color: var(--ink); font-weight: 600; }
+
+/* Sliders on a touch screen.
+ *
+ * A native range input is about 16px tall, which is a small thing to grab
+ * with a thumb, and a slider is worse than a link for this: you have to land
+ * on the handle rather than anywhere in the row.
+ *
+ * Height alone is the whole fix. The browser keeps the track centred in
+ * whatever height it is given, so the target grows and the slider looks
+ * exactly as it did. Restyling the track and thumb by hand would mean
+ * appearance: none and then rebuilding both for every engine, which is a lot
+ * of surface to get wrong across 22 sliders.
+ *
+ * Scoped to coarse pointers, so a mouse keeps the compact control.
+ */
+@media (pointer: coarse) {
+  input[type='range'] {
+    height: 44px;
+  }
+}
