@@ -199,3 +199,20 @@ body {
     height: 44px;
   }
 }
+
+/* Toggle buttons on a touch screen.
+ *
+ * The segmented controls across the site sit around 32 pixels tall, which
+ * clears the 24 pixel floor the AA guidance sets but is still a small thing to
+ * hit accurately, and these are usually the primary control on the page: the
+ * mode, the format, the duration.
+ *
+ * aria-pressed selects exactly those and nothing else. Icon buttons, links and
+ * submit buttons are all left alone, which is why this is not a rule on every
+ * button.
+ */
+@media (pointer: coarse) {
+  button[aria-pressed] {
+    min-height: 40px;
+  }
+}
