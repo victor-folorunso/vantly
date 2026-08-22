@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * The small calculators, which are less trivial than they look.
@@ -141,47 +142,50 @@ export function TipCalculator() {
   }
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-2">
-      <div className="rounded-xl border border-line bg-surface p-5">
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Bill" value={bill} onChange={setBill} step="0.01" />
-          <Field label="People" value={people} onChange={setPeople} step="1" />
-        </div>
-
-        <div className="mt-5">
-          <span className="flex justify-between text-sm">
-            Tip
-            <span className="tabular-nums text-ink-faint">{pct}%</span>
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={30}
-            value={pct}
-            onChange={(e) => setPct(Number(e.target.value))}
-            className="mt-2 w-full accent-[var(--accent)]"
-          />
-          <div className="mt-2 flex gap-1.5">
-            {[10, 12.5, 15, 18, 20].map((v) => (
-              <button
-                key={v}
-                onClick={() => setPct(v)}
-                className={`rounded-md border px-2 py-1 text-xs font-medium ${
-                  pct === v ? 'border-accent bg-accent-soft' : 'border-line text-ink-soft'
-                }`}
-              >
-                {v}%
-              </button>
-            ))}
+    <ToolLayout
+      title="The bill"
+      settings={
+        <>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Bill" value={bill} onChange={setBill} step="0.01" />
+            <Field label="People" value={people} onChange={setPeople} step="1" />
           </div>
-        </div>
 
-        <label className="mt-5 flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={roundUp} onChange={(e) => setRoundUp(e.target.checked)} />
-          Round the total up to a whole number
-        </label>
-      </div>
+          <div className="mt-5">
+            <span className="flex justify-between text-sm">
+              Tip
+              <span className="tabular-nums text-ink-faint">{pct}%</span>
+            </span>
+            <input
+              type="range"
+              min={0}
+              max={30}
+              value={pct}
+              onChange={(e) => setPct(Number(e.target.value))}
+              className="mt-2 w-full accent-[var(--accent)]"
+            />
+            <div className="mt-2 flex gap-1.5">
+              {[10, 12.5, 15, 18, 20].map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setPct(v)}
+                  className={`rounded-md border px-2 py-1 text-xs font-medium ${
+                    pct === v ? 'border-accent bg-accent-soft' : 'border-line text-ink-soft'
+                  }`}
+                >
+                  {v}%
+                </button>
+              ))}
+            </div>
+          </div>
 
+          <label className="mt-5 flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={roundUp} onChange={(e) => setRoundUp(e.target.checked)} />
+            Round the total up to a whole number
+          </label>
+        </>
+      }
+    >
       <div className="rounded-xl border border-line bg-surface p-5">
         <Row label="Bill" value={money(b)} />
         <Row label={`Tip at ${pct}%`} value={money(tip)} />
@@ -196,7 +200,7 @@ export function TipCalculator() {
           </p>
         )}
       </div>
-    </div>
+    </ToolLayout>
   );
 }
 
@@ -240,25 +244,24 @@ export function LoanCalculator() {
   }, [P, i, n, payment]);
 
   return (
-    <div>
-      <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-        <div className="rounded-xl border border-line bg-surface p-5">
-          <div className="space-y-4">
-            <Field label="Amount borrowed" value={amount} onChange={setAmount} />
-            <Field label="Interest rate" value={rate} onChange={setRate} suffix="% a year" step="0.01" />
-            <Field label="Over" value={years} onChange={setYears} suffix="years" />
-          </div>
+    <ToolLayout
+      title="Your numbers"
+      settings={
+        <div className="space-y-4">
+          <Field label="Amount borrowed" value={amount} onChange={setAmount} />
+          <Field label="Interest rate" value={rate} onChange={setRate} suffix="% a year" step="0.01" />
+          <Field label="Over" value={years} onChange={setYears} suffix="years" />
         </div>
-
-        <div className="rounded-xl border border-line bg-surface p-5">
-          <Row label="Monthly payment" value={money(payment)} strong />
-          <Row label="Total repaid" value={money(totalPaid)} />
-          <Row label="Of which interest" value={money(interest)} />
-          <Row
-            label="Interest as a share of what you borrowed"
-            value={P ? `${((interest / P) * 100).toFixed(0)}%` : ''}
-          />
-        </div>
+      }
+    >
+      <div className="rounded-xl border border-line bg-surface p-5">
+        <Row label="Monthly payment" value={money(payment)} strong />
+        <Row label="Total repaid" value={money(totalPaid)} />
+        <Row label="Of which interest" value={money(interest)} />
+        <Row
+          label="Interest as a share of what you borrowed"
+          value={P ? `${((interest / P) * 100).toFixed(0)}%` : ''}
+        />
       </div>
 
       {schedule.length > 0 && (
@@ -285,7 +288,7 @@ export function LoanCalculator() {
           </table>
         </div>
       )}
-    </div>
+    </ToolLayout>
   );
 }
 
@@ -319,16 +322,17 @@ export function CompoundCalculator() {
   const max = last?.balance ?? 1;
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-      <div className="rounded-xl border border-line bg-surface p-5">
+    <ToolLayout
+      title="Your numbers"
+      settings={
         <div className="space-y-4">
           <Field label="Starting amount" value={initial} onChange={setInitial} />
           <Field label="Added each month" value={monthly} onChange={setMonthly} />
           <Field label="Return" value={rate} onChange={setRate} suffix="% a year" step="0.1" />
           <Field label="For" value={years} onChange={setYears} suffix="years" />
         </div>
-      </div>
-
+      }
+    >
       <div>
         <div className="rounded-xl border border-line bg-surface p-5">
           <Row label="Final balance" value={money(last?.balance ?? P)} strong />
@@ -366,6 +370,6 @@ export function CompoundCalculator() {
           </div>
         )}
       </div>
-    </div>
+    </ToolLayout>
   );
 }
