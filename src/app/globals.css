@@ -150,13 +150,29 @@ body {
   background: var(--surface-alt);
 }
 .prose-vantly pre code { padding: 0; background: none; }
+/* Inline code holding a long unbroken token, a data URL or a file path, has no
+   break opportunity in it and runs off the side of a phone. Block code is left
+   alone: a pre scrolls itself, and breaking lines inside one would misrepresent
+   the code it is showing. */
+.prose-vantly :not(pre) > code {
+  overflow-wrap: anywhere;
+}
 .prose-vantly blockquote {
   padding-left: 1.1em;
   border-left: 3px solid var(--accent);
   color: var(--ink-soft);
 }
 /* Tables scroll inside their own box rather than pushing the page sideways. */
-.prose-vantly table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+/* A table with several columns has a min-content width larger than a phone,
+   so it needs somewhere of its own to scroll rather than taking the page
+   with it. display: block is what makes overflow apply to a table at all. */
+.prose-vantly table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
 .prose-vantly th, .prose-vantly td {
   padding: 0.5em 0.75em;
   border-bottom: 1px solid var(--line);

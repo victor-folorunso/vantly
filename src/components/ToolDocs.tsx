@@ -71,7 +71,17 @@ export default function ToolDocs({ tool }: { tool: string }) {
         )}
 
         <div className="mt-10 grid gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_200px]">
-          <div className="prose-vantly" dangerouslySetInnerHTML={{ __html: html }} />
+          {/* min-w-0 is load bearing. A grid item defaults to min-width: auto,
+              which means it refuses to shrink below the widest thing inside
+              it. One long line in a code block or a wide table therefore
+              stretched the column past the page and pushed every doc page
+              sideways on a phone, 43 pixels of it. The lg column already
+              used minmax(0,1fr) for this reason; the single mobile column
+              had nothing. */}
+          <div
+            className="prose-vantly min-w-0"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
 
           {items.length > 2 && (
             <nav aria-label="On this page" className="hidden lg:block">
