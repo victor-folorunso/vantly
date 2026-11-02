@@ -137,16 +137,28 @@ def _correlation(a: list[float], b: tuple[float, ...]) -> float:
     return num / den if den else 0.0
 
 
-FINAL_NOTE_BONUS = 0.05
+PHRASE_GAP_SECONDS = 0.4  # a silence this long after a note ends a sung phrase
+PHRASE_ENDING_WEIGHT = 1.5
+
+
+def phrase_endings(notes: list[KeyNote]) -> list[int]:
+    """Pitch classes of the last note of each sung phrase (and of the last note heard)."""
+    ordered = sorted(notes, key=lambda n: n.start)
+    return [n.pitch_midi % 12 for i, n in enumerate(ordered)
+            if i + 1 == len(ordered) or ordered[i + 1].start - n.end >= PHRASE_GAP_SECONDS]
 
 
 def estimate_do(notes: list[KeyNote], harmony: list[float] | None = None) -> list[KeyEstimate]:
     """Rank the 12 possible "do" keys for a melody, best first.
 
     Each candidate do is scored by the better of its major key and its
-    relative minor (tonic = la = do + 9 semitones). Melodies usually end on
-    their tonic, so a key whose tonic is the final note gets a small bonus;
-    this breaks near-ties such as a tune that dwells on so (La Cucaracha).
+    relative minor (tonic = la = do + 9 semitones), by profile correlation
+    plus the share of sung phrases that end on that key's home note. Phrases
+    come to rest on the home note far more than on any other, which is what
+    profiles miss in simple tunes: Mary Had a Little Lamb uses only do re mi
+    so and sits on mi, so it correlates best with E minor (0.70 vs 0.43 for
+    C), but half its phrases end on C and only a quarter on E. Counting every
+    phrase, not just the last note, also survives clips cut mid-phrase.
 
     harmony, if given, is seconds per pitch class sounding in the
     accompaniment's chords (chords.tone_histogram). Melody and harmony get
@@ -154,7 +166,8 @@ def estimate_do(notes: list[KeyNote], harmony: list[float] | None = None) -> lis
     notes and sits on mi, which alone looks like E minor, but its C, F and
     G chords point straight at C.
     """
-    final_pc = max(notes, key=lambda n: n.end).pitch_midi % 12 if notes else None
+    endings = phrase_endings(notes)
+    ending_share = [endings.count(pc) / len(endings) if endings else 0.0 for pc in range(12)]
     histogram = [0.0] * 12
     for note in notes:
         histogram[note.pitch_midi % 12] += note.end - note.start
@@ -169,8 +182,8 @@ def estimate_do(notes: list[KeyNote], harmony: list[float] | None = None) -> lis
         rotated_major = histogram[do:] + histogram[:do]
         la = (do + 9) % 12
         rotated_minor = histogram[la:] + histogram[:la]
-        major_score = _correlation(rotated_major, MAJOR_PROFILE) + FINAL_NOTE_BONUS * (final_pc == do)
-        minor_score = _correlation(rotated_minor, MINOR_PROFILE) + FINAL_NOTE_BONUS * (final_pc == la)
+        major_score = _correlation(rotated_major, MAJOR_PROFILE) + PHRASE_ENDING_WEIGHT * ending_share[do]
+        minor_score = _correlation(rotated_minor, MINOR_PROFILE) + PHRASE_ENDING_WEIGHT * ending_share[la]
         estimates.append(KeyEstimate(do, minor_score > major_score, max(major_score, minor_score)))
     return sorted(estimates, key=lambda e: e.score, reverse=True)
 

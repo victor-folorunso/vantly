@@ -1,0 +1,56 @@
+name: Prototype and website tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: prototype/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: prototype/frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Type-check
+        run: npm run check
+      - name: Unit tests
+        run: npm test
+      - name: Build (prerenders the public pages)
+        run: npm run build
+
+  prototype-logic:
+    # The music logic, chunking, chords and web server, without the transcription models
+    # (torch, GAME, the separator), which are only imported when a song is processed.
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: prototype
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: >
+          python -m pip install "numpy<2" librosa soundfile imageio-ffmpeg pytest
+          "fastapi>=0.115,<1.0" "uvicorn>=0.30,<1.0" python-multipart "httpx>=0.27,<1.0"
+      - name: Run test suite
+        run: pytest -v tests

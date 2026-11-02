@@ -144,3 +144,13 @@ def test_user_chosen_do_overrides_estimate():
 def test_no_notes_raises():
     with pytest.raises(ValueError):
         to_solfa([RawNote(0.0, 0.01, 60.0)])
+
+
+def test_mary_had_a_little_lamb_key_comes_from_phrase_endings():
+    # The tune sits on mi, which alone correlates best with E minor (do = G). Half its
+    # phrases end on C, and the clip itself ends mid-verse on E.
+    with open(FIXTURES / "mary_had_a_little_lamb_game_notes.csv", newline="") as f:
+        raw = [RawNote(float(r["onset"]), float(r["offset"]), float(r["pitch"])) for r in csv.DictReader(f)]
+    result = to_solfa(raw)
+    assert result["do"] == "C"
+    assert not result["minor"]
