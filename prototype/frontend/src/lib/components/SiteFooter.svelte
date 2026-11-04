@@ -1,7 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { PUBLIC_PAGES } from '#lib/site.ts';
 
 	const guides = PUBLIC_PAGES.filter((p) => p.path !== '/');
+
+	// Put together in the browser so the address is not in the prerendered HTML that scrapers read.
+	const CONTACT = ['wizardking.reborn', 'gmail.com'];
+	let email = $state('');
+	onMount(() => (email = CONTACT.join('@')));
+	const mailto = $derived(`mailto:${email}?subject=${encodeURIComponent('SolfaFlow suggestion')}`);
 </script>
 
 <footer>
@@ -21,6 +28,17 @@
 				{/each}
 			</ul>
 		</nav>
+		<section aria-labelledby="contact-heading">
+			<p class="heading" id="contact-heading">Suggestions</p>
+			<p class="note">
+				A wrong note, a song that did not work, or an idea? Tell us and it helps make SolfaFlow better.
+			</p>
+			{#if email}
+				<p><a href={mailto}>{email}</a></p>
+			{:else}
+				<p>{CONTACT[0]} at {CONTACT[1].replace('.', ' dot ')}</p>
+			{/if}
+		</section>
 	</div>
 </footer>
 
