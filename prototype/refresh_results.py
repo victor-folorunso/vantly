@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import os
 import sys
 
 from chords import Chord
@@ -22,16 +23,19 @@ from solfaflow_proto import publish
 
 
 def refresh(out_dir) -> str:
-    data = json.loads((out_dir / "solfa.json").read_text(encoding="utf-8"))
+    solfa = out_dir / "solfa.json"
+    data = json.loads(solfa.read_text(encoding="utf-8"))
     if data.get("complete") is False:
         return "skipped (still processing or interrupted)"
     notes = [RawNote(n["start"], n["end"], n["raw_pitch"]) for n in data["notes"]]
     chords = [Chord(c["start"], c["end"], c["root"], c["quality"]) for c in data.get("chords", [])]
     do = data["do"] if data.get("do_source") == "user" else None
     keep = {k: data[k] for k in ("engine", "timings_seconds") if k in data}
+    created = solfa.stat().st_mtime  # results without job.json are dated by this file; keep the upload date
     result = publish(notes, out_dir, title=song_name(out_dir), duration=data["duration"],
                      processed=data["duration"], complete=True, version=data.get("version", 0) + 1,
                      do=do, min_duration=0.0, extra=keep, chords=chords)
+    os.utime(solfa, (created, created))
     changed = sum(n["pitch_midi"] != n["exact_pitch_midi"] for n in result["notes"])
     return f"do = {result['do']}, {len(result['notes'])} notes, {changed} slides cleaned"
 
