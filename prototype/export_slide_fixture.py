@@ -1,10 +1,13 @@
-"""Write the fixture that checks the frontend's cleanSlides against keyboard.clean_slides.
+"""Write the fixture that checks the website's cleanSlides against keyboard.clean_slides.
 
 The player re-cleans slides in the browser when the user changes do, so the
-TypeScript copy (frontend/src/lib/solfa.ts) must agree with the Python one.
-This exports both real-song fixtures with Python's answer for every possible do;
-frontend/src/lib/slides.test.ts replays them, and tests/test_slide_fixture.py
-fails if this file is stale.
+TypeScript copy (src/lib/solfa/solfa.ts in the vantly repository) must agree with
+the Python one. This exports both real-song fixtures with Python's answer for every
+possible do; tests/test_slide_fixture.py fails if this file is stale.
+
+The website lives in another repository, so after changing keyboard.py's cleanup:
+run this, copy the file to vantly's src/lib/solfa/slides.fixture.json, and run
+`npm test` there (slides.test.ts replays it against the TypeScript).
 
 Usage: python export_slide_fixture.py
 """
@@ -22,7 +25,7 @@ SONGS = {
     "la_cucaracha": HERE / "tests" / "fixtures" / "la_cucaracha_game_notes.csv",
     "mary_had_a_little_lamb": HERE / "tests" / "fixtures" / "mary_had_a_little_lamb_game_notes.csv",
 }
-FIXTURE = HERE / "frontend" / "src" / "lib" / "slides.fixture.json"
+FIXTURE = HERE / "tests" / "fixtures" / "slides.fixture.json"
 
 
 def build() -> dict:

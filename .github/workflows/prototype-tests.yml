@@ -1,4 +1,4 @@
-name: Prototype and website tests
+name: Prototype tests
 
 on:
   push:
@@ -10,32 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  website:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: prototype/frontend
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-          cache-dependency-path: prototype/frontend/package-lock.json
-      - name: Install dependencies
-        run: npm ci
-      - name: Type-check
-        run: npm run check
-      - name: Unit tests
-        run: npm test
-      - name: Build (prerenders the public pages)
-        run: npm run build
-
   prototype-logic:
-    # The music logic, chunking, chords and web server, without the transcription models
+    # The music logic, chunking, chords and the API server, without the transcription models
     # (torch, GAME, the separator), which are only imported when a song is processed.
+    # The website is in the vantly repository and is tested there.
     runs-on: ubuntu-latest
     defaults:
       run:

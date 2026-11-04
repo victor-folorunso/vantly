@@ -20,6 +20,15 @@ This log separates established choices from provisional implementation details a
 - **No shared library** of transcriptions: user uploads a song and gets solfa for their own use.
 - Keyboard-specific needs: global tuning-offset correction before snapping to keys, octave marks, showing which key is "do", optional transpose (e.g. to C), and dropping notes too short to play.
 
+## Where the website lives (product owner, 2026-11-04)
+
+- The website is part of **Vantly** (vantly.xyz, `victor-folorunso/vantly`), at `/song-to-tonic-solfa`, not a
+  standalone site. Vantly is a multi-tool site with domain history and its own tonic solfa converter.
+- Vantly is Next.js/React; the SvelteKit frontend was ported to it and removed from this repository (it is in git
+  history before this date). This repository keeps the transcription pipeline and the API server (`prototype/server.py`).
+- No accounts: a browser remembers the songs it uploaded and the API answers only for ids it is asked about. Songs
+  stay on the server until the user deletes them.
+
 ## Provisional code choices (not product-final)
 
 - Backend scaffold uses Python 3.11+, FastAPI, Pydantic, Uvicorn, pytest.

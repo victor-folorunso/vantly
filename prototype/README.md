@@ -24,7 +24,7 @@ finishes. Compare runs or score against a reference with `compare_notes.py`.
 | Chords | `chords.py` (deterministic) on the separator's accompaniment stem | Classic chroma + major/minor triad templates with Viterbi smoothing (Fujishima-style baseline). No extra model or download; the accompaniment stem comes free with separation. Triads only, accuracy not yet measured |
 | Playback sound | `piano_tone` in `solfaflow_proto.py` | Synthetic piano-like tone (decaying, slightly inharmonic overtones, two detuned strings); detected chords play softly underneath the melody |
 | Beat (for staff notation only) | `beats.py`: librosa beat tracker on the full mix (probabilistic) | Staff notation needs note lengths in beats. Accuracy not measured; trackers often find half or double the felt tempo, so the player offers "half as fast / twice as fast" |
-| Staff notation and downloads | `frontend/src/lib/notation.ts`, `exports.ts`, drawn with [abcjs](https://github.com/paulrosen/abcjs) 6.7.2 (MIT) | Notes snapped to the beat grid in eighths, breaths shorter than a beat held over; bars start on the first sung note (time 4/4, 3/4 or 2/4 and a pickup beat are the reader's choice: guessing bar lines from the melody alone was wrong on Mary). Downloads: print or save as PDF (print stylesheet), solfa as text, MIDI (exact times, melody + chord tracks) and MusicXML (from the staff, for MuseScore/Sibelius/Finale/Dorico) |
+| Staff notation and downloads | `src/lib/solfa/notation.ts`, `exports.ts` in the vantly repository, drawn with [abcjs](https://github.com/paulrosen/abcjs) 6.7.2 (MIT) | Notes snapped to the beat grid in eighths, breaths shorter than a beat held over; bars start on the first sung note (time 4/4, 3/4 or 2/4 and a pickup beat are the reader's choice: guessing bar lines from the melody alone was wrong on Mary). Downloads: print or save as PDF (print stylesheet), solfa as text, MIDI (exact times, melody + chord tracks) and MusicXML (from the staff, for MuseScore/Sibelius/Finale/Dorico) |
 | Player | `player_template.html` | Highlights the current syllable and keyboard key from the audio clock; chords above the notes (name + number relative to do), chord tones lit on the mini keyboard; Keyboard (slides cleaned) or Exact (as sung) notes; hear original, detected notes, or both; change do; transpose key names to C; 0.5×/0.75× speed. Slide cleanup is mirrored in JavaScript so changing do re-cleans instantly |
 
 Considered but not used yet: **VocalParse** (May 2026, Qwen3-ASR-1.7B fine-tune; needs a GPU, outputs note values + BPM rather
@@ -46,17 +46,27 @@ The separator model (~900 MB) downloads on first run into `models/separator/`.
 
 ## Run the website
 
-The website is a SvelteKit app in [`frontend/`](frontend/README.md). Build it once, then the Python server serves it
-along with the API:
+The website is Vantly's [song to tonic solfa](https://vantly.xyz/song-to-tonic-solfa) page, in the
+[vantly](https://github.com/victor-folorunso/vantly) repository; this server is its API. Run both:
 
 ```bash
-cd frontend && npm install && npm run build && cd ..
-.venv/Scripts/python.exe -m uvicorn server:app --port 8765
+SOLFAFLOW_LIST_ALL=1 .venv/Scripts/python.exe -m uvicorn server:app --port 8765
+cd ../../vantly && npm run dev    # http://localhost:3000/song-to-tonic-solfa
 ```
 
-Open http://localhost:8765, upload a song, and the player opens straight away while the solfa fills in. Jobs run one
-at a time. Uploads go to `uploads/` and results to `output/<job id>/`. (From the repo root, `.claude/launch.json`
-starts the same server.) Without a build, the server falls back to the older single-page upload form in `web/`.
+In development Vantly calls `http://127.0.0.1:8765` by itself; a build points at the hosted service with
+`NEXT_PUBLIC_SOLFA_URL`. Upload a song and the player opens straight away while the solfa fills in. Jobs run one at a
+time. Uploads go to `uploads/` and results to `output/<job id>/`. (From the repo root, `.claude/launch.json` starts
+both.) http://localhost:8765 itself serves a bare upload form from `web/`.
+
+**API.** `POST /api/jobs` uploads; `GET /api/jobs/{id}` is one song's progress; `GET /api/jobs?ids=a,b` lists those
+songs only (there are no accounts, so a browser asks for the ids it remembers; `SOLFAFLOW_LIST_ALL=1` lists every
+song, for a local server); `DELETE /api/jobs/{id}` removes a finished song and its files; `/results/{id}/` serves
+`solfa.json`, `song.wav` and the piano track. `SOLFAFLOW_ORIGINS` sets which sites may call it (default: vantly.xyz
+and localhost:3000).
+
+**Hosting is not done yet.** Until the service runs somewhere public, vantly.xyz/song-to-tonic-solfa says the service
+is not switched on. Modal (which already runs Vantly's document converter) is the likely host, on a GPU.
 
 ## Run from the command line
 

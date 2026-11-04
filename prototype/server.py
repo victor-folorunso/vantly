@@ -1,18 +1,27 @@
-"""Local web UI for the SolfaFlow prototype.
+"""The song to tonic solfa service: uploads, progress and results.
 
-Upload a song in the browser and open the synced solfa player straight away:
+The website is Vantly's /song-to-tonic-solfa page (github.com/victor-folorunso/vantly),
+which calls this API from the browser. Upload a song and the player opens straight away:
 the song plays immediately and solfa fills in chunk by chunk as it is transcribed.
 Jobs run one at a time on a background thread because each one saturates the CPU.
 
+There are no accounts. A browser remembers the ids of the songs it uploaded and asks
+about those only, so the API never lists anybody else's songs (SOLFAFLOW_LIST_ALL=1
+turns full listing back on for a local server, where every song is yours).
+
 Run:  .venv/Scripts/python.exe -m uvicorn server:app --port 8765
+Env:  SOLFAFLOW_ORIGINS   comma-separated sites allowed to call the API
+      SOLFAFLOW_LIST_ALL  1 to let GET /api/jobs without ids list every song
 """
 
 from __future__ import annotations
 
 import html
 import json
+import os
 import queue
 import re
+import shutil
 import threading
 import time
 import traceback
@@ -20,9 +29,9 @@ import uuid
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from keyboard import NOTE_NAMES
 from solfaflow_proto import HERE, pretty_name, run
@@ -31,8 +40,12 @@ OUTPUT = HERE / "output"
 UPLOADS = HERE / "uploads"
 ALLOWED_SUFFIXES = {".mp3", ".wav", ".m4a", ".aac", ".ogg", ".opus", ".flac", ".webm", ".mp4"}
 MAX_UPLOAD_BYTES = 60 * 1024 * 1024
+DEFAULT_ORIGINS = "https://vantly.xyz,http://localhost:3000,http://127.0.0.1:3000"
+ORIGINS = [o.strip() for o in os.environ.get("SOLFAFLOW_ORIGINS", DEFAULT_ORIGINS).split(",") if o.strip()]
+LIST_ALL = os.environ.get("SOLFAFLOW_LIST_ALL") == "1"
 
-app = FastAPI(title="SolfaFlow prototype")
+app = FastAPI(title="Song to tonic solfa")
+app.add_middleware(CORSMiddleware, allow_origins=ORIGINS, allow_methods=["GET", "POST", "DELETE"], allow_headers=["*"])
 jobs: dict[str, dict] = {}
 work_queue: queue.Queue[str] = queue.Queue()
 lock = threading.Lock()
@@ -111,14 +124,10 @@ def startup() -> None:
     threading.Thread(target=worker, daemon=True).start()
 
 
-SITE = HERE / "frontend" / "build"  # `npm run build` in frontend/
-
-
-if not SITE.exists():
-    @app.get("/")
-    def index() -> FileResponse:
-        """Fallback upload page for when the SvelteKit site has not been built."""
-        return FileResponse(HERE / "web" / "index.html")
+@app.get("/")
+def index() -> FileResponse:
+    """A bare upload page for trying the service on its own; the real site is Vantly."""
+    return FileResponse(HERE / "web" / "index.html")
 
 
 @app.post("/api/jobs")
@@ -160,9 +169,12 @@ def queue_position(job_id: str) -> int | None:
 
 
 @app.get("/api/jobs")
-def list_jobs() -> list[dict]:
+def list_jobs(ids: str = "") -> list[dict]:
+    """The songs with these comma-separated ids, newest first; unknown ids are skipped."""
+    wanted = {i for i in ids.split(",") if i}
     with lock:
-        return [public(j) for j in sorted(jobs.values(), key=lambda j: j["created"], reverse=True)]
+        chosen = [j for j in jobs.values() if j["id"] in wanted] if wanted else list(jobs.values()) if LIST_ALL else []
+        return [public(j) for j in sorted(chosen, key=lambda j: j["created"], reverse=True)]
 
 
 @app.get("/api/jobs/{job_id}")
@@ -170,6 +182,23 @@ def get_job(job_id: str) -> dict:
     if job_id not in jobs:
         raise HTTPException(404, "No such job")
     return public(jobs[job_id])
+
+
+@app.delete("/api/jobs/{job_id}")
+def delete_job(job_id: str) -> dict:
+    """Remove a song, its upload and its results. A song in the queue or being worked on is refused."""
+    with lock:
+        job = jobs.get(job_id)
+        if job is None:
+            raise HTTPException(404, "No such job")
+        if job["status"] in ("queued", "running"):
+            raise HTTPException(409, "A song can be deleted once it has finished")
+        del jobs[job_id]
+    # job_id is a key of jobs, so it names a folder this server made, never a path from the request.
+    shutil.rmtree(OUTPUT / job_id, ignore_errors=True)
+    for upload in UPLOADS.glob(f"{job_id}.*"):
+        upload.unlink(missing_ok=True)
+    return {"deleted": job_id}
 
 
 class NoCacheStaticFiles(StaticFiles):
@@ -181,24 +210,4 @@ class NoCacheStaticFiles(StaticFiles):
         return response
 
 
-class SiteFiles(StaticFiles):
-    """The built SvelteKit site.
-
-    Prerendered pages are written as "<page>.html" (clean URLs without the
-    extension), and private song pages are rendered in the browser from the
-    200.html shell.
-    """
-
-    async def get_response(self, path: str, scope):
-        try:
-            return await super().get_response(path, scope)
-        except StarletteHTTPException as exc:
-            if exc.status_code != 404 or Path(path).suffix:
-                raise
-            page = Path(self.directory) / f"{path}.html"
-            return FileResponse(page if page.is_file() else Path(self.directory) / "200.html")
-
-
 app.mount("/results", NoCacheStaticFiles(directory=OUTPUT, check_dir=False), name="results")
-if SITE.exists():
-    app.mount("/", SiteFiles(directory=SITE, html=True), name="site")  # last: everything not matched above

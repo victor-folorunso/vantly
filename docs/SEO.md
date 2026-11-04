@@ -1,5 +1,9 @@
 # SEO plan
 
+**2026-11-04: the website moved into Vantly** (vantly.xyz, repository `victor-folorunso/vantly`), at
+`/song-to-tonic-solfa`. Vantly already had domain history and a live tonic solfa converter, and two sites competing for
+the same searches would split them. The page table below is updated to the Vantly URLs.
+
 ## Keyword data (Google Trends, worldwide, 2025-10-19 to 2026-10-18)
 
 Source: two Google Trends CSV exports provided by the product owner. Trends values are **relative interest, not
@@ -20,28 +24,31 @@ second export was rescaled to the first by the ratio of that term's averages (×
 
 ## Pages and the keywords they target
 
-| Page | Primary keyword | Also covers |
+| Page (on vantly.xyz) | Primary keyword | Also covers |
 |---|---|---|
-| `/` | tonic solfa | tonic solfa for keyboard, audio to solfa |
-| `/how-to-read-tonic-solfa-on-keyboard` | tonic solfa | how to read tonic solfa, solfa on keyboard |
-| `/audio-to-tonic-solfa` | audio to sheet music | music transcription, ai music transcription, music transcription software |
-| `/audio-to-midi-or-tonic-solfa` | audio to midi | |
-| `/solfege-and-tonic-solfa` | solfege | movable do, fixed do |
+| `/song-to-tonic-solfa` | tonic solfa | song to tonic solfa, tonic solfa for keyboard, audio to solfa |
+| `/song-to-tonic-solfa#docs` (was `/audio-to-tonic-solfa`) | audio to sheet music | music transcription, ai music transcription |
+| `/learn/how-to-read-tonic-solfa-on-keyboard` | tonic solfa | how to read tonic solfa, solfa on keyboard |
+| `/learn/audio-to-midi-or-tonic-solfa` | audio to midi | |
+| `/learn/solfege-and-tonic-solfa` | solfege | movable do, fixed do |
+| `/tonic-solfa-converter` (Vantly's own) | tonic solfa converter | notes to solfa |
+
+"Audio to tonic solfa" became the doc on the tool page rather than a page of its own: it answers the same search as
+the tool, and Vantly keeps a tool and its explanation on one URL so they do not compete.
 
 ## What is in place
 
-- Every public page is prerendered HTML with a unique title, meta description, canonical URL, Open Graph and Twitter
-  card tags, and a 1200×630 preview image.
-- Structured data: `WebApplication` and `FAQPage` on the home page (the FAQ text is the visible FAQ), `Article` on
-  each guide.
-- `sitemap.xml` lists the five public pages; `robots.txt` disallows `/songs`, `/results/` and `/api/`, and song
-  pages also carry `noindex`.
-- Fast, light pages for slow mobile data: self-hosted fonts, no tracking scripts, about 17 kB gzipped for the
-  largest script chunk.
+- Every public page is prerendered HTML with a unique title, meta description, canonical URL and Open Graph tags
+  (Vantly's site-wide preview image).
+- Structured data: `WebApplication` and `FAQPage` on the tool page (the FAQ text is the visible FAQ), `Article` for
+  its doc, `Article` and `BreadcrumbList` on each guide.
+- Vantly's sitemap lists the tool page and the guides; the player and Your songs pages carry `noindex`.
+- `llms.txt` lists the tool.
+- No tracking scripts. abcjs (staff notation) loads only when staff notation is switched on.
 
 ## Not done yet
 
-- **Real domain.** `https://solfaflow.com` is a placeholder in `frontend/src/lib/site.ts` and `frontend/static/robots.txt`.
+- **The transcription service is not hosted yet**, so the live page says it is not switched on. See the prototype README.
 - **Regional data.** Pull Google Trends "interest by region" and "related queries" for "tonic solfa". Interest is
   expected to concentrate in Nigeria, Ghana, South Africa and Kenya, but that has not been checked.
 - **Song-specific searches** ("<song> tonic solfa") are probably a large share of real demand. They conflict with the

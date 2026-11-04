@@ -7,5 +7,5 @@ import export_slide_fixture  # noqa: E402
 
 def test_frontend_slide_fixture_is_up_to_date():
     # If this fails, keyboard.py's cleanup changed: run `python export_slide_fixture.py`
-    # and then `npm test` in frontend/ to check the TypeScript copy still agrees.
+    # then copy it to vantly and run `npm test` there (see export_slide_fixture.py).
     assert export_slide_fixture.FIXTURE.read_text(encoding="utf-8") == export_slide_fixture.render()
