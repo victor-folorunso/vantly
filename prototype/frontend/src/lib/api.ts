@@ -1,5 +1,5 @@
 // Client for the Python server (prototype/server.py).
-import type { SolfaResult } from './solfa';
+import { formatTime, type SolfaResult } from './solfa.ts';
 
 export interface Job {
 	id: string;
@@ -20,6 +20,22 @@ export interface Job {
 	notes?: number;
 	audio_seconds?: number;
 }
+
+/** One line on where a song is in the queue or pipeline. */
+export function describeJob(job: Job): string {
+	if (job.status === 'done') {
+		const length = job.audio_seconds ? `${formatTime(job.audio_seconds)} long, ` : '';
+		return `Ready. ${length}do = ${job.do ?? '?'}`;
+	}
+	if (job.status === 'error') return job.error ?? 'Stopped before finishing.';
+	if (job.status === 'queued') return `Waiting for ${job.queue_position === 1 ? 'the song ahead' : 'the songs ahead'} to finish`;
+	if (job.total_seconds)
+		return `Solfa ready up to ${formatTime(job.processed_seconds ?? 0)} of ${formatTime(job.total_seconds)}`;
+	return 'Getting started';
+}
+
+/** A song the server knows about that has no solfa yet is still being worked on, not missing. */
+export const isPending = (job: Job) => job.status === 'queued' || job.status === 'running';
 
 export interface UploadOptions {
 	seconds: number; // 0 = whole song

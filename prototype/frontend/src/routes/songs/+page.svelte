@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { listJobs, type Job } from '#lib/api.ts';
+	import { describeJob, listJobs, type Job } from '#lib/api.ts';
 	import Seo from '#lib/components/Seo.svelte';
-	import { formatTime } from '#lib/solfa.ts';
 
 	let jobs = $state<Job[] | null>(null);
 	let offline = $state(false);
@@ -30,17 +29,7 @@
 			minute: '2-digit'
 		});
 
-	function status(job: Job): string {
-		if (job.status === 'done') {
-			const length = job.audio_seconds ? `${formatTime(job.audio_seconds)} long, ` : '';
-			return `Ready. ${length}do = ${job.do ?? '?'}`;
-		}
-		if (job.status === 'error') return job.error ?? 'Stopped before finishing.';
-		if (job.status === 'queued') return `Waiting for ${job.queue_position === 1 ? 'the song ahead' : 'the songs ahead'} to finish`;
-		if (job.total_seconds)
-			return `Solfa ready up to ${formatTime(job.processed_seconds ?? 0)} of ${formatTime(job.total_seconds)}`;
-		return 'Getting started';
-	}
+	const status = describeJob;
 
 	const progress = (job: Job) =>
 		job.total_seconds ? Math.round((100 * (job.processed_seconds ?? 0)) / job.total_seconds) : 0;

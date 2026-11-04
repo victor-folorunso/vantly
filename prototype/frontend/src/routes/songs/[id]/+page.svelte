@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { page } from '$app/state';
-	import { getJob, getResult, resultUrl } from '#lib/api.ts';
+	import { describeJob, getJob, getResult, isPending, resultUrl } from '#lib/api.ts';
 	import Keyboard from '#lib/components/Keyboard.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import {
@@ -28,6 +28,7 @@
 	let result = $state<SolfaResult | null>(null);
 	let title = $state('');
 	let loadError = $state('');
+	let waiting = $state(''); // the song is queued or its first part is still being transcribed
 
 	// Player settings.
 	let doPc = $state<number | null>(null);
@@ -82,11 +83,16 @@
 			try {
 				const next = await getResult(id);
 				if (!result || (next.version ?? 0) > (result.version ?? 0)) apply(next);
-				loadError = '';
-			} catch (e) {
-				if (!result) loadError = 'This song could not be found. It may have been removed.';
+				loadError = waiting = '';
+			} catch {
+				// No solfa.json yet: a song still in the queue or on its first part, or one that does not exist.
+				if (!result) {
+					const job = await getJob(id).catch(() => null);
+					if (job && isPending(job)) waiting = describeJob(job);
+					else loadError = job?.error ?? 'This song could not be found. It may have been removed.';
+				}
 			}
-			if (!stopped && !(result && isComplete(result))) timer = setTimeout(poll, POLL_MS);
+			if (!stopped && !loadError && !(result && isComplete(result))) timer = setTimeout(poll, POLL_MS);
 		};
 		poll();
 		let frame = requestAnimationFrame(function loop() {
@@ -189,6 +195,11 @@
 	<div class="wrap empty">
 		<h1>Song not found</h1>
 		<p>{loadError} <a href="/songs">See your songs</a>.</p>
+	</div>
+{:else if waiting && !result}
+	<div class="wrap empty" role="status">
+		<h1>{title || 'Your song'}</h1>
+		<p>{waiting}. The player opens here by itself as soon as the first part of the song is ready.</p>
 	</div>
 {:else}
 	<audio bind:this={song} src={resultUrl(id, 'song.wav')} preload="auto" bind:duration
