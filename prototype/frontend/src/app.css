@@ -215,6 +215,39 @@ select {
 	white-space: nowrap;
 }
 
+/* Printing (and "Save as PDF"): black on white, nothing interactive, only what a page needs. */
+.print-only {
+	display: none;
+}
+
+@media print {
+	:root {
+		--indigo: #000;
+		--indigo-soft: #fff;
+		--paper: #fff;
+		--surface: #fff;
+		--ink: #000;
+		--slate: #444;
+		--rule: #bbb;
+		--lamp: transparent;
+		--lamp-ink: #000;
+		color-scheme: light;
+	}
+
+	body {
+		background: #fff;
+		color: #000;
+	}
+
+	.no-print {
+		display: none !important;
+	}
+
+	.print-only {
+		display: block;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,

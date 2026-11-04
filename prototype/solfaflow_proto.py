@@ -35,6 +35,7 @@ import soundfile as sf
 
 import chords as chord_rec
 import engines
+from beats import find_beats
 from chords import Chord
 from chunking import Chunk, energy_envelope, plan_chunks, stitch
 from keyboard import NOTE_NAMES, RawNote, to_solfa
@@ -262,6 +263,8 @@ def run(
     shutil.copy(mix_wav, out_dir / "song.wav")
     chunks = plan_chunks(duration, energy_envelope(mix, SAMPLE_RATE))
     log(f"decoded {song.name} ({duration:.1f}s) into {len(chunks)} chunks")
+    rhythm = find_beats(mix, SAMPLE_RATE)  # for staff notation; a few seconds for a whole song
+    log(f"{len(rhythm['beats'])} beats, about {rhythm['tempo_bpm']} bpm")
 
     engine_info = {"separator": None if skip_separation else engines.SEPARATOR_MODEL,
                    "transcriber": "openvpi GAME 1.0 medium",
@@ -269,7 +272,7 @@ def run(
                                "padded": [round(c.start, 2), round(c.end, 2)]} for c in chunks]}
     # Publish an empty result straight away so the player opens and the song can already be heard.
     publish([], out_dir, title=title, duration=duration, processed=0.0, complete=False, version=0, do=do,
-            min_duration=min_duration, extra={"engine": engine_info})
+            min_duration=min_duration, extra={"engine": engine_info} | rhythm)
     progress = {"stage": "loading models", "chunk": 0, "chunks": len(chunks), "processed_seconds": 0.0,
                 "total_seconds": round(duration, 2), "player_ready": True}
     on_progress(progress)
@@ -295,7 +298,7 @@ def run(
                          chords=chords,
                          extra={"engine": engine_info,
                                 "timings_seconds": {"chunks": chunk_seconds,
-                                                    "total": round(time.perf_counter() - started, 1)}})
+                                                    "total": round(time.perf_counter() - started, 1)}} | rhythm)
         progress = progress | {"processed_seconds": round(chunk.core_end, 2)}
         log(f"chunk {chunk.index + 1}/{len(chunks)} done in {chunk_seconds[-1]}s: up to {chunk.core_end:.1f}s, "
             f"{len(result['notes'])} notes, {len(chords)} chords, do = {result['do']}")

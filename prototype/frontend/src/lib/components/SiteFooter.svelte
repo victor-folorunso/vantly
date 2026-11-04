@@ -11,7 +11,7 @@
 	const mailto = $derived(`mailto:${email}?subject=${encodeURIComponent('SolfaFlow suggestion')}`);
 </script>
 
-<footer>
+<footer class="no-print">
 	<div class="wrap grid">
 		<div>
 			<p class="name">SolfaFlow</p>

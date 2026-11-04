@@ -8,7 +8,7 @@
 	];
 </script>
 
-<header>
+<header class="no-print">
 	<div class="wrap bar">
 		<a class="brand" href="/">
 			<img src={logo} alt="" width="28" height="28" />

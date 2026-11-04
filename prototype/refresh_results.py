@@ -16,6 +16,9 @@ import json
 import os
 import sys
 
+import soundfile as sf
+
+from beats import find_beats
 from chords import Chord
 from keyboard import RawNote
 from server import OUTPUT, song_name
@@ -30,7 +33,10 @@ def refresh(out_dir) -> str:
     notes = [RawNote(n["start"], n["end"], n["raw_pitch"]) for n in data["notes"]]
     chords = [Chord(c["start"], c["end"], c["root"], c["quality"]) for c in data.get("chords", [])]
     do = data["do"] if data.get("do_source") == "user" else None
-    keep = {k: data[k] for k in ("engine", "timings_seconds") if k in data}
+    keep = {k: data[k] for k in ("engine", "timings_seconds", "tempo_bpm", "beats") if k in data}
+    if "beats" not in keep and (out_dir / "song.wav").exists():  # results from before staff notation
+        mix, sr = sf.read(out_dir / "song.wav", dtype="float32")
+        keep |= find_beats(mix, sr)
     created = solfa.stat().st_mtime  # results without job.json are dated by this file; keep the upload date
     result = publish(notes, out_dir, title=song_name(out_dir), duration=data["duration"],
                      processed=data["duration"], complete=True, version=data.get("version", 0) + 1,

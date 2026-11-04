@@ -41,6 +41,8 @@ export interface SolfaResult {
 	complete?: boolean; // absent on results from before progressive processing: finished
 	version?: number;
 	synth_file?: string;
+	tempo_bpm?: number; // estimated beat, for staff notation only (beats.py)
+	beats?: number[];
 }
 
 const mod12 = (n: number) => ((n % 12) + 12) % 12;

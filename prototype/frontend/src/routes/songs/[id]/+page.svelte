@@ -4,6 +4,9 @@
 	import { describeJob, getJob, getResult, isPending, resultUrl } from '#lib/api.ts';
 	import Keyboard from '#lib/components/Keyboard.svelte';
 	import Seo from '#lib/components/Seo.svelte';
+	import StaffView from '#lib/components/StaffView.svelte';
+	import { download, fileStem, toMidi, toText } from '#lib/exports.ts';
+	import { buildStaff, keyTitle, scaleBeats, toAbc, toMusicXml, type Meter } from '#lib/notation.ts';
 	import {
 		NOTE_NAMES,
 		activeIndex,
@@ -38,6 +41,27 @@
 	let showChords = $state(true);
 	let toC = $state(false);
 	let rate = $state(1);
+	let notation = $state<'solfa' | 'staff' | 'both'>(remembered('solfaflow.notation', 'solfa'));
+	let meter = $state<Meter>(4);
+	let firstBeat = $state(0);
+	let beatScale = $state<0.5 | 1 | 2>(1);
+
+	function remembered<T extends string>(key: string, fallback: T): T {
+		try {
+			const value = localStorage.getItem(key);
+			return value === 'solfa' || value === 'staff' || value === 'both' ? (value as T) : fallback;
+		} catch {
+			return fallback;
+		}
+	}
+
+	$effect(() => {
+		try {
+			localStorage.setItem('solfaflow.notation', notation);
+		} catch {
+			// private window or storage blocked: the choice just is not remembered
+		}
+	});
 
 	// Playback.
 	let song = $state<HTMLAudioElement>();
@@ -60,6 +84,38 @@
 	const processed = $derived(result?.processed_seconds ?? 0);
 	const total = $derived(result?.duration || duration || 0);
 	const ahead = $derived(!complete && now > processed && result !== null);
+
+	// Staff notation (estimated rhythm) and downloads.
+	const minor = $derived(doPc !== null && (result?.minor_by_do?.[doPc] ?? false));
+	const staff = $derived(
+		result && doPc !== null && notes.length
+			? buildStaff(notes, pitches, chords, scaleBeats(result, beatScale), total, doPc, minor, meter, firstBeat)
+			: null
+	);
+	const abc = $derived(staff ? toAbc(staff, '', (c) => chordName(c, shift), shift) : ''); // the page has the title
+	const currentBar = $derived.by(() => {
+		if (!staff || !playing) return -1;
+		let bar = -1;
+		while (bar + 1 < staff.barTimes.length && staff.barTimes[bar + 1] <= now) bar++;
+		return bar;
+	});
+	const keyLine = $derived(
+		doPc === null ? '' : `do = ${NOTE_NAMES[(doPc + shift + 12) % 12]} (${keyTitle((doPc + shift + 12) % 12, minor)})`
+	);
+	$effect(() => {
+		if (firstBeat >= meter) firstBeat = 0;
+	});
+	const showSolfa = $derived(notation !== 'staff');
+	const showStaff = $derived(notation !== 'solfa');
+
+	function save(kind: 'text' | 'midi' | 'musicxml') {
+		if (!result) return;
+		const stem = fileStem(title);
+		if (kind === 'text')
+			download(`${stem} - tonic solfa.txt`, toText(notes, chords, { title, keyLine, pitches, home, shift }), 'text/plain;charset=utf-8');
+		else if (kind === 'midi') download(`${stem}.mid`, toMidi(notes, pitches, chords, shift), 'audio/midi');
+		else if (staff) download(`${stem}.musicxml`, toMusicXml(staff, title, shift), 'application/vnd.recordare.musicxml+xml');
+	}
 
 	function apply(next: SolfaResult) {
 		const previous = doPc;
@@ -206,7 +262,12 @@
 		onplay={() => (playing = true)} onpause={() => (playing = false)}></audio>
 	<audio bind:this={synth} preload="auto"></audio>
 
-	<section class="deck">
+	<div class="print-only print-head">
+		<h1>{title}</h1>
+		<p>{keyLine}. Made with SolfaFlow; transcription is automatic, so check it by ear.</p>
+	</div>
+
+	<section class="deck no-print">
 		<div class="wrap">
 			<div class="head">
 				<a class="back" href="/songs">Your songs</a>
@@ -251,9 +312,17 @@
 	</section>
 
 	<div class="wrap">
-		<details class="settings-panel">
+		<details class="settings-panel no-print">
 			<summary>Settings <span>{settingsSummary}</span></summary>
 			<div class="settings">
+				<label class="field">
+					Show
+					<select bind:value={notation}>
+						<option value="solfa">Tonic solfa</option>
+						<option value="staff">Staff notation</option>
+						<option value="both">Both</option>
+					</select>
+				</label>
 				<label class="field">
 					Hear
 					<select bind:value={hear}>
@@ -301,8 +370,19 @@
 			</div>
 		</details>
 
+		{#if result && notes.length}
+			<div class="downloads no-print" role="group" aria-label="Download or print">
+				<button class="button" onclick={() => print()}>Print or save as PDF</button>
+				<button class="button quiet" onclick={() => save('text')}>Solfa as text</button>
+				<button class="button quiet" onclick={() => save('midi')}>MIDI</button>
+				<button class="button quiet" onclick={() => save('musicxml')} disabled={!staff}
+					title="Opens in MuseScore, Sibelius, Finale and Dorico">MusicXML</button>
+				{#if !complete}<span class="so-far">Downloads include what is done so far.</span>{/if}
+			</div>
+		{/if}
+
 		{#if doPc !== null}
-			<p class="keyline">
+			<p class="keyline no-print">
 				{#if userDo}
 					You set do = {NOTE_NAMES[doPc]}.
 				{:else}
@@ -312,7 +392,44 @@
 			</p>
 		{/if}
 
-		<div class="sheet" bind:this={sheet}>
+		{#if showStaff && staff}
+			<section class="staff-section" aria-labelledby="staff-heading">
+				<div class="staff-head">
+					<h2 id="staff-heading">Staff notation</h2>
+					<div class="staff-options no-print">
+						<label class="field">
+							Time
+							<select bind:value={meter}>
+								<option value={4}>4/4</option>
+								<option value={3}>3/4</option>
+								<option value={2}>2/4</option>
+							</select>
+						</label>
+						<label class="field">
+							Beat
+							<select bind:value={beatScale}>
+								<option value={0.5}>Half as fast</option>
+								<option value={1}>As found</option>
+								<option value={2}>Twice as fast</option>
+							</select>
+						</label>
+						<label class="field">
+							First note on beat
+							<select bind:value={firstBeat}>
+								{#each Array.from({ length: meter }, (_, b) => b) as b (b)}<option value={b}>{b + 1}</option>{/each}
+							</select>
+						</label>
+					</div>
+				</div>
+				<p class="staff-note">
+					Pitches match the solfa. Note lengths are fitted to a beat of about {staff.tempo} per minute, so the rhythm and
+					bar lines are a starting point to correct, not a finished score. If most notes look too short or too long, change the beat; if the bars look wrong, change the time or the first beat.
+				</p>
+				<StaffView {abc} {currentBar} onbar={(b) => staff && seek(staff.barTimes[b] ?? 0)} />
+			</section>
+		{/if}
+
+		<div class="sheet" bind:this={sheet} hidden={!showSolfa}>
 			{#each phrases as phrase, p (p)}
 				<div class="phrase">
 					<button class="time" onclick={() => seek(phrase.start)}>{formatTime(phrase.start)}</button>
@@ -630,6 +747,78 @@
 
 	.empty {
 		padding-top: var(--space-7);
+	}
+
+	.downloads {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2);
+		margin-top: var(--space-4);
+	}
+
+	.so-far {
+		color: var(--slate);
+		font-size: var(--step--1);
+	}
+
+	.staff-section {
+		margin-top: var(--space-5);
+		padding-bottom: var(--space-4);
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.staff-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: end;
+		justify-content: space-between;
+		gap: var(--space-3);
+	}
+
+	.staff-head h2 {
+		margin: 0;
+		font-size: var(--step-1);
+	}
+
+	.staff-options {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+	}
+
+	.staff-note {
+		color: var(--slate);
+		font-size: var(--step--1);
+		max-width: var(--measure);
+	}
+
+	.print-head h1 {
+		font-size: 20pt;
+	}
+
+	@media print {
+		.phrase {
+			break-inside: avoid;
+			padding: 6pt 0;
+		}
+
+		.time,
+		.note {
+			color: #000;
+		}
+
+		.staff-note {
+			display: none;
+		}
+
+		.staff-section {
+			border: 0;
+		}
+
+		.sheet[hidden] {
+			display: none;
+		}
 	}
 
 	@media (max-width: 40rem) {
