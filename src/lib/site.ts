@@ -43,6 +43,12 @@ export type Tool = {
   description: string;
   /** False until the route exists. Keeps the sitemap free of 404s. */
   live: boolean;
+  /**
+   * True when the tool sends the file to a server, because the work is beyond
+   * what a browser can do. The privacy page lists these from here, so a tool
+   * cannot start uploading without saying so there.
+   */
+  sendsFile?: boolean;
 };
 
 export const TOOLS: Tool[] = [
@@ -817,11 +823,12 @@ export const TOOLS: Tool[] = [
     slug: 'song-to-tonic-solfa',
     name: 'Song to tonic solfa',
     category: 'Media',
-    blurb: 'Hum or play a melody, read it back as solfa.',
-    title: 'Turn a melody into tonic solfa',
+    blurb: 'Upload a song, play along in solfa with the keys lit.',
+    title: 'Song to tonic solfa for keyboard, free',
     description:
-      'Work out the tonic solfa of a melody from a recording, by following the pitch. Works on one line at a time: a voice, a whistle, a single instrument.',
-    live: false,
+      'Upload a song and get its tune in tonic solfa, with the keyboard key under every note, the chords above, and the solfa lighting up as the song plays.',
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'video-to-mp3',
@@ -885,6 +892,7 @@ export const TOOLS: Tool[] = [
     description:
       'View Word documents in your browser. No Office licence. Formatting, tables and images are kept.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'pptx-viewer',
@@ -895,6 +903,7 @@ export const TOOLS: Tool[] = [
     description:
       'View PowerPoint presentations in your browser. Step through the slides and read the notes.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'xlsx-viewer',
@@ -905,6 +914,7 @@ export const TOOLS: Tool[] = [
     description:
       'View Excel spreadsheets in your browser. Every sheet, every row, sorted and filtered.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'pdf-viewer',
@@ -1537,6 +1547,7 @@ export const TOOLS: Tool[] = [
     description:
       'Turn a Word document into a PDF, so the formatting holds on any machine.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'excel-to-pdf',
@@ -1547,6 +1558,7 @@ export const TOOLS: Tool[] = [
     description:
       'Turn a spreadsheet into a PDF, choosing which sheets and how the columns fit the page.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'pptx-to-pdf',
@@ -1557,6 +1569,7 @@ export const TOOLS: Tool[] = [
     description:
       'Turn a PPTX into a PDF, one page per slide, with the notes kept or dropped.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'html-to-pdf',
@@ -1567,6 +1580,7 @@ export const TOOLS: Tool[] = [
     description:
       'Turn HTML into a PDF with the page size and margins you choose.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'epub-to-pdf',
@@ -1577,6 +1591,7 @@ export const TOOLS: Tool[] = [
     description:
       'Turn an EPUB into a PDF at a fixed page size, for printing or for a device that cannot read EPUB.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'png-to-pdf',
@@ -1607,6 +1622,7 @@ export const TOOLS: Tool[] = [
     description:
       'Convert to and from PDF: Word, Excel, PowerPoint, HTML, EPUB, images and plain text.',
     live: true,
+    sendsFile: true,
   },
   {
     slug: 'image-to-text',

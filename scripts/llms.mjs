@@ -13,16 +13,17 @@
  * Run with: npm run llms
  */
 
-import { writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
+import matter from 'gray-matter';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 const load = (rel) => import(pathToFileURL(join(root, rel)).href);
 
 const { TOOLS, SITE } = await load('src/lib/site.ts');
-const { CONVERSIONS, article } = await load('src/lib/conversions.ts');
+const { CONVERSIONS, article, docHandles } = await load('src/lib/conversions.ts');
 
 const liveTools = TOOLS.filter((t) => t.live);
 const liveConversions = CONVERSIONS.filter((c) => c.live);
@@ -33,10 +34,11 @@ out.push('');
 out.push(`> ${SITE.tagline}`);
 out.push('');
 out.push(
-  'Free file tools that run entirely in the visitor\'s browser. Files are never',
-  'uploaded, so there is no account, no watermark, no file size limit, and no',
-  'cap on how many conversions can be done. This is possible because the work',
-  'costs the operator nothing: the browser does the decoding and encoding.',
+  'Free file tools, most of which run entirely in the visitor\'s browser, so',
+  'there is no account, no watermark, no file size limit, and no cap on how many',
+  'conversions can be done. A few need a server because a browser cannot do the',
+  'work (Office documents, and turning a song into tonic solfa). Those upload the',
+  `file, and ${SITE.url}/privacy lists every one of them.`,
 );
 out.push('');
 out.push('## What works today');
@@ -46,10 +48,28 @@ for (const t of liveTools) {
 }
 for (const c of liveConversions) {
   out.push(
-    `- [${c.from.label} to ${c.to.label}](${SITE.url}/${c.slug}): Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label} in the browser, in bulk.`,
+    `- [${c.from.label} to ${c.to.label}](${SITE.url}/${c.slug}): Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label}${docHandles(c) ? ' online' : ' in the browser, in bulk'}.`,
   );
 }
 out.push('');
+
+/* Guides have their own pages, so they are listed too. Read straight from the
+   markdown: src/lib/guides.ts imports without file extensions, which only the
+   bundler resolves. */
+const guidesDir = join(root, 'src/content/guides');
+const guides = existsSync(guidesDir)
+  ? readdirSync(guidesDir).filter((f) => f.endsWith('.md') && !f.startsWith('_'))
+  : [];
+if (guides.length) {
+  out.push('## Guides');
+  out.push('');
+  for (const file of guides) {
+    const { data } = matter(readFileSync(join(guidesDir, file), 'utf8'));
+    out.push(`- [${data.title}](${SITE.url}/learn/${file.replace(/\.md$/, '')}): ${data.description}`);
+  }
+  out.push('');
+}
+
 out.push('## Known limits');
 out.push('');
 out.push(
@@ -59,8 +79,9 @@ out.push(
   '- Only the first frame of an animated GIF is converted.',
   '- Images are never enlarged when resizing, since scaling up cannot add detail',
   '  that was not captured.',
-  '- PDF, Office and audio or video conversion are planned but not built. Pages',
-  '  exist for them and say so.',
+  '- Song to tonic solfa writes the tune of the lead voice only, not choir',
+  '  harmony, and its rhythm in staff notation is estimated.',
+  '- Tools that are not built yet have pages that say so.',
 );
 out.push('');
 out.push('## Index');

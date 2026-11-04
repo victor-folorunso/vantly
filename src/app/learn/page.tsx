@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { allDocs } from '@/lib/docs';
+import { allGuides } from '@/lib/guides';
 import { SITE, CATEGORIES, TOOLS } from '@/lib/site';
 
 const title = 'Learn';
@@ -31,10 +32,30 @@ export const metadata: Metadata = {
 export default function Page() {
   const docs = allDocs();
 
+  /* Docs link to the tool page they sit on; guides have pages of their own.
+     Both are filed under the category of the tool they are about, so a reader
+     looking at Media sees the solfa guides beside the solfa tools' docs. */
+  const entries = [
+    ...docs.map((d) => ({
+      href: `/${d.tool.slug}#docs`,
+      title: d.title,
+      description: d.description,
+      meta: `${d.tool.name} · ${d.minutes} min`,
+      category: d.tool.category,
+    })),
+    ...allGuides().map((g) => ({
+      href: `/learn/${g.slug}`,
+      title: g.title,
+      description: g.description,
+      meta: `Guide · ${g.minutes} min`,
+      category: g.tool.category,
+    })),
+  ];
+
   const groups = CATEGORIES.map((category) => ({
     category,
     anchor: category.toLowerCase(),
-    docs: docs.filter((d) => d.tool.category === category),
+    docs: entries.filter((d) => d.category === category),
   })).filter((g) => g.docs.length > 0);
 
   const documented = new Set(docs.map((d) => d.tool.slug));
@@ -59,8 +80,8 @@ export default function Page() {
                 </h2>
                 <ul className="mt-4 space-y-6">
                   {g.docs.map((d) => (
-                    <li key={d.tool.slug}>
-                      <Link href={`/${d.tool.slug}#docs`} className="group block">
+                    <li key={d.href}>
+                      <Link href={d.href} className="group block">
                         <span className="text-lg font-medium transition-colors group-hover:text-accent">
                           {d.title}
                         </span>
@@ -68,7 +89,7 @@ export default function Page() {
                           {d.description}
                         </span>
                         <span className="mt-1.5 block text-xs tabular-nums text-ink-faint">
-                          {d.tool.name} · {d.minutes} min
+                          {d.meta}
                         </span>
                       </Link>
                     </li>

@@ -138,6 +138,54 @@ for (const file of files) {
 }
 
 /**
+ * Guides, at /learn/<slug> (see src/lib/guides.ts).
+ *
+ * The same rules where they apply. A guide's filename is its URL rather than
+ * a tool, so the routing contract is the `tool` field instead: it has to name
+ * a live tool, because that decides where the guide is filed and where its
+ * call to action leads. A guide answers one question, so it may be shorter
+ * than a doc, but not a stub.
+ */
+const GUIDES = join(root, 'src/content/guides');
+const guideFiles = existsSync(GUIDES)
+  ? readdirSync(GUIDES).filter((f) => f.endsWith('.md') && !f.startsWith('_'))
+  : [];
+const guideSlugs = new Set(guideFiles.map((f) => f.replace(/\.md$/, '')));
+
+for (const file of guideFiles) {
+  const raw = readFileSync(join(GUIDES, file), 'utf8');
+  const where = `guides/${file}`;
+  const parsed = frontmatter(raw);
+  if (parsed?.error) {
+    problems.push(`${where}: the frontmatter is not valid YAML. ${parsed.error}`);
+    continue;
+  }
+  const { data, body } = parsed;
+
+  for (const field of ['title', 'description', 'lede', 'updated', 'tool']) {
+    if (!data[field]) problems.push(`${where}: missing "${field}".`);
+  }
+  const tool = bySlug.get(String(data.tool ?? ''));
+  if (data.tool && !tool) problems.push(`${where}: tool "${data.tool}" does not exist.`);
+  else if (tool && tool.live === false) problems.push(`${where}: tool "${data.tool}" is not live.`);
+  if (data.description && data.description.length > 165) {
+    problems.push(`${where}: description is ${data.description.length} characters. Google cuts it near 160.`);
+  }
+  if (raw.includes('—')) {
+    problems.push(`${where}: contains an em dash. Use a comma or a full stop.`);
+  }
+  for (const [, target] of raw.matchAll(/\]\((\/[a-z0-9/-]+)\)/g)) {
+    const [first, second] = target.slice(1).split('/');
+    const ok = first === 'learn' ? !second || guideSlugs.has(second) : bySlug.get(first)?.live === true;
+    if (!ok) problems.push(`${where}: links to ${target}, which does not exist or is not built yet.`);
+  }
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  if (words < 250) {
+    problems.push(`${where}: ${words} words. Under 250 is too thin for a page of its own.`);
+  }
+}
+
+/**
  * Warns when a doc that already existed has been replaced rather than edited.
  *
  * Twice now a doc has been written for a tool that already had one, and the
@@ -205,4 +253,4 @@ if (problems.length) {
 }
 
 const written = files.length - drafts;
-console.log(`docs: ${written} published, ${drafts} draft${drafts === 1 ? '' : 's'} waiting, all valid.`);
+console.log(`docs: ${written} published, ${drafts} draft${drafts === 1 ? '' : 's'} waiting, ${guideFiles.length} guides, all valid.`);

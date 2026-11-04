@@ -306,6 +306,11 @@ export function article(word: string): 'a' | 'an' {
 }
 
 export function conversionDescription(c: Conversion): string {
+  // Document pairs go through the conversion service, so they cannot claim to
+  // stay in the browser. Saying so here kept "no upload" on pages that upload.
+  if (docHandles(c)) {
+    return `Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label}. Free, no watermark, and the file is deleted as soon as it is converted.`;
+  }
   return `Convert ${article(c.from.long)} ${c.from.long} to ${c.to.label} in your browser. No upload, no watermark, and no limit on how many you can do.`;
 }
 

@@ -1,7 +1,7 @@
 # Vantly
 
-Small file tools that run in your browser. No account, no watermark, and no
-export capped at a size that makes the result useless.
+Everyday file tools. No account, no watermark, and no export capped at a size
+that makes the result useless.
 
 [vantly.xyz](https://vantly.xyz)
 
@@ -13,13 +13,19 @@ free tier at two files a day, or burn a watermark across the output.
 
 Almost none of that is a technical limit. A browser can decode, scale and
 re-encode an image on its own, using capabilities it already ships with, at a
-cost to the operator of exactly zero. So the tools here run on your machine.
-The file is never uploaded, which means there is no bandwidth bill, no storage
-to pay for, no queue, and nothing for anybody to leak. That is the whole reason
-there is no cap: there is no cost to recover.
+cost to the operator of exactly zero. So most tools here run on your machine,
+with no bandwidth bill, no storage to pay for and no queue, and that is why they
+have no cap.
 
-The limits show up where the browser genuinely cannot do something, and those
-are stated on the page rather than hidden behind a plan.
+Some work a browser genuinely cannot do. Office files need LibreOffice, and
+turning a song into tonic solfa needs a singing model on a GPU. Those tools send
+the file to a server, and the [privacy page](https://vantly.xyz/privacy) lists
+every one of them and says what happens to the file. It is built from the tool
+list (`sendsFile` in `src/lib/site.ts`), so a new server tool cannot ship
+without appearing there.
+
+The limits show up where something genuinely costs money or cannot be done, and
+those are stated on the page rather than hidden behind a plan.
 
 ## Running it
 

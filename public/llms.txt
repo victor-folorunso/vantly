@@ -2,10 +2,11 @@
 
 > Everyday tools for everyone.
 
-Free file tools that run entirely in the visitor's browser. Files are never
-uploaded, so there is no account, no watermark, no file size limit, and no
-cap on how many conversions can be done. This is possible because the work
-costs the operator nothing: the browser does the decoding and encoding.
+Free file tools, most of which run entirely in the visitor's browser, so
+there is no account, no watermark, no file size limit, and no cap on how many
+conversions can be done. A few need a server because a browser cannot do the
+work (Office documents, and turning a song into tonic solfa). Those upload the
+file, and https://vantly.xyz/privacy lists every one of them.
 
 ## What works today
 
@@ -39,6 +40,7 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [Domain name checker](https://vantly.xyz/domain-name-checker): Check whether a domain is registered across com, net, org, io, xyz and more, asking the registries directly.
 - [Domain name generator](https://vantly.xyz/domain-name-generator): Generate available domain name ideas from a seed word or from nothing, and check which ones are still free.
 - [Tonic solfa converter](https://vantly.xyz/tonic-solfa-converter): Convert note names into tonic solfa in whichever key you choose, and back the other way. For choirs, church music and anyone taught by solfa rather than staff.
+- [Song to tonic solfa](https://vantly.xyz/song-to-tonic-solfa): Upload a song and get its tune in tonic solfa, with the keyboard key under every note, the chords above, and the solfa lighting up as the song plays.
 - [Video to MP3](https://vantly.xyz/video-to-mp3): Pull the audio out of a video file and save it as an MP3, choosing the quality.
 - [MP3 to video](https://vantly.xyz/mp3-to-video): Make a video from an audio file and a still picture, for uploading a track somewhere that only accepts video.
 - [Typing speed test](https://vantly.xyz/typing-speed-test): Find your typing speed in words per minute over 15, 30, 60 or 120 seconds, with accuracy and a net speed that ignores what you got wrong.
@@ -167,16 +169,16 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [PDF to JPG](https://vantly.xyz/pdf-to-jpg): Convert a PDF document to JPG in the browser, in bulk.
 - [PDF to PNG](https://vantly.xyz/pdf-to-png): Convert a PDF document to PNG in the browser, in bulk.
 - [PDF to TXT](https://vantly.xyz/pdf-to-txt): Convert a PDF document to TXT in the browser, in bulk.
-- [DOCX to PDF](https://vantly.xyz/docx-to-pdf): Convert a Word document to PDF in the browser, in bulk.
-- [DOCX to TXT](https://vantly.xyz/docx-to-txt): Convert a Word document to TXT in the browser, in bulk.
-- [DOCX to Markdown](https://vantly.xyz/docx-to-md): Convert a Word document to Markdown in the browser, in bulk.
-- [DOCX to HTML](https://vantly.xyz/docx-to-html): Convert a Word document to HTML in the browser, in bulk.
-- [Markdown to PDF](https://vantly.xyz/md-to-pdf): Convert a Markdown file to PDF in the browser, in bulk.
-- [Markdown to HTML](https://vantly.xyz/md-to-html): Convert a Markdown file to HTML in the browser, in bulk.
-- [Markdown to DOCX](https://vantly.xyz/md-to-docx): Convert a Markdown file to DOCX in the browser, in bulk.
+- [DOCX to PDF](https://vantly.xyz/docx-to-pdf): Convert a Word document to PDF online.
+- [DOCX to TXT](https://vantly.xyz/docx-to-txt): Convert a Word document to TXT online.
+- [DOCX to Markdown](https://vantly.xyz/docx-to-md): Convert a Word document to Markdown online.
+- [DOCX to HTML](https://vantly.xyz/docx-to-html): Convert a Word document to HTML online.
+- [Markdown to PDF](https://vantly.xyz/md-to-pdf): Convert a Markdown file to PDF online.
+- [Markdown to HTML](https://vantly.xyz/md-to-html): Convert a Markdown file to HTML online.
+- [Markdown to DOCX](https://vantly.xyz/md-to-docx): Convert a Markdown file to DOCX online.
 - [HTML to PDF](https://vantly.xyz/html-to-pdf): Convert an HTML page to PDF in the browser, in bulk.
-- [HTML to Markdown](https://vantly.xyz/html-to-md): Convert an HTML page to Markdown in the browser, in bulk.
-- [TXT to PDF](https://vantly.xyz/txt-to-pdf): Convert a plain text file to PDF in the browser, in bulk.
+- [HTML to Markdown](https://vantly.xyz/html-to-md): Convert an HTML page to Markdown online.
+- [TXT to PDF](https://vantly.xyz/txt-to-pdf): Convert a plain text file to PDF online.
 - [CSV to JSON](https://vantly.xyz/csv-to-json): Convert a CSV spreadsheet to JSON in the browser, in bulk.
 - [CSV to XML](https://vantly.xyz/csv-to-xml): Convert a CSV spreadsheet to XML in the browser, in bulk.
 - [CSV to YAML](https://vantly.xyz/csv-to-yaml): Convert a CSV spreadsheet to YAML in the browser, in bulk.
@@ -213,6 +215,12 @@ costs the operator nothing: the browser does the decoding and encoding.
 - [OGG to MP3](https://vantly.xyz/ogg-to-mp3): Convert an OGG audio to MP3 in the browser, in bulk.
 - [OGG to WAV](https://vantly.xyz/ogg-to-wav): Convert an OGG audio to WAV in the browser, in bulk.
 
+## Guides
+
+- [Audio to MIDI, or tonic solfa?](https://vantly.xyz/learn/audio-to-midi-or-tonic-solfa): Audio to MIDI converters give you a file for music software. If you want to play or sing a song yourself, tonic solfa may be what you need.
+- [How to read tonic solfa on the keyboard](https://vantly.xyz/learn/how-to-read-tonic-solfa-on-keyboard): Learn to play tonic solfa on the keyboard. Find do in any key, read octave marks and sharps, and practise a song line by line.
+- [Solfège and tonic solfa](https://vantly.xyz/learn/solfege-and-tonic-solfa): Solfège and tonic solfa both use do re mi, but not always in the same way. Fixed do, movable do, and which one the song to solfa tool writes.
+
 ## Known limits
 
 - Image encoding is limited to PNG, JPEG and WebP, because those are the only
@@ -221,8 +229,9 @@ costs the operator nothing: the browser does the decoding and encoding.
 - Only the first frame of an animated GIF is converted.
 - Images are never enlarged when resizing, since scaling up cannot add detail
   that was not captured.
-- PDF, Office and audio or video conversion are planned but not built. Pages
-  exist for them and say so.
+- Song to tonic solfa writes the tune of the lead voice only, not choir
+  harmony, and its rhythm in staff notation is estimated.
+- Tools that are not built yet have pages that say so.
 
 ## Index
 

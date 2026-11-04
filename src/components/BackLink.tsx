@@ -35,14 +35,22 @@ export default function BackLink() {
   const conversion = CONVERSION_BY_SLUG.get(slug);
   const tool = toolBySlug(slug);
 
+  // A page beneath a tool (a song's player) leads back to the tool, and a
+  // guide back to the list of guides.
+  const nested = pathname.split('/').filter(Boolean).length > 1;
+
   const fallback = conversion
     ? { href: '/all#conversions', label: 'All conversions' }
-    : tool
-      ? { href: `/all#${tool.category.toLowerCase()}`, label: `All ${tool.category.toLowerCase()} tools` }
-      : { href: '/', label: 'Home' };
+    : tool && nested
+      ? { href: `/${tool.slug}`, label: tool.name }
+      : tool
+        ? { href: `/all#${tool.category.toLowerCase()}`, label: `All ${tool.category.toLowerCase()} tools` }
+        : slug === 'learn' && nested
+          ? { href: '/learn', label: 'All guides' }
+          : { href: '/', label: 'Home' };
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-5 pt-5">
+    <div className="no-print mx-auto w-full max-w-6xl px-5 pt-5">
       {canGoBack ? (
         <button
           onClick={() => router.back()}

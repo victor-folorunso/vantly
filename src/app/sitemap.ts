@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { LIVE_TOOLS, SITE } from '@/lib/site';
 import { CONVERSIONS } from '@/lib/conversions';
 import { allDocs } from '@/lib/docs';
+import { allGuides } from '@/lib/guides';
 
 /*
   Derived from the lists rather than hand written. A hand listed sitemap goes
@@ -61,6 +62,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
        Google reliably reads. Pinned to midnight UTC: handing over a bare date
        produced an invalid lastmod a day early, because the build machine sits
        west of UTC and read it as local midnight. */
+    /* Guides have their own URLs under /learn, unlike docs. */
+    ...allGuides().map((g) => ({
+      url: `${SITE.url}/learn/${g.slug}`,
+      ...(g.updated ? { lastModified: new Date(`${g.updated}T00:00:00Z`) } : {}),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     ...[...slugs].map((slug) => {
       const doc = docs.get(slug);
       return {

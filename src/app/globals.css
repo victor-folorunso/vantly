@@ -216,3 +216,41 @@ body {
     min-height: 40px;
   }
 }
+
+/* The bar being played in staff notation (song to tonic solfa). abcjs draws
+   the notes as SVG paths, so the colour has to reach the paths themselves. */
+.staff-view svg { max-width: 100%; }
+.staff-view .now-bar,
+.staff-view .now-bar path { fill: var(--accent); }
+
+/* Printing.
+ *
+ * A page that prints is a page somebody wants on paper: the solfa for a choir
+ * practice, saved as a PDF to send. The header, footer and controls are
+ * screen furniture, so they go, and the page prints black on white whatever
+ * theme the screen is in. .no-print and .print-only are for the parts that
+ * only make sense in one of the two.
+ */
+.print-only { display: none; }
+
+@media print {
+  :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+    --ground: #fff;
+    --surface: #fff;
+    --surface-alt: #fff;
+    --line: #bbb;
+    --ink: #000;
+    --ink-soft: #222;
+    --ink-faint: #444;
+    --accent: #000;
+    --accent-ink: #fff;
+    --accent-soft: #fff;
+  }
+  body > header,
+  body > footer,
+  .no-print { display: none !important; }
+  .print-only { display: block; }
+  .staff-view .now-bar,
+  .staff-view .now-bar path { fill: currentColor; }
+  [hidden] { display: none !important; }
+}

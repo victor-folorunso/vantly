@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE, toolBySlug } from '@/lib/site';
+import { SITE, TOOLS } from '@/lib/site';
+import { CONVERSIONS, docHandles } from '@/lib/conversions';
 
 const title = 'Privacy';
 const description =
-  'What Vantly does with your files. Almost every tool runs on your own machine. The three that do not say what happens instead.';
+  'What Vantly does with your files. Most tools run on your own machine. The ones that need a server are listed, with what happens to the file.';
 
 export const metadata: Metadata = {
   title,
@@ -28,7 +29,11 @@ export const metadata: Metadata = {
 const ROWS: { q: string; a: string }[] = [
   {
     q: 'Do you have my files?',
-    a: 'Almost never. Nearly every tool here runs entirely on your own machine, and the file never reaches us. The Word, Excel and PowerPoint viewers are the exception: those send the file to a server, which converts it to a PDF, returns it, and deletes both. Nothing is written to disk and nothing is kept.',
+    a: 'Usually not. Most tools here run entirely on your own machine, and the file never reaches us. The tools listed alongside are the exception, because a browser cannot do their work. The Office tools send the file to a server, which converts it, returns the result, and deletes both: nothing is written to disk and nothing is kept.',
+  },
+  {
+    q: 'What about my songs?',
+    a: 'Song to tonic solfa is different, because the player needs the song to play it back. The song and its solfa are kept on the server until you delete them from Your songs. They are not listed anywhere public: only someone with the link to that song can open it. Songs are used for nothing except making your solfa.',
   },
   {
     q: 'Do you have an account for me?',
@@ -48,24 +53,35 @@ const ROWS: { q: string; a: string }[] = [
   },
   {
     q: 'Who else is involved?',
-    a: 'Cloudflare serves the site. Modal runs the conversion service. Neither is sent anything beyond what is described above.',
+    a: 'Cloudflare serves the site. Modal runs the conversion service. Song to tonic solfa runs on a GPU server of its own. None of them is sent anything beyond what is described above.',
   },
 ];
 
-/* The three tools that send a file anywhere. Named here rather than left for
-   the reader to work out, because "which ones" is the obvious next question
-   after "some of them do". Read from the registry so a fourth cannot be added
-   without appearing on this page. */
-const SENDS_FILE = ['docx-viewer', 'xlsx-viewer', 'pptx-viewer'];
+/* Every tool that sends a file anywhere. Named here rather than left for the
+   reader to work out, because "which ones" is the obvious next question after
+   "some of them do". Read from the registry: tools carry sendsFile, and the
+   document conversions are whatever the conversion service handles, so a new
+   one cannot be added without appearing on this page. This used to be a hand
+   written list of three while nine tools and every document conversion were
+   uploading. */
+function uploadingTools() {
+  return [
+    ...TOOLS.filter((t) => t.live && t.sendsFile).map((t) => ({ slug: t.slug, name: t.name })),
+    ...CONVERSIONS.filter((c) => c.live && docHandles(c)).map((c) => ({
+      slug: c.slug,
+      name: `${c.from.label} to ${c.to.label}`,
+    })),
+  ];
+}
 
 export default function Page() {
-  const uploads = SENDS_FILE.map((slug) => toolBySlug(slug)).filter(Boolean);
+  const uploads = uploadingTools();
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-12">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Privacy</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-        Six questions worth asking of any site that takes a file.
+        The questions worth asking of any site that takes a file.
       </p>
 
       {/* The answers take the width they need and the rail takes the rest,
@@ -90,12 +106,12 @@ export default function Page() {
           </h2>
           <ul className="mt-3 space-y-1">
             {uploads.map((tool) => (
-              <li key={tool!.slug}>
+              <li key={tool.slug}>
                 <Link
-                  href={`/${tool!.slug}`}
+                  href={`/${tool.slug}`}
                   className="text-sm text-ink-soft underline-offset-4 transition-colors hover:text-accent hover:underline"
                 >
-                  {tool!.name}
+                  {tool.name}
                 </Link>
               </li>
             ))}
