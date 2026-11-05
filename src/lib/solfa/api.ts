@@ -4,12 +4,13 @@
  * The service separates the singer from the band and transcribes the voice
  * with a singing model, which needs a GPU, so this is one of the tools that
  * sends the file to a server (sendsFile in site.ts). The service lives in its
- * own repository, solfaflow, as prototype/server.py.
+ * own repository, solfaflow: prototype/modal_app.py is the deployed one, on
+ * Modal beside the conversion service, and prototype/server.py runs the same
+ * API on one machine.
  *
- * NEXT_PUBLIC_SOLFA_URL points at it. In development it defaults to the
- * server on this machine, so `npm run dev` beside a running server just works.
- * In a build with no URL set the page says the service is not switched on,
- * rather than offering an upload that can only fail.
+ * NEXT_PUBLIC_SOLFA_URL wins when set. Otherwise a build uses the deployed
+ * service (public anyway, as with convert.ts), and development uses the server
+ * on this machine, so `npm run dev` beside a running server just works.
  *
  * There are no accounts, so "your songs" means the songs uploaded from this
  * browser. Their ids are remembered in localStorage, and the server only
@@ -18,12 +19,17 @@
 import { formatTime, type SolfaResult } from './solfa';
 
 const DEV_URL = 'http://127.0.0.1:8765';
+const DEPLOYED_URL = 'https://victorfolorunsoofficial--solfaflow-web.us-east.modal.run';
 
 export const SOLFA_URL = (
-  process.env.NEXT_PUBLIC_SOLFA_URL || (process.env.NODE_ENV === 'development' ? DEV_URL : '')
+  process.env.NEXT_PUBLIC_SOLFA_URL ||
+  (process.env.NODE_ENV === 'development' ? DEV_URL : DEPLOYED_URL)
 ).replace(/\/$/, '');
 
 export const solfaAvailable = SOLFA_URL.length > 0;
+
+/** Only the server on this machine lists every song (SOLFAFLOW_LIST_ALL); every song there is yours. */
+export const listsEverySong = SOLFA_URL === DEV_URL;
 
 export interface Job {
   id: string;

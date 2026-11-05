@@ -7,6 +7,7 @@ import {
   describeJob,
   forgetSong,
   listJobs,
+  listsEverySong,
   rememberedSongs,
   solfaAvailable,
   songHref,
@@ -17,14 +18,12 @@ import {
  * The songs uploaded from this browser, with where each one is.
  *
  * There are no accounts, so the list is the ids this browser remembers, and
- * the server is asked about those ids only. On a local server in development
- * every song is shown, since every song there is yours.
+ * the server is asked about those ids only. Against the local server every
+ * song is shown, since every song there is yours.
  *
  * Deleting removes the song and its solfa from the server, which is what the
  * privacy page promises is possible.
  */
-
-const ALL = process.env.NODE_ENV === 'development';
 
 const when = (job: Job) =>
   new Date(job.created * 1000).toLocaleString(undefined, {
@@ -45,7 +44,7 @@ export default function YourSongs() {
   const refresh = useCallback(async () => {
     const ids = rememberedSongs();
     try {
-      const found = await listJobs(ALL ? 'all' : ids);
+      const found = await listJobs(listsEverySong ? 'all' : ids);
       // The browser's order, newest first; the server's for anything it adds.
       const order = new Map(ids.map((id, i) => [id, i]));
       found.sort(

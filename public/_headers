@@ -49,16 +49,15 @@
 
 # Song to tonic solfa talks to its transcription service, and plays the song
 # and the piano track straight from it, so these pages need connect-src and
-# media-src for that origin. The service has no fixed address yet (it is set
-# by NEXT_PUBLIC_SOLFA_URL at build time), so https is allowed on these pages
-# only. Narrow both to the real origin once it is deployed.
+# media-src for that origin: the Modal app in solfaflow's prototype/modal_app.py.
+# Change both here if NEXT_PUBLIC_SOLFA_URL ever points somewhere else.
 #
 # The ! line detaches the site-wide policy first. Cloudflare joins two copies
 # of a header with a comma, and two policies are both enforced, so without it
 # the stricter one above would still block the audio.
 /song-to-tonic-solfa/*
   ! Content-Security-Policy
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob: data: https:; media-src 'self' blob: https:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob: data: https://victorfolorunsoofficial--solfaflow-web.us-east.modal.run; media-src 'self' blob: https://victorfolorunsoofficial--solfaflow-web.us-east.modal.run; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
 
 # Everything under _next is content addressed: the filename changes when the
 # file does, so it can be cached forever without ever going stale.
