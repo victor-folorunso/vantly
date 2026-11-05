@@ -39,7 +39,12 @@ the tool, and Vantly keeps a tool and its explanation on one URL so they do not 
 ## What is in place
 
 - Every public page is prerendered HTML with a unique title, meta description, canonical URL and Open Graph tags
-  (Vantly's site-wide preview image).
+  (Vantly's site-wide preview image; until 2026-11-05 `og:image` was missing on every page that set its own
+  `openGraph`, about half of Vantly, these pages included).
+- Each target keyword in the table appears in the page's own copy and its `keywords`, including "music
+  transcription", "ai music transcription" (the tool's doc) and the unaccented "solfege" (the guide). The old SolfaFlow
+  pages never used those phrases, despite this plan listing them.
+- Sitemap URLs carry the trailing slash, matching each page's canonical, so none of them is a redirect.
 - Structured data: `WebApplication` and `FAQPage` on the tool page (the FAQ text is the visible FAQ), `Article` for
   its doc, `Article` and `BreadcrumbList` on each guide.
 - Vantly's sitemap lists the tool page and the guides; the player and Your songs pages carry `noindex`.
@@ -48,7 +53,8 @@ the tool, and Vantly keeps a tool and its explanation on one URL so they do not 
 
 ## Not done yet
 
-- **The transcription service is not hosted yet**, so the live page says it is not switched on. See the prototype README.
+- **vantly.xyz is behind Cladior's paywall** except free paths, so crawlers see paid pages only if Cladior's crawler
+  access setting allows it. Check that setting for the tool page and the guides; it decides whether any of this ranks.
 - **Regional data.** Pull Google Trends "interest by region" and "related queries" for "tonic solfa". Interest is
   expected to concentrate in Nigeria, Ghana, South Africa and Kenya, but that has not been checked.
 - **Song-specific searches** ("<song> tonic solfa") are probably a large share of real demand. They conflict with the
