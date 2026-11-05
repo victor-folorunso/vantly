@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/uuid-generator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/uuid-generator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/uuid-generator` },
 };
 
 

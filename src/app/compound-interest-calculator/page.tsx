@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/compound-interest-calculator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/compound-interest-calculator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/compound-interest-calculator` },
 };
 
 

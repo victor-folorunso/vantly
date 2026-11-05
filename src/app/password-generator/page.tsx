@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/password-generator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/password-generator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/password-generator` },
 };
 
 

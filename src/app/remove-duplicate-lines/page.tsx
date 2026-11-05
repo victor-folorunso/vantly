@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/remove-duplicate-lines` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/remove-duplicate-lines` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/remove-duplicate-lines` },
 };
 
 export default function Page() {

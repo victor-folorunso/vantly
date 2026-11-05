@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/tonic-solfa-converter` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/tonic-solfa-converter` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/tonic-solfa-converter` },
 };
 
 export default function Page() {

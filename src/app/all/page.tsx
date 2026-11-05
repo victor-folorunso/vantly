@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE.url}/all` },
-  openGraph: { title, description, url: `${SITE.url}/all` },
+  openGraph: { images: '/og.png', title, description, url: `${SITE.url}/all` },
 };
 
 function Rule() {

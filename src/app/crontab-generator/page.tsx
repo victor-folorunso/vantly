@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/crontab-generator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/crontab-generator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/crontab-generator` },
 };
 
 export default function Page() {

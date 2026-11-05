@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/hex-to-hsl` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/hex-to-hsl` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/hex-to-hsl` },
 };
 
 export default function Page() {

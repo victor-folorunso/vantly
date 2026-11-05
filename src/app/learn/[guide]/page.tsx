@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ guide: st
     description: guide.description,
     keywords: guide.keywords,
     alternates: { canonical: url },
-    openGraph: { type: 'article', title: guide.title, description: guide.description, url },
+    openGraph: { images: '/og.png', type: 'article', title: guide.title, description: guide.description, url },
   };
 }
 

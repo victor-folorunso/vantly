@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/date-calculator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/date-calculator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/date-calculator` },
 };
 
 export default function Page() {

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE.url}/heic-to-webp` },
-  openGraph: { title, description, url: `${SITE.url}/heic-to-webp` },
+  openGraph: { images: '/og.png', title, description, url: `${SITE.url}/heic-to-webp` },
 };
 
 

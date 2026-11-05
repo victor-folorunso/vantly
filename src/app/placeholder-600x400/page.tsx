@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/placeholder-600x400` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/placeholder-600x400` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/placeholder-600x400` },
 };
 
 export default function Page() {

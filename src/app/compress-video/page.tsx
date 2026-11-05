@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/compress-video` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/compress-video` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/compress-video` },
 };
 
 export default function Page() {

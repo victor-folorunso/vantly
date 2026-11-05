@@ -4,12 +4,12 @@ tool: song-to-tonic-solfa
 title: Solfège and tonic solfa
 description: Solfège and tonic solfa both use do re mi, but not always in the same way. Fixed do, movable do, and which one the song to solfa tool writes.
 lede: Both use do, re, mi. The difference is what do means, a fixed note or the home note of whatever song you are playing.
-keywords: [solfege vs tonic solfa, fixed do, movable do, tonic solfa history]
+keywords: [solfege, solfege vs tonic solfa, fixed do, movable do, tonic solfa history]
 ---
 
 ## Fixed do
 
-In fixed-do solfège, do is always C, re is always D, and so on, whatever key
+In fixed-do solfège (often written solfege), do is always C, re is always D, and so on, whatever key
 the song is in. The syllables are simply names for the notes. Fixed do is
 common in France, Italy, Spain and much of Latin America.
 

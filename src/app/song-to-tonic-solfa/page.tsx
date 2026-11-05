@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: tool.description,
   keywords: ['song to tonic solfa', 'audio to tonic solfa', 'tonic solfa for keyboard', 'mp3 to solfa'],
   alternates: { canonical: url },
-  openGraph: { title: tool.title, description: tool.description, url },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url },
 };
 
 /**

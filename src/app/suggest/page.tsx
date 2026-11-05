@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE.url}/suggest` },
-  openGraph: { title, description, url: `${SITE.url}/suggest` },
+  openGraph: { images: '/og.png', title, description, url: `${SITE.url}/suggest` },
 };
 
 export default function Page() {

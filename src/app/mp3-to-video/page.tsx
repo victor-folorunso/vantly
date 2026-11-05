@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/mp3-to-video` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/mp3-to-video` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/mp3-to-video` },
 };
 
 export default function Page() {

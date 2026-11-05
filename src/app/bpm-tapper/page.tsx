@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/bpm-tapper` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/bpm-tapper` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/bpm-tapper` },
 };
 
 export default function Page() {

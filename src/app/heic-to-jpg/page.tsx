@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: tool.description,
   alternates: { canonical: `${SITE.url}/${tool.slug}` },
   openGraph: {
+    images: '/og.png',
     title: tool.title,
     description: tool.description,
     url: `${SITE.url}/${tool.slug}`,

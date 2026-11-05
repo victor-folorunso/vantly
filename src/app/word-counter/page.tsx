@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/word-counter` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/word-counter` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/word-counter` },
 };
 
 

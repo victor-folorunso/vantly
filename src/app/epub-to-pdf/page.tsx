@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/epub-to-pdf` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/epub-to-pdf` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/epub-to-pdf` },
 };
 
 export default function Page() {

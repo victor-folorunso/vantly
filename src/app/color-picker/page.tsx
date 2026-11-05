@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/color-picker` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/color-picker` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/color-picker` },
 };
 
 export default function Page() {

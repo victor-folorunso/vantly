@@ -20,7 +20,16 @@ import { allGuides } from '@/lib/guides';
 // out at build time rather than generated per request.
 export const dynamic = 'force-static';
 
+/* With a trailing slash, as every page's canonical has (trailingSlash in
+   next.config). Without it each URL here is a redirect to the canonical one,
+   which a search engine reads as "not the real address". */
+const withSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  return entries().map((e) => ({ ...e, url: withSlash(e.url) }));
+}
+
+function entries(): MetadataRoute.Sitemap {
   const docs = new Map(allDocs().filter((d) => d.updated).map((d) => [d.tool.slug, d.updated]));
 
   const slugs = new Set<string>([

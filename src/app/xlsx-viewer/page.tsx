@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/xlsx-viewer` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/xlsx-viewer` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/xlsx-viewer` },
 };
 
 export default function Page() {

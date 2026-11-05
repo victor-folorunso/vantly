@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/convert-to-audio` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/convert-to-audio` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/convert-to-audio` },
 };
 
 export default function Page() {

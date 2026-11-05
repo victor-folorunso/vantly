@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: \`\${SITE.url}/${p.slug}\` },
-  openGraph: { title: tool.title, description: tool.description, url: \`\${SITE.url}/${p.slug}\` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: \`\${SITE.url}/${p.slug}\` },
 };
 
 const FAQ = ${JSON.stringify(p.faq.map(([q, a]) => ({ q, a })), null, 2)};

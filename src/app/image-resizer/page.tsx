@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE.url}/image-resizer` },
-  openGraph: { title, description, url: `${SITE.url}/image-resizer` },
+  openGraph: { images: '/og.png', title, description, url: `${SITE.url}/image-resizer` },
 };
 
 

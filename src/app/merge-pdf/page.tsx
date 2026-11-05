@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/merge-pdf` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/merge-pdf` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/merge-pdf` },
 };
 
 export default function Page() {

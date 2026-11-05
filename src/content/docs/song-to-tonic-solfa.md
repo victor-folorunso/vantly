@@ -2,13 +2,14 @@
 updated: "2026-11-04"
 title: How do you turn a song into tonic solfa?
 description: Upload the recording and the singer is separated from the band, every sung note is written down, and the key is found. What to expect, and what it gets wrong.
-keywords: [audio to tonic solfa, song to tonic solfa, mp3 to solfa, tonic solfa for keyboard, solfa notes of a song]
+keywords: [audio to tonic solfa, song to tonic solfa, mp3 to solfa, tonic solfa for keyboard, solfa notes of a song, music transcription, ai music transcription, audio to sheet music]
 ---
 
 Upload the song and wait a few seconds. The player opens straight away and the
 solfa fills in part by part while the rest of the song is worked out, so you
-can press play long before it has finished. Most transcription software turns
-audio into sheet music on a staff. This turns it into tonic solfa instead, the
+can press play long before it has finished. Most music transcription software,
+AI music transcription included, turns audio into sheet music on a staff. This
+uses the same kind of AI but turns the song into tonic solfa instead, the
 notation many singers and church keyboardists already read, with the key to
 press written under every syllable.
 

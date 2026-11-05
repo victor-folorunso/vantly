@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/base64-encoder` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/base64-encoder` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/base64-encoder` },
 };
 
 

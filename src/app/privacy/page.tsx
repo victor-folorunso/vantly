@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE.url}/privacy` },
-  openGraph: { title, description, url: `${SITE.url}/privacy` },
+  openGraph: { images: '/og.png', title, description, url: `${SITE.url}/privacy` },
 };
 
 /**

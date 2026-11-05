@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/barcode-generator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/barcode-generator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/barcode-generator` },
 };
 
 export default function Page() {

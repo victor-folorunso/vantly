@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/watermark-pdf` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/watermark-pdf` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/watermark-pdf` },
 };
 
 export default function Page() {

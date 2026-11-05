@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/pptx-viewer` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/pptx-viewer` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/pptx-viewer` },
 };
 
 export default function Page() {

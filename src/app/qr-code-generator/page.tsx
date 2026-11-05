@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: tool.title,
   description: tool.description,
   alternates: { canonical: `${SITE.url}/qr-code-generator` },
-  openGraph: { title: tool.title, description: tool.description, url: `${SITE.url}/qr-code-generator` },
+  openGraph: { images: '/og.png', title: tool.title, description: tool.description, url: `${SITE.url}/qr-code-generator` },
 };
 
 export default function Page() {
