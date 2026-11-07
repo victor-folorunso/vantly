@@ -5,6 +5,7 @@ import ToolLayout from '@/components/ToolLayout';
 import { useSetting } from '@/lib/remember';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Resize and compress, which are the same operation with a different dial in
@@ -308,6 +309,7 @@ export default function ImageStudio({ mode }: { mode: Mode }) {
       >
         {items.length === 0 ? (
           <>
+            <DropIcon />
             <p className="text-lg font-medium">Drop your images here</p>
             <p className="mt-1 text-sm text-ink-soft">
               JPG, PNG, WebP, AVIF, GIF or BMP. Nothing is uploaded.

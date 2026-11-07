@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Raster image conversion on a canvas, for every pair the browser can honestly
@@ -256,6 +257,7 @@ export default function ImageConvert({
       >
         {items.length === 0 ? (
           <>
+            <DropIcon />
             <p className="text-lg font-medium">Drop your {sourceLabel} files here</p>
             <p className="mt-1 text-sm text-ink-soft">
               As many as you like. Nothing is uploaded.

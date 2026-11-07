@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Merge, split and extract, which are one operation with different buttons.
@@ -189,6 +190,7 @@ export default function PdfPages({ mode }: { mode: Mode }) {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">
           {mode === 'merge' ? 'Drop your PDFs here' : 'Drop a PDF here'}
         </p>

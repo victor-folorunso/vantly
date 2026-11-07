@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Converts a document into another kind of document.
@@ -111,6 +112,7 @@ export default function DocConvert({ from, to }: { from: DocFormat; to: DocForma
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop a {NOUN[from]} here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           Headings, lists, links and tables all come across.

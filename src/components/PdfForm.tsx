@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Fills in a PDF form without a PDF reader.
@@ -142,6 +143,7 @@ export default function PdfForm() {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop a form here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           The boxes it contains appear as fields you can type into.

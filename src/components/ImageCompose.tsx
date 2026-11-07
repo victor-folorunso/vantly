@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Joins images together, or stamps text across one.
@@ -196,6 +197,7 @@ export default function ImageCompose({ mode }: { mode: Mode }) {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">
           {mode === 'merge' ? 'Drop your pictures here' : 'Drop a picture here'}
         </p>

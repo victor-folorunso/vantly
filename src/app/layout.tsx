@@ -3,8 +3,17 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Search from '@/components/Search';
 import BackLink from '@/components/BackLink';
+import { Geist, Geist_Mono } from 'next/font/google';
 import { SITE } from '@/lib/site';
 import './globals.css';
+
+/* One typeface for the whole site instead of whatever the system has. The
+   system stack is Segoe UI on Windows, San Francisco on a Mac and Roboto on
+   Android, so the same page looked like three different products. next/font
+   downloads the files at build time and serves them from this origin, so
+   nothing is fetched from Google by the visitor and font-src 'self' holds. */
+const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
+const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -78,7 +87,7 @@ const siteSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body className="flex min-h-screen flex-col">
         <script
           type="application/ld+json"

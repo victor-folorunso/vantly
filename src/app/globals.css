@@ -19,6 +19,7 @@
   --accent:      #b4530a;
   --accent-ink:  #ffffff;
   --accent-soft: #fdf0e4;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,10 +34,12 @@
     --accent:      #f08c3a;
     --accent-ink:  #1c1a17;
     --accent-soft: #2a2119;
+    color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --ground:      #14120f;
   --surface:     #1c1a17;
   --surface-alt: #24211c;
@@ -60,6 +63,8 @@
   --color-accent:      var(--accent);
   --color-accent-ink:  var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
 }
 
 html {
@@ -69,8 +74,79 @@ html {
 body {
   background: var(--ground);
   color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
   font-feature-settings: "kern";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Every checkbox, radio, slider and progress bar in the brand colour rather
+   than the browser's blue, which was the loudest off-brand thing on most tool
+   pages. One property, because the alternative is restyling each control by
+   hand for every engine. */
+html { accent-color: var(--accent); }
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--ink);
+}
+
+/* Thin, quiet scrollbars in the theme's colours, for the code panes, tables
+   and file lists that scroll inside the page. */
+* { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+
+/* Code and pasted text read in the monospace face. Textareas included: most
+   of them hold JSON, CSS, CSV or a list, where columns line up. */
+code, kbd, samp, pre, textarea { font-family: var(--font-mono); }
+
+@layer base {
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  button:not(:disabled), [role="button"], summary, select { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+}
+
+/* Native selects, made to match the inputs beside them.
+ *
+ * Fourteen tools use one, each with its own classes, and the browser drew its
+ * own arrow and, on Windows, a white dropdown face in dark mode. appearance:
+ * none takes the face away and the chevron is drawn here, once.
+ *
+ * Unlayered on purpose: it has to beat each tool's px- utility on the right
+ * side, or the text runs under the arrow. Listboxes (multiple or size) keep
+ * the native look, since a chevron means nothing on them.
+ */
+select:not([multiple]):not([size]) {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a857d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1rem;
+}
+select option { background: var(--surface); color: var(--ink); }
+
+/* Colour inputs. The browser draws a grey bevelled button with the colour as
+   a small strip inside it, which looked like a placeholder in every tool that
+   has one (QR code, gradient, palette, colour picker). The swatch now fills
+   whatever box the tool gives the input, with the tool's own border and
+   radius around it. */
+input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 3px;
+  cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 6px;
 }
 
 :focus-visible {

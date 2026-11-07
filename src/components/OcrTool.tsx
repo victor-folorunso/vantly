@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Reads the words out of a picture, or out of a scanned PDF.
@@ -164,6 +165,7 @@ export default function OcrTool({ mode }: { mode: Mode }) {
             dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
           }`}
         >
+          <DropIcon />
           <p className="text-lg font-medium">
             {mode === 'pdf' ? 'Drop a scanned PDF here' : 'Drop a picture here'}
           </p>

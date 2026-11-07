@@ -4,6 +4,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Opens a CSV, or turns one into JSON.
@@ -136,6 +137,7 @@ export default function CsvTools({ mode }: { mode: Mode }) {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop a CSV here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           {mode === 'view'

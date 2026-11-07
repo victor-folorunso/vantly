@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Puts a signature on a PDF.
@@ -159,6 +160,7 @@ export default function PdfSign() {
   if (!file) {
     return (
       <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-line bg-surface p-8 text-center">
+        <DropIcon />
         <p className="text-lg font-medium">Drop the PDF to sign</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           Then draw your name, or upload a picture of it.

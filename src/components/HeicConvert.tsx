@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * HEIC to JPG or WebP, in the browser, in bulk.
@@ -189,6 +190,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
       >
         {items.length === 0 ? (
           <>
+            <DropIcon />
             <p className="text-lg font-medium">Drop your photos here</p>
             <p className="mt-1 text-sm text-ink-soft">
               As many as you like. Nothing is uploaded.

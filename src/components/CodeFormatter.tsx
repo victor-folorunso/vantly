@@ -79,7 +79,7 @@ export default function CodeFormatter({
     [input, lang, indent],
   );
 
-  const label = 'text-xs font-semibold uppercase tracking-wider text-ink-faint';
+  const label = 'block text-xs font-semibold uppercase tracking-wider text-ink-faint';
   const saved =
     output && input ? Math.round((1 - output.length / input.length) * 100) : 0;
 
@@ -96,7 +96,7 @@ export default function CodeFormatter({
                 setOutput('');
                 setError(null);
               }}
-              className="mt-2 rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-accent"
+              className="mt-2 w-full rounded-lg border border-line bg-ground px-3 py-2.5 outline-none focus:border-accent"
             >
               {LANGS.map((l) => (
                 <option key={l.id} value={l.id}>
@@ -106,29 +106,29 @@ export default function CodeFormatter({
             </select>
           </label>
 
-          <div className="flex flex-wrap items-end gap-4">
-            <label className="block text-sm">
-              <span className={label}>Indent</span>
-              <div className="mt-2 inline-flex rounded-lg border border-line p-0.5">
-                {([2, 4, 'tab'] as const).map((i) => (
-                  <button
-                    key={String(i)}
-                    onClick={() => setIndent(i)}
-                    aria-pressed={indent === i}
-                    className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-                      indent === i ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
-                    }`}
-                  >
-                    {i === 'tab' ? 'Tab' : i}
-                  </button>
-                ))}
-              </div>
-            </label>
+          <div className="block text-sm">
+            <span className={label}>Indent</span>
+            <div className="mt-2 flex rounded-lg border border-line bg-ground p-0.5">
+              {([2, 4, 'tab'] as const).map((i) => (
+                <button
+                  key={String(i)}
+                  onClick={() => setIndent(i)}
+                  aria-pressed={indent === i}
+                  className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    indent === i ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink'
+                  }`}
+                >
+                  {i === 'tab' ? 'Tab' : i}
+                </button>
+              ))}
+            </div>
+          </div>
 
+          <div className="space-y-2.5">
             <button
               onClick={() => void run(action === 'minify')}
               disabled={busy}
-              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
+              className="w-full rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform enabled:hover:scale-[1.01] disabled:opacity-60"
             >
               {busy ? 'Working…' : action === 'minify' ? 'Minify' : 'Format'}
             </button>
@@ -137,7 +137,7 @@ export default function CodeFormatter({
               <button
                 onClick={() => void run(action !== 'minify')}
                 disabled={busy}
-                className="rounded-lg border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
+                className="w-full rounded-lg border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
               >
                 {action === 'minify' ? 'Format instead' : 'Minify instead'}
               </button>

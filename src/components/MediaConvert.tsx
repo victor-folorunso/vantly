@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
 import { LICENCE_NOTE, LICENCE_URL, run, timecode } from '@/lib/ffmpeg';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Audio and video work, all of it in the browser.
@@ -205,6 +206,7 @@ export default function MediaConvert({
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">
           Drop {source === 'audio' ? 'an audio file' : source === 'video' ? 'a video' : 'a file'} here
         </p>

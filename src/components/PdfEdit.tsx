@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Three small edits to a PDF that share one shape: load, change, save.
@@ -167,6 +168,7 @@ export default function PdfEdit({ mode }: { mode: Mode }) {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop a PDF here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           {mode === 'text' && 'The text comes back page by page, ready to copy.'}

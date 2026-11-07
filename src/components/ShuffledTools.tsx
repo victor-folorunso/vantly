@@ -59,13 +59,32 @@ export default function ShuffledTools({
         <li key={t.slug}>
           <Link
             href={`/${t.slug}`}
-            className={`block h-full rounded-lg border border-line p-3.5 transition-colors ${
-              t.live ? 'bg-surface hover:border-accent' : 'hover:border-ink-faint'
+            className={`group relative block h-full rounded-xl border border-line p-4 pr-10 transition duration-200 ${
+              t.live
+                ? 'bg-surface hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/0.35)]'
+                : 'hover:border-ink-faint'
             }`}
           >
-            <span className={`text-sm font-medium ${t.live ? '' : 'text-ink-faint'}`}>
+            <span className={`text-sm font-semibold tracking-tight ${t.live ? '' : 'text-ink-faint'}`}>
               {t.name}
             </span>
+            {/* The arrow says "open" on hover. Hidden on unbuilt tools, which
+                open a notice rather than a tool. */}
+            {t.live && (
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="absolute right-3.5 top-4 size-4 -translate-x-1 text-accent opacity-0 transition duration-200 group-hover:translate-x-0 group-hover:opacity-100"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14" />
+                <path d="m13 6 6 6-6 6" />
+              </svg>
+            )}
             <span
               className={`mt-0.5 block text-sm leading-snug ${
                 t.live ? 'text-ink-soft' : 'text-ink-faint'

@@ -5,6 +5,7 @@ import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
 import PageDeck, { type DeckMode, type PageNoun, type RenderedPage } from '@/components/PageDeck';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Opens a Word, Excel or PowerPoint file without the Office app.
@@ -140,6 +141,7 @@ export default function OfficeViewer({ kind }: { kind: Kind }) {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop a {NOUN[kind]} here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           No Office licence and nothing to install.

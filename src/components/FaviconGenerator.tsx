@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DownloadButton from '@/components/DownloadButton';
 import ToolLayout from '@/components/ToolLayout';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Makes the whole set of icons a site needs, from one picture.
@@ -200,6 +201,7 @@ export default function FaviconGenerator() {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop your logo here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           A square picture works best. PNG, JPG or SVG.

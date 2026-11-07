@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Every page of a PDF as an image, at a resolution you choose.
@@ -147,6 +148,7 @@ export default function PdfToImages({ format }: { format: 'png' | 'jpg' }) {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop a PDF here</p>
         <p className="mt-1 text-sm text-ink-soft">
           Every page comes back as a {format.toUpperCase()}.

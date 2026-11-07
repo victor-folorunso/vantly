@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
+import DropIcon from '@/components/DropIcon';
 
 /**
  * Images into one PDF, in the order you choose.
@@ -152,6 +153,7 @@ export default function ImagesToPdf() {
           dragging ? 'border-accent bg-accent-soft' : 'border-line bg-surface'
         }`}
       >
+        <DropIcon />
         <p className="text-lg font-medium">Drop your images here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           JPG, PNG, WebP, AVIF, GIF or HEIC. Drag them into order afterwards.
