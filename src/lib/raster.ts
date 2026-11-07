@@ -10,15 +10,17 @@
  * TIFF  utif2
  * BMP   written below, since the format is a header and a pixel dump
  * ICO   written below, a container around PNGs
+ * AVIF  libavif compiled to WebAssembly (@jsquash/avif), about 3MB, fetched
+ *       only when somebody converts to AVIF
  *
  * Reading is mostly the browser's job. It decodes JPEG, PNG, WebP, AVIF, GIF
  * and BMP natively. TIFF it does not, so that one is decoded here too.
  */
 
-export type EncodeTarget = 'gif' | 'tiff' | 'bmp' | 'ico';
+export type EncodeTarget = 'gif' | 'tiff' | 'bmp' | 'ico' | 'avif';
 
 /** Everything this module can write, for the registry to ask about. */
-export const ENCODABLE: readonly EncodeTarget[] = ['gif', 'tiff', 'bmp', 'ico'];
+export const ENCODABLE: readonly EncodeTarget[] = ['gif', 'tiff', 'bmp', 'ico', 'avif'];
 
 /** Formats the browser cannot decode by itself. */
 export const NEEDS_DECODER: readonly string[] = ['tiff'];
@@ -193,6 +195,24 @@ export async function decodeTiff(buffer: ArrayBuffer): Promise<Raster> {
   };
 }
 
+/* ── AVIF ───────────────────────────────────────────────────────────────── */
+
+/**
+ * AVIF through libavif.
+ *
+ * Quality 60 on libavif's 0 to 100 scale, with speed 6. Both chosen by looking
+ * rather than by formula: 60 is where photographs stop showing the smearing
+ * AVIF does at low settings, and still come out well under the size of a JPG
+ * at 92. Speed 6 keeps a 12 megapixel photo to seconds rather than a minute.
+ * Transparency is kept.
+ */
+export async function encodeAvif(raster: Raster): Promise<Blob> {
+  const { default: encode } = await import('@jsquash/avif/encode');
+  const image = new ImageData(new Uint8ClampedArray(raster.data), raster.width, raster.height);
+  const bytes = await encode(image, { quality: 60, speed: 6 });
+  return new Blob([bytes], { type: 'image/avif' });
+}
+
 /* ── The way in ─────────────────────────────────────────────────────────── */
 
 export async function encodeRaster(
@@ -204,5 +224,6 @@ export async function encodeRaster(
   if (target === 'bmp') return encodeBmp(raster, background);
   if (target === 'gif') return encodeGif(raster);
   if (target === 'tiff') return encodeTiff(raster);
+  if (target === 'avif') return encodeAvif(raster);
   return encodeIco(source, raster.width, raster.height);
 }

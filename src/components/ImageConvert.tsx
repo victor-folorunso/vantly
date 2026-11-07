@@ -30,18 +30,19 @@ type Item = {
   error?: string;
 };
 
-export type EncodableTarget = 'png' | 'jpg' | 'webp' | 'gif' | 'tiff' | 'bmp' | 'ico';
+export type EncodableTarget = 'png' | 'jpg' | 'webp' | 'gif' | 'tiff' | 'bmp' | 'ico' | 'avif';
 
-/* The four the canvas cannot write. These go through src/lib/raster instead,
+/* The ones the canvas cannot write. These go through src/lib/raster instead,
    which encodes them from the pixels rather than asking toBlob and being
    handed a PNG with the wrong name on it. */
-const WRITTEN_HERE: readonly string[] = ['gif', 'tiff', 'bmp', 'ico'];
+const WRITTEN_HERE: readonly string[] = ['gif', 'tiff', 'bmp', 'ico', 'avif'];
 
 const MIME: Record<EncodableTarget, string> = {
   gif: 'image/gif',
   tiff: 'image/tiff',
   bmp: 'image/bmp',
   ico: 'image/x-icon',
+  avif: 'image/avif',
   png: 'image/png',
   jpg: 'image/jpeg',
   webp: 'image/webp',
@@ -159,7 +160,7 @@ export default function ImageConvert({
           const { encodeRaster } = await import('@/lib/raster');
           const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
           blob = await encodeRaster(
-            target as 'gif' | 'tiff' | 'bmp' | 'ico',
+            target as 'gif' | 'tiff' | 'bmp' | 'ico' | 'avif',
             { data: pixels.data, width: canvas.width, height: canvas.height },
             canvas,
           );

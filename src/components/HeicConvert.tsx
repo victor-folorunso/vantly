@@ -6,7 +6,7 @@ import DownloadButton from '@/components/DownloadButton';
 import DropIcon from '@/components/DropIcon';
 
 /**
- * HEIC to JPG or WebP, in the browser, in bulk.
+ * HEIC to JPG, PNG, WebP or one PDF, in the browser, in bulk.
  *
  * Browsers outside Safari cannot decode HEIC, so this needs libheif compiled to
  * WebAssembly. That binary is heavy, which shapes the whole design: it is
@@ -32,7 +32,11 @@ type Item = {
 
 const FORMATS = {
   jpeg: { label: 'JPG', mime: 'image/jpeg', ext: 'jpg' },
+  png: { label: 'PNG', mime: 'image/png', ext: 'png' },
   webp: { label: 'WebP', mime: 'image/webp', ext: 'webp' },
+  // Each photo is decoded to JPEG and the set is packed into one PDF at the
+  // end, one photo per page, in the order of the list.
+  pdf: { label: 'PDF', mime: 'image/jpeg', ext: 'jpg' },
 } as const;
 
 type FormatKey = keyof typeof FORMATS;
@@ -158,6 +162,35 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
     }
   }, [items, format]);
 
+  /* Switching format after converting used to keep the old files and only
+     change the name they saved under, so a JPG could download as .webp. Done
+     photos go back to waiting instead, to be converted again. */
+  const chooseFormat = useCallback((k: FormatKey) => {
+    setFormat(k);
+    setItems((prev) =>
+      prev.map((i) => {
+        if (i.status !== 'done') return i;
+        if (i.url) URL.revokeObjectURL(i.url);
+        return { ...i, status: 'waiting', url: undefined, bytes: undefined };
+      }),
+    );
+  }, []);
+
+  const buildPdf = useCallback(async () => {
+    const done = items.filter((i) => i.status === 'done' && i.url);
+    if (!done.length) return null;
+    const { PDFDocument } = await import('pdf-lib');
+    const pdf = await PDFDocument.create();
+    for (const i of done) {
+      const img = await pdf.embedJpg(await (await fetch(i.url!)).arrayBuffer());
+      // Sized to the photo at 72 points per inch, the way Images to PDF does
+      // it, so there are no white margins around a photograph.
+      pdf.addPage([img.width, img.height]).drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+    }
+    const bytes = await pdf.save();
+    return new Blob([bytes as BlobPart], { type: 'application/pdf' });
+  }, [items]);
+
   const reset = useCallback(() => {
     items.forEach((i) => i.url && URL.revokeObjectURL(i.url));
     setItems([]);
@@ -243,7 +276,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
                       {i.status === 'failed' && (i.error ?? 'Failed')}
                     </p>
                   </div>
-                  {i.status === 'done' && i.url && (
+                  {i.status === 'done' && i.url && format !== 'pdf' && (
                     <DownloadButton href={i.url} filename={
                         i.file.name.replace(/\.(heic|heif)$/i, '') + '.' + FORMATS[format].ext
                       }>
@@ -278,7 +311,7 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
             {(Object.keys(FORMATS) as FormatKey[]).map((k) => (
               <button
                 key={k}
-                onClick={() => setFormat(k)}
+                onClick={() => chooseFormat(k)}
                 className={`rounded-md border px-3 py-2 text-sm font-medium ${
                   k === format
                     ? 'border-accent bg-accent-soft text-ink'
@@ -290,9 +323,10 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
             ))}
           </div>
           <p className="mt-2 text-xs text-ink-faint leading-relaxed">
-            {format === 'jpeg'
-              ? 'JPG opens everywhere, including old software.'
-              : 'WebP files are smaller at the same quality, and every current browser reads them.'}
+            {format === 'jpeg' && 'JPG opens everywhere, including old software.'}
+            {format === 'png' && 'PNG loses nothing, and the files are several times larger than JPG.'}
+            {format === 'webp' && 'WebP files are smaller at the same quality, and every current browser reads them.'}
+            {format === 'pdf' && 'One PDF with a photo on each page, in the order of the list.'}
           </p>
         </fieldset>
 
@@ -314,7 +348,13 @@ export default function HeicConvert({ initialFormat = 'jpeg' }: { initialFormat?
           </p>
         )}
 
-        {doneCount > 1 && (
+        {format === 'pdf' && doneCount > 0 && (
+          <DownloadButton prepare={buildPdf} filename="photos.pdf" variant="quiet" className="w-full">
+            {`Download the PDF, ${doneCount} page${doneCount === 1 ? '' : 's'}`}
+          </DownloadButton>
+        )}
+
+        {format !== 'pdf' && doneCount > 1 && (
           <DownloadButton prepare={downloadZip} filename={'converted-photos.zip'} variant="quiet" className="w-full">
             {`Download all ${doneCount} as a zip`}
           </DownloadButton>

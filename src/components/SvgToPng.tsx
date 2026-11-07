@@ -5,7 +5,13 @@ import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 
 /**
- * SVG to PNG, entirely in the browser.
+ * SVG to PNG, JPG, WebP, ICO or PDF, entirely in the browser.
+ *
+ * The raster targets share one path: draw the vector at the chosen size and
+ * encode the canvas. PDF does not, because rasterising a vector into a PDF
+ * throws away the one thing a vector has. svg2pdf.js turns the SVG's own paths
+ * into PDF paths instead, so the PDF stays sharp at any zoom. It and jsPDF
+ * arrive only when somebody converts to PDF.
  *
  * The competitors cap free output at something like 500px and sell the crisp
  * export. There is no cost reason for that cap. Rasterising a vector is the
@@ -25,8 +31,19 @@ const PRESETS: Preset[] = [
   { label: '8K',       width: 7680,  note: '7680px wide' },
 ];
 
+export type SvgTarget = 'png' | 'jpg' | 'webp' | 'ico' | 'pdf';
+
+const META: Record<SvgTarget, { label: string; mime: string; ext: string }> = {
+  png: { label: 'PNG', mime: 'image/png', ext: 'png' },
+  jpg: { label: 'JPG', mime: 'image/jpeg', ext: 'jpg' },
+  webp: { label: 'WebP', mime: 'image/webp', ext: 'webp' },
+  ico: { label: 'ICO', mime: 'image/x-icon', ext: 'ico' },
+  pdf: { label: 'PDF', mime: 'application/pdf', ext: 'pdf' },
+};
+
 type Source = {
   name: string;
+  text: string;
   url: string;
   width: number;
   height: number;
@@ -71,7 +88,13 @@ function readIntrinsicSize(svgText: string): { width: number; height: number } {
   return { width: 512, height: 512 };
 }
 
-export default function SvgToPng() {
+export default function SvgToPng({ target = 'png' }: { target?: SvgTarget }) {
+  const meta = META[target];
+  // JPG has no transparency, so the choice is not offered rather than ignored.
+  const canBeTransparent = target !== 'jpg';
+  // An icon carries its own fixed sizes and a PDF stays a vector, so neither
+  // has an output size to choose.
+  const hasSize = target === 'png' || target === 'jpg' || target === 'webp';
   const [source, setSource] = useState<Source | null>(null);
   const [presetIndex, setPresetIndex] = useState(2);
   const [transparent, setTransparent] = useState(true);
@@ -111,7 +134,7 @@ export default function SvgToPng() {
 
     const { width, height } = readIntrinsicSize(text);
     const blob = new Blob([text], { type: 'image/svg+xml;charset=utf-8' });
-    setSource({ name: file.name, url: URL.createObjectURL(blob), width, height });
+    setSource({ name: file.name, text, url: URL.createObjectURL(blob), width, height });
   }, []);
 
   const convert = useCallback(async () => {
@@ -120,8 +143,41 @@ export default function SvgToPng() {
     setError(null);
 
     try {
+      if (target === 'pdf') {
+        const [{ jsPDF }, { svg2pdf }] = await Promise.all([import('jspdf'), import('svg2pdf.js')]);
+        const w = source.width;
+        const h = source.height;
+        const pdf = new jsPDF({ orientation: w > h ? 'landscape' : 'portrait', unit: 'pt', format: [w, h] });
+        if (!transparent) {
+          pdf.setFillColor(255, 255, 255);
+          pdf.rect(0, 0, w, h, 'F');
+        }
+        const el = new DOMParser().parseFromString(source.text, 'image/svg+xml').documentElement;
+        // svg2pdf reads computed styles, so the SVG has to be in the document
+        // while it works. Off screen, and removed straight after.
+        const host = document.createElement('div');
+        host.style.cssText = 'position:fixed;left:-99999px;top:0;';
+        host.appendChild(el);
+        document.body.appendChild(host);
+        try {
+          await svg2pdf(el, pdf, { x: 0, y: 0, width: w, height: h });
+        } finally {
+          host.remove();
+        }
+        const blob = pdf.output('blob');
+        setResult({ url: URL.createObjectURL(blob), bytes: blob.size, w: Math.round(w), h: Math.round(h) });
+        return;
+      }
+
       const preset = PRESETS[presetIndex];
-      const scale = preset.width ? preset.width / source.width : 1;
+      // A vector loses nothing by being drawn larger, so an icon is always
+      // drawn at 256, where the raster encoder would stop at the source size.
+      const scale =
+        target === 'ico'
+          ? 256 / Math.max(source.width, source.height)
+          : hasSize && preset.width
+            ? preset.width / source.width
+            : 1;
       const outW = Math.round(source.width * scale);
       const outH = Math.round(source.height * scale);
 
@@ -140,13 +196,26 @@ export default function SvgToPng() {
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Could not get a drawing context.');
 
-      if (!transparent) {
+      if (!transparent || !canBeTransparent) {
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, outW, outH);
       }
       ctx.drawImage(img, 0, 0, outW, outH);
 
-      const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, 'image/png'));
+      let blob: Blob | null;
+      if (target === 'ico') {
+        const { encodeIco } = await import('@/lib/raster');
+        blob = await encodeIco(canvas, outW, outH);
+      } else {
+        blob = await new Promise<Blob | null>((r) =>
+          canvas.toBlob(r, meta.mime, target === 'png' ? undefined : 0.92),
+        );
+        if (blob && blob.type !== meta.mime) {
+          // toBlob hands back a PNG when it cannot write the type it was asked
+          // for. Refused rather than saved under the wrong name.
+          throw new Error(`This browser cannot write ${meta.label}. Try PNG instead.`);
+        }
+      }
       if (!blob) throw new Error('The image was too large for this browser to encode. Try a smaller size.');
 
       setResult({ url: URL.createObjectURL(blob), bytes: blob.size, w: outW, h: outH });
@@ -155,12 +224,13 @@ export default function SvgToPng() {
     } finally {
       setBusy(false);
     }
-  }, [source, presetIndex, transparent]);
+  }, [source, presetIndex, transparent, target, meta, hasSize, canBeTransparent]);
 
   const preset = PRESETS[presetIndex];
-  const outW = source ? Math.round(preset.width ? preset.width : source.width) : 0;
+  const sized = hasSize && preset.width;
+  const outW = source ? Math.round(sized ? preset.width! : source.width) : 0;
   const outH = source
-    ? Math.round(preset.width ? source.height * (preset.width / source.width) : source.height)
+    ? Math.round(sized ? source.height * (preset.width! / source.width) : source.height)
     : 0;
 
   // Files chosen on the home page, if that is how you arrived.
@@ -194,7 +264,7 @@ export default function SvgToPng() {
               src={source.url}
               alt=""
               className="max-h-52 max-w-full"
-              style={{ background: transparent ? 'none' : '#fff' }}
+              style={{ background: transparent && canBeTransparent ? 'none' : '#fff' }}
             />
             <p className="mt-5 text-sm text-ink-soft break-all">{source.name}</p>
             <p className="text-sm text-ink-faint">
@@ -235,6 +305,8 @@ export default function SvgToPng() {
       {/* Controls */}
       <div className="order-2 lg:order-1 lg:sticky lg:top-20 rounded-lg border border-line bg-surface p-5">
         <fieldset disabled={!source} className="disabled:opacity-50">
+          {hasSize ? (
+          <>
           <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
             Output size
           </legend>
@@ -257,7 +329,16 @@ export default function SvgToPng() {
               </button>
             ))}
           </div>
+          </>
+          ) : (
+            <p className="text-sm leading-relaxed text-ink-soft">
+              {target === 'ico'
+                ? 'One icon file holding 16, 32, 48, 64, 128 and 256 pixel versions, so it stays sharp wherever Windows or a browser shows it.'
+                : 'The PDF keeps the drawing as a vector, so it prints and zooms sharp at any size. The page is the size the SVG declares.'}
+            </p>
+          )}
 
+          {canBeTransparent && (
           <label className="mt-5 flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -268,10 +349,11 @@ export default function SvgToPng() {
               }}
               className="size-4 accent-[var(--accent)]"
             />
-            Transparent background
+            {target === 'pdf' ? 'No background' : 'Transparent background'}
           </label>
+          )}
 
-          {source && (
+          {source && hasSize && (
             <p className="mt-4 text-sm text-ink-soft tabular-nums">
               Exports at {outW} × {outH}
             </p>
@@ -282,7 +364,7 @@ export default function SvgToPng() {
             disabled={!source || busy}
             className="mt-4 w-full rounded-md bg-accent text-accent-ink px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
           >
-            {busy ? 'Rendering…' : 'Convert to PNG'}
+            {busy ? 'Rendering…' : `Convert to ${meta.label}`}
           </button>
         </fieldset>
 
@@ -295,10 +377,14 @@ export default function SvgToPng() {
         {result && (
           <div className="mt-5 rounded-md border border-line bg-surface-alt p-4">
             <p className="text-sm tabular-nums">
-              {result.w} × {result.h} PNG, {formatBytes(result.bytes)}
+              {hasSize ? `${result.w} × ${result.h} ` : ''}{meta.label}, {formatBytes(result.bytes)}
             </p>
-            <DownloadButton href={result.url} filename={(source?.name.replace(/\.svg$/i, '') ?? 'image') + `-${result.w}.png`} variant="quiet">
-              Download PNG
+            <DownloadButton
+              href={result.url}
+              filename={(source?.name.replace(/\.svg$/i, '') ?? 'image') + (hasSize ? `-${result.w}` : '') + '.' + meta.ext}
+              variant="quiet"
+            >
+              {`Download ${meta.label}`}
             </DownloadButton>
           </div>
         )}

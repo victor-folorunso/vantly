@@ -125,7 +125,7 @@ const RULES: { from: string; to: string[] }[] = [
  * nobody would ever report.
  */
 export const CANVAS_SOURCES = ['png', 'jpg', 'webp', 'gif', 'bmp', 'avif', 'tiff'] as const;
-export const CANVAS_TARGETS = ['png', 'jpg', 'webp', 'gif', 'tiff', 'bmp', 'ico'] as const;
+export const CANVAS_TARGETS = ['png', 'jpg', 'webp', 'gif', 'tiff', 'bmp', 'ico', 'avif'] as const;
 
 export type EncodableTarget = (typeof CANVAS_TARGETS)[number];
 
@@ -215,8 +215,14 @@ export function docHandles(c: { from: Format; to: Format }): boolean {
  */
 const HAND_BUILT = [
   'heic-to-jpg',
+  'heic-to-png',
   'heic-to-webp',
+  'heic-to-pdf',
   'svg-to-png',
+  'svg-to-jpg',
+  'svg-to-webp',
+  'svg-to-pdf',
+  'svg-to-ico',
   // These five were built as tools first and have had their own page for a
   // while. They were still counted as unbuilt conversions, which made the
   // status report claim less was finished than actually was.
