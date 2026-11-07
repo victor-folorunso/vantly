@@ -82,6 +82,11 @@ If a photo is going on a website, [resize it first](/image-resizer), then
 compress. Doing it the other way round means you carefully compressed pixels you
 were about to throw away.
 
+The compressor has a smaller version of the same control, the shrink setting
+above the format. It keeps the shape of the picture and never enlarges it, so
+asking for a longer edge than the photo has leaves it at its own size. Making
+a picture bigger only invents pixels, and the file grows with nothing gained.
+
 ## What compression cannot fix
 
 It cannot sharpen a blurry photo, recover a blown out sky, or add detail that the

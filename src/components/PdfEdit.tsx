@@ -141,8 +141,15 @@ export default function PdfEdit({ mode }: { mode: Mode }) {
       setOutSize(blob.size);
       setOutUrl((prev) => { if (prev) URL.revokeObjectURL(prev); return URL.createObjectURL(blob); });
     } catch (e) {
+      /* The watermark is drawn in one of the fonts every PDF reader has built
+         in, which covers Western European letters only. Anything else (Cyrillic,
+         Chinese, Yoruba's underdotted letters) throws "WinAnsi cannot encode",
+         and saying "something went wrong" left people retrying the same text. */
+      const unencodable = e instanceof Error && e.message.match(/WinAnsi cannot encode "(.+?)"/);
       setError(
-        e instanceof Error && /encrypt|password/i.test(e.message)
+        unencodable
+          ? `The watermark can only use Western European letters for now, and "${unencodable[1]}" is not one of them. Try the text without it.`
+          : e instanceof Error && /encrypt|password/i.test(e.message)
           ? 'This PDF is encrypted in a way that cannot be opened without the password. Open it in a reader with the password, print to PDF, and try again.'
           : 'Something went wrong writing the PDF.',
       );

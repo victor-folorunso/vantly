@@ -83,6 +83,13 @@ Minified JSON is what you send over a network, and the saving is real on a large
 payload. It's also the reason a response looks like one enormous line when you
 open it in a browser, which is what most people come here to undo.
 
+Formatting runs on Prettier, the formatter most code editors use, so what comes
+out matches what your editor would write. Minifying JSON reads the data and
+writes it back with no spaces at all. The JavaScript and CSS minifiers go
+further: Terser renames variables and drops code that can never run, and csso
+merges rules that repeat, so their output is smaller than stripping spaces
+alone would get you.
+
 Neither changes the data. Formatting and minifying are the same JSON either way,
 which is worth knowing if you're comparing two files: [compare them
 formatted](/diff-checker), or the diff is meaningless.

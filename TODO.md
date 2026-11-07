@@ -14,7 +14,7 @@ sessions already.
 
 ## 1. Docs
 
-66 written, against roughly 200 built tools.
+69 written, against 204 live tools.
 
 `src/content/docs/_owed.md` holds the explanations stripped out of the tool
 interfaces, listed against the tool each came from. Those are facts already
