@@ -50,6 +50,7 @@ STALE_SECONDS = {"running": 15 * 60, "queued": 2 * 3600}
 ORIGINS = [
     "https://vantly.xyz",
     "https://www.vantly.xyz",
+    "https://vantly-tools.pages.dev",  # Cloudflare's own address for the same build, without Cladior in front
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
