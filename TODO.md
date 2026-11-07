@@ -9,6 +9,8 @@ sessions already.
   was the last one, moved on 2026-11-07.
 - ImageStudio uses `ToolLayout` rather than its own copy.
 - Content security policy: `public/_headers`.
+- Tool page headings: one `ToolHeader`, with the category above the title,
+  on 121 pages since 2026-11-07.
 
 ## 1. Docs
 
@@ -24,9 +26,3 @@ established as worth saying, so they are the cheapest docs to write next.
 `react-hooks/set-state-in-effect`, 8 `react-hooks/refs`, 7 unused variables
 and a handful of single ones. The build does not run lint, so nothing fails
 on them, which is how they piled up.
-
-## 3. Tool page headings
-
-Every tool page writes its own h1 block, so a change to how tool pages open
-(a category label above the title, say) is a hundred-file edit. Worth a
-shared `ToolHeader` before the next design pass.

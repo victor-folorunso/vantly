@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { SITE, toolBySlug } from '@/lib/site';
 import SolfaConverter from '@/components/SolfaConverter';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('tonic-solfa-converter')!;
 
@@ -33,16 +34,11 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {tool.name}
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          Note names into doh ray me in any key, and back the other way. Have a recording instead?{' '}
+        <ToolHeader slug="tonic-solfa-converter" lede={<>Note names into doh ray me in any key, and back the other way. Have a recording instead?{' '}
           <Link href="/song-to-tonic-solfa" className="text-accent underline underline-offset-4">
             Turn the song into solfa
           </Link>
-          .
-        </p>
+          .</>}>{tool.name}</ToolHeader>
 
         <div className="mt-10">
           <SolfaConverter />

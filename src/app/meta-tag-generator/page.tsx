@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { MetaTagGenerator } from '@/components/WebTools';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('meta-tag-generator')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Meta tag generator</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Title, description and social cards, with a preview of the result.</p>
+        <ToolHeader slug="meta-tag-generator" lede="Title, description and social cards, with a preview of the result.">Meta tag generator</ToolHeader>
 
         <div className="mt-10">
           <MetaTagGenerator />

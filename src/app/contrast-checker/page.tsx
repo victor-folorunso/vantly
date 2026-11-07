@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { ContrastChecker } from '@/components/ColorTools';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('contrast-checker')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Check colour contrast</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">See whether your text is actually readable, and by how much you are missing it.</p>
+        <ToolHeader slug="contrast-checker" lede="See whether your text is actually readable, and by how much you are missing it.">Check colour contrast</ToolHeader>
 
         <div className="mt-10">
           <ContrastChecker />

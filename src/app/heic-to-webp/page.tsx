@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import HeicConvert from '@/components/HeicConvert';
 import { SITE } from '@/lib/site';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 /*
   The same converter as /heic-to-jpg, landing on WebP instead.
@@ -45,13 +46,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          Convert HEIC to WebP
-        </h1>
-        <p className="mt-3 max-w-2xl text-ink-soft">
-          For iPhone photos headed to a website. Smaller than JPG at the same
-          quality, converted in bulk, and none of them leave your computer.
-        </p>
+        <ToolHeader slug="heic-to-webp" lede="For iPhone photos headed to a website. Smaller than JPG at the same quality, converted in bulk, and none of them leave your computer.">Convert HEIC to WebP</ToolHeader>
 
         <div className="mt-10">
           <HeicConvert initialFormat="webp" />

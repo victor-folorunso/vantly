@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import ImageStudio from '@/components/ImageStudio';
 import { SITE } from '@/lib/site';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const title = 'Image resizer';
 const description = 'Resize images in bulk in your browser. Pick a longest edge, keep the aspect ratio, no upload and no limit on how many.';
@@ -34,8 +35,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Resize images</h1>
-        <p className="mt-3 max-w-2xl text-ink-soft">Pick how long the longest edge should be and everything scales to fit. The aspect ratio is kept, and nothing is ever enlarged.</p>
+        <ToolHeader slug="image-resizer" lede="Pick how long the longest edge should be and everything scales to fit. The aspect ratio is kept, and nothing is ever enlarged.">Resize images</ToolHeader>
 
         <div className="mt-10">
           <ImageStudio mode="resize" />

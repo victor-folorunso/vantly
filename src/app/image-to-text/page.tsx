@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import OcrTool from '@/components/OcrTool';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('image-to-text')!;
 
@@ -32,10 +33,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {tool.name}
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Pull the words out of a screenshot, a photo of a page, or a scan.</p>
+        <ToolHeader slug="image-to-text" lede="Pull the words out of a screenshot, a photo of a page, or a scan.">{tool.name}</ToolHeader>
 
         <div className="mt-10">
           <OcrTool mode="image" />

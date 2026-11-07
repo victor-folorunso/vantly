@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE, TOOLS, CATEGORIES } from '@/lib/site';
 import { CONVERSIONS, FORMATS } from '@/lib/conversions';
+import ToolHeader from '@/components/ToolHeader';
 
 /**
  * Everything, on one page, at a density that survives growth.
@@ -43,7 +44,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Toolbox</h1>
+      <ToolHeader slug="all">Toolbox</ToolHeader>
 
       {/* Jump links, because this page is long by design and scrolling to
           Generators past ten other sections is not navigation. */}

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { TipCalculator } from '@/components/Calculators';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('tip-calculator')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Tip and bill splitter</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Work out the tip, split the bill, and see who owes the extra penny.</p>
+        <ToolHeader slug="tip-calculator" lede="Work out the tip, split the bill, and see who owes the extra penny.">Tip and bill splitter</ToolHeader>
 
         <div className="mt-10">
           <TipCalculator />

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE, TOOLS } from '@/lib/site';
 import { CONVERSIONS, docHandles } from '@/lib/conversions';
+import ToolHeader from '@/components/ToolHeader';
 
 const title = 'Privacy';
 const description =
@@ -79,10 +80,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Privacy</h1>
-      <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-        The questions worth asking of any site that takes a file.
-      </p>
+      <ToolHeader slug="privacy" lede="The questions worth asking of any site that takes a file.">Privacy</ToolHeader>
 
       {/* The answers take the width they need and the rail takes the rest,
           rather than a narrow column of text with a third of the page empty

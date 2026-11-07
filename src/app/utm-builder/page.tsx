@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { UtmBuilder } from '@/components/WebTools';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('utm-builder')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">UTM link builder</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Build a tracked link, and catch the mistakes that split one campaign into four.</p>
+        <ToolHeader slug="utm-builder" lede="Build a tracked link, and catch the mistakes that split one campaign into four.">UTM link builder</ToolHeader>
 
         <div className="mt-10">
           <UtmBuilder />

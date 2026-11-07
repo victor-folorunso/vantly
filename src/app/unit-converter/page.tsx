@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import UnitConverter from '@/components/UnitConverter';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('unit-converter')!;
 
@@ -33,10 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Convert units</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          Length, weight, temperature, area, volume, speed and data.
-        </p>
+        <ToolHeader slug="unit-converter" lede="Length, weight, temperature, area, volume, speed and data.">Convert units</ToolHeader>
 
         <div className="mt-10">
           <UnitConverter />

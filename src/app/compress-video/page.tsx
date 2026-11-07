@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import MediaConvert from '@/components/MediaConvert';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('compress-video')!;
 
@@ -32,10 +33,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {tool.name}
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Make a video smaller without a desktop editor.</p>
+        <ToolHeader slug="compress-video" lede="Make a video smaller without a desktop editor.">{tool.name}</ToolHeader>
 
         <div className="mt-10">
           <MediaConvert to="mp4" mode="compress" source="video" />

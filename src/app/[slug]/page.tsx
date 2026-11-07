@@ -20,6 +20,7 @@ import DocConvert, { type DocFormat } from '@/components/DocConvert';
 import ImageConvert from '@/components/ImageConvert';
 import MediaConvert, { type Target as MediaTarget } from '@/components/MediaConvert';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 /**
  * Everything that does not have its own folder yet: unbuilt tools and every
@@ -91,9 +92,7 @@ export default async function Page({ params }: Params) {
     const related = relatedConversions(conversion, 14);
     return (
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {conversionTitle(conversion)}
-        </h1>
+        <ToolHeader slug={conversion.slug}>{conversionTitle(conversion)}</ToolHeader>
         <div className="mt-10">
           <DocConvert from={conversion.from.id as DocFormat} to={conversion.to.id as DocFormat} />
         </div>
@@ -138,9 +137,7 @@ export default async function Page({ params }: Params) {
             }),
           }}
         />
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {conversionTitle(conversion)}
-        </h1>
+        <ToolHeader slug={conversion.slug}>{conversionTitle(conversion)}</ToolHeader>
 
         <div className="mt-10">
           <MediaConvert to={target} source={source} />
@@ -180,9 +177,7 @@ export default async function Page({ params }: Params) {
             }),
           }}
         />
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {conversionTitle(conversion)}
-        </h1>
+        <ToolHeader slug={conversion.slug}>{conversionTitle(conversion)}</ToolHeader>
 
         <div className="mt-10">
           <DataConvert from={conversion.from.id as DataFormat} to={conversion.to.id as DataFormat} />
@@ -222,9 +217,7 @@ export default async function Page({ params }: Params) {
             }),
           }}
         />
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {conversionTitle(conversion)}
-        </h1>
+        <ToolHeader slug={conversion.slug}>{conversionTitle(conversion)}</ToolHeader>
 
         <div className="mt-10">
           <ImageConvert

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import PlaceholderImage from '@/components/PlaceholderImage';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('placeholder-160x600')!;
 
@@ -32,10 +33,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {tool.name}
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">The wide skyscraper down the side of a page.</p>
+        <ToolHeader slug="placeholder-160x600" lede="The wide skyscraper down the side of a page.">{tool.name}</ToolHeader>
 
         <div className="mt-10">
           <PlaceholderImage width={160} height={600} fixed />

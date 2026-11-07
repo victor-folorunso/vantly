@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('url-encoder')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">URL encode and decode</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Percent-encode text so it survives being put in a URL, or decode one you have been handed.</p>
+        <ToolHeader slug="url-encoder" lede="Percent-encode text so it survives being put in a URL, or decode one you have been handed.">URL encode and decode</ToolHeader>
 
         <div className="mt-10">
           <TextTool preset="url" outputLabel="Result" />

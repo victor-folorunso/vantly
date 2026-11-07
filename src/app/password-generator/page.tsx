@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { PasswordGenerator } from '@/components/Generators';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('password-generator')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Generate a strong password</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Real randomness, generated on your machine and never transmitted.</p>
+        <ToolHeader slug="password-generator" lede="Real randomness, generated on your machine and never transmitted.">Generate a strong password</ToolHeader>
 
         <div className="mt-10">
           <PasswordGenerator />

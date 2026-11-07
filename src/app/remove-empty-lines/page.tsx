@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import TextTool from '@/components/TextTool';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('remove-empty-lines')!;
 
@@ -32,10 +33,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          Remove empty lines
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">Strip the blank lines out of a list or a block of text.</p>
+        <ToolHeader slug="remove-empty-lines" lede="Strip the blank lines out of a list or a block of text.">Remove empty lines</ToolHeader>
 
         <div className="mt-10">
           <TextTool preset="empty-lines" outputLabel="Result" />

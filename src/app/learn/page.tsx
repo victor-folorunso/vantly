@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { allDocs } from '@/lib/docs';
 import { allGuides } from '@/lib/guides';
 import { SITE, CATEGORIES, TOOLS } from '@/lib/site';
+import ToolHeader from '@/components/ToolHeader';
 
 const title = 'Learn';
 const description =
@@ -63,10 +64,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Learn</h1>
-      <p className="mt-3 max-w-xl leading-relaxed text-ink-soft">
-        Every guide on the site, grouped by what it is about.
-      </p>
+      <ToolHeader slug="learn" lede="Every guide on the site, grouped by what it is about.">Learn</ToolHeader>
 
       <div className="mt-12 grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_220px]">
         <div className="max-w-2xl">

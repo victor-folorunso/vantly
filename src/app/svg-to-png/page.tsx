@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import SvgToPng from '@/components/SvgToPng';
 import { SITE, TOOLS } from '@/lib/site';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = TOOLS.find((t) => t.slug === 'svg-to-png')!;
 
@@ -44,12 +45,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight max-w-3xl">
-          Convert SVG to PNG at any resolution
-        </h1>
-        <p className="mt-3 text-ink-soft max-w-2xl">
-          Up to 8K, with transparency and no watermark. The file stays on your machine.
-        </p>
+        <ToolHeader slug="svg-to-png" lede="Up to 8K, with transparency and no watermark. The file stays on your machine.">Convert SVG to PNG at any resolution</ToolHeader>
 
         <div className="mt-10">
           <SvgToPng />

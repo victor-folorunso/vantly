@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import PaletteTool from '@/components/PaletteTool';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('color-palette')!;
 
@@ -33,12 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          Build a colour palette
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          Pull the colours out of an image, or grow a full set from one you already have.
-        </p>
+        <ToolHeader slug="color-palette" lede="Pull the colours out of an image, or grow a full set from one you already have.">Build a colour palette</ToolHeader>
 
         <div className="mt-10">
           <PaletteTool />

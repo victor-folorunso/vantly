@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import SearchResults from '@/components/SearchResults';
 import { SITE } from '@/lib/site';
+import ToolHeader from '@/components/ToolHeader';
 
 /**
  * A real page behind the SearchAction declared in the layout.
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight">Search</h1>
+      <ToolHeader slug="search">Search</ToolHeader>
       {/* The query is read from the URL on the client, which is not available
           while this is prerendered, so the boundary is required. */}
       <Suspense fallback={<p className="mt-6 text-ink-soft">Loading…</p>}>

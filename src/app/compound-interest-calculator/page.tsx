@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE, toolBySlug } from '@/lib/site';
 import { CompoundCalculator } from '@/components/Calculators';
 import ToolDocs from '@/components/ToolDocs';
+import ToolHeader from '@/components/ToolHeader';
 
 const tool = toolBySlug('compound-interest-calculator')!;
 
@@ -33,8 +34,7 @@ export default function Page() {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">Compound interest calculator</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">See how much of the final number is your money and how much is growth.</p>
+        <ToolHeader slug="compound-interest-calculator" lede="See how much of the final number is your money and how much is growth.">Compound interest calculator</ToolHeader>
 
         <div className="mt-10">
           <CompoundCalculator />

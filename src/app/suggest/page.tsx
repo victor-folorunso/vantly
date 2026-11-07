@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import SuggestForm from '@/components/SuggestForm';
 import { SITE } from '@/lib/site';
+import ToolHeader from '@/components/ToolHeader';
 
 const title = 'Suggest a tool or conversion';
 const description =
@@ -16,12 +17,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-        What is missing?
-      </h1>
-      <p className="mt-3 leading-relaxed text-ink-soft">
-        If the thing you need is not here, say so.
-      </p>
+      <ToolHeader slug="suggest" lede="If the thing you need is not here, say so.">What is missing?</ToolHeader>
 
       <SuggestForm />
 
