@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { allDocs } from '@/lib/docs';
 import { allGuides } from '@/lib/guides';
-import { SITE, CATEGORIES, TOOLS } from '@/lib/site';
+import { SITE, CATEGORIES } from '@/lib/site';
 import ToolHeader from '@/components/ToolHeader';
 
 const title = 'Learn';
@@ -58,9 +58,6 @@ export default function Page() {
     anchor: category.toLowerCase(),
     docs: entries.filter((d) => d.category === category),
   })).filter((g) => g.docs.length > 0);
-
-  const documented = new Set(docs.map((d) => d.tool.slug));
-  const undocumented = TOOLS.filter((t) => t.live && !documented.has(t.slug)).slice(0, 8);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-10">
@@ -120,35 +117,6 @@ export default function Page() {
               </nav>
             )}
 
-            {/* Most tools have no guide, and most never will, because nobody
-                searches a question behind a UUID generator. Somebody browsing
-                here is usually after a tool anyway, so the rail offers a few
-                rather than pretending the guides are the whole site. */}
-            {undocumented.length > 0 && (
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-ink-faint">
-                  No guide needed
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {undocumented.map((t) => (
-                    <li key={t.slug}>
-                      <Link
-                        href={`/${t.slug}`}
-                        className="block truncate text-sm text-ink-soft transition-colors hover:text-accent"
-                      >
-                        {t.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/all"
-                  className="mt-3 inline-block text-sm text-accent underline underline-offset-4"
-                >
-                  Every tool
-                </Link>
-              </div>
-            )}
           </div>
         </aside>
       </div>
