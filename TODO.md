@@ -3,41 +3,30 @@
 Kept here rather than in my head, because this list has outlived several
 sessions already.
 
-## 1. Finish the settings rails
+## Done since this list was written
 
-Ten tools still keep their settings somewhere other than the left rail:
+- Settings rails: every tool with settings now uses `ToolLayout`. Sign PDF
+  was the last one, moved on 2026-11-07.
+- ImageStudio uses `ToolLayout` rather than its own copy.
+- Content security policy: `public/_headers`.
 
-- The PDF set: compress, form, edit, pages, sign
-- MediaConvert, Calculators, UnitConverter, WebTools
-- CsvTools and DataConvert
-- PaletteTool, which changes shape between its two modes and needs both
-  branches rewritten, the way the date calculator did
+## 1. Docs
 
-Tools with no settings keep their single column. A 300px empty card is worse
-than no card.
-
-## 2. Fold ImageStudio onto ToolLayout
-
-It has the right shape, from the first prototype, but carries its own copy of
-the layout rather than using the shared one. Two definitions that agree today
-are two definitions that disagree later.
-
-## 3. A content security policy
-
-The site has none. It is a static site that handles people's documents, and a
-policy is the cheapest hardening available.
-
-Two things to get right when adding it. WebAssembly tools need
-`wasm-unsafe-eval` in `script-src`. Terser and Tesseract genuinely use `eval`,
-so the three pages that load them, the JavaScript minifier and the two OCR
-tools, need it relaxed for those paths only rather than site wide.
-
-Goes in a Cloudflare `_headers` file.
-
-## 4. Docs
-
-28 written, against roughly 200 built tools.
+66 written, against roughly 200 built tools.
 
 `src/content/docs/_owed.md` holds the explanations stripped out of the tool
 interfaces, listed against the tool each came from. Those are facts already
 established as worth saying, so they are the cheapest docs to write next.
+
+## 2. Lint
+
+`npx eslint src` reports 41 problems, all older than 2026-11-07: 21
+`react-hooks/set-state-in-effect`, 8 `react-hooks/refs`, 7 unused variables
+and a handful of single ones. The build does not run lint, so nothing fails
+on them, which is how they piled up.
+
+## 3. Tool page headings
+
+Every tool page writes its own h1 block, so a change to how tool pages open
+(a category label above the title, say) is a hundred-file edit. Worth a
+shared `ToolHeader` before the next design pass.

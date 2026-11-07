@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DownloadButton from '@/components/DownloadButton';
 import DropIcon from '@/components/DropIcon';
+import ToolLayout from '@/components/ToolLayout';
 
 /**
  * Puts a signature on a PDF.
@@ -187,143 +188,144 @@ export default function PdfSign() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">{file.name}</p>
-          <p className="text-xs tabular-nums text-ink-faint">{pageCount} pages</p>
-        </div>
-        <button
-          onClick={() => { setFile(null); setOutUrl(null); }}
-          className="text-sm text-ink-faint underline underline-offset-4"
-        >
-          Use another PDF
-        </button>
-      </div>
+      <ToolLayout
+        settings={
+          <>
+            <label className="block text-sm">
+              <span className={label}>Page</span>
+              <input
+                type="number"
+                min={1}
+                max={pageCount}
+                value={page}
+                onChange={(e) => setPage(Number(e.target.value) || 1)}
+                className="mt-2 w-full rounded-lg border border-line bg-ground px-3 py-2.5 tabular-nums outline-none focus:border-accent"
+              />
+            </label>
 
-      <div className="mt-6 grid items-start gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
-        <div className="order-1 min-w-0 lg:order-2">
-          <span className={label}>Your signature</span>
-          {uploaded ? (
-            <div className="mt-2 flex items-center gap-4 rounded-xl border border-line bg-surface p-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={uploaded} alt="Your signature" className="max-h-24" />
+            <div>
+              <span className={label}>Where</span>
+              <div className="mt-2 grid grid-cols-2 gap-1.5">
+                {(
+                  [
+                    ['top-left', 'Top left'],
+                    ['top-right', 'Top right'],
+                    ['bottom-left', 'Bottom left'],
+                    ['bottom-right', 'Bottom right'],
+                    ['bottom-centre', 'Bottom centre'],
+                  ] as [Placement, string][]
+                ).map(([id, text]) => (
+                  <button
+                    key={id}
+                    onClick={() => setPlacement(id)}
+                    aria-pressed={placement === id}
+                    className={`rounded-lg border py-2 text-xs transition-colors ${
+                      placement === id
+                        ? 'border-accent bg-accent-soft text-accent'
+                        : 'border-line text-ink-soft hover:text-ink'
+                    }`}
+                  >
+                    {text}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label className="block text-sm">
+              <span className="flex justify-between">
+                Size
+                <span className="tabular-nums text-ink-faint">{width}% of the page</span>
+              </span>
+              <input
+                type="range"
+                min={10}
+                max={60}
+                value={width}
+                onChange={(e) => setWidth(Number(e.target.value))}
+                className="mt-1.5 w-full"
+              />
+            </label>
+
+            <div className="space-y-2.5">
               <button
-                onClick={() => setUploaded(null)}
-                className="text-sm text-ink-faint underline underline-offset-4"
+                onClick={() => void sign()}
+                disabled={busy || (!hasInk && !uploaded)}
+                className="w-full rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-sm transition-transform enabled:hover:scale-[1.01] disabled:opacity-60"
               >
-                Draw one instead
+                {busy ? 'Signing…' : 'Add the signature'}
+              </button>
+              {outUrl && (
+                <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-signed.pdf'} variant="quiet">
+                  Download, {formatBytes(outSize)}
+                </DownloadButton>
+              )}
+            </div>
+          </>
+        }
+        status={
+          <span className="flex min-w-0 items-baseline gap-2">
+            <span className="truncate font-medium text-ink">{file.name}</span>
+            <span className="shrink-0 text-xs tabular-nums text-ink-faint">{pageCount} pages</span>
+          </span>
+        }
+        actions={
+          <button
+            onClick={() => { setFile(null); setOutUrl(null); }}
+            className="text-sm text-ink-faint underline underline-offset-4 hover:text-ink"
+          >
+            Use another PDF
+          </button>
+        }
+      >
+        <span className={label}>Your signature</span>
+        {uploaded ? (
+          <div className="mt-2 flex items-center gap-4 rounded-xl border border-line bg-surface p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={uploaded} alt="Your signature" className="max-h-24" />
+            <button
+              onClick={() => setUploaded(null)}
+              className="text-sm text-ink-faint underline underline-offset-4"
+            >
+              Draw one instead
+            </button>
+          </div>
+        ) : (
+          <>
+            <canvas
+              ref={padRef}
+              width={800}
+              height={260}
+              onPointerDown={start}
+              onPointerMove={move}
+              onPointerUp={stop}
+              onPointerLeave={stop}
+              className="mt-2 block w-full cursor-crosshair touch-none rounded-xl border border-line bg-white"
+            />
+            <div className="mt-2 flex gap-4 text-sm">
+              <button onClick={clearPad} className="text-ink-faint underline underline-offset-4">
+                Clear
+              </button>
+              <button
+                onClick={() => signatureRef.current?.click()}
+                className="text-accent underline underline-offset-4"
+              >
+                Upload a picture instead
               </button>
             </div>
-          ) : (
-            <>
-              <canvas
-                ref={padRef}
-                width={800}
-                height={260}
-                onPointerDown={start}
-                onPointerMove={move}
-                onPointerUp={stop}
-                onPointerLeave={stop}
-                className="mt-2 block w-full cursor-crosshair touch-none rounded-xl border border-line bg-white"
-              />
-              <div className="mt-2 flex gap-4 text-sm">
-                <button onClick={clearPad} className="text-ink-faint underline underline-offset-4">
-                  Clear
-                </button>
-                <button
-                  onClick={() => signatureRef.current?.click()}
-                  className="text-accent underline underline-offset-4"
-                >
-                  Upload a picture instead
-                </button>
-              </div>
-            </>
-          )}
-          <input
-            ref={signatureRef}
-            type="file"
-            accept="image/png,image/jpeg"
-            className="sr-only"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) setUploaded(URL.createObjectURL(f));
-              e.target.value = '';
-            }}
-          />
-        </div>
-
-        <div className="order-2 space-y-5 rounded-2xl border border-line bg-surface p-5 shadow-sm lg:order-1 lg:sticky lg:top-20">
-          <label className="block text-sm">
-            <span className={label}>Page</span>
-            <input
-              type="number"
-              min={1}
-              max={pageCount}
-              value={page}
-              onChange={(e) => setPage(Number(e.target.value) || 1)}
-              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 tabular-nums outline-none focus:border-accent"
-            />
-          </label>
-
-          <div>
-            <span className={label}>Where</span>
-            <div className="mt-2 grid grid-cols-2 gap-1.5">
-              {(
-                [
-                  ['top-left', 'Top left'],
-                  ['top-right', 'Top right'],
-                  ['bottom-left', 'Bottom left'],
-                  ['bottom-right', 'Bottom right'],
-                  ['bottom-centre', 'Bottom centre'],
-                ] as [Placement, string][]
-              ).map(([id, text]) => (
-                <button
-                  key={id}
-                  onClick={() => setPlacement(id)}
-                  aria-pressed={placement === id}
-                  className={`rounded-lg border py-2 text-xs transition-colors ${
-                    placement === id
-                      ? 'border-accent bg-accent-soft text-accent'
-                      : 'border-line text-ink-soft hover:text-ink'
-                  }`}
-                >
-                  {text}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <label className="block text-sm">
-            <span className="flex justify-between">
-              Size
-              <span className="tabular-nums text-ink-faint">{width}% of the page</span>
-            </span>
-            <input
-              type="range"
-              min={10}
-              max={60}
-              value={width}
-              onChange={(e) => setWidth(Number(e.target.value))}
-              className="mt-1.5 w-full accent-[var(--accent)]"
-            />
-          </label>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => void sign()}
-              disabled={busy || (!hasInk && !uploaded)}
-              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
-            >
-              {busy ? 'Signing…' : 'Add the signature'}
-            </button>
-            {outUrl && (
-              <DownloadButton href={outUrl} filename={file.name.replace(/\.pdf$/i, '') + '-signed.pdf'} variant="quiet">
-                Download, {formatBytes(outSize)}
-              </DownloadButton>
-            )}
-          </div>
-        </div>
-      </div>
+          </>
+        )}
+        <input
+          ref={signatureRef}
+          type="file"
+          accept="image/png,image/jpeg"
+          className="sr-only"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) setUploaded(URL.createObjectURL(f));
+            e.target.value = '';
+          }}
+        />
+      </ToolLayout>
 
       <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-soft">
         This puts a picture of your signature on the page, the same as printing,
