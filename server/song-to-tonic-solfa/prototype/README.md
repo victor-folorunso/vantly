@@ -46,18 +46,18 @@ The separator model (~900 MB) downloads on first run into `models/separator/`.
 
 ## Run the website
 
-The website is Vantly's [song to tonic solfa](https://vantly.xyz/song-to-tonic-solfa) page, in the
-[vantly](https://github.com/victor-folorunso/vantly) repository; this server is its API. Run both:
+The website is Vantly's [song to tonic solfa](https://vantly.xyz/song-to-tonic-solfa) page, in `src/` at the
+root of this repository; this server is its API. Run both:
 
 ```bash
 SOLFAFLOW_LIST_ALL=1 .venv/Scripts/python.exe -m uvicorn server:app --port 8765
-cd ../../vantly && npm run dev    # http://localhost:3000/song-to-tonic-solfa
+cd ../../.. && npm run dev    # http://localhost:3000/song-to-tonic-solfa
 ```
 
 In development Vantly calls `http://127.0.0.1:8765` by itself; a build calls the hosted service below
 (`NEXT_PUBLIC_SOLFA_URL` overrides either). Upload a song and the player opens straight away while the solfa fills in. Jobs run one at a
-time. Uploads go to `uploads/` and results to `output/<job id>/`. (From the repo root, `.claude/launch.json` starts
-both.) http://localhost:8765 itself serves a bare upload form from `web/`.
+time. Uploads go to `uploads/` and results to `output/<job id>/`. (From the Vantly repository root, `.claude/launch.json`
+starts both.) http://localhost:8765 itself serves a bare upload form from `web/`.
 
 **API.** `POST /api/jobs` uploads; `GET /api/jobs/{id}` is one song's progress; `GET /api/jobs?ids=a,b` lists those
 songs only (there are no accounts, so a browser asks for the ids it remembers; `SOLFAFLOW_LIST_ALL=1` lists every
@@ -70,7 +70,7 @@ and localhost:3000).
 vantly.xyz uses `modal_app.py`: the same API on Modal, in the workspace that runs Vantly's document converter.
 The web side is a small CPU container; each upload spawns the pipeline on an L4 GPU, one song at a time (others
 queue). Songs and results live on the `solfaflow-data` Volume; status and the latest `solfa.json` live in Modal
-Dicts so polling never waits on the Volume. Deploy from the repo root, with the models already in `models/`:
+Dicts so polling never waits on the Volume. Deploy from `server/song-to-tonic-solfa`, with the models already in `prototype/models/`:
 
 ```bash
 modal deploy prototype/modal_app.py

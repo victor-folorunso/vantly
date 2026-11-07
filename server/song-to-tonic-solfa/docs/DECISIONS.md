@@ -20,6 +20,12 @@ This log separates established choices from provisional implementation details a
 - **No shared library** of transcriptions: user uploads a song and gets solfa for their own use.
 - Keyboard-specific needs: global tuning-offset correction before snapping to keys, octave marks, showing which key is "do", optional transpose (e.g. to C), and dropping notes too short to play.
 
+## One repository (product owner, 2026-11-07)
+
+- The `solfaflow` repository was merged into Vantly at `server/song-to-tonic-solfa`, with its git history,
+  next to Vantly's other Modal service (`server/convert.py`). The solfaflow repository and folder are retired.
+- The model weights, ffmpeg, samples and local results stay untracked (see `prototype/.gitignore`).
+
 ## Where the website lives (product owner, 2026-11-04)
 
 - The website is part of **Vantly** (vantly.xyz, `victor-folorunso/vantly`), at `/song-to-tonic-solfa`, not a

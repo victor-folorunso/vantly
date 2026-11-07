@@ -2,6 +2,11 @@
 
 Turn audio into readable tonic solfa — with rhythm-aware notation and synchronized playback.
 
+**Where this sits:** this folder is the API behind Vantly's song to tonic solfa tool
+(vantly.xyz/song-to-tonic-solfa). The page itself is in `src/app/song-to-tonic-solfa`,
+`src/components/solfa` and `src/lib/solfa` at the root of this repository. Until 2026-11-07 this
+was the separate `solfaflow` repository; its history was kept when it moved here.
+
 **Status:** Early development. Transcription engines are still being evaluated; no model is claimed to deliver perfect transcription.
 
 ## Product direction
@@ -46,7 +51,7 @@ Project license and model-specific licensing decisions are pending. Do not assum
 
 ## Handoff and research documents
 
-If you're an AI agent or developer picking up this repository, read these first:
+If you're an AI agent or developer picking up this service, read these first:
 
 - [Agent instructions](AGENTS.md)
 - [Full project handoff and conversation notes](docs/PROJECT_HANDOFF.md)

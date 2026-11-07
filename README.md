@@ -116,6 +116,21 @@ already works this way: the decoder is about 2.9MB and is absent from every
 page's initial load, so a visitor who arrives from a search result and reads
 without converting anything never pays for it.
 
+## The two servers
+
+Almost every tool runs in the browser. Two need a machine, and both are on
+Modal, in `server/`:
+
+- **`server/convert.py`**: LibreOffice, for the document viewers and the
+  Office to PDF conversions. See [server/README.md](server/README.md).
+- **`server/song-to-tonic-solfa/`**: the API behind
+  [song to tonic solfa](https://vantly.xyz/song-to-tonic-solfa), which
+  separates the voice and transcribes it on a GPU. Its own Python project,
+  tests and research notes; start with its
+  [README](server/song-to-tonic-solfa/README.md) and
+  [AGENTS.md](server/song-to-tonic-solfa/AGENTS.md). The model weights are
+  not in git, so deploying it needs them in `prototype/models/` first.
+
 ## Status
 
 `STATUS.md` is generated, never edited. It reads the two lists, so it cannot

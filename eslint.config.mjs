@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Python services on Modal, with their venvs and vendored code.
+    "server/**",
   ]),
 ]);
 

@@ -1,9 +1,11 @@
-name: Prototype tests
+name: Solfa API tests
 
 on:
   push:
     branches: [main]
+    paths: ['server/song-to-tonic-solfa/**', '.github/workflows/solfa-prototype-tests.yml']
   pull_request:
+    paths: ['server/song-to-tonic-solfa/**', '.github/workflows/solfa-prototype-tests.yml']
   workflow_dispatch:
 
 permissions:
@@ -13,11 +15,11 @@ jobs:
   prototype-logic:
     # The music logic, chunking, chords and the API server, without the transcription models
     # (torch, GAME, the separator), which are only imported when a song is processed.
-    # The website is in the vantly repository and is tested there.
+    # The website is tested by Vantly's own npm test.
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: prototype
+        working-directory: server/song-to-tonic-solfa/prototype
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

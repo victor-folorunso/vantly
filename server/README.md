@@ -1,5 +1,8 @@
 # The conversion service
 
+(The other service in this folder, the song to tonic solfa API, is its own
+project in [song-to-tonic-solfa/](song-to-tonic-solfa/README.md).)
+
 One container with LibreOffice in it, on Modal, exposed as an HTTP endpoint.
 It converts anything LibreOffice understands into PDF, and the browser does
 the rest, because the site already renders PDFs with pdf.js.

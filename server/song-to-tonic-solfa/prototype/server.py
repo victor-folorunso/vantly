@@ -1,6 +1,6 @@
 """The song to tonic solfa service: uploads, progress and results.
 
-The website is Vantly's /song-to-tonic-solfa page (github.com/victor-folorunso/vantly),
+The website is Vantly's /song-to-tonic-solfa page (src/app at the repository root),
 which calls this API from the browser. Upload a song and the player opens straight away:
 the song plays immediately and solfa fills in chunk by chunk as it is transcribed.
 Jobs run one at a time on a background thread because each one saturates the CPU.

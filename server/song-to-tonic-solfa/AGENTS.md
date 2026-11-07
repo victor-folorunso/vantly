@@ -16,5 +16,5 @@ Read these before changing code:
 - Do not promise 100% transcription accuracy. Surface uncertainty and allow correction.
 - Keep the first milestone narrow. Melody-only versus choir/polyphonic transcription is still an unresolved product-scope decision; do not silently assume choir separation is solved.
 - Avoid heavyweight model dependencies in the core API until a candidate has passed the benchmark gate.
-- Add/update tests for every behavior change. GitHub Actions exists, but a passing run has not yet been verified in the work documented here.
+- Add/update tests for every behavior change. GitHub Actions for this service is in the Vantly root `.github/workflows` (solfa-*.yml), but a passing run has not yet been verified in the work documented here.
 - Clearly label facts, hypotheses, and unverified research. Do not fabricate benchmark results.
