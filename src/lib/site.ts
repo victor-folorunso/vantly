@@ -456,7 +456,7 @@ export const TOOLS: Tool[] = [
     title: 'Rotate PDF pages and save them that way',
     description:
       'Rotate some or all pages of a PDF and save it, so a scan that came in sideways stops being sideways.',
-    live: false,
+    live: true,
   },
   {
     slug: 'delete-pdf-pages',
@@ -466,7 +466,7 @@ export const TOOLS: Tool[] = [
     title: 'Delete pages from a PDF',
     description:
       'Remove pages from a PDF and download what is left, without reordering anything else.',
-    live: false,
+    live: true,
   },
   {
     slug: 'extract-pdf-pages',
@@ -476,7 +476,7 @@ export const TOOLS: Tool[] = [
     title: 'Extract pages from a PDF into a new file',
     description:
       'Pick the pages you want and save them as a separate PDF, leaving the original alone.',
-    live: false,
+    live: true,
   },
   {
     slug: 'organize-pdf',
@@ -486,7 +486,7 @@ export const TOOLS: Tool[] = [
     title: 'Reorder and organise the pages of a PDF',
     description:
       'Move pages around, turn them the right way up and drop the ones you do not want, then save the result.',
-    live: false,
+    live: true,
   },
   {
     slug: 'add-page-numbers',

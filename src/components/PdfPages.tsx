@@ -7,11 +7,17 @@ import DownloadButton from '@/components/DownloadButton';
 import DropIcon from '@/components/DropIcon';
 
 /**
- * Merge, split and extract, which are one operation with different buttons.
+ * Merge, split, extract, delete, organize and rotate, which are one operation
+ * with different buttons.
  *
- * All three are "choose some pages, in some order, and write a new PDF". Built
- * once so the queue, the thumbnails, the selection and the memory cleanup exist
- * in a single place rather than three.
+ * All six are "choose some pages, in some order, turned some way, and write a
+ * new PDF". Built once so the queue, the thumbnails, the selection and the
+ * memory cleanup exist in a single place rather than six.
+ *
+ * What a selected page means depends on the mode. In merge, organize and
+ * rotate every page starts selected and the selection is what is kept. In
+ * split and extract nothing starts selected and the selection is what is
+ * taken out. In delete nothing starts selected and the selection is what goes.
  *
  * pdf-lib does the writing and pdf.js does the drawing, and both arrive by
  * dynamic import when a file is actually dropped. Together they are around 1MB,
@@ -22,7 +28,32 @@ import DropIcon from '@/components/DropIcon';
  * since the PDFs people merge and sign tend to be contracts and bank statements.
  */
 
-type Mode = 'merge' | 'split' | 'extract';
+type Mode = 'merge' | 'split' | 'extract' | 'delete' | 'organize' | 'rotate';
+
+/** Modes where every page starts in the output. */
+const KEEP_ALL: readonly Mode[] = ['merge', 'organize', 'rotate'];
+/** Modes where the order of the pages can be changed. */
+const REORDER: readonly Mode[] = ['merge', 'organize'];
+/** Modes where pages can be turned. */
+const TURN: readonly Mode[] = ['organize', 'rotate'];
+
+const VERB: Record<Mode, string> = {
+  merge: 'Merge',
+  split: 'Split',
+  extract: 'Extract',
+  delete: 'Delete',
+  organize: 'Save',
+  rotate: 'Save',
+};
+
+const OUT_NAME: Record<Mode, string> = {
+  merge: 'merged',
+  split: 'pages',
+  extract: 'extracted',
+  delete: 'pages-removed',
+  organize: 'organized',
+  rotate: 'rotated',
+};
 
 type Page = {
   id: string;
@@ -33,6 +64,8 @@ type Page = {
   label: string;
   thumb?: string;
   selected: boolean;
+  /** Clockwise turn added on top of whatever the page already has, 0 to 270. */
+  turn: number;
 };
 
 type Loaded = { name: string; bytes: ArrayBuffer };
@@ -100,9 +133,11 @@ export default function PdfPages({ mode }: { mode: Mode }) {
               pageIndex: i,
               label: pdfs.length > 1 ? `${file.name} p${i + 1}` : `Page ${i + 1}`,
               thumb: canvas.toDataURL('image/jpeg', 0.6),
-              // Merge takes everything by default. The others start empty, so
-              // the first click is a choice rather than an undo.
-              selected: mode === 'merge',
+              // Merge, organize and rotate take everything by default. The
+              // others start empty, so the first click is a choice rather
+              // than an undo.
+              selected: KEEP_ALL.includes(mode),
+              turn: 0,
             });
           }
 
@@ -125,6 +160,12 @@ export default function PdfPages({ mode }: { mode: Mode }) {
   const toggle = (id: string) =>
     setPages((p) => p.map((x) => (x.id === id ? { ...x, selected: !x.selected } : x)));
 
+  const turn = (id: string, by: number) =>
+    setPages((p) => p.map((x) => (x.id === id ? { ...x, turn: (x.turn + by + 360) % 360 } : x)));
+
+  const turnAll = (by: number) =>
+    setPages((p) => p.map((x) => ({ ...x, turn: (x.turn + by + 360) % 360 })));
+
   const move = (from: number, to: number) =>
     setPages((p) => {
       if (to < 0 || to >= p.length) return p;
@@ -135,13 +176,15 @@ export default function PdfPages({ mode }: { mode: Mode }) {
     });
 
   const build = useCallback(async () => {
-    const chosen = pages.filter((p) => p.selected);
+    // Delete writes the pages that were not picked. Everything else writes the
+    // ones that were.
+    const chosen = pages.filter((p) => (mode === 'delete' ? !p.selected : p.selected));
     if (!chosen.length) return;
 
     setBusy('Building');
     setError(null);
     try {
-      const { PDFDocument } = await import('pdf-lib');
+      const { PDFDocument, degrees } = await import('pdf-lib');
       const out = await PDFDocument.create();
 
       // Sources are opened once each rather than per page, since a hundred page
@@ -155,6 +198,9 @@ export default function PdfPages({ mode }: { mode: Mode }) {
 
       for (const p of chosen) {
         const [copied] = await out.copyPages(sources.get(p.docIndex)!, [p.pageIndex]);
+        // Added to the page's own rotation, so a scan that was already marked
+        // as turned keeps that and gains this.
+        if (p.turn) copied.setRotation(degrees((copied.getRotation().angle + p.turn) % 360));
         out.addPage(copied);
       }
 
@@ -170,10 +216,22 @@ export default function PdfPages({ mode }: { mode: Mode }) {
     } finally {
       setBusy(null);
     }
-  }, [pages, docs]);
+  }, [pages, docs, mode]);
 
-  const chosen = pages.filter((p) => p.selected).length;
-  const verb = mode === 'merge' ? 'Merge' : mode === 'split' ? 'Split' : 'Extract';
+  const selected = pages.filter((p) => p.selected).length;
+  const writes = mode === 'delete' ? pages.length - selected : selected;
+  const turned = pages.filter((p) => p.turn).length;
+  const verb = VERB[mode];
+  const buttonLabel =
+    mode === 'delete'
+      ? `Delete ${selected} page${selected === 1 ? '' : 's'}`
+      : mode === 'rotate'
+        ? `Save with ${turned} page${turned === 1 ? '' : 's'} turned`
+        : mode === 'organize'
+          ? `Save ${writes} page${writes === 1 ? '' : 's'}`
+          : `${verb} ${selected} page${selected === 1 ? '' : 's'}`;
+  // Nothing to write, or a delete that would leave an empty file.
+  const blocked = !writes || (mode === 'rotate' && !turned);
 
   // Files chosen on the home page, if that is how you arrived.
   useHandoff((files) => {
@@ -197,7 +255,13 @@ export default function PdfPages({ mode }: { mode: Mode }) {
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           {mode === 'merge'
             ? 'As many as you like. Drag them into the order you want afterwards.'
-            : 'Pick the pages you want on the next screen.'}
+            : mode === 'delete'
+              ? 'Pick the pages to remove on the next screen.'
+              : mode === 'rotate'
+                ? 'Turn the pages that need it on the next screen.'
+                : mode === 'organize'
+                  ? 'Reorder, turn and remove pages on the next screen.'
+                  : 'Pick the pages you want on the next screen.'}
         </p>
         <button
           onClick={() => inputRef.current?.click()}
@@ -221,13 +285,33 @@ export default function PdfPages({ mode }: { mode: Mode }) {
 
   return (
     <ToolLayout
-      title="Selection"
+      title={mode === 'rotate' ? 'Rotation' : 'Selection'}
       settings={
         <>
+          {TURN.includes(mode) && (
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => turnAll(-90)}
+                className="rounded-lg border border-line px-3 py-2 text-sm hover:border-accent"
+              >
+                ↺ All left
+              </button>
+              <button
+                onClick={() => turnAll(90)}
+                className="rounded-lg border border-line px-3 py-2 text-sm hover:border-accent"
+              >
+                All right ↻
+              </button>
+            </div>
+          )}
           <div className="flex flex-wrap gap-3 text-sm">
-            <button onClick={() => inputRef.current?.click()} className="text-accent underline underline-offset-4">
-              Add more
-            </button>
+            {mode === 'merge' && (
+              <button onClick={() => inputRef.current?.click()} className="text-accent underline underline-offset-4">
+                Add more
+              </button>
+            )}
+            {mode !== 'rotate' && (
+            <>
             <button
               onClick={() => setPages((p) => p.map((x) => ({ ...x, selected: true })))}
               className="text-ink-soft underline underline-offset-4"
@@ -240,6 +324,8 @@ export default function PdfPages({ mode }: { mode: Mode }) {
             >
               None
             </button>
+            </>
+            )}
             <button
               onClick={() => { setPages([]); setDocs([]); setOutUrl(null); }}
               className="text-ink-faint underline underline-offset-4"
@@ -250,22 +336,40 @@ export default function PdfPages({ mode }: { mode: Mode }) {
 
           <button
             onClick={() => void build()}
-            disabled={!chosen || busy !== null}
+            disabled={blocked || busy !== null}
             className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-60"
           >
-            {busy ?? `${verb} ${chosen} page${chosen === 1 ? '' : 's'}`}
+            {busy ?? buttonLabel}
           </button>
+          {mode === 'delete' && pages.length > 0 && selected === pages.length && (
+            <p className="text-xs leading-relaxed text-ink-faint">
+              That is every page. A PDF needs at least one left.
+            </p>
+          )}
+          <p className="text-xs leading-relaxed text-ink-faint">
+            {mode === 'delete' && 'Click the pages to remove. They turn red.'}
+            {mode === 'rotate' && 'Click a page to turn it a quarter clockwise. The arrow in its corner turns it back.'}
+            {mode === 'organize' && 'Click a page to leave it out. Arrows move and turn it.'}
+            {(mode === 'split' || mode === 'extract') && 'Click the pages you want in the new file.'}
+          </p>
         </>
       }
       status={
         <span className="tabular-nums">
-          {pages.length} page{pages.length === 1 ? '' : 's'}, {chosen} selected
+          {pages.length} page{pages.length === 1 ? '' : 's'}
+          {mode === 'rotate'
+            ? `, ${turned} turned`
+            : mode === 'delete'
+              ? `, ${selected} to remove`
+              : mode === 'organize'
+                ? `, ${writes} kept`
+                : `, ${selected} selected`}
         </span>
       }
       actions={
         <>
           {outUrl && (
-            <DownloadButton href={outUrl} filename={mode === 'merge' ? 'merged.pdf' : 'pages.pdf'} variant="quiet">
+            <DownloadButton href={outUrl} filename={`${OUT_NAME[mode]}.pdf`} variant="quiet">
               Download PDF, {formatBytes(outSize)}
             </DownloadButton>
           )}
@@ -276,23 +380,69 @@ export default function PdfPages({ mode }: { mode: Mode }) {
         {pages.map((p, i) => (
           <li key={p.id} className="relative">
             <button
-              onClick={() => toggle(p.id)}
-              aria-pressed={p.selected}
+              onClick={() => (mode === 'rotate' ? turn(p.id, 90) : toggle(p.id))}
+              aria-pressed={mode === 'rotate' ? undefined : p.selected}
+              aria-label={mode === 'rotate' ? `${p.label}, turn clockwise` : undefined}
               className={`block w-full overflow-hidden rounded-lg border-2 bg-surface transition-colors ${
-                p.selected ? 'border-accent' : 'border-line hover:border-ink-faint'
+                mode === 'rotate'
+                  ? p.turn
+                    ? 'border-accent'
+                    : 'border-line hover:border-ink-faint'
+                  : mode === 'delete'
+                    ? p.selected
+                      ? 'border-red-500 opacity-50'
+                      : 'border-line hover:border-ink-faint'
+                    : mode === 'organize'
+                      ? p.selected
+                        ? 'border-line hover:border-ink-faint'
+                        : 'border-dashed border-line opacity-40'
+                      : p.selected
+                        ? 'border-accent'
+                        : 'border-line hover:border-ink-faint'
               }`}
             >
               {p.thumb && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.thumb} alt="" className="block w-full" />
+                /* Square, so a quarter turn still fits: a page and its turned
+                   self both sit inside the same box. */
+                <span className="relative block aspect-square bg-surface-alt">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.thumb}
+                    alt=""
+                    className="absolute inset-1 m-auto max-h-[calc(100%-0.5rem)] max-w-[calc(100%-0.5rem)] transition-transform duration-200"
+                    style={{ transform: `rotate(${p.turn}deg)` }}
+                  />
+                </span>
               )}
-              <span className="block truncate px-2 py-1.5 text-xs text-ink-soft">{p.label}</span>
+              <span className="block truncate px-2 py-1.5 text-xs text-ink-soft">
+                {p.label}
+                {p.turn ? ` · ${p.turn}°` : ''}
+              </span>
             </button>
+
+            {mode === 'rotate' && p.turn !== 0 && (
+              <button
+                onClick={() => turn(p.id, -90)}
+                aria-label="Turn back"
+                className="absolute left-1 top-1 grid size-6 place-items-center rounded bg-ground/90 text-ink-soft hover:text-accent"
+              >
+                ↺
+              </button>
+            )}
 
             {/* Order only matters when you are building one document out of
                 several, so the arrows stay out of the way otherwise. */}
-            {mode === 'merge' && (
+            {REORDER.includes(mode) && (
               <span className="absolute right-1 top-1 flex gap-0.5">
+                {mode === 'organize' && (
+                  <button
+                    onClick={() => turn(p.id, 90)}
+                    aria-label="Turn clockwise"
+                    className="grid size-6 place-items-center rounded bg-ground/90 text-ink-soft hover:text-accent"
+                  >
+                    ↻
+                  </button>
+                )}
                 <button
                   onClick={() => move(i, i - 1)}
                   aria-label="Move earlier"
