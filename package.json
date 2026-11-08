@@ -18,6 +18,7 @@
     "downloads:check": "node --experimental-strip-types scripts/check-downloads.mjs"
   },
   "dependencies": {
+    "@cantoo/pdf-lib": "2.11.1",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@jsquash/avif": "2.1.1",

@@ -5,6 +5,7 @@ import { useHandoff } from '@/components/useHandoff';
 import DownloadButton from '@/components/DownloadButton';
 import { convertFile, conversionAvailable } from '@/lib/convert';
 import DropIcon from '@/components/DropIcon';
+import { article } from '@/lib/conversions';
 
 /**
  * Turns a document into a PDF, using LibreOffice on the server.
@@ -18,7 +19,9 @@ import DropIcon from '@/components/DropIcon';
  * and the download appears.
  */
 
-export type PdfSource = 'word' | 'excel' | 'powerpoint' | 'epub' | 'html' | 'any';
+export type PdfSource =
+  | 'word' | 'excel' | 'powerpoint' | 'epub' | 'html' | 'any'
+  | 'odt' | 'ods' | 'odp' | 'rtf' | 'txt' | 'csv';
 
 const ACCEPT: Record<PdfSource, string> = {
   word: '.doc,.docx,.odt,.rtf',
@@ -26,6 +29,12 @@ const ACCEPT: Record<PdfSource, string> = {
   powerpoint: '.ppt,.pptx,.odp',
   epub: '.epub',
   html: '.html,.htm',
+  odt: '.odt',
+  ods: '.ods',
+  odp: '.odp',
+  rtf: '.rtf',
+  txt: '.txt,.text,.log',
+  csv: '.csv',
   any: '.doc,.docx,.odt,.rtf,.xls,.xlsx,.ods,.csv,.ppt,.pptx,.odp,.epub,.html,.htm,.txt',
 };
 
@@ -35,6 +44,12 @@ const NOUN: Record<PdfSource, string> = {
   powerpoint: 'PowerPoint',
   epub: 'EPUB',
   html: 'HTML file',
+  odt: 'OpenDocument text file',
+  ods: 'OpenDocument spreadsheet',
+  odp: 'OpenDocument presentation',
+  rtf: 'RTF document',
+  txt: 'text file',
+  csv: 'CSV file',
   any: 'document',
 };
 
@@ -116,7 +131,7 @@ export default function ConvertToPdf({ from }: { from: PdfSource }) {
         }`}
       >
         <DropIcon />
-        <p className="text-lg font-medium">Drop a {NOUN[from]} here</p>
+        <p className="text-lg font-medium">Drop {article(NOUN[from])} {NOUN[from]} here</p>
         <p className="mt-1 max-w-sm text-sm leading-relaxed text-ink-soft">
           Fonts, tables and layout are kept.
         </p>

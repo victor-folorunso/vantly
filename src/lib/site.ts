@@ -496,7 +496,7 @@ export const TOOLS: Tool[] = [
     title: 'Add page numbers to a PDF',
     description:
       'Stamp page numbers onto a PDF, choosing where they sit, what they count from and how they are formatted.',
-    live: false,
+    live: true,
   },
   {
     slug: 'crop-pdf',
@@ -506,7 +506,7 @@ export const TOOLS: Tool[] = [
     title: 'Crop the margins of a PDF',
     description:
       'Trim the edges of every page, for a scan with wide margins or a document that needs to fit a different paper size.',
-    live: false,
+    live: true,
   },
   {
     slug: 'redact-pdf',
@@ -516,7 +516,7 @@ export const TOOLS: Tool[] = [
     title: 'Redact a PDF properly',
     description:
       'Cover text so it cannot be read, and so it cannot be copied back out either, which a black rectangle drawn on top does not do.',
-    live: false,
+    live: true,
   },
   {
     slug: 'protect-pdf',
@@ -526,7 +526,7 @@ export const TOOLS: Tool[] = [
     title: 'Add a password to a PDF',
     description:
       'Lock a PDF with a password so it cannot be opened without one.',
-    live: false,
+    live: true,
   },
   {
     slug: 'flatten-pdf',
@@ -536,7 +536,7 @@ export const TOOLS: Tool[] = [
     title: 'Flatten a PDF so it cannot be edited',
     description:
       'Turn form fields, annotations and layers into part of the page itself, so nobody can change the answers later.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-annotator',
@@ -566,7 +566,8 @@ export const TOOLS: Tool[] = [
     title: 'Convert ODT to PDF',
     description:
       'Turn an OpenDocument text file into a PDF, keeping the fonts, tables and page breaks.',
-    live: false,
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'ods-to-pdf',
@@ -576,7 +577,8 @@ export const TOOLS: Tool[] = [
     title: 'Convert ODS to PDF',
     description:
       'Turn an OpenDocument spreadsheet into a PDF, laid out as it prints.',
-    live: false,
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'odp-to-pdf',
@@ -586,7 +588,8 @@ export const TOOLS: Tool[] = [
     title: 'Convert ODP to PDF',
     description:
       'Turn an OpenDocument presentation into a PDF, one slide per page.',
-    live: false,
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'rtf-to-pdf',
@@ -596,7 +599,8 @@ export const TOOLS: Tool[] = [
     title: 'Convert RTF to PDF',
     description:
       'Turn a rich text file into a PDF with its formatting intact.',
-    live: false,
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'txt-to-pdf',
@@ -606,7 +610,8 @@ export const TOOLS: Tool[] = [
     title: 'Convert a text file to PDF',
     description:
       'Turn a plain text file into a PDF, laid out on a page with margins you can print.',
-    live: false,
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'csv-to-pdf',
@@ -616,7 +621,8 @@ export const TOOLS: Tool[] = [
     title: 'Convert CSV to PDF',
     description:
       'Turn a CSV into a PDF table, ready to attach to something or print.',
-    live: false,
+    live: true,
+    sendsFile: true,
   },
   {
     slug: 'pages-to-pdf',
