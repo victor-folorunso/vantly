@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import * as T from '@/lib/textTools';
+import { checkJson, decodeEntities, encodeEntities, encodeEntitiesAll } from '@/lib/devTools';
 
 /**
  * One box in, one box out, with a row of buttons between them.
@@ -15,6 +16,9 @@ import * as T from '@/lib/textTools';
  * reason: half-typed Base64 is invalid Base64, and an input that turns red
  * while you are still typing into it is worse than one that simply waits.
  */
+
+/** Apostrophes are dropped before slugging, so I'd becomes id, not i-d. */
+const slugLine = (l: string) => T.toSlug(l.replace(/['’]/g, ''));
 
 export type Transform = {
   id: string;
@@ -118,6 +122,64 @@ export const PRESETS: Record<string, { transforms: Transform[]; sample?: string;
       { id: 'sortdesc', label: 'Sort Z to A', run: T.sortLinesDesc },
       { id: 'reverse', label: 'Reverse order', run: T.reverseLines },
       { id: 'dedupe', label: 'Remove duplicates', run: T.dedupeLines },
+    ],
+  },
+  slug: {
+    sample: 'Ten Things I Wish I\'d Known About Café Culture!\nÜber-cool Tips & Tricks (2026)',
+    transforms: [
+      {
+        id: 'slug',
+        label: 'Hyphens',
+        run: (s) => s.split('\n').map(slugLine).join('\n'),
+        note: 'One slug per line. Accents become plain letters, so café becomes cafe, and punctuation is dropped.',
+      },
+      {
+        id: 'underscore',
+        label: 'Underscores',
+        run: (s) => s.split('\n').map((l) => slugLine(l).replace(/-/g, '_')).join('\n'),
+      },
+    ],
+  },
+  entities: {
+    sample: '<p class="note">Fish & chips, 5 > 3, "quoted" café</p>',
+    mono: true,
+    transforms: [
+      {
+        id: 'encode',
+        label: 'Encode',
+        run: encodeEntities,
+        note: 'Escapes the five characters HTML treats as markup: & < > " and \'. Safe to put inside a page or an attribute.',
+      },
+      {
+        id: 'all',
+        label: 'Encode everything non-ASCII',
+        run: encodeEntitiesAll,
+        note: 'Also turns accents, symbols and emoji into numeric references, for a file that has to stay plain ASCII.',
+      },
+      { id: 'decode', label: 'Decode', run: decodeEntities, note: 'Named, decimal and hex references all become characters again.' },
+    ],
+  },
+  'json-validate': {
+    sample: '{\n  "name": "Vantly",\n  "tools": [1, 2, 3],\n}',
+    mono: true,
+    transforms: [
+      {
+        id: 'check',
+        label: 'Check',
+        run: (s) => {
+          const r = checkJson(s);
+          if (!r.ok) {
+            const where = r.line ? `Line ${r.line}${r.column ? `, column ${r.column}` : ''}: ` : '';
+            throw new Error(`${where}${r.message}${r.excerpt !== undefined ? `\n\n    ${r.excerpt}` : ''}`);
+          }
+          const what =
+            r.kind === 'object' || r.kind === 'array'
+              ? `an ${r.kind} with ${r.summary.replace(' at the top level', '')}`
+              : `a ${r.kind}, ${r.summary}`;
+          return `Valid JSON. The top level is ${what}.\n\n${JSON.stringify(JSON.parse(s), null, 2)}`;
+        },
+        note: 'Checked against the JSON standard, so trailing commas, comments and single quotes are errors, as they are to every parser.',
+      },
     ],
   },
   'strip-html': {
@@ -248,7 +310,7 @@ export default function TextTool({
             }`}
           />
           {!result.ok ? (
-            <p className="mt-1.5 text-xs leading-relaxed text-accent">{result.text}</p>
+            <p className="mt-1.5 whitespace-pre-wrap text-xs leading-relaxed text-accent">{result.text}</p>
           ) : (
             <p className="mt-1.5 text-xs tabular-nums text-ink-faint">
               {result.text.length.toLocaleString()} characters

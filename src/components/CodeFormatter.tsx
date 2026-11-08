@@ -47,7 +47,10 @@ export default function CodeFormatter({
   /* The language and the indent are settings, so they come back quietly.
      What you pasted is yours, so it comes back visibly, keyed per language:
      switching to CSS should not hand you the JavaScript you left behind. */
-  const [lang, setLang] = useSetting<Lang>('formatter', 'lang', initial);
+  /* Keyed by page as well, because every formatter and minifier page shares
+     this component: one remembered language meant the CSS formatter opened on
+     JSON for anyone who had used the JSON one first. */
+  const [lang, setLang] = useSetting<Lang>('formatter', `lang-${initial}-${action}`, initial);
   const [indent, setIndent] = useSetting<2 | 4 | 'tab'>('formatter', 'indent', 2);
   const draft = useDraft<string>('formatter', `input-${lang}`, '');
   const input = draft.value;

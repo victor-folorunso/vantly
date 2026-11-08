@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import DownloadButton from '@/components/DownloadButton';
 import { marked } from 'marked';
 
 /**
@@ -69,10 +70,33 @@ const tools = 209;
 \`\`\`
 `;
 
-export default function MarkdownPreview() {
+/**
+ * preview  type on the left, read on the right
+ * viewer   open a .md file and read it, editing only if asked
+ * html     type markdown, take away the HTML source it produces
+ */
+export type MarkdownMode = 'preview' | 'viewer' | 'html';
+
+export default function MarkdownPreview({ mode = 'preview' }: { mode?: MarkdownMode }) {
   const [text, setText] = useState(SAMPLE);
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [editing, setEditing] = useState(mode !== 'viewer');
+  const [showSource, setShowSource] = useState(true);
+  const [dragging, setDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const openFile = async (f: File | undefined) => {
+    if (!f) return;
+    setText(await f.text());
+    setFileName(f.name);
+  };
+
+  // The HTML handed over as source is marked's own output. It is text in a
+  // box, never inserted into this page, so it is not cut down to the safe
+  // subset the preview uses.
+  const source = useMemo(() => (mode === 'html' ? (marked.parse(text, { async: false }) as string) : ''), [text, mode]);
 
   // Sanitising needs a DOM, which the static export does not have at build
   // time, so the preview fills in after mount.
@@ -82,6 +106,134 @@ export default function MarkdownPreview() {
     if (!mounted) return '';
     return sanitise(marked.parse(text, { async: false }) as string);
   }, [text, mounted]);
+
+  if (mode === 'html') {
+    return (
+      <div className="grid gap-6 lg:grid-cols-2">
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Markdown</span>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={22}
+            spellCheck={false}
+            className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
+          />
+        </label>
+        <div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex gap-1 rounded-lg border border-line p-0.5 text-xs">
+              {(['HTML', 'Rendered'] as const).map((label, i) => (
+                <button
+                  key={label}
+                  onClick={() => setShowSource(i === 0)}
+                  aria-pressed={showSource === (i === 0)}
+                  className={`rounded-md px-2.5 py-1 ${showSource === (i === 0) ? 'bg-accent-soft text-ink' : 'text-ink-soft'}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={async () => {
+                  await navigator.clipboard.writeText(source);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1500);
+                }}
+                className="text-sm text-accent underline underline-offset-4"
+              >
+                {copied ? 'Copied' : 'Copy HTML'}
+              </button>
+              <DownloadButton
+                prepare={async () => new Blob([source], { type: 'text/html' })}
+                filename="markdown.html"
+                variant="quiet"
+              >
+                Download .html
+              </DownloadButton>
+            </div>
+          </div>
+          {showSource ? (
+            <textarea
+              value={source}
+              readOnly
+              rows={22}
+              spellCheck={false}
+              className="mt-2 w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none"
+            />
+          ) : (
+            <div
+              className="prose-vantly mt-2 min-h-[22rem] overflow-x-auto rounded-xl border border-line bg-surface p-5"
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (mode === 'viewer') {
+    return (
+      <div
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => { e.preventDefault(); setDragging(false); void openFile(e.dataTransfer.files?.[0]); }}
+        className={dragging ? 'rounded-2xl outline-2 outline-dashed outline-accent' : ''}
+      >
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="min-w-0 truncate text-sm text-ink-soft">
+            {fileName ?? 'A sample. Open a file, or drop one anywhere here.'}
+          </p>
+          <div className="flex items-center gap-4 text-sm">
+            <button
+              onClick={() => inputRef.current?.click()}
+              className="rounded-lg bg-accent px-4 py-2 font-semibold text-accent-ink"
+            >
+              Open a .md file
+            </button>
+            <button onClick={() => setEditing((e) => !e)} className="text-accent underline underline-offset-4">
+              {editing ? 'Stop editing' : 'Edit'}
+            </button>
+            {fileName && (
+              <DownloadButton
+                prepare={async () => new Blob([text], { type: 'text/markdown' })}
+                filename={fileName}
+                variant="quiet"
+              >
+                Save
+              </DownloadButton>
+            )}
+          </div>
+          <input
+            ref={inputRef}
+            type="file"
+            accept=".md,.markdown,.mdown,.txt,text/markdown,text/plain"
+            className="sr-only"
+            onChange={(e) => { void openFile(e.target.files?.[0]); e.target.value = ''; }}
+          />
+        </div>
+        <div className={editing ? 'grid gap-6 lg:grid-cols-2' : ''}>
+          {editing && (
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows={24}
+              spellCheck={false}
+              aria-label="Markdown"
+              className="w-full resize-y rounded-xl border border-line bg-surface p-4 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
+            />
+          )}
+          <article
+            className={`prose-vantly min-h-[22rem] overflow-x-auto rounded-xl border border-line bg-surface p-6 sm:p-8 ${
+              editing ? '' : 'mx-auto max-w-3xl'
+            }`}
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -165,7 +165,7 @@ export const TOOLS: Tool[] = [
     title: 'Unix timestamp to date converter',
     description:
       'Convert a Unix or epoch timestamp to a readable date in your own timezone or UTC, and a date back to a timestamp. Seconds and milliseconds.',
-    live: false,
+    live: true,
   },
   {
     slug: 'jwt-decoder',
@@ -175,7 +175,7 @@ export const TOOLS: Tool[] = [
     title: 'Decode a JWT and read its claims',
     description:
       'Paste a JSON Web Token and read its header, payload and expiry. Decoded in your browser, so the token never leaves your machine.',
-    live: false,
+    live: true,
   },
   {
     slug: 'html-entity-encoder',
@@ -185,7 +185,7 @@ export const TOOLS: Tool[] = [
     title: 'HTML entity encoder and decoder',
     description:
       'Turn angle brackets, ampersands and quotes into HTML entities so they render as text, or decode entities back into the characters they stand for.',
-    live: false,
+    live: true,
   },
   {
     slug: 'html-minifier',
@@ -195,7 +195,7 @@ export const TOOLS: Tool[] = [
     title: 'Minify HTML online',
     description:
       'Remove whitespace and comments from HTML to make the file smaller.',
-    live: false,
+    live: true,
   },
   {
     slug: 'css-minifier',
@@ -205,7 +205,7 @@ export const TOOLS: Tool[] = [
     title: 'Minify CSS online',
     description:
       'Remove whitespace and comments from CSS to make the file smaller.',
-    live: false,
+    live: true,
   },
   {
     slug: 'js-minifier',
@@ -215,7 +215,7 @@ export const TOOLS: Tool[] = [
     title: 'Minify JavaScript online',
     description:
       'Remove whitespace and comments from JavaScript to make the file smaller.',
-    live: false,
+    live: true,
   },
   {
     slug: 'sql-formatter',
@@ -225,7 +225,7 @@ export const TOOLS: Tool[] = [
     title: 'Format and indent SQL',
     description:
       'Indent a SQL query so the joins and conditions line up, whichever dialect it is written in.',
-    live: false,
+    live: true,
   },
   {
     slug: 'json-validator',
@@ -235,7 +235,7 @@ export const TOOLS: Tool[] = [
     title: 'Validate JSON and find the error',
     description:
       'Check whether JSON is valid and see exactly which line and character breaks it, rather than a bare parse error.',
-    live: false,
+    live: true,
   },
   {
     slug: 'subnet-calculator',
@@ -245,7 +245,7 @@ export const TOOLS: Tool[] = [
     title: 'IPv4 subnet and CIDR calculator',
     description:
       'Enter an address and a CIDR prefix to get the network address, broadcast address, usable host range, mask and host count.',
-    live: false,
+    live: true,
   },
   {
     slug: 'slug-generator',
@@ -255,7 +255,7 @@ export const TOOLS: Tool[] = [
     title: 'Turn a title into a URL slug',
     description:
       'Convert a title into a clean URL slug: lowercase, hyphens, accents folded down and punctuation removed.',
-    live: false,
+    live: true,
   },
   {
     slug: 'find-and-replace',
@@ -265,7 +265,7 @@ export const TOOLS: Tool[] = [
     title: 'Find and replace text online',
     description:
       'Replace every instance of a word or a pattern in a block of text, with case sensitivity and regular expressions if you want them.',
-    live: false,
+    live: true,
   },
   {
     slug: 'markdown-to-html',
@@ -275,7 +275,7 @@ export const TOOLS: Tool[] = [
     title: 'Convert Markdown to HTML',
     description:
       'Paste markdown and copy the HTML it produces, ready for a page or a template.',
-    live: false,
+    live: true,
   },
   {
     slug: 'character-counter',
@@ -285,7 +285,7 @@ export const TOOLS: Tool[] = [
     title: 'Character counter with post and meta limits',
     description:
       'Count characters as you type and see how you sit against the limits that matter: a post, a page title, a meta description.',
-    live: false,
+    live: true,
   },
   {
     slug: 'fancy-text-generator',
@@ -295,7 +295,7 @@ export const TOOLS: Tool[] = [
     title: 'Fancy text generator for bios and captions',
     description:
       'Turn ordinary text into bold, italic, script or monospace letters using Unicode, so the styling survives in a box that allows no formatting.',
-    live: false,
+    live: true,
   },
   {
     slug: 'placeholder-image-generator',
@@ -405,7 +405,7 @@ export const TOOLS: Tool[] = [
     title: 'Verify a file checksum, MD5 or SHA-256',
     description:
       'Work out the checksum of a file and compare it against the one the download page gave you. Read on your machine, never uploaded.',
-    live: false,
+    live: true,
   },
   {
     slug: 'htpasswd-generator',
@@ -415,7 +415,7 @@ export const TOOLS: Tool[] = [
     title: 'Generate an htpasswd line',
     description:
       'Create the username and hashed password line for a .htpasswd file, hashed in your browser so the password is never transmitted.',
-    live: false,
+    live: true,
   },
   {
     slug: 'flexbox-generator',
@@ -876,7 +876,7 @@ export const TOOLS: Tool[] = [
     title: 'Open and read a markdown file',
     description:
       'Open a README or any markdown file and read it rendered rather than raw, editing it live if you want to.',
-    live: false,
+    live: true,
   },
   {
     slug: 'html-viewer',
@@ -886,7 +886,7 @@ export const TOOLS: Tool[] = [
     title: 'View and edit HTML live',
     description:
       'Paste or open HTML and see it rendered next to the source, with edits appearing as you type.',
-    live: false,
+    live: true,
   },
 
   {
@@ -940,7 +940,7 @@ export const TOOLS: Tool[] = [
     title: 'Open and read an EPUB file online',
     description:
       'Read EPUB ebooks in your browser. Change the text size and jump between chapters.',
-    live: false,
+    live: true,
   },
 
   // ── Data ───────────────────────────────────────────────────────────────────
