@@ -207,11 +207,31 @@ export async function decodeTiff(buffer: ArrayBuffer): Promise<Raster> {
  * Transparency is kept.
  */
 export async function encodeAvif(raster: Raster): Promise<Blob> {
-  const { default: encode } = await import('@jsquash/avif/encode');
-  const image = new ImageData(new Uint8ClampedArray(raster.data), raster.width, raster.height);
-  const bytes = await encode(image, { quality: 60, speed: 6 });
-  return new Blob([bytes], { type: 'image/avif' });
+  /* The single-threaded encoder, loaded directly rather than through
+     @jsquash/avif/encode. That entry point also imports the multithreaded
+     build, whose worker loads its own parent module, and Turbopack's
+     production build never finished following that loop: every deploy
+     stalled at "Creating an optimized production build". The threaded build
+     could not have run here anyway, since threads need a cross-origin
+     isolated page and a static site is not one. */
+  const [{ default: factory }, { initEmscriptenModule }, { defaultOptions }] = await Promise.all([
+    import('@jsquash/avif/codec/enc/avif_enc.js'),
+    import('@jsquash/avif/utils.js'),
+    import('@jsquash/avif/meta.js'),
+  ]);
+  avifModule ??= initEmscriptenModule(factory) as Promise<AvifEncoder>;
+  const encoder = await avifModule;
+  const out = encoder.encode(new Uint8Array(raster.data.buffer, raster.data.byteOffset, raster.data.byteLength), raster.width, raster.height, {
+    ...defaultOptions,
+    quality: 60,
+    speed: 6,
+  });
+  if (!out) throw new Error('The AVIF encoder failed on this image.');
+  return new Blob([out as BlobPart], { type: 'image/avif' });
 }
+
+type AvifEncoder = { encode: (data: Uint8Array, width: number, height: number, options: object) => Uint8Array | null };
+let avifModule: Promise<AvifEncoder> | undefined;
 
 /* ── The way in ─────────────────────────────────────────────────────────── */
 
