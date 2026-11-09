@@ -546,7 +546,7 @@ export const TOOLS: Tool[] = [
     title: 'Annotate a PDF in your browser',
     description:
       'Highlight text, draw on the page and add notes, then save a copy with the markings in it.',
-    live: false,
+    live: true,
   },
   {
     slug: 'pdf-to-pdfa',
@@ -1718,7 +1718,7 @@ export const TOOLS: Tool[] = [
     title: 'Turn photos of documents into a PDF',
     description:
       'Turn phone photos of paper into a clean PDF: cropped square, straightened and readable.',
-    live: false,
+    live: true,
   },
   {
     slug: 'edit-pdf',
@@ -1728,7 +1728,7 @@ export const TOOLS: Tool[] = [
     title: 'Edit a PDF',
     description:
       'Change text, add notes, move and delete pages, and save the result.',
-    live: false,
+    live: true,
   },
   {
     slug: 'sign-pdf',
