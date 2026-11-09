@@ -315,7 +315,7 @@ export const TOOLS: Tool[] = [
     title: 'Draw a signature and download it as a PNG',
     description:
       'Draw your signature with a mouse, a finger or a stylus and download it as a transparent PNG to drop into a document.',
-    live: false,
+    live: true,
   },
   {
     slug: 'wheel-spinner',
@@ -325,7 +325,7 @@ export const TOOLS: Tool[] = [
     title: 'Spin a wheel to pick a name at random',
     description:
       'Enter the options, spin the wheel, and let it choose. For picking a name, a winner, or where to eat.',
-    live: false,
+    live: true,
   },
   {
     slug: 'tally-counter',
@@ -335,7 +335,7 @@ export const TOOLS: Tool[] = [
     title: 'Online tally counter',
     description:
       'Count by clicking or by pressing a key, with several counters at once and a total that survives a reload.',
-    live: false,
+    live: true,
   },
   {
     slug: 'online-stopwatch',
@@ -345,7 +345,7 @@ export const TOOLS: Tool[] = [
     title: 'Online stopwatch and countdown timer',
     description:
       'A stopwatch with laps and a countdown timer that sounds when it reaches zero. Nothing to install.',
-    live: false,
+    live: true,
   },
   {
     slug: 'bpm-tapper',
@@ -365,7 +365,7 @@ export const TOOLS: Tool[] = [
     title: 'Mean, median, mode and standard deviation calculator',
     description:
       'Paste a list of numbers and get the mean, median, mode, range, variance and standard deviation, with both the sample and population figures.',
-    live: false,
+    live: true,
   },
   {
     slug: 'fraction-to-decimal',
@@ -375,7 +375,7 @@ export const TOOLS: Tool[] = [
     title: 'Fraction to decimal converter',
     description:
       'Convert a fraction to a decimal, and a decimal back to a fraction reduced to its lowest terms, including recurring decimals.',
-    live: false,
+    live: true,
   },
   {
     slug: 'profit-margin-calculator',
@@ -385,7 +385,7 @@ export const TOOLS: Tool[] = [
     title: 'Profit margin and markup calculator',
     description:
       'Work out gross margin, markup and the selling price you need from cost and revenue. Margin and markup are not the same number.',
-    live: false,
+    live: true,
   },
   {
     slug: 'roi-calculator',
@@ -395,7 +395,7 @@ export const TOOLS: Tool[] = [
     title: 'Return on investment calculator',
     description:
       'Work out return on investment from what you spent and what came back, as a percentage and as a figure, annualised if you give it a period.',
-    live: false,
+    live: true,
   },
   {
     slug: 'file-checksum',
@@ -425,7 +425,7 @@ export const TOOLS: Tool[] = [
     title: 'Visual CSS flexbox generator',
     description:
       'Set the flex properties and watch the boxes move, then copy the CSS. For working out which property does the thing you want.',
-    live: false,
+    live: true,
   },
   {
     slug: 'css-grid-generator',
@@ -435,7 +435,7 @@ export const TOOLS: Tool[] = [
     title: 'Visual CSS grid generator',
     description:
       'Build a grid by setting rows, columns and gaps, see it laid out, and copy the CSS it produces.',
-    live: false,
+    live: true,
   },
   {
     slug: 'sitemap-generator',
@@ -445,7 +445,7 @@ export const TOOLS: Tool[] = [
     title: 'Generate a sitemap.xml',
     description:
       'Turn a list of addresses into a valid sitemap.xml, with change frequency and priority, ready to upload and submit.',
-    live: false,
+    live: true,
   },
 
   {
@@ -793,7 +793,7 @@ export const TOOLS: Tool[] = [
     title: 'Generate fake addresses for testing',
     description:
       'Generate addresses in the right shape for a country, for seeding a test database or filling a form while developing. Invented, not real, and not deliverable.',
-    live: false,
+    live: true,
   },
   {
     slug: 'domain-name-checker',

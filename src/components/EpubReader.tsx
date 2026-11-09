@@ -120,7 +120,7 @@ export default function EpubReader() {
   useEffect(() => {
     if (!file) return;
     const key = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.closest('input, select, textarea')) return;
+      if (e.target instanceof Element && e.target.closest('input, select, textarea')) return;
       if (e.key === 'ArrowRight') void rendition.current?.next();
       if (e.key === 'ArrowLeft') void rendition.current?.prev();
     };

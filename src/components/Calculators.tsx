@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
+import { type Fraction, fromDecimal, mixed, parseFraction, parseNumbers, pricing, roi, stats, toDecimal } from '@/lib/calc';
 
 /**
  * The small calculators, which are less trivial than they look.
@@ -370,6 +371,316 @@ export function CompoundCalculator() {
           </div>
         )}
       </div>
+    </ToolLayout>
+  );
+}
+
+/* ── Statistics ───────────────────────────────────────────────────────────── */
+
+function num(n: number, digits = 6): string {
+  if (!Number.isFinite(n)) return '–';
+  return n.toLocaleString(undefined, { maximumFractionDigits: digits });
+}
+
+export function StatisticsCalculator() {
+  const [text, setText] = useState('12, 15, 15, 18, 21, 22, 22, 22, 25, 31');
+  const { values, rejected } = useMemo(() => parseNumbers(text), [text]);
+  const s = useMemo(() => stats(values), [values]);
+
+  return (
+    <ToolLayout
+      title="Your numbers"
+      settings={
+        <div>
+          <label className="block text-sm">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">Data</span>
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows={10}
+              spellCheck={false}
+              className="mt-2 w-full resize-y rounded-lg border border-line bg-surface px-3 py-2.5 font-mono text-sm outline-none focus:border-accent"
+            />
+          </label>
+          <p className="mt-2 text-xs leading-relaxed text-ink-faint">
+            Separate them with commas, spaces or new lines. Paste a column straight from a spreadsheet. Write large
+            numbers without thousands separators.
+          </p>
+          {rejected.length > 0 && (
+            <p className="mt-2 text-xs leading-relaxed text-accent">
+              Skipped {rejected.length === 1 ? 'one entry that is' : `${rejected.length} entries that are`} not a number:{' '}
+              {rejected.slice(0, 5).join(', ')}
+              {rejected.length > 5 ? '…' : ''}
+            </p>
+          )}
+        </div>
+      }
+    >
+      {!s ? (
+        <p className="text-sm text-ink-faint">Enter some numbers.</p>
+      ) : (
+        <div className="grid gap-5 xl:grid-cols-2">
+          <div className="rounded-xl border border-line bg-surface p-5">
+            <Row label="Count" value={num(s.count)} />
+            <Row label="Sum" value={num(s.sum)} />
+            <Row label="Mean (average)" value={num(s.mean)} strong />
+            <Row label="Median (middle value)" value={num(s.median)} strong />
+            <Row
+              label={s.modes.length > 1 ? 'Modes (most common)' : 'Mode (most common)'}
+              value={s.modes.length ? `${s.modes.map((m) => num(m)).join(', ')} (×${s.modeCount})` : 'None, nothing repeats'}
+            />
+            <Row label="Smallest" value={num(s.min)} />
+            <Row label="Largest" value={num(s.max)} />
+            <Row label="Range" value={num(s.range)} />
+          </div>
+          <div className="rounded-xl border border-line bg-surface p-5">
+            <Row label="Standard deviation (sample)" value={num(s.sampleSd)} strong />
+            <Row label="Standard deviation (population)" value={num(s.populationSd)} />
+            <Row label="Variance (sample)" value={num(s.sampleVariance)} />
+            <Row label="Variance (population)" value={num(s.populationVariance)} />
+            <Row label="Standard error of the mean" value={num(s.standardError)} />
+            <Row label="Lower quartile" value={num(s.q1)} />
+            <Row label="Upper quartile" value={num(s.q3)} />
+            <Row label="Interquartile range" value={num(s.iqr)} />
+          </div>
+          <p className="text-sm leading-relaxed text-ink-soft xl:col-span-2">
+            Use the sample figures when your numbers are some of a larger group, such as a survey of a few customers,
+            and the population figures when they are the whole group. With one number there is no sample spread to
+            measure. Quartiles are worked out the way Excel&apos;s QUARTILE.INC does it.
+          </p>
+        </div>
+      )}
+    </ToolLayout>
+  );
+}
+
+/* ── Fraction to decimal ──────────────────────────────────────────────────── */
+
+function DecimalOut({ f }: { f: Fraction }) {
+  const d = toDecimal(f);
+  return (
+    <span className="break-all font-mono text-2xl tabular-nums">
+      {d.sign}
+      {d.whole}
+      {(d.fixed || d.repeat) && '.'}
+      {d.fixed}
+      {d.repeat && <span className="overline decoration-2">{d.repeat}</span>}
+      {d.truncated && '…'}
+    </span>
+  );
+}
+
+export function FractionCalculator() {
+  const [frac, setFrac] = useState('5/12');
+  const [dec, setDec] = useState('0.1(6)');
+
+  const a = useMemo(() => {
+    try {
+      return { ok: true as const, f: parseFraction(frac) };
+    } catch (e) {
+      return { ok: false as const, message: e instanceof Error ? e.message : '' };
+    }
+  }, [frac]);
+  const b = useMemo(() => {
+    try {
+      return { ok: true as const, f: fromDecimal(dec) };
+    } catch (e) {
+      return { ok: false as const, message: e instanceof Error ? e.message : '' };
+    }
+  }, [dec]);
+
+  const input =
+    'mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 font-mono text-lg outline-none focus:border-accent';
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-2">
+      <section className="rounded-2xl border border-line bg-surface p-5">
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Fraction to decimal</span>
+          <input value={frac} onChange={(e) => setFrac(e.target.value)} placeholder="3/8" className={input} />
+        </label>
+        <div className="mt-5 min-h-[5rem]">
+          {a.ok ? (
+            <>
+              <DecimalOut f={a.f} />
+              {(() => {
+                const d = toDecimal(a.f);
+                const reduced = `${a.f.num}/${a.f.den}`;
+                const m = mixed(a.f);
+                return (
+                  <dl className="mt-4 text-sm">
+                    {reduced !== frac.replace(/\s/g, '') && a.f.den !== BigInt(1) && <Row label="In lowest terms" value={reduced} />}
+                    {m && <Row label="As a mixed number" value={m} />}
+                    {d.repeat && (
+                      <Row label="Repeats" value={`${d.repeat.length} digit${d.repeat.length === 1 ? '' : 's'}, forever`} />
+                    )}
+                    <Row label="As a percentage" value={`${(Number(a.f.num) / Number(a.f.den) * 100).toLocaleString(undefined, { maximumFractionDigits: 6 })}%`} />
+                  </dl>
+                );
+              })()}
+            </>
+          ) : (
+            <p className="text-sm text-accent">{a.message}</p>
+          )}
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-line bg-surface p-5">
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-faint">Decimal to fraction</span>
+          <input value={dec} onChange={(e) => setDec(e.target.value)} placeholder="0.625" className={input} />
+        </label>
+        <div className="mt-5 min-h-[5rem]">
+          {b.ok ? (
+            <>
+              <span className="font-mono text-2xl tabular-nums">
+                {b.f.den === BigInt(1) ? b.f.num.toString() : `${b.f.num}/${b.f.den}`}
+              </span>
+              {mixed(b.f) && (
+                <dl className="mt-4 text-sm">
+                  <Row label="As a mixed number" value={mixed(b.f)!} />
+                </dl>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-accent">{b.message}</p>
+          )}
+        </div>
+        <p className="mt-4 text-xs leading-relaxed text-ink-faint">
+          For a repeating decimal, put the part that repeats in brackets: 0.(3) is a third, 0.1(6) is a sixth. Three
+          dots at the end, 0.333..., repeat the last digit.
+        </p>
+      </section>
+    </div>
+  );
+}
+
+/* ── Profit margin ────────────────────────────────────────────────────────── */
+
+type PricingMode = 'both' | 'margin' | 'markup';
+
+export function ProfitMarginCalculator() {
+  const [mode, setMode] = useState<PricingMode>('both');
+  const [cost, setCost] = useState('60');
+  const [price, setPrice] = useState('100');
+  const [target, setTarget] = useState('40');
+
+  const result = useMemo(() => {
+    const c = parseFloat(cost);
+    const p = parseFloat(price);
+    const t = parseFloat(target) / 100;
+    try {
+      if (!Number.isFinite(c)) return null;
+      if (mode === 'both') return Number.isFinite(p) ? pricing({ cost: c, price: p }) : null;
+      if (!Number.isFinite(t)) return null;
+      return mode === 'margin' ? pricing({ cost: c, margin: t }) : pricing({ cost: c, markup: t });
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : '' };
+    }
+  }, [mode, cost, price, target]);
+
+  const pct = (n: number) => (Number.isFinite(n) ? `${(n * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%` : '–');
+
+  return (
+    <ToolLayout
+      title="Your numbers"
+      settings={
+        <div className="space-y-4">
+          <fieldset className="space-y-1.5 text-sm">
+            <legend className="text-xs font-semibold uppercase tracking-wider text-ink-faint">I know</legend>
+            {(
+              [
+                ['both', 'The cost and the price'],
+                ['margin', 'The cost and the margin I want'],
+                ['markup', 'The cost and the markup I want'],
+              ] as const
+            ).map(([m, text]) => (
+              <label key={m} className="mt-2 flex items-center gap-2">
+                <input type="radio" name="pm-mode" checked={mode === m} onChange={() => setMode(m)} />
+                {text}
+              </label>
+            ))}
+          </fieldset>
+          <Field label="Cost" value={cost} onChange={setCost} />
+          {mode === 'both' ? (
+            <Field label="Selling price" value={price} onChange={setPrice} />
+          ) : (
+            <Field label={mode === 'margin' ? 'Margin' : 'Markup'} value={target} onChange={setTarget} suffix="%" />
+          )}
+        </div>
+      }
+    >
+      {result && 'error' in result ? (
+        <p className="text-sm text-accent">{result.error}</p>
+      ) : result ? (
+        <div>
+          <div className="rounded-xl border border-line bg-surface p-5">
+            {mode !== 'both' && <Row label="Charge" value={money(result.price)} strong />}
+            <Row label="Profit on each sale" value={money(result.profit)} strong={mode === 'both'} />
+            <Row label="Gross margin" value={pct(result.margin)} strong={mode === 'both'} />
+            <Row label="Markup" value={pct(result.markup)} />
+            {mode === 'both' && <Row label="Cost as a share of the price" value={pct(result.cost / result.price)} />}
+          </div>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
+            Margin is profit as a share of the price. Markup is profit as a share of the cost. Buying at 60 and selling
+            at 100 is a 40% margin but a 67% markup, and pricing with one when you meant the other is a common way to
+            earn less than planned.
+          </p>
+        </div>
+      ) : (
+        <p className="text-sm text-ink-faint">Fill in both numbers.</p>
+      )}
+    </ToolLayout>
+  );
+}
+
+/* ── ROI ──────────────────────────────────────────────────────────────────── */
+
+export function RoiCalculator() {
+  const [invested, setInvested] = useState('5000');
+  const [returned, setReturned] = useState('7200');
+  const [years, setYears] = useState('3');
+
+  const r = useMemo(() => {
+    try {
+      return roi(parseFloat(invested), parseFloat(returned) || 0, parseFloat(years) || undefined);
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : '' };
+    }
+  }, [invested, returned, years]);
+
+  const pct = (n: number) => `${(n * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%`;
+
+  return (
+    <ToolLayout
+      title="Your numbers"
+      settings={
+        <div className="space-y-4">
+          <Field label="Amount invested" value={invested} onChange={setInvested} />
+          <Field label="Amount returned" value={returned} onChange={setReturned} />
+          <Field label="Over (optional)" value={years} onChange={setYears} suffix="years" />
+        </div>
+      }
+    >
+      {'error' in r ? (
+        <p className="text-sm text-accent">{r.error}</p>
+      ) : (
+        <div>
+          <div className="rounded-xl border border-line bg-surface p-5">
+            <Row label="Return on investment" value={pct(r.roi)} strong />
+            <Row label={r.gain >= 0 ? 'Gain' : 'Loss'} value={money(Math.abs(r.gain))} />
+            {r.annual !== null && <Row label="Each year, compounded" value={pct(r.annual)} strong />}
+            <Row label="Every 1 put in came back as" value={(parseFloat(returned) / parseFloat(invested)).toFixed(2)} />
+          </div>
+          {r.annual !== null && (
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
+              The yearly figure is the steady rate that would turn what you invested into what came back over that many
+              years. It is not the total divided by the years: {pct(r.roi)} over {years} years is {pct(r.annual)} a
+              year, not {pct(r.roi / parseFloat(years))}, because each year&apos;s growth builds on the last.
+            </p>
+          )}
+        </div>
+      )}
     </ToolLayout>
   );
 }

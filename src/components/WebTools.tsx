@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 
 /**
@@ -396,6 +396,180 @@ export function MetaTagGenerator() {
           </div>
         )}
       </div>
+    </ToolLayout>
+  );
+}
+
+/* ── Sitemap ──────────────────────────────────────────────────────────────── */
+
+const xmlEscape = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+type Freq = '' | 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+
+export function SitemapGenerator() {
+  const [base, setBase] = useState('https://example.com');
+  const [raw, setRaw] = useState('/\n/about\n/pricing\n/blog\n/blog/first-post\n/contact');
+  const [lastmod, setLastmod] = useState<'none' | 'today' | 'date'>('today');
+  const [date, setDate] = useState('');
+  const [freq, setFreq] = useState<Freq>('');
+  const [priority, setPriority] = useState<'none' | 'depth'>('none');
+  const [today, setToday] = useState('');
+
+  // Today's date is read after mount, so the static page does not carry the
+  // day it was built on.
+  useEffect(() => {
+    const id = setTimeout(() => setToday(new Date().toISOString().slice(0, 10)), 0);
+    return () => clearTimeout(id);
+  }, []);
+
+  const result = useMemo(() => {
+    const problems: string[] = [];
+    let origin: URL | null = null;
+    try {
+      origin = new URL(base.trim());
+    } catch {
+      if (base.trim()) problems.push('The site address is not a full address. Start it with https://.');
+    }
+    const seen = new Set<string>();
+    const urls: string[] = [];
+    for (const line of raw.split('\n')) {
+      const s = line.trim();
+      if (!s || s.startsWith('#')) continue;
+      let u: URL;
+      try {
+        u = origin ? new URL(s, origin) : new URL(s);
+      } catch {
+        problems.push(`Not an address: ${s}`);
+        continue;
+      }
+      if (!/^https?:$/.test(u.protocol)) {
+        problems.push(`Skipped, not a web page: ${s}`);
+        continue;
+      }
+      // Search engines only accept a sitemap's addresses for the host it is
+      // served from, so a stray link to another site is dropped, not listed.
+      if (origin && u.host !== origin.host) {
+        problems.push(`Skipped, on another site: ${u.href}`);
+        continue;
+      }
+      u.hash = '';
+      if (seen.has(u.href)) continue;
+      seen.add(u.href);
+      urls.push(u.href);
+    }
+    if (urls.length > 50000) problems.push('A sitemap holds at most 50,000 addresses. Split this into several files.');
+    const mod = lastmod === 'today' ? today : lastmod === 'date' && date ? date : '';
+    const body = urls
+      .map((href) => {
+        const depth = new URL(href).pathname.split('/').filter(Boolean).length;
+        const parts = [`    <loc>${xmlEscape(href)}</loc>`];
+        if (mod) parts.push(`    <lastmod>${mod}</lastmod>`);
+        if (freq) parts.push(`    <changefreq>${freq}</changefreq>`);
+        if (priority === 'depth') parts.push(`    <priority>${Math.max(0.1, 1 - depth * 0.2).toFixed(1)}</priority>`);
+        return `  <url>\n${parts.join('\n')}\n  </url>`;
+      })
+      .join('\n');
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+    return { xml, count: urls.length, problems, origin };
+  }, [base, raw, lastmod, date, freq, priority, today]);
+
+  const select = 'mt-1.5 w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-accent';
+
+  return (
+    <ToolLayout
+      title="Sitemap"
+      settings={
+        <div className="space-y-4">
+          <Field
+            label="Site address"
+            value={base}
+            onChange={setBase}
+            placeholder="https://example.com"
+            hint="Lets you list paths like /about instead of full addresses."
+          />
+          <label className="block text-sm">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">Pages, one per line</span>
+            <textarea
+              value={raw}
+              onChange={(e) => setRaw(e.target.value)}
+              rows={10}
+              spellCheck={false}
+              className="mt-1.5 w-full resize-y rounded-lg border border-line bg-surface px-3 py-2 font-mono text-[13px] outline-none focus:border-accent"
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">Last changed</span>
+            <select value={lastmod} onChange={(e) => setLastmod(e.target.value as typeof lastmod)} className={select}>
+              <option value="today">Today</option>
+              <option value="date">On a date</option>
+              <option value="none">Leave it out</option>
+            </select>
+          </label>
+          {lastmod === 'date' && (
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={select} aria-label="Last changed date" />
+          )}
+          <label className="block text-sm">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">Change frequency</span>
+            <select value={freq} onChange={(e) => setFreq(e.target.value as Freq)} className={select}>
+              <option value="">Leave it out</option>
+              {(['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'] as const).map((f) => (
+                <option key={f}>{f}</option>
+              ))}
+            </select>
+          </label>
+          <label className="block text-sm">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-ink-faint">Priority</span>
+            <select value={priority} onChange={(e) => setPriority(e.target.value as typeof priority)} className={select}>
+              <option value="none">Leave it out</option>
+              <option value="depth">Higher for pages nearer the home page</option>
+            </select>
+          </label>
+          <p className="text-xs leading-relaxed text-ink-faint">
+            Google reads the addresses and the last changed date, and says it ignores change frequency and priority.
+            Bing and others may still use them. A last changed date is only worth giving if it is true.
+          </p>
+        </div>
+      }
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm tabular-nums text-ink-soft">
+          {result.count.toLocaleString()} address{result.count === 1 ? '' : 'es'}
+        </p>
+        <div className="flex items-center gap-3">
+          <Copy text={result.xml} />
+          <button
+            onClick={() => {
+              const a = document.createElement('a');
+              a.href = URL.createObjectURL(new Blob([result.xml], { type: 'application/xml' }));
+              a.download = 'sitemap.xml';
+              a.click();
+              setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+            }}
+            disabled={!result.count}
+            className="rounded-lg border border-line px-3.5 py-1.5 text-xs font-semibold disabled:opacity-40"
+          >
+            Download sitemap.xml
+          </button>
+        </div>
+      </div>
+      {result.problems.length > 0 && (
+        <ul className="mt-3 space-y-1 text-xs text-accent">
+          {result.problems.slice(0, 8).map((p, i) => (
+            <li key={i} className="break-all">
+              {p}
+            </li>
+          ))}
+          {result.problems.length > 8 && <li>And {result.problems.length - 8} more.</li>}
+        </ul>
+      )}
+      <Out value={result.count ? result.xml : ''} />
+      {result.origin && result.count > 0 && (
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
+          Upload it as {result.origin.origin}/sitemap.xml, add a <code>Sitemap:</code> line to robots.txt pointing at
+          it, and submit it in Google Search Console and Bing Webmaster Tools.
+        </p>
+      )}
     </ToolLayout>
   );
 }
