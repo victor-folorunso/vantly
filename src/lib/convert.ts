@@ -39,8 +39,9 @@ const FRIENDLY: Record<number, string> = {
 
 export async function convertFile(
   file: File,
-  to: 'pdf' | 'docx' | 'xlsx' | 'pptx' | 'html' | 'txt' | 'md' | 'epub' = 'pdf',
+  to: 'pdf' | 'pdfa' | 'docx' | 'xlsx' | 'pptx' | 'html' | 'txt' | 'md' | 'epub' = 'pdf',
   signal?: AbortSignal,
+  params: Record<string, string> = {},
 ): Promise<ConvertResult> {
   if (!conversionAvailable) {
     return { ok: false, error: 'The conversion service is not configured yet.' };
@@ -50,7 +51,8 @@ export async function convertFile(
   body.append('file', file);
 
   try {
-    const res = await fetch(`${CONVERT_URL}/convert?to=${to}`, {
+    const query = new URLSearchParams({ to, ...params });
+    const res = await fetch(`${CONVERT_URL}/convert?${query}`, {
       method: 'POST',
       body,
       signal,
@@ -72,7 +74,7 @@ export async function convertFile(
     }
 
     const stem = file.name.replace(/\.[^.]+$/, '');
-    return { ok: true, blob: await res.blob(), filename: `${stem}.${to}` };
+    return { ok: true, blob: await res.blob(), filename: to === 'pdfa' ? `${stem}-pdfa.pdf` : `${stem}.${to}` };
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') {
       return { ok: false, error: 'Cancelled.' };

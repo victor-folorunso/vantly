@@ -66,6 +66,10 @@ image = (
         # side. It is also better than LibreOffice at HTML, which it treats as
         # a document rather than a web page to lay out.
         "pandoc",
+        # PDF/A. Ghostscript rewrites a PDF with every font embedded, colour
+        # tied to an ICC profile and the XMP metadata the standard asks for,
+        # which LibreOffice cannot do to a PDF it did not make itself.
+        "ghostscript",
         "fonts-liberation",
         "fonts-dejavu",
         "fonts-noto-core",
@@ -91,7 +95,13 @@ ACCEPTED = {
     "ppt", "pptx", "odp",
     "epub", "html", "htm",
     "md", "markdown", "pdf",
+    # Apple Pages, read by LibreOffice's libetonyek import filter.
+    "pages",
 }
+
+# PDF/A parts Ghostscript writes. 2b is the default: it allows transparency
+# and JPEG 2000, which 1b does not, and it is what most institutions mean.
+PDFA_LEVELS = {"1", "2", "3"}
 
 # What pandoc handles better than LibreOffice, or at all. Markdown is the "at
 # all": LibreOffice neither reads nor writes it.
@@ -110,6 +120,96 @@ PANDOC_NAMES = {
 # A cap, because a free endpoint with no limit is somebody else's compute
 # budget. 40MB covers essentially every real document.
 MAX_BYTES = 40 * 1024 * 1024
+
+
+def to_pdfa(src: str, out: str, work: str, level: str) -> subprocess.CompletedProcess:
+    """A PDF rewritten as PDF/A-1b, 2b or 3b by Ghostscript.
+
+    The definition file is what makes it PDF/A rather than merely a PDF that
+    claims to be: it attaches an sRGB ICC profile as the document's output
+    intent, which the standard requires before any colour is allowed at all.
+    Ghostscript embeds every font as it goes and writes the XMP metadata.
+
+    Colour is converted to RGB. A print job in CMYK would want a CMYK profile
+    instead, but what people send here is scans and office documents.
+    """
+    import glob
+
+    icc = next(iter(sorted(glob.glob("/usr/share/color/icc/ghostscript/srgb.icc")
+                           + glob.glob("/usr/share/ghostscript/*/iccprofiles/srgb.icc"))), None)
+    if not icc:
+        raise RuntimeError("No sRGB profile found in the Ghostscript install.")
+    definition = os.path.join(work, "pdfa_def.ps")
+    with open(definition, "w") as f:
+        f.write(f"""%!
+/ICCProfile ({icc}) def
+[/_objdef {{icc_PDFA}} /type /stream /OBJ pdfmark
+[{{icc_PDFA}} <</N 3>> /PUT pdfmark
+[{{icc_PDFA}} ICCProfile (r) file /PUT pdfmark
+[/_objdef {{OutputIntent_PDFA}} /type /dict /OBJ pdfmark
+[{{OutputIntent_PDFA}} <<
+  /Type /OutputIntent
+  /S /GTS_PDFA1
+  /DestOutputProfile {{icc_PDFA}}
+  /OutputConditionIdentifier (sRGB)
+  /Info (sRGB IEC61966-2.1)
+>> /PUT pdfmark
+[{{Catalog}} <</OutputIntents [ {{OutputIntent_PDFA}} ]>> /PUT pdfmark
+""")
+    return subprocess.run(
+        [
+            "gs", f"-dPDFA={level}", "-dBATCH", "-dNOPAUSE", "-dQUIET",
+            "-dNOOUTERSAVE",
+            # Anything that cannot be made compliant is dropped rather than
+            # failing the whole file, which is what a person wants: an
+            # annotation or a JavaScript action is not worth losing the rest.
+            "-dPDFACompatibilityPolicy=1",
+            "-sColorConversionStrategy=RGB",
+            "-sProcessColorModel=DeviceRGB",
+            "-sDEVICE=pdfwrite",
+            f"--permit-file-read={icc}",
+            f"-sOutputFile={out}",
+            definition,
+            src,
+        ],
+        capture_output=True,
+        timeout=280,
+    )
+
+
+class NotPages(Exception):
+    """The upload ends in .pages but is not one."""
+
+
+def from_pages(src: str, work: str) -> subprocess.CompletedProcess | None:
+    """An Apple Pages file as a PDF.
+
+    Every Pages file is a zip, so anything else is refused here: LibreOffice
+    would otherwise read it as plain text and hand back a PDF of the bytes.
+
+    Pages '09 saved an exact PDF of the document inside the file, at
+    QuickLook/Preview.pdf. When it is there it is used as it is, since it is
+    the document as its author saw it. Newer files only carry a thumbnail, and
+    for those LibreOffice reads the document itself through libetonyek.
+    """
+    import zipfile
+
+    out = os.path.join(work, "input.pdf")
+    if not zipfile.is_zipfile(src):
+        raise NotPages()
+    with zipfile.ZipFile(src) as z:
+        name = next((n for n in z.namelist() if n.lower().endswith("quicklook/preview.pdf")), None)
+        if name:
+            with open(out, "wb") as f:
+                f.write(z.read(name))
+            return None
+    profile = f"file:///tmp/lo-{uuid.uuid4().hex}"
+    return subprocess.run(
+        ["soffice", "--headless", "--norestore", f"-env:UserInstallation={profile}",
+         "--convert-to", "pdf", "--outdir", work, src],
+        capture_output=True,
+        timeout=280,
+    )
 
 
 @app.function(
@@ -150,7 +250,7 @@ def web():
         allow_headers=["*"],
     )
 
-    def allow(ip: str, now: float) -> bool:
+    async def allow(ip: str, now: float) -> bool:
         """A fixed window counter, keyed by IP and window number.
 
         Fixed window rather than a sliding one because it needs a single read
@@ -166,13 +266,15 @@ def web():
         # so yesterday's keys cannot be matched against today's.
         slot = int(now // WINDOW)
         key = hashlib.sha256(f"{ip}:{slot}".encode()).hexdigest()[:32]
-        used = buckets.get(key, 0)
+        # The async forms, since this runs inside the request handler and the
+        # blocking ones would hold up every other request in the container.
+        used = await buckets.get.aio(key, 0)
         if used >= PER_HOUR:
             return False
         # Keys accumulate, one per IP per hour. They are a short string and a
         # small integer, so this is cheap for a long time, but it does grow
         # and will want clearing if the endpoint ever gets busy.
-        buckets[key] = used + 1
+        await buckets.put.aio(key, used + 1)
         return True
 
     @api.get("/health")
@@ -180,13 +282,13 @@ def web():
         return {"ok": True}
 
     @api.post("/convert")
-    async def convert(request: Request, file: UploadFile = File(...), to: str = "pdf"):
+    async def convert(request: Request, file: UploadFile = File(...), to: str = "pdf", level: str = "2"):
         # Modal sits behind a proxy, so the socket address is the proxy. The
         # left-most entry in the forwarded chain is the caller.
         forwarded = request.headers.get("x-forwarded-for", "")
         ip = forwarded.split(",")[0].strip() or (request.client.host if request.client else "unknown")
 
-        if not allow(ip, time.time()):
+        if not await allow(ip, time.time()):
             raise HTTPException(
                 429,
                 f"That is {PER_HOUR} conversions in an hour, which is the limit. Try again later.",
@@ -200,8 +302,12 @@ def web():
                 415,
                 f"Cannot convert .{ext}. Accepted: {', '.join(sorted(ACCEPTED))}.",
             )
-        if to not in {"pdf", "docx", "xlsx", "pptx", "html", "txt", "md", "epub"}:
+        if to not in {"pdf", "pdfa", "docx", "xlsx", "pptx", "html", "txt", "md", "epub"}:
             raise HTTPException(400, f"Cannot convert to {to}.")
+        if to == "pdfa" and ext != "pdf":
+            raise HTTPException(415, "PDF/A conversion takes a PDF.")
+        if to == "pdfa" and level not in PDFA_LEVELS:
+            raise HTTPException(400, "The PDF/A level is 1, 2 or 3.")
 
         data = await file.read()
         if len(data) > MAX_BYTES:
@@ -251,7 +357,11 @@ def web():
                 ext = "docx"
                 use_pandoc = False
 
-            if use_pandoc:
+            if to == "pdfa":
+                result = to_pdfa(src, out, work, level)
+            elif ext == "pages":
+                result = from_pages(src, work)
+            elif use_pandoc:
                 result = subprocess.run(
                     [
                         "pandoc",
@@ -281,6 +391,12 @@ def web():
                     capture_output=True,
                     timeout=280,
                 )
+            if not os.path.exists(out) and ext == "pages":
+                raise HTTPException(
+                    422,
+                    "That Pages document could not be read. Open it in Pages, or on iCloud.com, "
+                    "and use File, Export To, PDF.",
+                )
             if not os.path.exists(out):
                 # LibreOffice exits 0 even when it converts nothing, so the
                 # output file is the only reliable signal. Its stderr is the
@@ -293,6 +409,7 @@ def web():
 
             media = {
                 "pdf": "application/pdf",
+                "pdfa": "application/pdf",
                 "html": "text/html",
                 "txt": "text/plain",
                 "md": "text/markdown",
@@ -303,12 +420,15 @@ def web():
             }[to]
 
             stem = name.rsplit(".", 1)[0] if "." in name else name
+            suffix = "-pdfa.pdf" if to == "pdfa" else f".{to}"
             return Response(
                 content=converted,
                 media_type=media,
-                headers={"Content-Disposition": f'inline; filename="{stem}.{to}"'},
+                headers={"Content-Disposition": f'inline; filename="{stem}{suffix}"'},
             )
 
+        except NotPages:
+            raise HTTPException(422, "That is not a Pages document. A .pages file is always a zip inside.")
         except subprocess.TimeoutExpired:
             raise HTTPException(504, "That file took too long to convert.")
         finally:

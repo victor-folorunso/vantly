@@ -21,7 +21,7 @@ import { article } from '@/lib/conversions';
 
 export type PdfSource =
   | 'word' | 'excel' | 'powerpoint' | 'epub' | 'html' | 'any'
-  | 'odt' | 'ods' | 'odp' | 'rtf' | 'txt' | 'csv';
+  | 'odt' | 'ods' | 'odp' | 'rtf' | 'txt' | 'csv' | 'pages';
 
 const ACCEPT: Record<PdfSource, string> = {
   word: '.doc,.docx,.odt,.rtf',
@@ -35,6 +35,7 @@ const ACCEPT: Record<PdfSource, string> = {
   rtf: '.rtf',
   txt: '.txt,.text,.log',
   csv: '.csv',
+  pages: '.pages',
   any: '.doc,.docx,.odt,.rtf,.xls,.xlsx,.ods,.csv,.ppt,.pptx,.odp,.epub,.html,.htm,.txt',
 };
 
@@ -50,8 +51,23 @@ const NOUN: Record<PdfSource, string> = {
   rtf: 'RTF document',
   txt: 'text file',
   csv: 'CSV file',
+  pages: 'Pages document',
   any: 'document',
 };
+
+/** The PDF a Pages file saved of itself, if it has one. */
+async function pagesPreview(f: File): Promise<Blob | null> {
+  try {
+    const JSZip = (await import('jszip')).default;
+    const zip = await JSZip.loadAsync(f);
+    const entry = Object.values(zip.files).find((e) => /(^|\/)quicklook\/preview\.pdf$/i.test(e.name));
+    if (!entry) return null;
+    const bytes = await entry.async('uint8array');
+    return new Blob([bytes as BlobPart], { type: 'application/pdf' });
+  } catch {
+    return null;
+  }
+}
 
 function formatBytes(n: number): string {
   if (n < 1024) return `${n} B`;
@@ -88,6 +104,19 @@ export default function ConvertToPdf({ from }: { from: PdfSource }) {
     abort.current?.abort();
     abort.current = new AbortController();
 
+    // A Pages file is a zip, and older ones carry an exact PDF of themselves
+    // for Quick Look. When that is there, it is the answer, and the file never
+    // has to leave the machine.
+    if (from === 'pages') {
+      const preview = await pagesPreview(f);
+      if (preview) {
+        setBusy(false);
+        setOutSize(preview.size);
+        setOutUrl(URL.createObjectURL(preview));
+        return;
+      }
+    }
+
     const result = await convertFile(f, 'pdf', abort.current.signal);
     setBusy(false);
 
@@ -97,7 +126,7 @@ export default function ConvertToPdf({ from }: { from: PdfSource }) {
     }
     setOutSize(result.blob.size);
     setOutUrl(URL.createObjectURL(result.blob));
-  }, []);
+  }, [from]);
 
   // Files chosen on the home page, if that is how you arrived.
   useHandoff((files) => {

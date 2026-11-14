@@ -29,12 +29,19 @@ established as worth saying, so they are the cheapest docs to write next.
 and a handful of single ones. The build does not run lint, so nothing fails
 on them, which is how they piled up.
 
-## 3. The three tools still marked not live
+## 3. Two tools built and waiting on a deploy, and one left out
 
-- `pdf-to-pdfa`: PDF/A needs embedded fonts, an ICC output intent and
-  XMP metadata, and checking the result needs veraPDF. That is server work.
-- `pages-to-pdf`: Apple Pages files only open in Pages, or through a
-  LibreOffice import filter that has to run on the server.
+PDF to PDF/A and Pages to PDF are finished on the site and in
+`server/convert.py`, but stay `live: false` until the conversion service is
+redeployed (`modal deploy server/convert.py`), since the live service does
+not know `to=pdfa` or `.pages` yet. After the deploy, flip both to
+`live: true` in `src/lib/site.ts` and push.
+
+- PDF/A: Ghostscript with an sRGB output intent. veraPDF passed its output
+  at 1b, 2b and 3b, including a file with transparency.
+- Pages: the exact PDF a Pages '09 file carries is used when present (in the
+  browser, without uploading); otherwise LibreOffice's libetonyek filter.
+  That second path has not been tried on a real Pages file yet.
 - `pdf-to-html`: left out on purpose (it is in `NEVER`).
 
 ## 4. Edit PDF limits worth knowing

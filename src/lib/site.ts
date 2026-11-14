@@ -557,6 +557,7 @@ export const TOOLS: Tool[] = [
     description:
       'Convert a PDF to PDF/A, the long term archival format that libraries, courts and universities ask for.',
     live: false,
+    sendsFile: true,
   },
   {
     slug: 'odt-to-pdf',
@@ -633,6 +634,7 @@ export const TOOLS: Tool[] = [
     description:
       'Turn a Pages document into a PDF anyone can open, without a Mac.',
     live: false,
+    sendsFile: true,
   },
   {
     slug: 'placeholder-1920x1080',
